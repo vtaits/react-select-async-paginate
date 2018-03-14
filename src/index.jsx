@@ -5,7 +5,7 @@ import Select from 'react-select';
 
 const initialCache = {
   options: [],
-  hasMore: false,
+  hasMore: true,
   isLoading: false,
 };
 
@@ -41,9 +41,9 @@ class AsyncPaginate extends Component {
     });
   }
 
-  onOpen = () => {
+  onOpen = async () => {
     if (!this.state.optionsCache['']) {
-      this.loadOptions();
+      await this.loadOptions();
     }
   }
 
@@ -65,7 +65,7 @@ class AsyncPaginate extends Component {
 
     const currentOptions = optionsCache[search];
 
-    if (currentOptions && currentOptions.hasMore) {
+    if (currentOptions) {
       await this.loadOptions();
     }
   }
@@ -78,7 +78,7 @@ class AsyncPaginate extends Component {
 
     const currentOptions = optionsCache[search] || initialCache;
 
-    if (currentOptions.isLoading) {
+    if (currentOptions.isLoading || !currentOptions.hasMore) {
       return;
     }
 

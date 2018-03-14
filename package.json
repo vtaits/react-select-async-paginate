@@ -8,7 +8,9 @@
   "license": "MIT",
   "scripts": {
     "build": "babel src --out-dir lib --ignore __tests__",
-    "lint": "eslint src --ext .js,.jsx"
+    "lint": "eslint src --ext .js,.jsx",
+    "test:unit": "jest",
+    "test": "yarn lint && yarn test:unit"
   },
   "peerDependencies": {
     "prop-types": "^15.0.0",
@@ -34,6 +36,7 @@
     "prop-types": "^15.6.1",
     "raf": "^3.4.0",
     "react": "^16.2.0",
+    "react-dom": "^16.2.0",
     "react-select": "^1.2.1",
     "react-test-renderer": "^16.2.0"
   },
