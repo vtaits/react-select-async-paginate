@@ -1,5 +1,9 @@
 examples
-.eslint*
-.npmignore
-.babelrc
 src
+.babelrc
+.eslint*
+.gitignore
+.npmignore
+setup-jest.js
+*.log
+*.lock

@@ -10,7 +10,8 @@
     "build": "babel src --out-dir lib --ignore __tests__",
     "lint": "eslint src --ext .js,.jsx",
     "test:unit": "jest",
-    "test": "yarn lint && yarn test:unit"
+    "test": "yarn lint && yarn test:unit",
+    "prepublish": "yarn build"
   },
   "peerDependencies": {
     "prop-types": "^15.0.0",
