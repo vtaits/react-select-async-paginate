@@ -4,6 +4,7 @@ const path = require('path');
 const context = path.join(__dirname, 'src');
 
 module.exports = {
+  mode: 'development',
   context,
   entry: './index.jsx',
   output: {
