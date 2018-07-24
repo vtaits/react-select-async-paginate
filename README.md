@@ -1,3 +1,5 @@
+[![NPM](https://img.shields.io/npm/v/react-select-async-paginate.svg)](https://www.npmjs.com/package/react-select-async-paginate)
+
 # react-select-async-paginate
 
 Wrapper above `react-select` that supports pagination on menu scroll.
