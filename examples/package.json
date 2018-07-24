@@ -9,7 +9,7 @@
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-select": "^1.2.1",
-    "react-select-async-paginate": "file:../"
+    "react-select-async-paginate": "link:../"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
