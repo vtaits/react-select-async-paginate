@@ -16,7 +16,7 @@ yarn add react-select react-select-async-paginate
 
 ## Usage
 
-`AsyncPaginate` is an alternative of `Select.Async` but supports loading page by page. It is wrapper above default `react-select` thus it accepts all props of default `Select` except `options` and `isLoading`. And there are some new props:
+`AsyncPaginate` is an alternative of `Select.Async` but supports loading page by page. It is wrapper above default `react-select` thus it accepts all props of default `Select` except `isLoading`. And there are some new props:
 
 - `loadOptions`
 
