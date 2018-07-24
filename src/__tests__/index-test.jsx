@@ -25,6 +25,48 @@ test('should render Select', () => {
   expect(selectNode.prop('options')).toEqual([]);
 });
 
+test('should set empty options cache on init', () => {
+  const wrapper = shallow(
+    <AsyncPaginate
+      {...defaultProps}
+    />,
+  );
+
+  const optionsCache = wrapper.state('optionsCache');
+
+  expect(optionsCache).toEqual({});
+});
+
+test('should set options cache with initial options on init', () => {
+  const options = [
+    {
+      label: 'label 1',
+      value: 'value 1',
+    },
+    {
+      label: 'label 2',
+      value: 'value 2',
+    },
+  ];
+
+  const wrapper = shallow(
+    <AsyncPaginate
+      {...defaultProps}
+      options={options}
+    />,
+  );
+
+  const optionsCache = wrapper.state('optionsCache');
+
+  expect(optionsCache).toEqual({
+    '': {
+      isLoading: false,
+      hasMore: true,
+      options,
+    },
+  });
+});
+
 test('should call selectRef', () => {
   const mockRef = jest.fn();
 

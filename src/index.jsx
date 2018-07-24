@@ -15,16 +15,32 @@ class AsyncPaginate extends Component {
     // eslint-disable-next-line react/forbid-prop-types
     cacheUniq: PropTypes.any,
     selectRef: PropTypes.func,
+    options: PropTypes.arrayOf(PropTypes.object),
   };
 
   static defaultProps = {
     cacheUniq: null,
     selectRef: () => {},
+    options: null,
   };
 
-  state = {
-    search: '',
-    optionsCache: {},
+  constructor(props) {
+    super(props);
+
+    const initialOptionsCache = props.options
+      ? {
+        '': {
+          isLoading: false,
+          options: props.options,
+          hasMore: true,
+        },
+      }
+      : {};
+
+    this.state = {
+      search: '',
+      optionsCache: initialOptionsCache,
+    };
   }
 
   componentDidUpdate({ cacheUniq }) {

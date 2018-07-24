@@ -12,6 +12,8 @@ for (let i = 0; i < 50; ++i) {
   });
 }
 
+const initialOptions = options.slice(0, 10);
+
 const wrapperStyle = {
   maxWidth: '200px',
   marginBottom: '20px',
@@ -45,6 +47,7 @@ class Page extends Component {
   state = {
     value1: null,
     value2: null,
+    value3: null,
   }
 
   setValue1 = (value1) => {
@@ -59,10 +62,17 @@ class Page extends Component {
     });
   }
 
+  setValue3 = (value3) => {
+    this.setState({
+      value3,
+    });
+  }
+
   render() {
     const {
       value1,
       value2,
+      value3,
     } = this.state;
 
     return (
@@ -87,6 +97,17 @@ class Page extends Component {
             value={value2}
             loadOptions={loadOptions}
             onChange={this.setValue2}
+          />
+        </div>
+
+        <h2>With initial options</h2>
+
+        <div style={wrapperStyle}>
+          <AsyncPaginate
+            value={value3}
+            loadOptions={loadOptions}
+            onChange={this.setValue3}
+            options={initialOptions}
           />
         </div>
       </div>
