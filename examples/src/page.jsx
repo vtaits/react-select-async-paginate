@@ -1,5 +1,3 @@
-import 'react-select/dist/react-select.css';
-
 import React, { Component } from 'react';
 
 import AsyncPaginate from 'react-select-async-paginate';
@@ -93,7 +91,7 @@ class Page extends Component {
 
         <div style={wrapperStyle}>
           <AsyncPaginate
-            multi
+            isMulti
             value={value2}
             loadOptions={loadOptions}
             onChange={this.setValue2}

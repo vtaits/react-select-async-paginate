@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import Select from 'react-select';
+import { SelectBase } from 'react-select';
 
 const initialCache = {
   options: [],
@@ -40,6 +40,7 @@ class AsyncPaginate extends Component {
     this.state = {
       search: '',
       optionsCache: initialOptionsCache,
+      menuIsOpen: false,
     };
   }
 
@@ -51,13 +52,18 @@ class AsyncPaginate extends Component {
     }
   }
 
-  onClose = () => {
+  onMenuClose = () => {
     this.setState({
       search: '',
+      menuIsOpen: false,
     });
   }
 
-  onOpen = async () => {
+  onMenuOpen = async () => {
+    await this.setState({
+      menuIsOpen: true,
+    });
+
     if (!this.state.optionsCache['']) {
       await this.loadOptions();
     }
@@ -147,15 +153,18 @@ class AsyncPaginate extends Component {
     const {
       search,
       optionsCache,
+      menuIsOpen,
     } = this.state;
 
     const currentOptions = optionsCache[search] || initialCache;
 
     return (
-      <Select
+      <SelectBase
         {...this.props}
-        onClose={this.onClose}
-        onOpen={this.onOpen}
+        inputValue={search}
+        menuIsOpen={menuIsOpen}
+        onMenuClose={this.onMenuClose}
+        onMenuOpen={this.onMenuOpen}
         onInputChange={this.onInputChange}
         onMenuScrollToBottom={this.onMenuScrollToBottom}
         isLoading={currentOptions.isLoading}

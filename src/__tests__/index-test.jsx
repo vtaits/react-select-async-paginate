@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import Select from 'react-select';
+import { SelectBase } from 'react-select';
 
 import AsyncPaginate from '../index';
 
@@ -11,18 +11,19 @@ const defaultProps = {
   }),
 };
 
-test('should render Select', () => {
+test('should render SelectBase', () => {
   const wrapper = shallow(
     <AsyncPaginate
       {...defaultProps}
     />,
   );
 
-  const selectNode = wrapper.find(Select);
+  const selectNode = wrapper.find(SelectBase);
 
   expect(selectNode.length).toBe(1);
   expect(selectNode.prop('isLoading')).toBe(false);
   expect(selectNode.prop('options')).toEqual([]);
+  expect(selectNode.prop('menuIsOpen')).toBe(false);
 });
 
 test('should set empty options cache on init', () => {
@@ -93,7 +94,7 @@ test('should set default state and options if search for cache is empty', () => 
     optionsCache: {},
   });
 
-  const selectNode = wrapper.find(Select);
+  const selectNode = wrapper.find(SelectBase);
 
   expect(selectNode.length).toBe(1);
   expect(selectNode.prop('isLoading')).toBe(false);
@@ -126,7 +127,7 @@ test('should set loading state and options from cache', () => {
     },
   });
 
-  const selectNode = wrapper.find(Select);
+  const selectNode = wrapper.find(SelectBase);
 
   expect(selectNode.length).toBe(1);
   expect(selectNode.prop('isLoading')).toBe(true);
@@ -165,12 +166,15 @@ test('should load options on open select if options not cached', async () => {
     />,
   );
 
-  await wrapper.find(Select).prop('onOpen')();
+  await wrapper.find(SelectBase).prop('onMenuOpen')();
 
   const {
     search,
+    menuIsOpen,
     optionsCache,
   } = wrapper.state();
+
+  expect(menuIsOpen).toBe(true);
 
   const currentOptionsCache = optionsCache[search];
 
@@ -207,9 +211,37 @@ test('should not call loadOptions on open select if options cached', async () =>
     },
   });
 
-  await wrapper.find(Select).prop('onOpen')();
+  await wrapper.find(SelectBase).prop('onMenuOpen')();
 
   expect(loadOptions.mock.calls.length).toBe(0);
+});
+
+test('should set correct inputValue prop in SelectBase', async () => {
+  const wrapper = shallow(
+    <AsyncPaginate
+      {...defaultProps}
+    />,
+  );
+
+  wrapper.setState({
+    search: 'test value',
+  });
+
+  expect(wrapper.find(SelectBase).prop('inputValue')).toBe('test value');
+});
+
+test('should set correct menuIsOpen prop in SelectBase', async () => {
+  const wrapper = shallow(
+    <AsyncPaginate
+      {...defaultProps}
+    />,
+  );
+
+  wrapper.setState({
+    menuIsOpen: true,
+  });
+
+  expect(wrapper.find(SelectBase).prop('menuIsOpen')).toBe(true);
 });
 
 test('should load options on search change if options not cached', async () => {
@@ -244,7 +276,7 @@ test('should load options on search change if options not cached', async () => {
     />,
   );
 
-  await wrapper.find(Select).prop('onInputChange')('test');
+  await wrapper.find(SelectBase).prop('onInputChange')('test');
 
   const {
     search,
@@ -288,7 +320,7 @@ test('should not call loadOptions on search change if options cached', async () 
     },
   });
 
-  await wrapper.find(Select).prop('onInputChange')('test');
+  await wrapper.find(SelectBase).prop('onInputChange')('test');
 
   expect(wrapper.state('search')).toBe('test');
   expect(loadOptions.mock.calls.length).toBe(0);
@@ -347,7 +379,7 @@ test('should load more options on scroll menu to bottom', async () => {
     },
   });
 
-  await wrapper.find(Select).prop('onMenuScrollToBottom')();
+  await wrapper.find(SelectBase).prop('onMenuScrollToBottom')();
 
   const {
     search,
@@ -403,7 +435,7 @@ test('should not load more options on scroll menu to bottom in loading state', a
     },
   });
 
-  await wrapper.find(Select).prop('onMenuScrollToBottom')();
+  await wrapper.find(SelectBase).prop('onMenuScrollToBottom')();
 
   expect(loadOptions.mock.calls.length).toBe(0);
 });
@@ -436,12 +468,12 @@ test('should not load more options on scroll menu to bottom if not has more', as
     },
   });
 
-  await wrapper.find(Select).prop('onMenuScrollToBottom')();
+  await wrapper.find(SelectBase).prop('onMenuScrollToBottom')();
 
   expect(loadOptions.mock.calls.length).toBe(0);
 });
 
-test('should clean search on close select', () => {
+test('should clean search and menuIsOpen on close select', () => {
   const wrapper = shallow(
     <AsyncPaginate
       {...defaultProps}
@@ -450,9 +482,11 @@ test('should clean search on close select', () => {
 
   wrapper.setState({
     search: 'test',
+    menuIsOpen: true,
   });
 
-  wrapper.find(Select).prop('onClose')();
+  wrapper.find(SelectBase).prop('onMenuClose')();
 
   expect(wrapper.state('search')).toBe('');
+  expect(wrapper.state('menuIsOpen')).toBe(false);
 });
