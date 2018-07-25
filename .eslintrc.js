@@ -18,8 +18,8 @@ module.exports = {
         "jest"
     ],
     "rules": {
+        "arrow-parens": ["error", "always"],
         "react/no-did-update-set-state": "off",
-        "function-paren-newline": ["error", "consistent"],
         "no-plusplus": "off",
         "no-nested-ternary": "off",
     }

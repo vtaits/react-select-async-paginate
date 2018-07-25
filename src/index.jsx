@@ -44,8 +44,12 @@ class AsyncPaginate extends Component {
     };
   }
 
-  componentDidUpdate({ cacheUniq }) {
-    if (cacheUniq !== this.props.cacheUniq) {
+  componentDidUpdate(oldProps) {
+    const {
+      cacheUniq,
+    } = this.props;
+
+    if (oldProps.cacheUniq !== cacheUniq) {
       this.setState({
         optionsCache: {},
       });
@@ -64,7 +68,11 @@ class AsyncPaginate extends Component {
       menuIsOpen: true,
     });
 
-    if (!this.state.optionsCache['']) {
+    const {
+      optionsCache,
+    } = this.state;
+
+    if (!optionsCache['']) {
       await this.loadOptions();
     }
   }
@@ -74,7 +82,11 @@ class AsyncPaginate extends Component {
       search,
     });
 
-    if (!this.state.optionsCache[search]) {
+    const {
+      optionsCache,
+    } = this.state;
+
+    if (!optionsCache[search]) {
       await this.loadOptions();
     }
   }
@@ -104,26 +116,30 @@ class AsyncPaginate extends Component {
       return;
     }
 
-    await this.setState({
+    await this.setState((prevState) => ({
       search,
       optionsCache: {
-        ...this.state.optionsCache,
+        ...prevState.optionsCache,
         [search]: {
           ...currentOptions,
           isLoading: true,
         },
       },
-    });
+    }));
 
     try {
       const {
+        loadOptions,
+      } = this.props;
+
+      const {
         options,
         hasMore,
-      } = await this.props.loadOptions(search, currentOptions.options);
+      } = await loadOptions(search, currentOptions.options);
 
-      await this.setState({
+      await this.setState((prevState) => ({
         optionsCache: {
-          ...this.state.optionsCache,
+          ...prevState.optionsCache,
           [search]: {
             ...currentOptions,
             options: currentOptions.options.concat(options),
@@ -131,17 +147,17 @@ class AsyncPaginate extends Component {
             isLoading: false,
           },
         },
-      });
+      }));
     } catch (e) {
-      await this.setState({
+      await this.setState((prevState) => ({
         optionsCache: {
-          ...this.state.optionsCache,
+          ...prevState.optionsCache,
           [search]: {
             ...currentOptions,
             isLoading: false,
           },
         },
-      });
+      }));
     }
   }
 
