@@ -1,4 +1,3 @@
-const webpack = require('webpack');
 const path = require('path');
 
 const context = path.join(__dirname, 'src');
@@ -28,19 +27,6 @@ module.exports = {
           plugins: [],
         },
       }],
-    }, {
-      test: /\.css$/,
-      use: [
-        'style-loader',
-        'css-loader',
-      ],
-    }, {
-      test: [
-        /\.(png|ttf|eot|svg|woff|woff2)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        /.(png|woff(2)?|eot|ttf|svg)(\?[a-z0-9=.]+)?$/,
-        /\.(png|gif)/,
-      ],
-      use: ['file-loader'],
     }],
   },
   resolve: {
