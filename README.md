@@ -57,7 +57,6 @@ Ref for take `react-select` instance.
 ## Example
 
 ```
-import 'react-select/dist/react-select.css';
 import AsyncPaginate from 'react-select-async-paginate';
 
 ...
