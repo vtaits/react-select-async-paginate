@@ -3,7 +3,6 @@
     "start": "webpack-dev-server --host 0.0.0.0"
   },
   "dependencies": {
-    "@babel/polyfill": "^7.2.3",
     "prop-types": "^15.6.2",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
