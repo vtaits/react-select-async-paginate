@@ -3,11 +3,14 @@
   "version": "0.2.0",
   "description": "Wrapper above react-select that supports pagination on menu scroll",
   "main": "lib/index.js",
+  "module": "es/index.js",
   "repository": "git@github.com:vtaits/react-select-async-paginate.git",
   "author": "Vadim Taits",
   "license": "MIT",
   "scripts": {
-    "build": "babel src --out-dir lib --ignore __tests__",
+    "build": "yarn build:cjs && yarn build:es",
+    "build:cjs": "cross-env BABEL_ENV=cjs babel src --out-dir lib --ignore \"src/js/**/__tests__\"",
+    "build:es": "cross-env BABEL_ENV=es babel src --out-dir es --ignore \"src/js/**/__tests__\"",
     "lint": "eslint src --ext .js,.jsx",
     "test:unit": "jest",
     "test": "yarn lint && yarn test:unit",
@@ -19,12 +22,12 @@
     "react-select": "^2.0.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-eslint": "^8.2.6",
-    "babel-jest": "^23.4.0",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-react": "^6.24.1",
-    "babel-preset-stage-2": "^6.24.1",
+    "@babel/plugin-proposal-class-properties": "^7.2.3",
+    "@babel/preset-env": "^7.2.3",
+    "@babel/preset-react": "^7.0.0",
+    "babel-eslint": "^10.0.1",
+    "babel-jest": "^23.6.0",
+    "cross-env": "^5.2.0",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "eslint": "^5.2.0",
@@ -33,7 +36,7 @@
     "eslint-plugin-jest": "^21.18.0",
     "eslint-plugin-jsx-a11y": "^6.1.1",
     "eslint-plugin-react": "^7.10.0",
-    "jest": "^23.4.1",
+    "jest": "^23.6.0",
     "prop-types": "^15.6.2",
     "raf": "^3.4.0",
     "react": "^16.4.1",
@@ -49,5 +52,10 @@
     "setupFiles": [
       "./setup-jest.js"
     ]
+  },
+  "dependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.2.2",
+    "babel-core": "^7.0.0-bridge"
   }
 }
