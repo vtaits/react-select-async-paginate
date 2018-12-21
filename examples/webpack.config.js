@@ -17,15 +17,6 @@ module.exports = {
       exclude: /(node_modules|dist)/,
       use: [{
         loader: 'babel-loader',
-        options: {
-          babelrc: false,
-          presets: [
-            ['env', { modules: false }],
-            'react',
-            'stage-2',
-          ],
-          plugins: [],
-        },
       }],
     }],
   },
