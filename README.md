@@ -24,7 +24,7 @@ yarn add react-select react-select-async-paginate
 
 `AsyncPaginate` is an alternative of `Select.Async` but supports loading page by page. It is wrapper above default `react-select` thus it accepts all props of default `Select` except `isLoading`. And there are some new props:
 
-- `loadOptions`
+### loadOptions
 
 Required. Async function that take two arguments:
 
@@ -46,11 +46,11 @@ It similar to `loadOptions` from `Select.Async` but there is some differences:
 2. Not supports callback.
 3. Should return `hasMore` for detect end of options list for current search.
 
-- `cacheUniq`
+### cacheUniq
 
 Not required. Can take any value. When this prop changed, `AsyncPaginate` cleans all cached options.
 
-- `selectRef`
+### selectRef
 
 Ref for take `react-select` instance.
 
@@ -96,5 +96,25 @@ async function loadOptions(search, loadedOptions) {
   value={value}
   loadOptions={loadOptions}
   onChange={setValue}
+/>
+```
+
+## Replacing Components
+
+Usage of replacing components is similar with `react-select`, but there is one difference. If you redefine `MenuList` you should wrap it with `wrapMenuList` for workaround of some internal bugs of `react-select`.
+
+```
+import AsyncPaginate, { wrapMenuList } from 'react-select-async-paginate';
+
+...
+
+const MenuList = wrapMenuList(CustomMenuList);
+
+<AsyncPaginate
+  {...otherProps}
+  components={{
+    ...otherComponents,
+    MenuList,
+  }}
 />
 ```
