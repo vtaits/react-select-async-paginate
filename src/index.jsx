@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { SelectBase } from 'react-select';
 
 const initialCache = {
+  isFirstLoad: true,
   options: [],
   hasMore: true,
   isLoading: false,
@@ -30,6 +31,7 @@ class AsyncPaginate extends Component {
     const initialOptionsCache = props.options
       ? {
         '': {
+          isFirstLoad: false,
           isLoading: false,
           options: props.options,
           hasMore: true,
@@ -127,16 +129,35 @@ class AsyncPaginate extends Component {
       },
     }));
 
+    let hasError;
+    let options;
+    let hasMore;
+
     try {
       const {
         loadOptions,
       } = this.props;
 
-      const {
-        options,
-        hasMore,
-      } = await loadOptions(search, currentOptions.options);
+      const response = await loadOptions(search, currentOptions.options);
 
+      ({ options, hasMore } = response);
+
+      hasError = false;
+    } catch (e) {
+      hasError = true;
+    }
+
+    if (hasError) {
+      await this.setState((prevState) => ({
+        optionsCache: {
+          ...prevState.optionsCache,
+          [search]: {
+            ...currentOptions,
+            isLoading: false,
+          },
+        },
+      }));
+    } else {
       await this.setState((prevState) => ({
         optionsCache: {
           ...prevState.optionsCache,
@@ -145,16 +166,7 @@ class AsyncPaginate extends Component {
             options: currentOptions.options.concat(options),
             hasMore: !!hasMore,
             isLoading: false,
-          },
-        },
-      }));
-    } catch (e) {
-      await this.setState((prevState) => ({
-        optionsCache: {
-          ...prevState.optionsCache,
-          [search]: {
-            ...currentOptions,
-            isLoading: false,
+            isFirstLoad: false,
           },
         },
       }));
@@ -184,6 +196,7 @@ class AsyncPaginate extends Component {
         onInputChange={this.onInputChange}
         onMenuScrollToBottom={this.onMenuScrollToBottom}
         isLoading={currentOptions.isLoading}
+        isFirstLoad={currentOptions.isFirstLoad}
         options={currentOptions.options}
         ref={selectRef}
       />

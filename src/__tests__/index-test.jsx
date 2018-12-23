@@ -22,6 +22,7 @@ test('should render SelectBase', () => {
 
   expect(selectNode.length).toBe(1);
   expect(selectNode.prop('isLoading')).toBe(false);
+  expect(selectNode.prop('isFirstLoad')).toBe(true);
   expect(selectNode.prop('options')).toEqual([]);
   expect(selectNode.prop('menuIsOpen')).toBe(false);
 });
@@ -61,6 +62,7 @@ test('should set options cache with initial options on init', () => {
 
   expect(optionsCache).toEqual({
     '': {
+      isFirstLoad: false,
       isLoading: false,
       hasMore: true,
       options,
@@ -98,6 +100,7 @@ test('should set default state and options if search for cache is empty', () => 
 
   expect(selectNode.length).toBe(1);
   expect(selectNode.prop('isLoading')).toBe(false);
+  expect(selectNode.prop('isFirstLoad')).toBe(true);
   expect(selectNode.prop('options')).toEqual([]);
 });
 
@@ -123,6 +126,7 @@ test('should set loading state and options from cache', () => {
       test: {
         options,
         isLoading: true,
+        isFirstLoad: false,
       },
     },
   });
@@ -131,6 +135,7 @@ test('should set loading state and options from cache', () => {
 
   expect(selectNode.length).toBe(1);
   expect(selectNode.prop('isLoading')).toBe(true);
+  expect(selectNode.prop('isFirstLoad')).toBe(false);
   expect(selectNode.prop('options')).toEqual(options);
 });
 
@@ -150,6 +155,7 @@ test('should load options on open select if options not cached', async () => {
     expect(prevOptions).toEqual([]);
 
     expect(wrapper.state('optionsCache')[''].isLoading).toBe(true);
+    expect(wrapper.state('optionsCache')[''].isFirstLoad).toBe(true);
     expect(wrapper.state('optionsCache')[''].hasMore).toBe(true);
     expect(wrapper.state('optionsCache')[''].options).toEqual([]);
 
@@ -179,6 +185,7 @@ test('should load options on open select if options not cached', async () => {
   const currentOptionsCache = optionsCache[search];
 
   expect(currentOptionsCache.isLoading).toBe(false);
+  expect(currentOptionsCache.isFirstLoad).toBe(false);
   expect(currentOptionsCache.hasMore).toBe(false);
   expect(currentOptionsCache.options).toEqual(options);
 });
@@ -207,6 +214,7 @@ test('should not call loadOptions on open select if options cached', async () =>
         options,
         hasMore: true,
         isLoading: false,
+        isFirstLoad: false,
       },
     },
   });
@@ -260,6 +268,7 @@ test('should load options on search change if options not cached', async () => {
     expect(prevOptions).toEqual([]);
 
     expect(wrapper.state('optionsCache').test.isLoading).toBe(true);
+    expect(wrapper.state('optionsCache').test.isFirstLoad).toBe(true);
     expect(wrapper.state('optionsCache').test.hasMore).toBe(true);
     expect(wrapper.state('optionsCache').test.options).toEqual([]);
 
@@ -288,6 +297,7 @@ test('should load options on search change if options not cached', async () => {
   const currentOptionsCache = optionsCache[search];
 
   expect(currentOptionsCache.isLoading).toBe(false);
+  expect(currentOptionsCache.isFirstLoad).toBe(false);
   expect(currentOptionsCache.hasMore).toBe(false);
   expect(currentOptionsCache.options).toEqual(options);
 });
@@ -316,6 +326,7 @@ test('should not call loadOptions on search change if options cached', async () 
         options,
         hasMore: true,
         isLoading: false,
+        isFirstLoad: false,
       },
     },
   });
@@ -340,6 +351,7 @@ test('should load more options on scroll menu to bottom', async () => {
     }]);
 
     expect(wrapper.state('optionsCache').test.isLoading).toBe(true);
+    expect(wrapper.state('optionsCache').test.isFirstLoad).toBe(false);
     expect(wrapper.state('optionsCache').test.hasMore).toBe(true);
 
     return {
@@ -375,6 +387,7 @@ test('should load more options on scroll menu to bottom', async () => {
         }],
         hasMore: true,
         isLoading: false,
+        isFirstLoad: false,
       },
     },
   });
@@ -391,6 +404,7 @@ test('should load more options on scroll menu to bottom', async () => {
   const currentOptionsCache = optionsCache[search];
 
   expect(currentOptionsCache.isLoading).toBe(false);
+  expect(currentOptionsCache.isFirstLoad).toBe(false);
   expect(currentOptionsCache.hasMore).toBe(false);
   expect(currentOptionsCache.options).toEqual([{
     value: 1,
@@ -431,6 +445,7 @@ test('should not load more options on scroll menu to bottom in loading state', a
         }],
         hasMore: true,
         isLoading: true,
+        isFirstLoad: false,
       },
     },
   });
@@ -464,6 +479,7 @@ test('should not load more options on scroll menu to bottom if not has more', as
         }],
         hasMore: false,
         isLoading: false,
+        isFirstLoad: false,
       },
     },
   });
