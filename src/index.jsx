@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 
 import { SelectBase } from 'react-select';
 
+import mergeStyles from './styles';
+
 const initialCache = {
   isFirstLoad: true,
   options: [],
@@ -17,12 +19,14 @@ class AsyncPaginate extends Component {
     cacheUniq: PropTypes.any,
     selectRef: PropTypes.func,
     options: PropTypes.arrayOf(PropTypes.object),
+    styles: PropTypes.objectOf(PropTypes.func),
   };
 
   static defaultProps = {
     cacheUniq: null,
     selectRef: () => {},
     options: null,
+    styles: {},
   };
 
   constructor(props) {
@@ -176,6 +180,7 @@ class AsyncPaginate extends Component {
   render() {
     const {
       selectRef,
+      styles,
     } = this.props;
 
     const {
@@ -198,6 +203,7 @@ class AsyncPaginate extends Component {
         isLoading={currentOptions.isLoading}
         isFirstLoad={currentOptions.isFirstLoad}
         options={currentOptions.options}
+        styles={mergeStyles(styles)}
         ref={selectRef}
       />
     );

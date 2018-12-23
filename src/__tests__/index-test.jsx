@@ -2,6 +2,9 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import { SelectBase } from 'react-select';
 
+import menu from '../styles/menu';
+import menuList from '../styles/menu-list';
+
 import AsyncPaginate from '../index';
 
 const defaultProps = {
@@ -505,4 +508,27 @@ test('should clean search and menuIsOpen on close select', () => {
 
   expect(wrapper.state('search')).toBe('');
   expect(wrapper.state('menuIsOpen')).toBe(false);
+});
+
+test('should provide redefined styles', () => {
+  const style1 = jest.fn();
+  const style2 = jest.fn();
+
+  const wrapper = shallow(
+    <AsyncPaginate
+      {...defaultProps}
+      styles={{
+        style1,
+        style2,
+      }}
+    />,
+  );
+
+  const selectNode = wrapper.find(SelectBase);
+  const styles = selectNode.prop('styles');
+
+  expect(styles.style1).toBe(style1);
+  expect(styles.style2).toBe(style2);
+  expect(styles.menu).toBe(menu);
+  expect(styles.menuList).toBe(menuList);
 });
