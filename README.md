@@ -4,9 +4,18 @@
 
 Wrapper above `react-select` that supports pagination on menu scroll.
 
+## Sandbox examples
+
+- [Simple](https://codesandbox.io/s/o75rno2w65)
+- [Multi](https://codesandbox.io/s/2323yrlo9r)
+- [Initial options](https://codesandbox.io/s/q111nqw9j)
+
 ## Versions
 
-This (`react-select-async-paginate` 0.2.x) is the version of `react-select-async-paginate` for use with `react-select` 2.x. For use with `react-select` 1.x you can install `react-select-async-paginate` 0.1.x.
+| react-select | react-select-async-paginate |
+|--------------|-----------------------------|
+| 2.x | 0.2.x |
+| 1.x | 0.1.x |
 
 ## Installation
 
