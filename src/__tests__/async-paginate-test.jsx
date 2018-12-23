@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import { SelectBase } from 'react-select';
 
-import AsyncPaginate, { MenuList } from '../index';
+import AsyncPaginate, { MenuList } from '../async-paginate';
 
 const defaultProps = {
   loadOptions: () => ({
