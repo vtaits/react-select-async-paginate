@@ -2,10 +2,7 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import { SelectBase } from 'react-select';
 
-import menu from '../styles/menu';
-import menuList from '../styles/menu-list';
-
-import AsyncPaginate from '../index';
+import AsyncPaginate, { MenuList } from '../index';
 
 const defaultProps = {
   loadOptions: () => ({
@@ -340,156 +337,160 @@ test('should not call loadOptions on search change if options cached', async () 
   expect(loadOptions.mock.calls.length).toBe(0);
 });
 
-test('should load more options on scroll menu to bottom', async () => {
-  let wrapper;
+['onMenuScrollToBottom', 'handleScrolledToBottom'].forEach((propName) => {
+  describe(propName, () => {
+    test('should load more options on scroll menu to bottom', async () => {
+      let wrapper;
 
-  const loadOptions = async (query, prevOptions) => {
-    expect(query).toBe('test');
-    expect(prevOptions).toEqual([{
-      value: 1,
-      label: '1',
-    }, {
-      value: 2,
-      label: '2',
-    }]);
+      const loadOptions = async (query, prevOptions) => {
+        expect(query).toBe('test');
+        expect(prevOptions).toEqual([{
+          value: 1,
+          label: '1',
+        }, {
+          value: 2,
+          label: '2',
+        }]);
 
-    expect(wrapper.state('optionsCache').test.isLoading).toBe(true);
-    expect(wrapper.state('optionsCache').test.isFirstLoad).toBe(false);
-    expect(wrapper.state('optionsCache').test.hasMore).toBe(true);
+        expect(wrapper.state('optionsCache').test.isLoading).toBe(true);
+        expect(wrapper.state('optionsCache').test.isFirstLoad).toBe(false);
+        expect(wrapper.state('optionsCache').test.hasMore).toBe(true);
 
-    return {
-      options: [{
+        return {
+          options: [{
+            value: 3,
+            label: '3',
+          }, {
+            value: 4,
+            label: '4',
+          }],
+          hasMore: false,
+        };
+      };
+
+      wrapper = shallow(
+        <AsyncPaginate
+          {...defaultProps}
+          loadOptions={loadOptions}
+        />,
+      );
+
+      wrapper.setState({
+        search: 'test',
+
+        optionsCache: {
+          test: {
+            options: [{
+              value: 1,
+              label: '1',
+            }, {
+              value: 2,
+              label: '2',
+            }],
+            hasMore: true,
+            isLoading: false,
+            isFirstLoad: false,
+          },
+        },
+      });
+
+      await wrapper.find(SelectBase).prop(propName)();
+
+      const {
+        search,
+        optionsCache,
+      } = wrapper.state();
+
+      expect(search).toBe('test');
+
+      const currentOptionsCache = optionsCache[search];
+
+      expect(currentOptionsCache.isLoading).toBe(false);
+      expect(currentOptionsCache.isFirstLoad).toBe(false);
+      expect(currentOptionsCache.hasMore).toBe(false);
+      expect(currentOptionsCache.options).toEqual([{
+        value: 1,
+        label: '1',
+      }, {
+        value: 2,
+        label: '2',
+      }, {
         value: 3,
         label: '3',
       }, {
         value: 4,
         label: '4',
-      }],
-      hasMore: false,
-    };
-  };
+      }]);
+    });
 
-  wrapper = shallow(
-    <AsyncPaginate
-      {...defaultProps}
-      loadOptions={loadOptions}
-    />,
-  );
+    test('should not load more options on scroll menu to bottom in loading state', async () => {
+      const loadOptions = jest.fn();
 
-  wrapper.setState({
-    search: 'test',
+      const wrapper = shallow(
+        <AsyncPaginate
+          {...defaultProps}
+          loadOptions={loadOptions}
+        />,
+      );
 
-    optionsCache: {
-      test: {
-        options: [{
-          value: 1,
-          label: '1',
-        }, {
-          value: 2,
-          label: '2',
-        }],
-        hasMore: true,
-        isLoading: false,
-        isFirstLoad: false,
-      },
-    },
+      wrapper.setState({
+        search: 'test',
+
+        optionsCache: {
+          test: {
+            options: [{
+              value: 1,
+              label: '1',
+            }, {
+              value: 2,
+              label: '2',
+            }],
+            hasMore: true,
+            isLoading: true,
+            isFirstLoad: false,
+          },
+        },
+      });
+
+      await wrapper.find(SelectBase).prop(propName)();
+
+      expect(loadOptions.mock.calls.length).toBe(0);
+    });
+
+    test('should not load more options on scroll menu to bottom if not has more', async () => {
+      const loadOptions = jest.fn();
+
+      const wrapper = shallow(
+        <AsyncPaginate
+          {...defaultProps}
+          loadOptions={loadOptions}
+        />,
+      );
+
+      wrapper.setState({
+        search: 'test',
+
+        optionsCache: {
+          test: {
+            options: [{
+              value: 1,
+              label: '1',
+            }, {
+              value: 2,
+              label: '2',
+            }],
+            hasMore: false,
+            isLoading: false,
+            isFirstLoad: false,
+          },
+        },
+      });
+
+      await wrapper.find(SelectBase).prop(propName)();
+
+      expect(loadOptions.mock.calls.length).toBe(0);
+    });
   });
-
-  await wrapper.find(SelectBase).prop('onMenuScrollToBottom')();
-
-  const {
-    search,
-    optionsCache,
-  } = wrapper.state();
-
-  expect(search).toBe('test');
-
-  const currentOptionsCache = optionsCache[search];
-
-  expect(currentOptionsCache.isLoading).toBe(false);
-  expect(currentOptionsCache.isFirstLoad).toBe(false);
-  expect(currentOptionsCache.hasMore).toBe(false);
-  expect(currentOptionsCache.options).toEqual([{
-    value: 1,
-    label: '1',
-  }, {
-    value: 2,
-    label: '2',
-  }, {
-    value: 3,
-    label: '3',
-  }, {
-    value: 4,
-    label: '4',
-  }]);
-});
-
-test('should not load more options on scroll menu to bottom in loading state', async () => {
-  const loadOptions = jest.fn();
-
-  const wrapper = shallow(
-    <AsyncPaginate
-      {...defaultProps}
-      loadOptions={loadOptions}
-    />,
-  );
-
-  wrapper.setState({
-    search: 'test',
-
-    optionsCache: {
-      test: {
-        options: [{
-          value: 1,
-          label: '1',
-        }, {
-          value: 2,
-          label: '2',
-        }],
-        hasMore: true,
-        isLoading: true,
-        isFirstLoad: false,
-      },
-    },
-  });
-
-  await wrapper.find(SelectBase).prop('onMenuScrollToBottom')();
-
-  expect(loadOptions.mock.calls.length).toBe(0);
-});
-
-test('should not load more options on scroll menu to bottom if not has more', async () => {
-  const loadOptions = jest.fn();
-
-  const wrapper = shallow(
-    <AsyncPaginate
-      {...defaultProps}
-      loadOptions={loadOptions}
-    />,
-  );
-
-  wrapper.setState({
-    search: 'test',
-
-    optionsCache: {
-      test: {
-        options: [{
-          value: 1,
-          label: '1',
-        }, {
-          value: 2,
-          label: '2',
-        }],
-        hasMore: false,
-        isLoading: false,
-        isFirstLoad: false,
-      },
-    },
-  });
-
-  await wrapper.find(SelectBase).prop('onMenuScrollToBottom')();
-
-  expect(loadOptions.mock.calls.length).toBe(0);
 });
 
 test('should clean search and menuIsOpen on close select', () => {
@@ -510,25 +511,42 @@ test('should clean search and menuIsOpen on close select', () => {
   expect(wrapper.state('menuIsOpen')).toBe(false);
 });
 
-test('should provide redefined styles', () => {
-  const style1 = jest.fn();
-  const style2 = jest.fn();
+test('should provide components', () => {
+  const component1 = () => <div />;
+  const component2 = () => <div />;
 
   const wrapper = shallow(
     <AsyncPaginate
       {...defaultProps}
-      styles={{
-        style1,
-        style2,
+      components={{
+        component1,
+        component2,
       }}
     />,
   );
 
   const selectNode = wrapper.find(SelectBase);
-  const styles = selectNode.prop('styles');
+  const components = selectNode.prop('components');
 
-  expect(styles.style1).toBe(style1);
-  expect(styles.style2).toBe(style2);
-  expect(styles.menu).toBe(menu);
-  expect(styles.menuList).toBe(menuList);
+  expect(components.component1).toBe(component1);
+  expect(components.component2).toBe(component2);
+  expect(components.MenuList).toBe(MenuList);
+});
+
+test('should redefine MenuList component', () => {
+  const RedefinedMenuList = () => <div />;
+
+  const wrapper = shallow(
+    <AsyncPaginate
+      {...defaultProps}
+      components={{
+        MenuList: RedefinedMenuList,
+      }}
+    />,
+  );
+
+  const selectNode = wrapper.find(SelectBase);
+  const components = selectNode.prop('components');
+
+  expect(components.MenuList).toBe(RedefinedMenuList);
 });

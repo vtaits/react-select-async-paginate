@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { SelectBase } from 'react-select';
+import { SelectBase, components as defaultComponents } from 'react-select';
 
-import mergeStyles from './styles';
+import wrapMenuList from './wrap-menu-list';
 
 const initialCache = {
   isFirstLoad: true,
@@ -12,6 +12,8 @@ const initialCache = {
   isLoading: false,
 };
 
+export const MenuList = wrapMenuList(defaultComponents.MenuList);
+
 class AsyncPaginate extends Component {
   static propTypes = {
     loadOptions: PropTypes.func.isRequired,
@@ -19,14 +21,14 @@ class AsyncPaginate extends Component {
     cacheUniq: PropTypes.any,
     selectRef: PropTypes.func,
     options: PropTypes.arrayOf(PropTypes.object),
-    styles: PropTypes.objectOf(PropTypes.func),
+    components: PropTypes.objectOf(PropTypes.func),
   };
 
   static defaultProps = {
     cacheUniq: null,
-    selectRef: () => {},
+    selectRef: () => { },
     options: null,
-    styles: {},
+    components: {},
   };
 
   constructor(props) {
@@ -97,7 +99,7 @@ class AsyncPaginate extends Component {
     }
   }
 
-  onMenuScrollToBottom = async () => {
+  handleScrolledToBottom = async () => {
     const {
       search,
       optionsCache,
@@ -180,7 +182,7 @@ class AsyncPaginate extends Component {
   render() {
     const {
       selectRef,
-      styles,
+      components,
     } = this.props;
 
     const {
@@ -199,11 +201,15 @@ class AsyncPaginate extends Component {
         onMenuClose={this.onMenuClose}
         onMenuOpen={this.onMenuOpen}
         onInputChange={this.onInputChange}
-        onMenuScrollToBottom={this.onMenuScrollToBottom}
+        onMenuScrollToBottom={this.handleScrolledToBottom}
+        handleScrolledToBottom={this.handleScrolledToBottom}
         isLoading={currentOptions.isLoading}
         isFirstLoad={currentOptions.isFirstLoad}
         options={currentOptions.options}
-        styles={mergeStyles(styles)}
+        components={{
+          MenuList,
+          ...components,
+        }}
         ref={selectRef}
       />
     );
