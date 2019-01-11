@@ -39,13 +39,15 @@ Required. Async function that take two arguments:
 
 1. Current value of search input.
 2. Loaded options for current search.
+3. Collected additional data e.g. current page number etc. For first load it is `additional` from props, for next is `additional` from previous response for current search. `null` by default.
 
 It should return next object:
 
 ```
 {
-  options: [{ label: 'label', value: 'value' }, ...],
-  hasMore: true/false,
+  options: Array,
+  hasMore: boolean,
+  additional?: any,
 }
 ```
 
@@ -54,6 +56,10 @@ It similar to `loadOptions` from `Select.Async` but there is some differences:
 1. Loaded options as 2nd argument.
 2. Not supports callback.
 3. Should return `hasMore` for detect end of options list for current search.
+
+### additional
+
+Not required. Default `additional` for first request for every search.
 
 ### cacheUniq
 
@@ -64,6 +70,8 @@ Not required. Can take any value. When this prop changed, `AsyncPaginate` cleans
 Ref for take `react-select` instance.
 
 ## Example
+
+### offset way
 
 ```
 import AsyncPaginate from 'react-select-async-paginate';
@@ -105,6 +113,36 @@ async function loadOptions(search, loadedOptions) {
   value={value}
   loadOptions={loadOptions}
   onChange={setValue}
+/>
+```
+
+### page way
+
+```
+import AsyncPaginate from 'react-select-async-paginate';
+
+...
+
+async function loadOptions(search, loadedOptions, { page }) {
+  const response = await fetch(`/awesome-api-url/?search=${search}&page=${page}`);
+  const responseJSON = await response.json();
+
+  return {
+    options: responseJSON.results,
+    hasMore: responseJSON.has_more,
+    additional: {
+      page: page + 1,
+    },
+  };
+}
+
+<AsyncPaginate
+  value={value}
+  loadOptions={loadOptions}
+  onChange={setValue}
+  additional={{
+    page: 1,
+  }}
 />
 ```
 

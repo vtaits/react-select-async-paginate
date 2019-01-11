@@ -5,13 +5,6 @@ import { SelectBase, components as defaultComponents } from 'react-select';
 
 import wrapMenuList from './wrap-menu-list';
 
-const initialCache = {
-  isFirstLoad: true,
-  options: [],
-  hasMore: true,
-  isLoading: false,
-};
-
 export const MenuList = wrapMenuList(defaultComponents.MenuList);
 
 class AsyncPaginate extends Component {
@@ -21,6 +14,8 @@ class AsyncPaginate extends Component {
     cacheUniq: PropTypes.any,
     selectRef: PropTypes.func,
     options: PropTypes.arrayOf(PropTypes.object),
+    // eslint-disable-next-line react/forbid-prop-types
+    additional: PropTypes.any,
     components: PropTypes.objectOf(PropTypes.func),
   };
 
@@ -28,6 +23,7 @@ class AsyncPaginate extends Component {
     cacheUniq: null,
     selectRef: () => { },
     options: null,
+    additional: null,
     components: {},
   };
 
@@ -41,6 +37,7 @@ class AsyncPaginate extends Component {
           isLoading: false,
           options: props.options,
           hasMore: true,
+          additional: props.additional,
         },
       }
       : {};
@@ -62,6 +59,20 @@ class AsyncPaginate extends Component {
         optionsCache: {},
       });
     }
+  }
+
+  getInitialCache() {
+    const {
+      additional,
+    } = this.props;
+
+    return {
+      isFirstLoad: true,
+      options: [],
+      hasMore: true,
+      isLoading: false,
+      additional,
+    };
   }
 
   onMenuClose = () => {
@@ -118,7 +129,7 @@ class AsyncPaginate extends Component {
       optionsCache,
     } = this.state;
 
-    const currentOptions = optionsCache[search] || initialCache;
+    const currentOptions = optionsCache[search] || this.getInitialCache();
 
     if (currentOptions.isLoading || !currentOptions.hasMore) {
       return;
@@ -136,6 +147,7 @@ class AsyncPaginate extends Component {
     }));
 
     let hasError;
+    let additional;
     let options;
     let hasMore;
 
@@ -144,9 +156,13 @@ class AsyncPaginate extends Component {
         loadOptions,
       } = this.props;
 
-      const response = await loadOptions(search, currentOptions.options);
+      const response = await loadOptions(
+        search,
+        currentOptions.options,
+        currentOptions.additional,
+      );
 
-      ({ options, hasMore } = response);
+      ({ options, hasMore, additional } = response);
 
       hasError = false;
     } catch (e) {
@@ -173,6 +189,7 @@ class AsyncPaginate extends Component {
             hasMore: !!hasMore,
             isLoading: false,
             isFirstLoad: false,
+            additional: typeof additional === 'undefined' ? null : additional,
           },
         },
       }));
@@ -191,7 +208,7 @@ class AsyncPaginate extends Component {
       menuIsOpen,
     } = this.state;
 
-    const currentOptions = optionsCache[search] || initialCache;
+    const currentOptions = optionsCache[search] || this.getInitialCache();
 
     return (
       <SelectBase

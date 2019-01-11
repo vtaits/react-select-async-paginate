@@ -66,6 +66,42 @@ test('should set options cache with initial options on init', () => {
       isLoading: false,
       hasMore: true,
       options,
+      additional: null,
+    },
+  });
+});
+
+test('should redefine additional in initial options cache', () => {
+  const options = [
+    {
+      label: 'label 1',
+      value: 'value 1',
+    },
+    {
+      label: 'label 2',
+      value: 'value 2',
+    },
+  ];
+
+  const additional = Symbol('additional');
+
+  const wrapper = shallow(
+    <AsyncPaginate
+      {...defaultProps}
+      options={options}
+      additional={additional}
+    />,
+  );
+
+  const optionsCache = wrapper.state('optionsCache');
+
+  expect(optionsCache).toEqual({
+    '': {
+      isFirstLoad: false,
+      isLoading: false,
+      hasMore: true,
+      options,
+      additional,
     },
   });
 });
@@ -119,6 +155,8 @@ test('should set loading state and options from cache', () => {
     />,
   );
 
+  const additional = Symbol('additional');
+
   wrapper.setState({
     search: 'test',
 
@@ -127,6 +165,7 @@ test('should set loading state and options from cache', () => {
         options,
         isLoading: true,
         isFirstLoad: false,
+        additional,
       },
     },
   });
@@ -136,7 +175,7 @@ test('should set loading state and options from cache', () => {
   expect(selectNode.length).toBe(1);
   expect(selectNode.prop('isLoading')).toBe(true);
   expect(selectNode.prop('isFirstLoad')).toBe(false);
-  expect(selectNode.prop('options')).toEqual(options);
+  expect(selectNode.prop('options')).toBe(options);
 });
 
 test('should load options on open select if options not cached', async () => {
@@ -148,27 +187,33 @@ test('should load options on open select if options not cached', async () => {
     label: '2',
   }];
 
+  const additional = Symbol('additional');
+
   let wrapper;
 
-  const loadOptions = async (query, prevOptions) => {
+  const loadOptions = jest.fn(async (query, prevOptions) => {
     expect(query).toBe('');
     expect(prevOptions).toEqual([]);
 
-    expect(wrapper.state('optionsCache')[''].isLoading).toBe(true);
-    expect(wrapper.state('optionsCache')[''].isFirstLoad).toBe(true);
-    expect(wrapper.state('optionsCache')[''].hasMore).toBe(true);
-    expect(wrapper.state('optionsCache')[''].options).toEqual([]);
+    const currentOptionsCache = wrapper.state('optionsCache')[''];
+
+    expect(currentOptionsCache.isLoading).toBe(true);
+    expect(currentOptionsCache.isFirstLoad).toBe(true);
+    expect(currentOptionsCache.hasMore).toBe(true);
+    expect(currentOptionsCache.options).toEqual([]);
+    expect(currentOptionsCache.additional).toBe(additional);
 
     return {
       options,
       hasMore: false,
     };
-  };
+  });
 
   wrapper = shallow(
     <AsyncPaginate
       {...defaultProps}
       loadOptions={loadOptions}
+      additional={additional}
     />,
   );
 
@@ -188,6 +233,12 @@ test('should load options on open select if options not cached', async () => {
   expect(currentOptionsCache.isFirstLoad).toBe(false);
   expect(currentOptionsCache.hasMore).toBe(false);
   expect(currentOptionsCache.options).toEqual(options);
+  expect(currentOptionsCache.additional).toBe(null);
+
+  expect(loadOptions.mock.calls.length).toBe(1);
+  expect(loadOptions.mock.calls[0][0]).toBe('');
+  expect(loadOptions.mock.calls[0][1]).toEqual([]);
+  expect(loadOptions.mock.calls[0][2]).toBe(additional);
 });
 
 test('should not call loadOptions on open select if options cached', async () => {
@@ -261,27 +312,33 @@ test('should load options on search change if options not cached', async () => {
     label: '2',
   }];
 
+  const additional = Symbol('additional');
+
   let wrapper;
 
-  const loadOptions = async (query, prevOptions) => {
+  const loadOptions = jest.fn(async (query, prevOptions) => {
     expect(query).toBe('test');
     expect(prevOptions).toEqual([]);
 
-    expect(wrapper.state('optionsCache').test.isLoading).toBe(true);
-    expect(wrapper.state('optionsCache').test.isFirstLoad).toBe(true);
-    expect(wrapper.state('optionsCache').test.hasMore).toBe(true);
-    expect(wrapper.state('optionsCache').test.options).toEqual([]);
+    const currentOptionsCache = wrapper.state('optionsCache').test;
+
+    expect(currentOptionsCache.isLoading).toBe(true);
+    expect(currentOptionsCache.isFirstLoad).toBe(true);
+    expect(currentOptionsCache.hasMore).toBe(true);
+    expect(currentOptionsCache.options).toEqual([]);
+    expect(currentOptionsCache.additional).toBe(additional);
 
     return {
       options,
       hasMore: false,
     };
-  };
+  });
 
   wrapper = shallow(
     <AsyncPaginate
       {...defaultProps}
       loadOptions={loadOptions}
+      additional={additional}
     />,
   );
 
@@ -300,6 +357,12 @@ test('should load options on search change if options not cached', async () => {
   expect(currentOptionsCache.isFirstLoad).toBe(false);
   expect(currentOptionsCache.hasMore).toBe(false);
   expect(currentOptionsCache.options).toEqual(options);
+  expect(currentOptionsCache.additional).toBe(null);
+
+  expect(loadOptions.mock.calls.length).toBe(1);
+  expect(loadOptions.mock.calls[0][0]).toBe('test');
+  expect(loadOptions.mock.calls[0][1]).toEqual([]);
+  expect(loadOptions.mock.calls[0][2]).toBe(additional);
 });
 
 test('should not call loadOptions on search change if options cached', async () => {
@@ -340,9 +403,19 @@ test('should not call loadOptions on search change if options cached', async () 
 ['onMenuScrollToBottom', 'handleScrolledToBottom'].forEach((propName) => {
   describe(propName, () => {
     test('should load more options on scroll menu to bottom', async () => {
+      const options = [{
+        value: 1,
+        label: '1',
+      }, {
+        value: 2,
+        label: '2',
+      }];
+
       let wrapper;
 
-      const loadOptions = async (query, prevOptions) => {
+      const additional = Symbol('additional');
+
+      const loadOptions = jest.fn(async (query, prevOptions) => {
         expect(query).toBe('test');
         expect(prevOptions).toEqual([{
           value: 1,
@@ -352,9 +425,12 @@ test('should not call loadOptions on search change if options cached', async () 
           label: '2',
         }]);
 
-        expect(wrapper.state('optionsCache').test.isLoading).toBe(true);
-        expect(wrapper.state('optionsCache').test.isFirstLoad).toBe(false);
-        expect(wrapper.state('optionsCache').test.hasMore).toBe(true);
+        const testOptionsCache = wrapper.state('optionsCache').test;
+
+        expect(testOptionsCache.isLoading).toBe(true);
+        expect(testOptionsCache.isFirstLoad).toBe(false);
+        expect(testOptionsCache.hasMore).toBe(true);
+        expect(testOptionsCache.additional).toBe(additional);
 
         return {
           options: [{
@@ -366,12 +442,13 @@ test('should not call loadOptions on search change if options cached', async () 
           }],
           hasMore: false,
         };
-      };
+      });
 
       wrapper = shallow(
         <AsyncPaginate
           {...defaultProps}
           loadOptions={loadOptions}
+          additional={additional}
         />,
       );
 
@@ -380,16 +457,11 @@ test('should not call loadOptions on search change if options cached', async () 
 
         optionsCache: {
           test: {
-            options: [{
-              value: 1,
-              label: '1',
-            }, {
-              value: 2,
-              label: '2',
-            }],
+            options,
             hasMore: true,
             isLoading: false,
             isFirstLoad: false,
+            additional,
           },
         },
       });
@@ -421,6 +493,12 @@ test('should not call loadOptions on search change if options cached', async () 
         value: 4,
         label: '4',
       }]);
+      expect(currentOptionsCache.additional).toBe(null);
+
+      expect(loadOptions.mock.calls.length).toBe(1);
+      expect(loadOptions.mock.calls[0][0]).toBe('test');
+      expect(loadOptions.mock.calls[0][1]).toBe(options);
+      expect(loadOptions.mock.calls[0][2]).toBe(additional);
     });
 
     test('should not load more options on scroll menu to bottom in loading state', async () => {
