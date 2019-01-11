@@ -11,10 +11,23 @@ const defaultProps = {
   }),
 };
 
+const loadOptionsMethod = jest.fn();
+
+class ManualAsyncPaginate extends AsyncPaginate {
+  // eslint-disable-next-line class-methods-use-this
+  loadOptions() {
+    loadOptionsMethod();
+  }
+
+  manualLoadOptions() {
+    return super.loadOptions();
+  }
+}
+
 class PageObject {
   constructor(props) {
     this.wrapper = shallow(
-      <AsyncPaginate
+      <ManualAsyncPaginate
         {...defaultProps}
         {...props}
       />,
@@ -32,9 +45,17 @@ class PageObject {
   getSelectNode() {
     return this.wrapper.find(SelectBase);
   }
+
+  loadOptions() {
+    return this.wrapper.instance().manualLoadOptions();
+  }
 }
 
 const setup = (props) => new PageObject(props);
+
+afterEach(() => {
+  loadOptionsMethod.mockClear();
+});
 
 test('should render SelectBase', () => {
   const page = setup({});
@@ -182,63 +203,16 @@ test('should set loading state and options from cache', () => {
 });
 
 test('should load options on open select if options not cached', async () => {
-  const options = [{
-    value: 1,
-    label: '1',
-  }, {
-    value: 2,
-    label: '2',
-  }];
-
-  const additional = Symbol('additional');
-
-  let page;
-
-  const loadOptions = jest.fn(async (query, prevOptions) => {
-    expect(query).toBe('');
-    expect(prevOptions).toEqual([]);
-
-    const currentOptionsCache = page.state('optionsCache')[''];
-
-    expect(currentOptionsCache.isLoading).toBe(true);
-    expect(currentOptionsCache.isFirstLoad).toBe(true);
-    expect(currentOptionsCache.hasMore).toBe(true);
-    expect(currentOptionsCache.options).toEqual([]);
-    expect(currentOptionsCache.additional).toBe(additional);
-
-    return {
-      options,
-      hasMore: false,
-    };
-  });
-
-  page = setup({
-    loadOptions,
-    additional,
-  });
+  const page = setup({});
 
   await page.getSelectNode().prop('onMenuOpen')();
 
   const {
-    search,
     menuIsOpen,
-    optionsCache,
   } = page.state();
 
   expect(menuIsOpen).toBe(true);
-
-  const currentOptionsCache = optionsCache[search];
-
-  expect(currentOptionsCache.isLoading).toBe(false);
-  expect(currentOptionsCache.isFirstLoad).toBe(false);
-  expect(currentOptionsCache.hasMore).toBe(false);
-  expect(currentOptionsCache.options).toEqual(options);
-  expect(currentOptionsCache.additional).toBe(null);
-
-  expect(loadOptions.mock.calls.length).toBe(1);
-  expect(loadOptions.mock.calls[0][0]).toBe('');
-  expect(loadOptions.mock.calls[0][1]).toEqual([]);
-  expect(loadOptions.mock.calls[0][2]).toBe(additional);
+  expect(loadOptionsMethod.mock.calls.length).toBe(1);
 });
 
 test('should not call loadOptions on open select if options cached', async () => {
@@ -250,11 +224,7 @@ test('should not call loadOptions on open select if options cached', async () =>
     label: '2',
   }];
 
-  const loadOptions = jest.fn();
-
-  const page = setup({
-    loadOptions,
-  });
+  const page = setup({});
 
   page.setState({
     optionsCache: {
@@ -269,7 +239,12 @@ test('should not call loadOptions on open select if options cached', async () =>
 
   await page.getSelectNode().prop('onMenuOpen')();
 
-  expect(loadOptions.mock.calls.length).toBe(0);
+  const {
+    menuIsOpen,
+  } = page.state();
+
+  expect(menuIsOpen).toBe(true);
+  expect(loadOptionsMethod.mock.calls.length).toBe(0);
 });
 
 test('should set correct inputValue prop in SelectBase', async () => {
@@ -293,38 +268,9 @@ test('should set correct menuIsOpen prop in SelectBase', async () => {
 });
 
 test('should load options on search change if options not cached', async () => {
-  const options = [{
-    value: 1,
-    label: '1',
-  }, {
-    value: 2,
-    label: '2',
-  }];
-
   const additional = Symbol('additional');
 
-  let page;
-
-  const loadOptions = jest.fn(async (query, prevOptions) => {
-    expect(query).toBe('test');
-    expect(prevOptions).toEqual([]);
-
-    const currentOptionsCache = page.state('optionsCache').test;
-
-    expect(currentOptionsCache.isLoading).toBe(true);
-    expect(currentOptionsCache.isFirstLoad).toBe(true);
-    expect(currentOptionsCache.hasMore).toBe(true);
-    expect(currentOptionsCache.options).toEqual([]);
-    expect(currentOptionsCache.additional).toBe(additional);
-
-    return {
-      options,
-      hasMore: false,
-    };
-  });
-
-  page = setup({
-    loadOptions,
+  const page = setup({
     additional,
   });
 
@@ -332,23 +278,10 @@ test('should load options on search change if options not cached', async () => {
 
   const {
     search,
-    optionsCache,
   } = page.state();
 
   expect(search).toBe('test');
-
-  const currentOptionsCache = optionsCache[search];
-
-  expect(currentOptionsCache.isLoading).toBe(false);
-  expect(currentOptionsCache.isFirstLoad).toBe(false);
-  expect(currentOptionsCache.hasMore).toBe(false);
-  expect(currentOptionsCache.options).toEqual(options);
-  expect(currentOptionsCache.additional).toBe(null);
-
-  expect(loadOptions.mock.calls.length).toBe(1);
-  expect(loadOptions.mock.calls[0][0]).toBe('test');
-  expect(loadOptions.mock.calls[0][1]).toEqual([]);
-  expect(loadOptions.mock.calls[0][2]).toBe(additional);
+  expect(loadOptionsMethod.mock.calls.length).toBe(1);
 });
 
 test('should not call loadOptions on search change if options cached', async () => {
@@ -360,11 +293,7 @@ test('should not call loadOptions on search change if options cached', async () 
     label: '2',
   }];
 
-  const loadOptions = jest.fn();
-
-  const page = setup({
-    loadOptions,
-  });
+  const page = setup({});
 
   page.setState({
     optionsCache: {
@@ -380,167 +309,31 @@ test('should not call loadOptions on search change if options cached', async () 
   await page.getSelectNode().prop('onInputChange')('test');
 
   expect(page.state('search')).toBe('test');
-  expect(loadOptions.mock.calls.length).toBe(0);
+  expect(loadOptionsMethod.mock.calls.length).toBe(0);
 });
 
 ['onMenuScrollToBottom', 'handleScrolledToBottom'].forEach((propName) => {
   describe(propName, () => {
     test('should load more options on scroll menu to bottom', async () => {
-      const options = [{
-        value: 1,
-        label: '1',
-      }, {
-        value: 2,
-        label: '2',
-      }];
-
-      let page;
-
-      const additional = Symbol('additional');
-
-      const loadOptions = jest.fn(async (query, prevOptions) => {
-        expect(query).toBe('test');
-        expect(prevOptions).toEqual([{
-          value: 1,
-          label: '1',
-        }, {
-          value: 2,
-          label: '2',
-        }]);
-
-        const testOptionsCache = page.state('optionsCache').test;
-
-        expect(testOptionsCache.isLoading).toBe(true);
-        expect(testOptionsCache.isFirstLoad).toBe(false);
-        expect(testOptionsCache.hasMore).toBe(true);
-        expect(testOptionsCache.additional).toBe(additional);
-
-        return {
-          options: [{
-            value: 3,
-            label: '3',
-          }, {
-            value: 4,
-            label: '4',
-          }],
-          hasMore: false,
-        };
-      });
-
-      page = setup({
-        loadOptions,
-        additional,
-      });
+      const page = setup({});
 
       page.setState({
         search: 'test',
 
         optionsCache: {
           test: {
-            options,
+            options: [],
             hasMore: true,
             isLoading: false,
             isFirstLoad: false,
-            additional,
+            additional: null,
           },
         },
       });
 
       await page.getSelectNode().prop(propName)();
 
-      const {
-        search,
-        optionsCache,
-      } = page.state();
-
-      expect(search).toBe('test');
-
-      const currentOptionsCache = optionsCache[search];
-
-      expect(currentOptionsCache.isLoading).toBe(false);
-      expect(currentOptionsCache.isFirstLoad).toBe(false);
-      expect(currentOptionsCache.hasMore).toBe(false);
-      expect(currentOptionsCache.options).toEqual([{
-        value: 1,
-        label: '1',
-      }, {
-        value: 2,
-        label: '2',
-      }, {
-        value: 3,
-        label: '3',
-      }, {
-        value: 4,
-        label: '4',
-      }]);
-      expect(currentOptionsCache.additional).toBe(null);
-
-      expect(loadOptions.mock.calls.length).toBe(1);
-      expect(loadOptions.mock.calls[0][0]).toBe('test');
-      expect(loadOptions.mock.calls[0][1]).toBe(options);
-      expect(loadOptions.mock.calls[0][2]).toBe(additional);
-    });
-
-    test('should not load more options on scroll menu to bottom in loading state', async () => {
-      const loadOptions = jest.fn();
-
-      const page = setup({
-        loadOptions,
-      });
-
-      page.setState({
-        search: 'test',
-
-        optionsCache: {
-          test: {
-            options: [{
-              value: 1,
-              label: '1',
-            }, {
-              value: 2,
-              label: '2',
-            }],
-            hasMore: true,
-            isLoading: true,
-            isFirstLoad: false,
-          },
-        },
-      });
-
-      await page.getSelectNode().prop(propName)();
-
-      expect(loadOptions.mock.calls.length).toBe(0);
-    });
-
-    test('should not load more options on scroll menu to bottom if not has more', async () => {
-      const loadOptions = jest.fn();
-
-      const page = setup({
-        loadOptions,
-      });
-
-      page.setState({
-        search: 'test',
-
-        optionsCache: {
-          test: {
-            options: [{
-              value: 1,
-              label: '1',
-            }, {
-              value: 2,
-              label: '2',
-            }],
-            hasMore: false,
-            isLoading: false,
-            isFirstLoad: false,
-          },
-        },
-      });
-
-      await page.getSelectNode().prop(propName)();
-
-      expect(loadOptions.mock.calls.length).toBe(0);
+      expect(loadOptionsMethod.mock.calls.length).toBe(1);
     });
   });
 });
@@ -591,4 +384,215 @@ test('should redefine MenuList component', () => {
   const components = selectNode.prop('components');
 
   expect(components.MenuList).toBe(RedefinedMenuList);
+});
+
+describe('loadOptions', () => {
+  test('should load options if options not cached', async () => {
+    const options = [{
+      value: 1,
+      label: '1',
+    }, {
+      value: 2,
+      label: '2',
+    }];
+
+    const additionalPrev = Symbol('additionalPrev');
+    const additionalNext = Symbol('additionalNext');
+
+    let page;
+
+    const loadOptions = jest.fn(async () => {
+      const currentOptionsCache = page.state('optionsCache').test;
+
+      expect(currentOptionsCache.isLoading).toBe(true);
+      expect(currentOptionsCache.isFirstLoad).toBe(true);
+      expect(currentOptionsCache.hasMore).toBe(true);
+      expect(currentOptionsCache.options).toEqual([]);
+      expect(currentOptionsCache.additional).toBe(additionalPrev);
+
+      return {
+        options,
+        hasMore: false,
+        additional: additionalNext,
+      };
+    });
+
+    page = setup({
+      loadOptions,
+      additional: additionalPrev,
+    });
+
+    page.setState({
+      search: 'test',
+    });
+
+    await page.loadOptions();
+
+    const {
+      search,
+      optionsCache,
+    } = page.state();
+
+    const currentOptionsCache = optionsCache[search];
+
+    expect(currentOptionsCache.isLoading).toBe(false);
+    expect(currentOptionsCache.isFirstLoad).toBe(false);
+    expect(currentOptionsCache.hasMore).toBe(false);
+    expect(currentOptionsCache.options).toEqual(options);
+    expect(currentOptionsCache.additional).toBe(additionalNext);
+
+    expect(loadOptions.mock.calls.length).toBe(1);
+    expect(loadOptions.mock.calls[0][0]).toBe('test');
+    expect(loadOptions.mock.calls[0][1]).toEqual([]);
+    expect(loadOptions.mock.calls[0][2]).toBe(additionalPrev);
+  });
+
+  test('should load more options', async () => {
+    const options = [{
+      value: 1,
+      label: '1',
+    }, {
+      value: 2,
+      label: '2',
+    }];
+
+    const additionalPrev = Symbol('additionalPrev');
+    const additionalNext = Symbol('additionalNext');
+
+    let page;
+
+    const loadOptions = jest.fn(async () => {
+      const testOptionsCache = page.state('optionsCache').test;
+
+      expect(testOptionsCache.isLoading).toBe(true);
+      expect(testOptionsCache.isFirstLoad).toBe(false);
+      expect(testOptionsCache.hasMore).toBe(true);
+      expect(testOptionsCache.options).toEqual(options);
+      expect(testOptionsCache.additional).toBe(additionalPrev);
+
+      return {
+        options: [{
+          value: 3,
+          label: '3',
+        }, {
+          value: 4,
+          label: '4',
+        }],
+        hasMore: false,
+        additional: additionalNext,
+      };
+    });
+
+    page = setup({
+      loadOptions,
+    });
+
+    page.setState({
+      search: 'test',
+
+      optionsCache: {
+        test: {
+          options,
+          hasMore: true,
+          isLoading: false,
+          isFirstLoad: false,
+          additional: additionalPrev,
+        },
+      },
+    });
+
+    await page.loadOptions();
+
+    const {
+      search,
+      optionsCache,
+    } = page.state();
+
+    const currentOptionsCache = optionsCache[search];
+
+    expect(currentOptionsCache.isLoading).toBe(false);
+    expect(currentOptionsCache.isFirstLoad).toBe(false);
+    expect(currentOptionsCache.hasMore).toBe(false);
+    expect(currentOptionsCache.options).toEqual([{
+      value: 1,
+      label: '1',
+    }, {
+      value: 2,
+      label: '2',
+    }, {
+      value: 3,
+      label: '3',
+    }, {
+      value: 4,
+      label: '4',
+    }]);
+    expect(currentOptionsCache.additional).toBe(additionalNext);
+
+    expect(loadOptions.mock.calls.length).toBe(1);
+    expect(loadOptions.mock.calls[0][0]).toBe('test');
+    expect(loadOptions.mock.calls[0][1]).toEqual(options);
+    expect(loadOptions.mock.calls[0][2]).toBe(additionalPrev);
+  });
+
+  test('should not load more options in loading state', async () => {
+    const loadOptions = jest.fn();
+
+    const page = setup({
+      loadOptions,
+    });
+
+    page.setState({
+      search: 'test',
+
+      optionsCache: {
+        test: {
+          options: [{
+            value: 1,
+            label: '1',
+          }, {
+            value: 2,
+            label: '2',
+          }],
+          hasMore: true,
+          isLoading: true,
+          isFirstLoad: false,
+        },
+      },
+    });
+
+    await page.loadOptions();
+
+    expect(loadOptions.mock.calls.length).toBe(0);
+  });
+
+  test('should not load more options if hasn\'t more', async () => {
+    const loadOptions = jest.fn();
+
+    const page = setup({
+      loadOptions,
+    });
+
+    page.setState({
+      search: 'test',
+
+      optionsCache: {
+        test: {
+          options: [{
+            value: 1,
+            label: '1',
+          }, {
+            value: 2,
+            label: '2',
+          }],
+          hasMore: false,
+          isLoading: false,
+          isFirstLoad: false,
+        },
+      },
+    });
+
+    await page.loadOptions();
+
+    expect(loadOptions.mock.calls.length).toBe(0);
+  });
 });
