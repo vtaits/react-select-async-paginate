@@ -7,24 +7,40 @@ import wrapMenuList from './wrap-menu-list';
 
 export const MenuList = wrapMenuList(defaultComponents.MenuList);
 
+const sleep = (ms) => new Promise((resolve) => {
+  setTimeout(() => {
+    resolve();
+  }, ms);
+});
+
 class AsyncPaginate extends Component {
   static propTypes = {
     loadOptions: PropTypes.func.isRequired,
-    // eslint-disable-next-line react/forbid-prop-types
-    cacheUniq: PropTypes.any,
-    selectRef: PropTypes.func,
+    debounceTimeout: PropTypes.number,
+
     options: PropTypes.arrayOf(PropTypes.object),
     // eslint-disable-next-line react/forbid-prop-types
     additional: PropTypes.any,
+
     components: PropTypes.objectOf(PropTypes.func),
+
+    // eslint-disable-next-line react/forbid-prop-types
+    cacheUniq: PropTypes.any,
+
+    selectRef: PropTypes.func,
   };
 
   static defaultProps = {
-    cacheUniq: null,
-    selectRef: () => { },
+    debounceTimeout: 0,
+
     options: null,
     additional: null,
+
     components: {},
+
+    cacheUniq: null,
+
+    selectRef: () => { },
   };
 
   constructor(props) {
@@ -145,6 +161,22 @@ class AsyncPaginate extends Component {
         },
       },
     }));
+
+    const {
+      debounceTimeout,
+    } = this.props;
+
+    if (debounceTimeout > 0) {
+      await sleep(debounceTimeout);
+
+      const {
+        search: newSearch,
+      } = this.state;
+
+      if (search !== newSearch) {
+        return;
+      }
+    }
 
     let hasError;
     let additional;

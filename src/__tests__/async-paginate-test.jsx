@@ -55,6 +55,7 @@ const setup = (props) => new PageObject(props);
 
 afterEach(() => {
   loadOptionsMethod.mockClear();
+  jest.clearAllTimers();
 });
 
 test('should render SelectBase', () => {
@@ -590,6 +591,38 @@ describe('loadOptions', () => {
         },
       },
     });
+
+    await page.loadOptions();
+
+    expect(loadOptions.mock.calls.length).toBe(0);
+  });
+
+  test('should work with debounceTimeout', async () => {
+    const loadOptions = jest.fn();
+
+    const page = setup({
+      loadOptions,
+      debounceTimeout: 300,
+    });
+
+    await page.loadOptions();
+
+    expect(loadOptions.mock.calls.length).toBe(1);
+  });
+
+  test('should cancel loading if search changed in debounce mode', async () => {
+    const loadOptions = jest.fn();
+
+    const page = setup({
+      loadOptions,
+      debounceTimeout: 300,
+    });
+
+    setTimeout(() => {
+      page.setState({
+        search: 'test',
+      });
+    }, 150);
 
     await page.loadOptions();
 

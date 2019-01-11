@@ -81,6 +81,7 @@ class Page extends Component {
 
         <div style={wrapperStyle}>
           <AsyncPaginate
+            debounceTimeout={300}
             value={value1}
             loadOptions={loadOptions}
             onChange={this.setValue1}
@@ -91,6 +92,7 @@ class Page extends Component {
 
         <div style={wrapperStyle}>
           <AsyncPaginate
+            debounceTimeout={300}
             isMulti
             value={value2}
             loadOptions={loadOptions}
@@ -102,6 +104,7 @@ class Page extends Component {
 
         <div style={wrapperStyle}>
           <AsyncPaginate
+            debounceTimeout={300}
             value={value3}
             loadOptions={loadOptions}
             onChange={this.setValue3}

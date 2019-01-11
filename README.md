@@ -57,6 +57,10 @@ It similar to `loadOptions` from `Select.Async` but there is some differences:
 2. Not supports callback.
 3. Should return `hasMore` for detect end of options list for current search.
 
+### debounceTimeout
+
+Not required. Number. Debounce timeout for `loadOptions` calls. `0` by default.
+
 ### additional
 
 Not required. Default `additional` for first request for every search.
