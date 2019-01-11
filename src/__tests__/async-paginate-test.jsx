@@ -11,14 +11,35 @@ const defaultProps = {
   }),
 };
 
-test('should render SelectBase', () => {
-  const wrapper = shallow(
-    <AsyncPaginate
-      {...defaultProps}
-    />,
-  );
+class PageObject {
+  constructor(props) {
+    this.wrapper = shallow(
+      <AsyncPaginate
+        {...defaultProps}
+        {...props}
+      />,
+    );
+  }
 
-  const selectNode = wrapper.find(SelectBase);
+  state(...args) {
+    return this.wrapper.state(...args);
+  }
+
+  setState(...args) {
+    return this.wrapper.setState(...args);
+  }
+
+  getSelectNode() {
+    return this.wrapper.find(SelectBase);
+  }
+}
+
+const setup = (props) => new PageObject(props);
+
+test('should render SelectBase', () => {
+  const page = setup({});
+
+  const selectNode = page.getSelectNode();
 
   expect(selectNode.length).toBe(1);
   expect(selectNode.prop('isLoading')).toBe(false);
@@ -28,13 +49,9 @@ test('should render SelectBase', () => {
 });
 
 test('should set empty options cache on init', () => {
-  const wrapper = shallow(
-    <AsyncPaginate
-      {...defaultProps}
-    />,
-  );
+  const page = setup({});
 
-  const optionsCache = wrapper.state('optionsCache');
+  const optionsCache = page.state('optionsCache');
 
   expect(optionsCache).toEqual({});
 });
@@ -51,14 +68,11 @@ test('should set options cache with initial options on init', () => {
     },
   ];
 
-  const wrapper = shallow(
-    <AsyncPaginate
-      {...defaultProps}
-      options={options}
-    />,
-  );
+  const page = setup({
+    options,
+  });
 
-  const optionsCache = wrapper.state('optionsCache');
+  const optionsCache = page.state('optionsCache');
 
   expect(optionsCache).toEqual({
     '': {
@@ -85,15 +99,12 @@ test('should redefine additional in initial options cache', () => {
 
   const additional = Symbol('additional');
 
-  const wrapper = shallow(
-    <AsyncPaginate
-      {...defaultProps}
-      options={options}
-      additional={additional}
-    />,
-  );
+  const page = setup({
+    options,
+    additional,
+  });
 
-  const optionsCache = wrapper.state('optionsCache');
+  const optionsCache = page.state('optionsCache');
 
   expect(optionsCache).toEqual({
     '': {
@@ -116,23 +127,19 @@ test('should call selectRef', () => {
     />,
   );
 
-  expect(mockRef.mock.calls.length).toEqual(1);
+  expect(mockRef.mock.calls.length).toBe(1);
   expect(mockRef.mock.calls[0]).toBeTruthy();
 });
 
 test('should set default state and options if search for cache is empty', () => {
-  const wrapper = shallow(
-    <AsyncPaginate
-      {...defaultProps}
-    />,
-  );
+  const page = setup({});
 
-  wrapper.setState({
+  page.setState({
     search: 'test',
     optionsCache: {},
   });
 
-  const selectNode = wrapper.find(SelectBase);
+  const selectNode = page.getSelectNode();
 
   expect(selectNode.length).toBe(1);
   expect(selectNode.prop('isLoading')).toBe(false);
@@ -149,15 +156,11 @@ test('should set loading state and options from cache', () => {
     label: '2',
   }];
 
-  const wrapper = shallow(
-    <AsyncPaginate
-      {...defaultProps}
-    />,
-  );
+  const page = setup({});
 
   const additional = Symbol('additional');
 
-  wrapper.setState({
+  page.setState({
     search: 'test',
 
     optionsCache: {
@@ -170,7 +173,7 @@ test('should set loading state and options from cache', () => {
     },
   });
 
-  const selectNode = wrapper.find(SelectBase);
+  const selectNode = page.getSelectNode();
 
   expect(selectNode.length).toBe(1);
   expect(selectNode.prop('isLoading')).toBe(true);
@@ -189,13 +192,13 @@ test('should load options on open select if options not cached', async () => {
 
   const additional = Symbol('additional');
 
-  let wrapper;
+  let page;
 
   const loadOptions = jest.fn(async (query, prevOptions) => {
     expect(query).toBe('');
     expect(prevOptions).toEqual([]);
 
-    const currentOptionsCache = wrapper.state('optionsCache')[''];
+    const currentOptionsCache = page.state('optionsCache')[''];
 
     expect(currentOptionsCache.isLoading).toBe(true);
     expect(currentOptionsCache.isFirstLoad).toBe(true);
@@ -209,21 +212,18 @@ test('should load options on open select if options not cached', async () => {
     };
   });
 
-  wrapper = shallow(
-    <AsyncPaginate
-      {...defaultProps}
-      loadOptions={loadOptions}
-      additional={additional}
-    />,
-  );
+  page = setup({
+    loadOptions,
+    additional,
+  });
 
-  await wrapper.find(SelectBase).prop('onMenuOpen')();
+  await page.getSelectNode().prop('onMenuOpen')();
 
   const {
     search,
     menuIsOpen,
     optionsCache,
-  } = wrapper.state();
+  } = page.state();
 
   expect(menuIsOpen).toBe(true);
 
@@ -252,14 +252,11 @@ test('should not call loadOptions on open select if options cached', async () =>
 
   const loadOptions = jest.fn();
 
-  const wrapper = shallow(
-    <AsyncPaginate
-      {...defaultProps}
-      loadOptions={loadOptions}
-    />,
-  );
+  const page = setup({
+    loadOptions,
+  });
 
-  wrapper.setState({
+  page.setState({
     optionsCache: {
       '': {
         options,
@@ -270,37 +267,29 @@ test('should not call loadOptions on open select if options cached', async () =>
     },
   });
 
-  await wrapper.find(SelectBase).prop('onMenuOpen')();
+  await page.getSelectNode().prop('onMenuOpen')();
 
   expect(loadOptions.mock.calls.length).toBe(0);
 });
 
 test('should set correct inputValue prop in SelectBase', async () => {
-  const wrapper = shallow(
-    <AsyncPaginate
-      {...defaultProps}
-    />,
-  );
+  const page = setup({});
 
-  wrapper.setState({
+  page.setState({
     search: 'test value',
   });
 
-  expect(wrapper.find(SelectBase).prop('inputValue')).toBe('test value');
+  expect(page.getSelectNode().prop('inputValue')).toBe('test value');
 });
 
 test('should set correct menuIsOpen prop in SelectBase', async () => {
-  const wrapper = shallow(
-    <AsyncPaginate
-      {...defaultProps}
-    />,
-  );
+  const page = setup({});
 
-  wrapper.setState({
+  page.setState({
     menuIsOpen: true,
   });
 
-  expect(wrapper.find(SelectBase).prop('menuIsOpen')).toBe(true);
+  expect(page.getSelectNode().prop('menuIsOpen')).toBe(true);
 });
 
 test('should load options on search change if options not cached', async () => {
@@ -314,13 +303,13 @@ test('should load options on search change if options not cached', async () => {
 
   const additional = Symbol('additional');
 
-  let wrapper;
+  let page;
 
   const loadOptions = jest.fn(async (query, prevOptions) => {
     expect(query).toBe('test');
     expect(prevOptions).toEqual([]);
 
-    const currentOptionsCache = wrapper.state('optionsCache').test;
+    const currentOptionsCache = page.state('optionsCache').test;
 
     expect(currentOptionsCache.isLoading).toBe(true);
     expect(currentOptionsCache.isFirstLoad).toBe(true);
@@ -334,20 +323,17 @@ test('should load options on search change if options not cached', async () => {
     };
   });
 
-  wrapper = shallow(
-    <AsyncPaginate
-      {...defaultProps}
-      loadOptions={loadOptions}
-      additional={additional}
-    />,
-  );
+  page = setup({
+    loadOptions,
+    additional,
+  });
 
-  await wrapper.find(SelectBase).prop('onInputChange')('test');
+  await page.getSelectNode().prop('onInputChange')('test');
 
   const {
     search,
     optionsCache,
-  } = wrapper.state();
+  } = page.state();
 
   expect(search).toBe('test');
 
@@ -376,14 +362,11 @@ test('should not call loadOptions on search change if options cached', async () 
 
   const loadOptions = jest.fn();
 
-  const wrapper = shallow(
-    <AsyncPaginate
-      {...defaultProps}
-      loadOptions={loadOptions}
-    />,
-  );
+  const page = setup({
+    loadOptions,
+  });
 
-  wrapper.setState({
+  page.setState({
     optionsCache: {
       test: {
         options,
@@ -394,9 +377,9 @@ test('should not call loadOptions on search change if options cached', async () 
     },
   });
 
-  await wrapper.find(SelectBase).prop('onInputChange')('test');
+  await page.getSelectNode().prop('onInputChange')('test');
 
-  expect(wrapper.state('search')).toBe('test');
+  expect(page.state('search')).toBe('test');
   expect(loadOptions.mock.calls.length).toBe(0);
 });
 
@@ -411,7 +394,7 @@ test('should not call loadOptions on search change if options cached', async () 
         label: '2',
       }];
 
-      let wrapper;
+      let page;
 
       const additional = Symbol('additional');
 
@@ -425,7 +408,7 @@ test('should not call loadOptions on search change if options cached', async () 
           label: '2',
         }]);
 
-        const testOptionsCache = wrapper.state('optionsCache').test;
+        const testOptionsCache = page.state('optionsCache').test;
 
         expect(testOptionsCache.isLoading).toBe(true);
         expect(testOptionsCache.isFirstLoad).toBe(false);
@@ -444,15 +427,12 @@ test('should not call loadOptions on search change if options cached', async () 
         };
       });
 
-      wrapper = shallow(
-        <AsyncPaginate
-          {...defaultProps}
-          loadOptions={loadOptions}
-          additional={additional}
-        />,
-      );
+      page = setup({
+        loadOptions,
+        additional,
+      });
 
-      wrapper.setState({
+      page.setState({
         search: 'test',
 
         optionsCache: {
@@ -466,12 +446,12 @@ test('should not call loadOptions on search change if options cached', async () 
         },
       });
 
-      await wrapper.find(SelectBase).prop(propName)();
+      await page.getSelectNode().prop(propName)();
 
       const {
         search,
         optionsCache,
-      } = wrapper.state();
+      } = page.state();
 
       expect(search).toBe('test');
 
@@ -504,14 +484,11 @@ test('should not call loadOptions on search change if options cached', async () 
     test('should not load more options on scroll menu to bottom in loading state', async () => {
       const loadOptions = jest.fn();
 
-      const wrapper = shallow(
-        <AsyncPaginate
-          {...defaultProps}
-          loadOptions={loadOptions}
-        />,
-      );
+      const page = setup({
+        loadOptions,
+      });
 
-      wrapper.setState({
+      page.setState({
         search: 'test',
 
         optionsCache: {
@@ -530,7 +507,7 @@ test('should not call loadOptions on search change if options cached', async () 
         },
       });
 
-      await wrapper.find(SelectBase).prop(propName)();
+      await page.getSelectNode().prop(propName)();
 
       expect(loadOptions.mock.calls.length).toBe(0);
     });
@@ -538,14 +515,11 @@ test('should not call loadOptions on search change if options cached', async () 
     test('should not load more options on scroll menu to bottom if not has more', async () => {
       const loadOptions = jest.fn();
 
-      const wrapper = shallow(
-        <AsyncPaginate
-          {...defaultProps}
-          loadOptions={loadOptions}
-        />,
-      );
+      const page = setup({
+        loadOptions,
+      });
 
-      wrapper.setState({
+      page.setState({
         search: 'test',
 
         optionsCache: {
@@ -564,7 +538,7 @@ test('should not call loadOptions on search change if options cached', async () 
         },
       });
 
-      await wrapper.find(SelectBase).prop(propName)();
+      await page.getSelectNode().prop(propName)();
 
       expect(loadOptions.mock.calls.length).toBe(0);
     });
@@ -572,38 +546,31 @@ test('should not call loadOptions on search change if options cached', async () 
 });
 
 test('should clean search and menuIsOpen on close select', () => {
-  const wrapper = shallow(
-    <AsyncPaginate
-      {...defaultProps}
-    />,
-  );
+  const page = setup({});
 
-  wrapper.setState({
+  page.setState({
     search: 'test',
     menuIsOpen: true,
   });
 
-  wrapper.find(SelectBase).prop('onMenuClose')();
+  page.getSelectNode().prop('onMenuClose')();
 
-  expect(wrapper.state('search')).toBe('');
-  expect(wrapper.state('menuIsOpen')).toBe(false);
+  expect(page.state('search')).toBe('');
+  expect(page.state('menuIsOpen')).toBe(false);
 });
 
 test('should provide components', () => {
   const component1 = () => <div />;
   const component2 = () => <div />;
 
-  const wrapper = shallow(
-    <AsyncPaginate
-      {...defaultProps}
-      components={{
-        component1,
-        component2,
-      }}
-    />,
-  );
+  const page = setup({
+    components: {
+      component1,
+      component2,
+    },
+  });
 
-  const selectNode = wrapper.find(SelectBase);
+  const selectNode = page.getSelectNode();
   const components = selectNode.prop('components');
 
   expect(components.component1).toBe(component1);
@@ -614,16 +581,13 @@ test('should provide components', () => {
 test('should redefine MenuList component', () => {
   const RedefinedMenuList = () => <div />;
 
-  const wrapper = shallow(
-    <AsyncPaginate
-      {...defaultProps}
-      components={{
-        MenuList: RedefinedMenuList,
-      }}
-    />,
-  );
+  const page = setup({
+    components: {
+      MenuList: RedefinedMenuList,
+    },
+  });
 
-  const selectNode = wrapper.find(SelectBase);
+  const selectNode = page.getSelectNode();
   const components = selectNode.prop('components');
 
   expect(components.MenuList).toBe(RedefinedMenuList);
