@@ -69,6 +69,16 @@ Not required. Number. Debounce timeout for `loadOptions` calls. `0` by default.
 
 Not required. Default `additional` for first request for every search.
 
+### shouldLoadMore
+
+Not required. Function. By default new options will load only after scroll menu to bottom. Arguments:
+
+- scrollHeight
+- clientHeight
+- scrollTop
+
+Should return boolean.
+
 ### cacheUniq
 
 Not required. Can take any value. When this prop changed, `AsyncPaginate` cleans all cached options.

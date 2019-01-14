@@ -3,6 +3,7 @@ import { shallow, mount } from 'enzyme';
 import { SelectBase } from 'react-select';
 
 import AsyncPaginate, { MenuList } from '../async-paginate';
+import defaultShouldLoadMore from '../default-should-load-more';
 
 const defaultProps = {
   loadOptions: () => ({
@@ -58,7 +59,7 @@ afterEach(() => {
   jest.clearAllTimers();
 });
 
-test('should render SelectBase', () => {
+test('should render SelectBase with default props', () => {
   const page = setup({});
 
   const selectNode = page.getSelectNode();
@@ -68,6 +69,19 @@ test('should render SelectBase', () => {
   expect(selectNode.prop('isFirstLoad')).toBe(true);
   expect(selectNode.prop('options')).toEqual([]);
   expect(selectNode.prop('menuIsOpen')).toBe(false);
+  expect(selectNode.prop('shouldLoadMore')).toBe(defaultShouldLoadMore);
+});
+
+test('should redefine shouldLoadMore', () => {
+  const shouldLoadMore = jest.fn();
+
+  const page = setup({
+    shouldLoadMore,
+  });
+
+  const selectNode = page.getSelectNode();
+
+  expect(selectNode.prop('shouldLoadMore')).toBe(shouldLoadMore);
 });
 
 test('should set empty options cache on init', () => {

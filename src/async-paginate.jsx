@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 
 import { SelectBase, components as defaultComponents } from 'react-select';
 
+import defaultShouldLoadMore from './default-should-load-more';
+
 import wrapMenuList from './wrap-menu-list';
 
 export const MenuList = wrapMenuList(defaultComponents.MenuList);
@@ -17,6 +19,7 @@ class AsyncPaginate extends Component {
   static propTypes = {
     loadOptions: PropTypes.func.isRequired,
     debounceTimeout: PropTypes.number,
+    shouldLoadMore: PropTypes.func,
 
     options: PropTypes.arrayOf(PropTypes.object),
     // eslint-disable-next-line react/forbid-prop-types
@@ -32,6 +35,7 @@ class AsyncPaginate extends Component {
 
   static defaultProps = {
     debounceTimeout: 0,
+    shouldLoadMore: defaultShouldLoadMore,
 
     options: null,
     additional: null,

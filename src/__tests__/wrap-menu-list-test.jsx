@@ -14,6 +14,7 @@ const defaultProps = {
 
   selectProps: {
     handleScrolledToBottom: Function.prototype,
+    shouldLoadMore: Function.prototype,
   },
 };
 
@@ -128,8 +129,37 @@ test('should handle if ref el is not scrollable', () => {
   expect(page.shouldHandle()).toBe(true);
 });
 
-test('should not handle if ref el is scrollable and not scrolled to bottom', () => {
-  const page = setup({});
+test('should call shouldLoadMore with correct arguments', () => {
+  const shouldLoadMore = jest.fn();
+
+  const page = setup({
+    selectProps: {
+      ...defaultProps.selectProps,
+      shouldLoadMore,
+    },
+  });
+
+  page.setRef({
+    scrollTop: 95,
+    scrollHeight: 200,
+    clientHeight: 100,
+  });
+
+  page.shouldHandle();
+
+  expect(shouldLoadMore.mock.calls.length).toBe(1);
+  expect(shouldLoadMore.mock.calls[0][0]).toBe(200);
+  expect(shouldLoadMore.mock.calls[0][1]).toBe(100);
+  expect(shouldLoadMore.mock.calls[0][2]).toBe(95);
+});
+
+test('should not handle if ref el is scrollable and shouldLoadMore returns false', () => {
+  const page = setup({
+    selectProps: {
+      ...defaultProps.selectProps,
+      shouldLoadMore: () => false,
+    },
+  });
 
   page.setRef({
     scrollTop: 30,
@@ -140,8 +170,13 @@ test('should not handle if ref el is scrollable and not scrolled to bottom', () 
   expect(page.shouldHandle()).toBe(false);
 });
 
-test('should handle if ref el is scrollable and scrolled to bottom', () => {
-  const page = setup({});
+test('should handle if ref el is scrollable and shouldLoadMore returns true', () => {
+  const page = setup({
+    selectProps: {
+      ...defaultProps.selectProps,
+      shouldLoadMore: () => true,
+    },
+  });
 
   page.setRef({
     scrollTop: 95,
@@ -157,6 +192,7 @@ test('should not call handleScrolledToBottom if should not handle', () => {
 
   const page = setup({
     selectProps: {
+      ...defaultProps.selectProps,
       handleScrolledToBottom,
     },
   });
@@ -172,6 +208,7 @@ test('should call handleScrolledToBottom if should handle', () => {
 
   const page = setup({
     selectProps: {
+      ...defaultProps.selectProps,
       handleScrolledToBottom,
     },
   });

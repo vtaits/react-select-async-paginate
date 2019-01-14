@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-const AVAILABLE_DELTA = 10;
 export const CHECK_TIMEOUT = 300;
 
 export default function wrapMenuList(MenuList) {
@@ -11,6 +10,7 @@ export default function wrapMenuList(MenuList) {
 
       selectProps: PropTypes.shape({
         handleScrolledToBottom: PropTypes.func.isRequired,
+        shouldLoadMore: PropTypes.func.isRequired,
       }).isRequired,
     }
 
@@ -77,7 +77,13 @@ export default function wrapMenuList(MenuList) {
         return true;
       }
 
-      return scrollHeight - AVAILABLE_DELTA < clientHeight + scrollTop;
+      const {
+        selectProps: {
+          shouldLoadMore,
+        },
+      } = this.props;
+
+      return shouldLoadMore(scrollHeight, clientHeight, scrollTop);
     }
 
     render() {
