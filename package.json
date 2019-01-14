@@ -13,6 +13,7 @@
     "build:es": "cross-env BABEL_ENV=es babel src --out-dir es --ignore \"src/**/__tests__\"",
     "lint": "eslint src --ext .js,.jsx",
     "test:unit": "jest",
+    "test:unit:cov": "jest --coverage",
     "test": "yarn lint && yarn test:unit",
     "prepublish": "yarn build"
   },
@@ -49,6 +50,15 @@
     "react-test-renderer": "^16.7.0"
   },
   "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.js",
+      "!src/**/__tests__/**/*.js"
+    ],
+    "coverageReporters": [
+      "text",
+      "lcov",
+      "html"
+    ],
     "testPathIgnorePatterns": [
       "/node_modules/",
       "/examples/"
