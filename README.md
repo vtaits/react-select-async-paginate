@@ -35,11 +35,11 @@ yarn add react-select react-select-async-paginate
 
 ## Usage
 
-`AsyncPaginate` is an alternative of `Select.Async` but supports loading page by page. It is wrapper above default `react-select` thus it accepts all props of default `Select` except `isLoading`. And there are some new props:
+`AsyncPaginate` is an alternative of `Async` but supports loading page by page. It is wrapper above default `react-select` thus it accepts all props of default `Select` except `isLoading`. And there are some new props:
 
 ### loadOptions
 
-Required. Async function that take two arguments:
+Required. Async function that take next arguments:
 
 1. Current value of search input.
 2. Loaded options for current search.
@@ -58,8 +58,9 @@ It should return next object:
 It similar to `loadOptions` from `Select.Async` but there is some differences:
 
 1. Loaded options as 2nd argument.
-2. Not supports callback.
-3. Should return `hasMore` for detect end of options list for current search.
+2. Additional data as 3nd argument.
+3. Not supports callback.
+4. Should return `hasMore` for detect end of options list for current search.
 
 ### debounceTimeout
 
