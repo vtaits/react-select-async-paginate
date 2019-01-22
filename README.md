@@ -14,6 +14,7 @@ Wrapper above `react-select` that supports pagination on menu scroll.
 - [Debounce](https://codesandbox.io/s/5y2xq39v5k)
 - [Request by page number](https://codesandbox.io/s/10r1k12vk7)
 - [Customization check of the need of load options](https://codesandbox.io/s/kokz6j65zv)
+- [Grouped options](https://codesandbox.io/s/oxv62x8j4y)
 
 ## Versions
 
@@ -80,6 +81,16 @@ Not required. Function. By default new options will load only after scroll menu 
 - scrollTop
 
 Should return boolean.
+
+### reduceOptions
+
+Not required. Function. Be default new loaded options are concatted with previous. Arguments:
+
+- previous options
+- loaded options
+- next additional
+
+Should return new options.
 
 ### cacheUniq
 
@@ -163,6 +174,45 @@ async function loadOptions(search, loadedOptions, { page }) {
   additional={{
     page: 1,
   }}
+/>
+```
+
+## Grouped options
+
+You can use `reduceGroupedOptions` util to group options by `label` key.
+
+```
+import AsyncPaginate, { reduceGroupedOptions } from 'react-select-async-paginate';
+
+/*
+ * assuming the API returns something like this:
+ *   const json = {
+ *     optioms: [
+ *       label: 'Cars',
+ *       options: [
+ *         {
+ *           value: 1,
+ *           label: 'Audi',
+ *         },
+ *         {
+ *           value: 2,
+ *           label: 'Mercedes',
+ *         },
+ *         {
+ *           value: 3,
+ *           label: 'BMW',
+ *         },
+ *       ]
+ *     ],
+ *     hasMore: true,
+ *   };
+ */
+
+...
+
+<AsyncPaginate
+  {...otherProps}
+  reduceOptions={reduceGroupedOptions}
 />
 ```
 
