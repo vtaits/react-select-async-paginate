@@ -84,7 +84,7 @@ Should return boolean.
 
 ### reduceOptions
 
-Not required. Function. Be default new loaded options are concatted with previous. Arguments:
+Not required. Function. By default new loaded options are concat with previous. Arguments:
 
 - previous options
 - loaded options
