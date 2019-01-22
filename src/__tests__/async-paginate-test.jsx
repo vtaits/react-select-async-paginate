@@ -642,4 +642,78 @@ describe('loadOptions', () => {
 
     expect(loadOptions.mock.calls.length).toBe(0);
   });
+
+  test('should reduce options by custom algorithm', async () => {
+    const resultOptions = [
+      {
+        value: 10,
+        label: '10',
+      }, {
+        value: 20,
+        label: '20',
+      },
+    ];
+
+    const reduceOptions = jest.fn(() => resultOptions);
+
+    const options = [{
+      value: 1,
+      label: '1',
+    }, {
+      value: 2,
+      label: '2',
+    }];
+
+    const newOptions = [{
+      value: 3,
+      label: '3',
+    }, {
+      value: 4,
+      label: '4',
+    }];
+
+    const additionalPrev = Symbol('additionalPrev');
+    const additionalNext = Symbol('additionalNext');
+
+    const loadOptions = jest.fn(async () => ({
+      options: newOptions,
+      hasMore: false,
+      additional: additionalNext,
+    }));
+
+    const page = setup({
+      loadOptions,
+      reduceOptions,
+    });
+
+    page.setState({
+      search: 'test',
+
+      optionsCache: {
+        test: {
+          options,
+          hasMore: true,
+          isLoading: false,
+          isFirstLoad: false,
+          additional: additionalPrev,
+        },
+      },
+    });
+
+    await page.loadOptions();
+
+    const {
+      search,
+      optionsCache,
+    } = page.state();
+
+    const currentOptionsCache = optionsCache[search];
+
+    expect(currentOptionsCache.options).toBe(resultOptions);
+
+    expect(reduceOptions.mock.calls.length).toBe(1);
+    expect(reduceOptions.mock.calls[0][0]).toBe(options);
+    expect(reduceOptions.mock.calls[0][1]).toBe(newOptions);
+    expect(reduceOptions.mock.calls[0][2]).toBe(additionalNext);
+  });
 });

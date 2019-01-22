@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { SelectBase, components as defaultComponents } from 'react-select';
 
 import defaultShouldLoadMore from './default-should-load-more';
+import defaultReduceOptions from './default-reduce-options';
 
 import wrapMenuList from './wrap-menu-list';
 
@@ -24,6 +25,7 @@ class AsyncPaginate extends Component {
     options: PropTypes.arrayOf(PropTypes.object),
     // eslint-disable-next-line react/forbid-prop-types
     additional: PropTypes.any,
+    reduceOptions: PropTypes.func,
 
     components: PropTypes.objectOf(PropTypes.func),
 
@@ -39,6 +41,7 @@ class AsyncPaginate extends Component {
 
     options: null,
     additional: null,
+    reduceOptions: defaultReduceOptions,
 
     components: {},
 
@@ -216,16 +219,22 @@ class AsyncPaginate extends Component {
         },
       }));
     } else {
+      const newAdditional = typeof additional === 'undefined' ? null : additional;
+
+      const {
+        reduceOptions,
+      } = this.props;
+
       await this.setState((prevState) => ({
         optionsCache: {
           ...prevState.optionsCache,
           [search]: {
             ...currentOptions,
-            options: currentOptions.options.concat(options),
+            options: reduceOptions(currentOptions.options, options, newAdditional),
             hasMore: !!hasMore,
             isLoading: false,
             isFirstLoad: false,
-            additional: typeof additional === 'undefined' ? null : additional,
+            additional: newAdditional,
           },
         },
       }));
