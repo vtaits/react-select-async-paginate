@@ -101,6 +101,10 @@ Not required. Can take any value. When this prop changed, `AsyncPaginate` cleans
 
 Ref for take `react-select` instance.
 
+## SelectComponent
+
+Not required. React component that will be used instead of `SelectBase` from `react-select`.
+
 ## Example
 
 ### offset way
