@@ -16,6 +16,13 @@ const sleep = (ms) => new Promise((resolve) => {
   }, ms);
 });
 
+// Supports forwardRef https://github.com/facebook/prop-types/issues/200
+const ComponentPropType = PropTypes.oneOfType([
+  PropTypes.func,
+  PropTypes.string,
+  PropTypes.shape({ render: PropTypes.func.isRequired }),
+]);
+
 class AsyncPaginate extends Component {
   static propTypes = {
     loadOptions: PropTypes.func.isRequired,
@@ -27,6 +34,7 @@ class AsyncPaginate extends Component {
     additional: PropTypes.any,
     reduceOptions: PropTypes.func,
 
+    SelectComponent: ComponentPropType,
     components: PropTypes.objectOf(PropTypes.func),
 
     // eslint-disable-next-line react/forbid-prop-types
@@ -43,6 +51,7 @@ class AsyncPaginate extends Component {
     additional: null,
     reduceOptions: defaultReduceOptions,
 
+    SelectComponent: SelectBase,
     components: {},
 
     cacheUniq: null,
@@ -245,6 +254,8 @@ class AsyncPaginate extends Component {
     const {
       selectRef,
       components,
+      SelectComponent,
+      ...props
     } = this.props;
 
     const {
@@ -256,8 +267,8 @@ class AsyncPaginate extends Component {
     const currentOptions = optionsCache[search] || this.getInitialCache();
 
     return (
-      <SelectBase
-        {...this.props}
+      <SelectComponent
+        {...props}
         inputValue={search}
         menuIsOpen={menuIsOpen}
         onMenuClose={this.onMenuClose}
