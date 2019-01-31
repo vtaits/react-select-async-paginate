@@ -15,6 +15,7 @@ Wrapper above `react-select` that supports pagination on menu scroll.
 - [Request by page number](https://codesandbox.io/s/10r1k12vk7)
 - [Customization check of the need of load options](https://codesandbox.io/s/kokz6j65zv)
 - [Grouped options](https://codesandbox.io/s/oxv62x8j4y)
+- [Custom select base](https://codesandbox.io/s/l2pjrv0ryl)
 
 ## Versions
 
