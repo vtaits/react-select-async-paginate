@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { shallow, mount } from 'enzyme';
 import { SelectBase } from 'react-select';
 
@@ -716,4 +716,24 @@ describe('loadOptions', () => {
     expect(reduceOptions.mock.calls[0][1]).toBe(newOptions);
     expect(reduceOptions.mock.calls[0][2]).toBe(additionalNext);
   });
+});
+
+test('should allow to puss custom Select component', () => {
+  // eslint-disable-next-line react/prefer-stateless-function
+  class MyCustomSelectWrapper extends Component {
+    render() {
+      return <SelectBase {...this.props} />;
+    }
+  }
+
+  const wrapper = mount(
+    <AsyncPaginate
+      SelectComponent={MyCustomSelectWrapper}
+      loadOptions={() => {
+      }}
+    />,
+  );
+
+  expect(wrapper.find(MyCustomSelectWrapper))
+    .toBeTruthy();
 });
