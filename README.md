@@ -192,7 +192,7 @@ import AsyncPaginate, { reduceGroupedOptions } from 'react-select-async-paginate
 /*
  * assuming the API returns something like this:
  *   const json = {
- *     optioms: [
+ *     options: [
  *       label: 'Cars',
  *       options: [
  *         {
