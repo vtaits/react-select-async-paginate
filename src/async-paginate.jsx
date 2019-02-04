@@ -10,6 +10,7 @@ import wrapMenuList from './wrap-menu-list';
 
 export const MenuList = wrapMenuList(defaultComponents.MenuList);
 
+const alwaysTrue () => true;
 const sleep = (ms) => new Promise((resolve) => {
   setTimeout(() => {
     resolve();
@@ -279,6 +280,7 @@ class AsyncPaginate extends Component {
         isLoading={currentOptions.isLoading}
         isFirstLoad={currentOptions.isFirstLoad}
         options={currentOptions.options}
+        filterOption={alwaysTrue}
         components={{
           MenuList,
           ...components,
