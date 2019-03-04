@@ -167,16 +167,23 @@ class AsyncPaginate extends Component {
       return;
     }
 
-    await this.setState((prevState) => ({
-      search,
-      optionsCache: {
-        ...prevState.optionsCache,
-        [search]: {
-          ...currentOptions,
-          isLoading: true,
+    await this.setState((prevState) => {
+      const prevSearches = Object.keys(prevState.optionsCache);
+      const prevOptionsCache = prevState.optionsCache;
+      prevSearches.forEach((ps) => {
+        prevOptionsCache[ps].isLoading = false;
+      });
+      return {
+        search,
+        optionsCache: {
+          ...prevState.optionsCache,
+          [search]: {
+            ...currentOptions,
+            isLoading: true,
+          },
         },
-      },
-    }));
+      };
+    });
 
     const {
       debounceTimeout,
