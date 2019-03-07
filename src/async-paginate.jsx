@@ -119,7 +119,10 @@ class AsyncPaginate extends Component {
       search: '',
       menuIsOpen: false,
     });
-    onMenuClose.call(this)
+
+    if (onMenuClose) {
+      onMenuClose.call(this);
+    }
   }
 
   onMenuOpen = async () => {
@@ -138,8 +141,9 @@ class AsyncPaginate extends Component {
     if (!optionsCache['']) {
       await this.loadOptions();
     }
-    if(onMenuOpen) {
-      onMenuOpen.call(this)
+
+    if (onMenuOpen) {
+      onMenuOpen.call(this);
     }
   }
 
