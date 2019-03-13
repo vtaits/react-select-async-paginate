@@ -167,13 +167,8 @@ class AsyncPaginate extends Component {
       return;
     }
 
-    await this.setState((prevState) => {
-      const prevSearches = Object.keys(prevState.optionsCache);
-      const prevOptionsCache = prevState.optionsCache;
-      prevSearches.forEach((ps) => {
-        prevOptionsCache[ps].isLoading = false;
-      });
-      return {
+    const updateCache = async () => {
+      await this.setState((prevState) => ({
         search,
         optionsCache: {
           ...prevState.optionsCache,
@@ -182,8 +177,8 @@ class AsyncPaginate extends Component {
             isLoading: true,
           },
         },
-      };
-    });
+      }));
+    };
 
     const {
       debounceTimeout,
@@ -199,6 +194,9 @@ class AsyncPaginate extends Component {
       if (search !== newSearch) {
         return;
       }
+      await updateCache();
+    } else {
+      await updateCache();
     }
 
     let hasError;
