@@ -37,6 +37,9 @@ class AsyncPaginate extends Component {
     SelectComponent: ComponentPropType,
     components: PropTypes.objectOf(PropTypes.func),
 
+    onMenuOpen: PropTypes.func,
+    onMenuClose: PropTypes.func,
+
     // eslint-disable-next-line react/forbid-prop-types
     cacheUniq: PropTypes.any,
 
@@ -53,6 +56,9 @@ class AsyncPaginate extends Component {
 
     SelectComponent: SelectBase,
     components: {},
+
+    onMenuOpen: null,
+    onMenuClose: null,
 
     cacheUniq: null,
 
@@ -112,6 +118,14 @@ class AsyncPaginate extends Component {
       search: '',
       menuIsOpen: false,
     });
+
+    const {
+      onMenuClose,
+    } = this.props;
+
+    if (onMenuClose) {
+      onMenuClose();
+    }
   }
 
   onMenuOpen = async () => {
@@ -125,6 +139,14 @@ class AsyncPaginate extends Component {
 
     if (!optionsCache['']) {
       await this.loadOptions();
+    }
+
+    const {
+      onMenuOpen,
+    } = this.props;
+
+    if (onMenuOpen) {
+      onMenuOpen();
     }
   }
 

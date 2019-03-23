@@ -230,6 +230,18 @@ test('should load options on open select if options not cached', async () => {
   expect(loadOptionsMethod.mock.calls.length).toBe(1);
 });
 
+test('should call onMenuOpen on open menu', async () => {
+  const onMenuOpen = jest.fn();
+
+  const page = setup({
+    onMenuOpen,
+  });
+
+  await page.getSelectNode().prop('onMenuOpen')();
+
+  expect(onMenuOpen.mock.calls.length).toBe(1);
+});
+
 test('should not call loadOptions on open select if options cached', async () => {
   const options = [{
     value: 1,
@@ -351,6 +363,18 @@ test('should not call loadOptions on search change if options cached', async () 
       expect(loadOptionsMethod.mock.calls.length).toBe(1);
     });
   });
+});
+
+test('should call menuIsOpen on close menu', async () => {
+  const onMenuClose = jest.fn();
+
+  const page = setup({
+    onMenuClose,
+  });
+
+  await page.getSelectNode().prop('onMenuClose')();
+
+  expect(onMenuClose.mock.calls.length).toBe(1);
 });
 
 test('should clean search and menuIsOpen on close select', () => {
