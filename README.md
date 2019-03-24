@@ -16,6 +16,7 @@ Wrapper above `react-select` that supports pagination on menu scroll.
 - [Customization check of the need of load options](https://codesandbox.io/s/kokz6j65zv)
 - [Grouped options](https://codesandbox.io/s/oxv62x8j4y)
 - [Custom select base](https://codesandbox.io/s/l2pjrv0ryl)
+- [Manual control of input value](https://codesandbox.io/s/6y34j51k1n)
 
 ## Versions
 
@@ -219,6 +220,41 @@ import AsyncPaginate, { reduceGroupedOptions } from 'react-select-async-paginate
   {...otherProps}
   reduceOptions={reduceGroupedOptions}
 />
+```
+
+## Manual control of input value
+
+You can use `AsyncPaginateBase` component.
+
+```
+import React, { useState } from 'react';
+import { AsyncPaginateBase } from 'react-select-async-paginate';
+
+...
+
+async function loadOptions(search, loadedOptions) {
+  const response = await fetch(`/awesome-api-url/?search=${search}&offset=${loadedOptions.length}`);
+  const responseJSON = await response.json();
+
+  return {
+    options: responseJSON.results,
+    hasMore: responseJSON.has_more,
+  };
+}
+
+const MyWrapper = () => {
+  const [inputValue, onInputChange] = useState('');
+
+  return (
+    <AsyncPaginate
+      value={value}
+      loadOptions={loadOptions}
+      onChange={setValue}
+      inputValue={inputValue}
+      onInputChange={onInputChange}
+    />
+  );
+};
 ```
 
 ## Replacing Components
