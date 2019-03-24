@@ -15,7 +15,7 @@
     "test:unit": "jest",
     "test:unit:cov": "jest --coverage",
     "test": "yarn lint && yarn test:unit",
-    "prepublish": "yarn build",
+    "prepare": "yarn build",
     "validate": "yarn lint && yarn test:unit:cov && yarn build"
   },
   "peerDependencies": {
