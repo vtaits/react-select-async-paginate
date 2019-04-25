@@ -22,6 +22,7 @@ class AsyncPaginateBase extends Component {
     debounceTimeout: PropTypes.number,
     shouldLoadMore: PropTypes.func,
     inputValue: PropTypes.string.isRequired,
+    menuIsOpen: PropTypes.bool.isRequired,
 
     options: PropTypes.arrayOf(PropTypes.object),
     // eslint-disable-next-line react/forbid-prop-types
@@ -31,8 +32,6 @@ class AsyncPaginateBase extends Component {
     SelectComponent: PropTypes.elementType,
     components: PropTypes.objectOf(PropTypes.func),
 
-    onMenuOpen: PropTypes.func,
-    onMenuClose: PropTypes.func,
     onInputChange: PropTypes.func.isRequired,
 
     // eslint-disable-next-line react/forbid-prop-types
@@ -51,9 +50,6 @@ class AsyncPaginateBase extends Component {
 
     SelectComponent: SelectBase,
     components: {},
-
-    onMenuOpen: null,
-    onMenuClose: null,
 
     cacheUniq: null,
 
@@ -77,7 +73,6 @@ class AsyncPaginateBase extends Component {
 
     this.state = {
       optionsCache: initialOptionsCache,
-      menuIsOpen: false,
     };
   }
 
@@ -85,14 +80,21 @@ class AsyncPaginateBase extends Component {
     const {
       cacheUniq,
       inputValue,
+      menuIsOpen,
     } = this.props;
 
     if (oldProps.cacheUniq !== cacheUniq) {
       this.setState({
         optionsCache: {},
       });
-    } else if (inputValue !== oldProps.inputValue) {
-      this.handleInputChange(inputValue);
+    } else {
+      if (inputValue !== oldProps.inputValue) {
+        this.handleInputChange(inputValue);
+      }
+
+      if (menuIsOpen && !oldProps.menuIsOpen) {
+        this.onMenuOpen();
+      }
     }
   }
 
@@ -110,39 +112,13 @@ class AsyncPaginateBase extends Component {
     };
   }
 
-  onMenuClose = () => {
-    this.setState({
-      menuIsOpen: false,
-    });
-
-    const {
-      onMenuClose,
-    } = this.props;
-
-    if (onMenuClose) {
-      onMenuClose();
-    }
-  }
-
   onMenuOpen = async () => {
-    await this.setState({
-      menuIsOpen: true,
-    });
-
     const {
       optionsCache,
     } = this.state;
 
     if (!optionsCache['']) {
       await this.loadOptions();
-    }
-
-    const {
-      onMenuOpen,
-    } = this.props;
-
-    if (onMenuOpen) {
-      onMenuOpen();
     }
   }
 
@@ -288,7 +264,6 @@ class AsyncPaginateBase extends Component {
 
     const {
       optionsCache,
-      menuIsOpen,
     } = this.state;
 
     const currentOptions = optionsCache[inputValue] || this.getInitialCache();
@@ -297,9 +272,6 @@ class AsyncPaginateBase extends Component {
       <SelectComponent
         {...props}
         inputValue={inputValue}
-        menuIsOpen={menuIsOpen}
-        onMenuClose={this.onMenuClose}
-        onMenuOpen={this.onMenuOpen}
         onMenuScrollToBottom={this.handleScrolledToBottom}
         handleScrolledToBottom={this.handleScrolledToBottom}
         isLoading={currentOptions.isLoading}

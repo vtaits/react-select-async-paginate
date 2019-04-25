@@ -62,3 +62,47 @@ test('should change inputValue from AsyncPaginateBase', async () => {
 
   expect(page.state('inputValue')).toBe('test');
 });
+
+test('should provide menuIsOpen=false by default', () => {
+  const page = setup({});
+
+  const baseNode = page.getBaseNode();
+
+  expect(baseNode.prop('menuIsOpen')).toBe(false);
+});
+
+test('should provide menuIsOpen=true', () => {
+  const page = setup({});
+
+  page.setState({
+    menuIsOpen: true,
+  });
+
+  const baseNode = page.getBaseNode();
+
+  expect(baseNode.prop('menuIsOpen')).toBe(true);
+});
+
+test('should open menu', async () => {
+  const page = setup({});
+
+  const baseNode = page.getBaseNode();
+
+  await baseNode.prop('onMenuOpen')();
+
+  expect(page.state('menuIsOpen')).toBe(true);
+});
+
+test('should close menu', async () => {
+  const page = setup({});
+
+  page.setState({
+    menuIsOpen: true,
+  });
+
+  const baseNode = page.getBaseNode();
+
+  await baseNode.prop('onMenuClose')();
+
+  expect(page.state('menuIsOpen')).toBe(false);
+});

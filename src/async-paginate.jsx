@@ -5,6 +5,7 @@ import AsyncPaginateBase from './async-paginate-base';
 class AsyncPaginate extends Component {
   state = {
     inputValue: '',
+    menuIsOpen: false,
   }
 
   onInputChange = async (inputValue) => {
@@ -13,16 +14,32 @@ class AsyncPaginate extends Component {
     });
   }
 
+  onMenuClose = async () => {
+    await this.setState({
+      menuIsOpen: false,
+    });
+  }
+
+  onMenuOpen = async () => {
+    await this.setState({
+      menuIsOpen: true,
+    });
+  }
+
   render() {
     const {
       inputValue,
+      menuIsOpen,
     } = this.state;
 
     return (
       <AsyncPaginateBase
         {...this.props}
         inputValue={inputValue}
+        menuIsOpen={menuIsOpen}
         onInputChange={this.onInputChange}
+        onMenuClose={this.onMenuClose}
+        onMenuOpen={this.onMenuOpen}
       />
     );
   }
