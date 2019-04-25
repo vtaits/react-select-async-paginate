@@ -16,13 +16,6 @@ const sleep = (ms) => new Promise((resolve) => {
   }, ms);
 });
 
-// Supports forwardRef https://github.com/facebook/prop-types/issues/200
-const ComponentPropType = PropTypes.oneOfType([
-  PropTypes.func,
-  PropTypes.string,
-  PropTypes.shape({ render: PropTypes.func.isRequired }),
-]);
-
 class AsyncPaginateBase extends Component {
   static propTypes = {
     loadOptions: PropTypes.func.isRequired,
@@ -35,7 +28,7 @@ class AsyncPaginateBase extends Component {
     additional: PropTypes.any,
     reduceOptions: PropTypes.func,
 
-    SelectComponent: ComponentPropType,
+    SelectComponent: PropTypes.elementType,
     components: PropTypes.objectOf(PropTypes.func),
 
     onMenuOpen: PropTypes.func,
