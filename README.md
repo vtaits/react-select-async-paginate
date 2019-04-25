@@ -16,13 +16,13 @@ Wrapper above `react-select` that supports pagination on menu scroll.
 - [Customization check of the need of load options](https://codesandbox.io/s/kokz6j65zv)
 - [Grouped options](https://codesandbox.io/s/oxv62x8j4y)
 - [Custom select base](https://codesandbox.io/s/l2pjrv0ryl)
-- [Manual control of input value](https://codesandbox.io/s/6y34j51k1n)
+- [Manual control of input value and menu opening](https://codesandbox.io/s/6y34j51k1n)
 
 ## Versions
 
 | react-select | react-select-async-paginate |
 |--------------|-----------------------------|
-| 2.x | 0.2.x |
+| 2.x | 0.3.x, 0.2.x |
 | 1.x | 0.1.x |
 
 ## Installation
@@ -102,7 +102,7 @@ Not required. Can take any value. When this prop changed, `AsyncPaginate` cleans
 
 Ref for take `react-select` instance.
 
-## SelectComponent
+### SelectComponent
 
 Not required. React component that will be used instead of `SelectBase` from `react-select`.
 
@@ -222,7 +222,7 @@ import AsyncPaginate, { reduceGroupedOptions } from 'react-select-async-paginate
 />
 ```
 
-## Manual control of input value
+## Manual control of input value and menu opening
 
 You can use `AsyncPaginateBase` component.
 
@@ -242,16 +242,31 @@ async function loadOptions(search, loadedOptions) {
   };
 }
 
-const MyWrapper = () => {
+const MyWrapper = ({
+  value,
+  onChange,
+}) => {
   const [inputValue, onInputChange] = useState('');
+  const [menuIsOpen, setMenuIsOpen] = useState(false);
+
+  const onMenuOpen = () => {
+    setMenuIsOpen(true);
+  };
+
+  const onMenuClose = () => {
+    setMenuIsOpen(false);
+  };
 
   return (
     <AsyncPaginate
       value={value}
       loadOptions={loadOptions}
-      onChange={setValue}
+      onChange={onChange}
       inputValue={inputValue}
       onInputChange={onInputChange}
+      menuIsOpen={menuIsOpen}
+      onMenuOpen={onMenuOpen}
+      onMenuClose={onMenuClose}
     />
   );
 };
