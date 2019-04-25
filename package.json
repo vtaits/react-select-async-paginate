@@ -4,6 +4,10 @@
   "description": "Wrapper above react-select that supports pagination on menu scroll",
   "main": "lib/index.js",
   "module": "es/index.js",
+  "files": [
+    "/es",
+    "/lib"
+  ],
   "repository": "git@github.com:vtaits/react-select-async-paginate.git",
   "author": "Vadim Taits",
   "license": "MIT",
