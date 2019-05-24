@@ -82,6 +82,7 @@ test('should render SelectBase with default props', () => {
   expect(selectNode.prop('isFirstLoad')).toBe(true);
   expect(selectNode.prop('options')).toEqual([]);
   expect(selectNode.prop('menuIsOpen')).toBe(false);
+  expect(selectNode.prop('filterOption')).toBe(null);
   expect(selectNode.prop('shouldLoadMore')).toBe(defaultShouldLoadMore);
   expect(selectNode.prop('onInputChange')).toBe(onInputChange);
 });

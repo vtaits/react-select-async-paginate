@@ -31,6 +31,7 @@ class AsyncPaginateBase extends Component {
 
     SelectComponent: PropTypes.elementType,
     components: PropTypes.objectOf(PropTypes.func),
+    filterOption: PropTypes.func,
 
     onInputChange: PropTypes.func.isRequired,
 
@@ -50,6 +51,7 @@ class AsyncPaginateBase extends Component {
 
     SelectComponent: SelectBase,
     components: {},
+    filterOption: null,
 
     cacheUniq: null,
 
