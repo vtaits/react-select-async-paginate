@@ -1,3 +1,9 @@
+## 0.3.1 (24 may 2019)
+
+### Bugfix
+
+- Disabled filtering of options in select by default.
+
 ## 0.3.0 (25 apr 2019)
 
 ### New features
