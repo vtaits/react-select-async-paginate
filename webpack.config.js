@@ -1,6 +1,6 @@
 const path = require('path');
 
-const context = path.join(__dirname, 'src');
+const context = path.join(__dirname, 'examples');
 
 module.exports = {
   mode: 'development',
@@ -25,6 +25,9 @@ module.exports = {
       'src',
       'node_modules',
     ],
+    alias: {
+      'react-select-async-paginate': path.join(__dirname, 'src'),
+    },
     extensions: ['.js', '.jsx'],
   },
 };
