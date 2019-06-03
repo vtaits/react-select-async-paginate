@@ -13,7 +13,7 @@
     "test:unit": "jest",
     "test:unit:cov": "jest --coverage",
     "test": "yarn lint && yarn test:unit",
-    "validate": "yarn lint && yarn test:unit:cov && yarn build"
+    "validate": "yarn build && yarn lint && yarn test:unit:cov"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.4",
