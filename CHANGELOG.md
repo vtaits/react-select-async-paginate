@@ -1,3 +1,9 @@
+## 0.3.2 (03 jun 2019)
+
+### New features
+
+- Support `react-select` v3
+
 ## 0.3.1 (24 may 2019)
 
 ### Bugfix
