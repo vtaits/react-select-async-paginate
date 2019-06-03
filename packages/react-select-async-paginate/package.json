@@ -1,0 +1,31 @@
+{
+  "name": "react-select-async-paginate",
+  "version": "0.3.2",
+  "description": "Wrapper above react-select that supports pagination on menu scroll",
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "files": [
+    "/es",
+    "/lib"
+  ],
+  "repository": "git@github.com:vtaits/react-select-async-paginate.git",
+  "author": "Vadim Taits",
+  "license": "MIT",
+  "scripts": {
+    "build": "yarn build:cjs && yarn build:es",
+    "build:cjs": "cross-env BABEL_ENV=cjs babel src --out-dir lib --ignore \"src/**/__tests__\"",
+    "build:es": "cross-env BABEL_ENV=es babel src --out-dir es --ignore \"src/**/__tests__\"",
+    "prepare": "yarn build"
+  },
+  "peerDependencies": {
+    "react": "^15.0.0 || ^16.0.0",
+    "react-select": "^2.0.0 || ^3.0.0"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.4.5",
+    "prop-types": "^15.7.2"
+  },
+  "devDependencies": {
+    "react-select": "^3.0.4"
+  }
+}

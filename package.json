@@ -1,31 +1,19 @@
 {
-  "name": "react-select-async-paginate",
-  "version": "0.3.2",
-  "description": "Wrapper above react-select that supports pagination on menu scroll",
-  "main": "lib/index.js",
-  "module": "es/index.js",
-  "files": [
-    "/es",
-    "/lib"
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "examples"
   ],
   "repository": "git@github.com:vtaits/react-select-async-paginate.git",
   "author": "Vadim Taits",
   "license": "MIT",
   "scripts": {
-    "start": "cross-env BABEL_ENV=es webpack-dev-server --host 0.0.0.0",
-    "build": "yarn build:cjs && yarn build:es",
-    "build:cjs": "cross-env BABEL_ENV=cjs babel src --out-dir lib --ignore \"src/**/__tests__\"",
-    "build:es": "cross-env BABEL_ENV=es babel src --out-dir es --ignore \"src/**/__tests__\"",
-    "lint": "eslint src --ext .js,.jsx",
+    "build": "yarn workspace react-select-async-paginate build",
+    "lint": "eslint packages examples --ext .js,.jsx --ignore-path .gitignore",
     "test:unit": "jest",
     "test:unit:cov": "jest --coverage",
     "test": "yarn lint && yarn test:unit",
-    "prepare": "yarn build",
     "validate": "yarn lint && yarn test:unit:cov && yarn build"
-  },
-  "peerDependencies": {
-    "react": "^15.0.0 || ^16.0.0",
-    "react-select": "^2.0.0 || ^3.0.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.4",
@@ -36,7 +24,6 @@
     "@babel/preset-react": "^7.0.0",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^24.8.0",
-    "babel-loader": "^8.0.6",
     "codecov.io": "^0.1.6",
     "cross-env": "^5.2.0",
     "enzyme": "^3.9.0",
@@ -51,18 +38,14 @@
     "path": "^0.12.7",
     "raf": "^3.4.1",
     "react": "^16.8.6",
-    "react-dom": "^16.8.6",
-    "react-select": "^3.0.4",
-    "webpack": "^4.32.2",
-    "webpack-cli": "^3.3.2",
-    "webpack-dev-server": "^3.5.1"
+    "react-dom": "^16.8.6"
   },
   "jest": {
     "collectCoverageFrom": [
-      "src/**/*.js",
-      "src/**/*.jsx",
-      "!src/**/__tests__/**/*.js",
-      "!src/**/__tests__/**/*.jsx"
+      "packages/react-select-async-paginate/src/**/*.js",
+      "packages/react-select-async-paginate/src/**/*.jsx",
+      "!packages/react-select-async-paginate/src/**/__tests__/**/*.js",
+      "!packages/react-select-async-paginate/src/**/__tests__/**/*.jsx"
     ],
     "coverageReporters": [
       "text",
@@ -76,9 +59,5 @@
     "setupFiles": [
       "./setup-jest.js"
     ]
-  },
-  "dependencies": {
-    "@babel/runtime": "^7.4.5",
-    "prop-types": "^15.7.2"
   }
 }

@@ -1,0 +1,43 @@
+{
+  "name": "react-select-async-paginate-examples",
+  "version": "0.1.0",
+  "private": true,
+  "author": "Vadim Taits",
+  "license": "MIT",
+  "scripts": {
+    "start": "cross-env BABEL_ENV=es webpack-dev-server --host 0.0.0.0"
+  },
+  "devDependencies": {
+    "babel-loader": "^8.0.6",
+    "webpack": "^4.32.2",
+    "webpack-cli": "^3.3.2",
+    "webpack-dev-server": "^3.5.1"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.js",
+      "src/**/*.jsx",
+      "!src/**/__tests__/**/*.js",
+      "!src/**/__tests__/**/*.jsx"
+    ],
+    "coverageReporters": [
+      "text",
+      "lcov",
+      "html"
+    ],
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/examples/"
+    ],
+    "setupFiles": [
+      "./setup-jest.js"
+    ]
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.4.5",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-select": "^3.0.4",
+    "react-select-async-paginate": "^0.3.2"
+  }
+}

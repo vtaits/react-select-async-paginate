@@ -31,7 +31,9 @@ const loadOptions = (search, prevOptions) => new Promise((resolve) => {
 
   const hasMore = filteredOptions.length > prevOptions.length + 10;
   const slicedOptions = filteredOptions.slice(
-    prevOptions.length, prevOptions.length + 10);
+    prevOptions.length,
+    prevOptions.length + 10,
+  );
 
   setTimeout(() => {
     resolve({
