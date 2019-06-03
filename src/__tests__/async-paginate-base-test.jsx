@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { shallow, mount } from 'enzyme';
-import { SelectBase } from 'react-select';
+import Select from 'react-select';
 
 import AsyncPaginateBase, { MenuList } from '../async-paginate-base';
 import defaultShouldLoadMore from '../default-should-load-more';
@@ -53,7 +53,7 @@ class PageObject {
   }
 
   getSelectNode() {
-    return this.wrapper.find(SelectBase);
+    return this.wrapper.find(Select);
   }
 
   loadOptions() {
@@ -68,7 +68,7 @@ afterEach(() => {
   jest.clearAllTimers();
 });
 
-test('should render SelectBase with default props', () => {
+test('should render Select with default props', () => {
   const onInputChange = jest.fn();
 
   const page = setup({
@@ -273,7 +273,7 @@ test('should not call loadOptions on open select if options cached', async () =>
   expect(loadOptionsMethod.mock.calls.length).toBe(0);
 });
 
-test('should set correct inputValue prop in SelectBase', async () => {
+test('should set correct inputValue prop in Select', async () => {
   const page = setup({});
 
   page.setProps({
@@ -283,7 +283,7 @@ test('should set correct inputValue prop in SelectBase', async () => {
   expect(page.getSelectNode().prop('inputValue')).toBe('test value');
 });
 
-test('should set correct menuIsOpen prop in SelectBase', async () => {
+test('should set correct menuIsOpen prop in Select', async () => {
   const page = setup({});
 
   page.setProps({
@@ -724,7 +724,7 @@ test('should allow to puss custom Select component', () => {
   // eslint-disable-next-line react/prefer-stateless-function
   class MyCustomSelectWrapper extends Component {
     render() {
-      return <SelectBase {...this.props} />;
+      return <Select {...this.props} />;
     }
   }
 

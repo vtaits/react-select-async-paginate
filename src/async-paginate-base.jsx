@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { SelectBase, components as defaultComponents } from 'react-select';
+import Select, { components as defaultComponents } from 'react-select';
 
 import defaultShouldLoadMore from './default-should-load-more';
 import defaultReduceOptions from './default-reduce-options';
@@ -49,7 +49,7 @@ class AsyncPaginateBase extends Component {
     additional: null,
     reduceOptions: defaultReduceOptions,
 
-    SelectComponent: SelectBase,
+    SelectComponent: Select,
     components: {},
     filterOption: null,
 
