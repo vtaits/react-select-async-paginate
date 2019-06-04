@@ -11,7 +11,7 @@ script:
   - yarn validate
 
 after_success:
-  - cat ./coverage/lcov.info | ./node_modules/codecov.io/bin/codecov.io.js
+  - yarn codecov
 
 cache:
   yarn: true
