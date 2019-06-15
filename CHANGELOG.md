@@ -1,3 +1,9 @@
+## 0.3.4 (15 jun 2019)
+
+### Bugfix
+
+- Changed TypeScript typings
+
 ## 0.3.3 (06 jun 2019)
 
 ### New features
