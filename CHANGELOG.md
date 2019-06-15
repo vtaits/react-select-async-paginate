@@ -1,3 +1,9 @@
+## 0.3.3 (06 jun 2019)
+
+### New features
+
+- Added TypeScript typings
+
 ## 0.3.2 (03 jun 2019)
 
 ### New features
