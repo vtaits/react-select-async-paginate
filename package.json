@@ -40,25 +40,5 @@
     "raf": "^3.4.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6"
-  },
-  "jest": {
-    "collectCoverageFrom": [
-      "packages/react-select-async-paginate/src/**/*.js",
-      "packages/react-select-async-paginate/src/**/*.jsx",
-      "!packages/react-select-async-paginate/src/**/__tests__/**/*.js",
-      "!packages/react-select-async-paginate/src/**/__tests__/**/*.jsx"
-    ],
-    "coverageReporters": [
-      "text",
-      "lcov",
-      "html"
-    ],
-    "testPathIgnorePatterns": [
-      "/node_modules/",
-      "/examples/"
-    ],
-    "setupFiles": [
-      "./setup-jest.js"
-    ]
   }
 }
