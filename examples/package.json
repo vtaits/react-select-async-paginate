@@ -13,26 +13,6 @@
     "webpack-cli": "^3.3.5",
     "webpack-dev-server": "^3.7.2"
   },
-  "jest": {
-    "collectCoverageFrom": [
-      "src/**/*.js",
-      "src/**/*.jsx",
-      "!src/**/__tests__/**/*.js",
-      "!src/**/__tests__/**/*.jsx"
-    ],
-    "coverageReporters": [
-      "text",
-      "lcov",
-      "html"
-    ],
-    "testPathIgnorePatterns": [
-      "/node_modules/",
-      "/examples/"
-    ],
-    "setupFiles": [
-      "./setup-jest.js"
-    ]
-  },
   "dependencies": {
     "@babel/runtime": "^7.5.4",
     "react": "^16.8.6",
