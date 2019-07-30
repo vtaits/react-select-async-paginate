@@ -25,6 +25,11 @@ class AsyncPaginateBase extends Component {
     menuIsOpen: PropTypes.bool.isRequired,
 
     options: PropTypes.arrayOf(PropTypes.object),
+    defaultOptions: PropTypes.oneOfType([
+      PropTypes.bool,
+      PropTypes.arrayOf(PropTypes.object),
+    ]),
+
     // eslint-disable-next-line react/forbid-prop-types
     additional: PropTypes.any,
     reduceOptions: PropTypes.func,
@@ -46,6 +51,7 @@ class AsyncPaginateBase extends Component {
     shouldLoadMore: defaultShouldLoadMore,
 
     options: null,
+    defaultOptions: false,
     additional: null,
     reduceOptions: defaultReduceOptions,
 
@@ -61,12 +67,23 @@ class AsyncPaginateBase extends Component {
   constructor(props) {
     super(props);
 
-    const initialOptionsCache = props.options
+    const {
+      options,
+      defaultOptions,
+    } = props;
+
+    const initialOptions = defaultOptions === true
+      ? null
+      : (defaultOptions instanceof Array)
+        ? defaultOptions
+        : options;
+
+    const initialOptionsCache = initialOptions
       ? {
         '': {
           isFirstLoad: false,
           isLoading: false,
-          options: props.options,
+          options: initialOptions,
           hasMore: true,
           additional: props.additional,
         },
@@ -76,6 +93,16 @@ class AsyncPaginateBase extends Component {
     this.state = {
       optionsCache: initialOptionsCache,
     };
+  }
+
+  async componentDidMount() {
+    const {
+      defaultOptions,
+    } = this.props;
+
+    if (defaultOptions === true) {
+      await this.loadOptions();
+    }
   }
 
   componentDidUpdate(oldProps) {
@@ -100,6 +127,16 @@ class AsyncPaginateBase extends Component {
     }
   }
 
+  async onMenuOpen() {
+    const {
+      optionsCache,
+    } = this.state;
+
+    if (!optionsCache['']) {
+      await this.loadOptions();
+    }
+  }
+
   getInitialCache() {
     const {
       additional,
@@ -114,26 +151,6 @@ class AsyncPaginateBase extends Component {
     };
   }
 
-  onMenuOpen = async () => {
-    const {
-      optionsCache,
-    } = this.state;
-
-    if (!optionsCache['']) {
-      await this.loadOptions();
-    }
-  }
-
-  handleInputChange = async (search) => {
-    const {
-      optionsCache,
-    } = this.state;
-
-    if (!optionsCache[search]) {
-      await this.loadOptions();
-    }
-  }
-
   handleScrolledToBottom = async () => {
     const {
       inputValue,
@@ -145,6 +162,16 @@ class AsyncPaginateBase extends Component {
     const currentOptions = optionsCache[inputValue];
 
     if (currentOptions) {
+      await this.loadOptions();
+    }
+  }
+
+  async handleInputChange(search) {
+    const {
+      optionsCache,
+    } = this.state;
+
+    if (!optionsCache[search]) {
       await this.loadOptions();
     }
   }

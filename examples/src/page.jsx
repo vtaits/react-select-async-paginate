@@ -48,6 +48,7 @@ class Page extends Component {
     value1: null,
     value2: null,
     value3: null,
+    value4: null,
   }
 
   setValue1 = (value1) => {
@@ -68,11 +69,18 @@ class Page extends Component {
     });
   }
 
+  setValue4 = (value4) => {
+    this.setState({
+      value4,
+    });
+  }
+
   render() {
     const {
       value1,
       value2,
       value3,
+      value4,
     } = this.state;
 
     return (
@@ -111,6 +119,18 @@ class Page extends Component {
             loadOptions={loadOptions}
             onChange={this.setValue3}
             options={initialOptions}
+          />
+        </div>
+
+        <h2>With autoload</h2>
+
+        <div style={wrapperStyle}>
+          <AsyncPaginate
+            defaultOptions
+            debounceTimeout={300}
+            value={value4}
+            loadOptions={loadOptions}
+            onChange={this.setValue4}
           />
         </div>
       </div>

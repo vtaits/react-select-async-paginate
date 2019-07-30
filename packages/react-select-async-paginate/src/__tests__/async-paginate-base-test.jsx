@@ -20,6 +20,12 @@ const defaultProps = {
 const loadOptionsMethod = jest.fn();
 
 class ManualAsyncPaginateBase extends AsyncPaginateBase {
+  componentDidMount() {}
+
+  manualComponentDidMount() {
+    return super.componentDidMount();
+  }
+
   // eslint-disable-next-line class-methods-use-this
   loadOptions() {
     loadOptionsMethod();
@@ -54,6 +60,10 @@ class PageObject {
 
   getSelectNode() {
     return this.wrapper.find(Select);
+  }
+
+  componentDidMount() {
+    return this.wrapper.instance().manualComponentDidMount();
   }
 
   loadOptions() {
@@ -107,7 +117,7 @@ test('should set empty options cache on init', () => {
   expect(optionsCache).toEqual({});
 });
 
-test('should set options cache with initial options on init', () => {
+test('should set options cache with "options" prop on init', () => {
   const options = [
     {
       label: 'label 1',
@@ -134,6 +144,71 @@ test('should set options cache with initial options on init', () => {
       additional: null,
     },
   });
+});
+
+test('should set options cache with "defaultOptions" prop on init', () => {
+  const options = [
+    {
+      label: 'label 1',
+      value: 'value 1',
+    },
+  ];
+
+  const defaultOptions = [
+    {
+      label: 'label 2',
+      value: 'value 2',
+    },
+    {
+      label: 'label 3',
+      value: 'value 3',
+    },
+  ];
+
+  const page = setup({
+    options,
+    defaultOptions,
+  });
+
+  const optionsCache = page.state('optionsCache');
+
+  expect(optionsCache).toEqual({
+    '': {
+      isFirstLoad: false,
+      isLoading: false,
+      hasMore: true,
+      options: defaultOptions,
+      additional: null,
+    },
+  });
+});
+
+test('should not set options cache if "defaultOptions" is true', () => {
+  const options = [
+    {
+      label: 'label 1',
+      value: 'value 1',
+    },
+  ];
+
+  const page = setup({
+    options,
+    defaultOptions: true,
+  });
+
+  const optionsCache = page.state('optionsCache');
+
+  expect(optionsCache).toEqual({});
+});
+
+test('should load options on mount if "defaultOptions" is true', async () => {
+  const page = setup({
+    defaultOptions: true,
+  });
+
+  await page.componentDidMount();
+
+  expect(loadOptionsMethod.mock.calls.length).toBe(1);
 });
 
 test('should redefine additional in initial options cache', () => {

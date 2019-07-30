@@ -1,3 +1,9 @@
+## 0.3.5 (30 jul 2019)
+
+### New features
+
+- Support `defaultOptions` prop
+
 ## 0.3.4 (15 jun 2019)
 
 ### Bugfix
