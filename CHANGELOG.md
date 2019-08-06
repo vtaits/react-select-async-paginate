@@ -1,3 +1,9 @@
+## 0.3.6 (06 aug 2019)
+
+### Bugfix
+
+- Request options automatically on change `cacheUniq` if `defaultOptions` is `true`
+
 ## 0.3.5 (30 jul 2019)
 
 ### New features
