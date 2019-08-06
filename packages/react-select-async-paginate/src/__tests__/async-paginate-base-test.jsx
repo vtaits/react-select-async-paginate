@@ -211,6 +211,36 @@ test('should load options on mount if "defaultOptions" is true', async () => {
   expect(loadOptionsMethod.mock.calls.length).toBe(1);
 });
 
+test('should load options on cacheUniq change if "defaultOptions" is true', async () => {
+  const page = setup({
+    defaultOptions: true,
+    cacheUniq: 1,
+  });
+
+  await page.componentDidMount();
+
+  await page.setProps({
+    cacheUniq: 2,
+  });
+
+  // the expected count is 2: one for initial mount, one for cacheUniq change
+  expect(loadOptionsMethod.mock.calls.length).toBe(2);
+});
+
+test('should not load options on cacheUniq change if "defaultOptions" is not true', async () => {
+  const page = setup({
+    cacheUniq: 1,
+  });
+
+  await page.componentDidMount();
+
+  await page.setProps({
+    cacheUniq: 2,
+  });
+
+  expect(loadOptionsMethod.mock.calls.length).toBe(0);
+});
+
 test('should redefine additional in initial options cache', () => {
   const options = [
     {

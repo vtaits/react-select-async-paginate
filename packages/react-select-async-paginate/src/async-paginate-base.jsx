@@ -105,9 +105,10 @@ class AsyncPaginateBase extends Component {
     }
   }
 
-  componentDidUpdate(oldProps) {
+  async componentDidUpdate(oldProps) {
     const {
       cacheUniq,
+      defaultOptions,
       inputValue,
       menuIsOpen,
     } = this.props;
@@ -116,6 +117,9 @@ class AsyncPaginateBase extends Component {
       this.setState({
         optionsCache: {},
       });
+      if (defaultOptions === true) {
+        await this.loadOptions();
+      }
     } else {
       if (inputValue !== oldProps.inputValue) {
         this.handleInputChange(inputValue);
