@@ -114,7 +114,7 @@ class AsyncPaginateBase extends Component {
     } = this.props;
 
     if (oldProps.cacheUniq !== cacheUniq) {
-      this.setState({
+      await this.setState({
         optionsCache: {},
       });
       if (defaultOptions === true) {
