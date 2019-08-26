@@ -61,7 +61,7 @@ class AsyncPaginateBase extends Component {
 
     cacheUniq: null,
 
-    selectRef: Function.prototype,
+    selectRef: null,
   };
 
   constructor(props) {
