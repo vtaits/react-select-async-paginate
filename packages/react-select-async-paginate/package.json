@@ -20,16 +20,16 @@
     "prepare": "yarn build"
   },
   "peerDependencies": {
-    "@types/react-select": "^2.0.0",
-    "react": "^15.0.0 || ^16.0.0",
+    "@types/react-select": "^3.0.0",
+    "react": "^16.8.0",
     "react-select": "^2.0.0 || ^3.0.0"
   },
   "dependencies": {
-    "@babel/runtime": "^7.5.4",
+    "@babel/runtime": "^7.6.0",
     "prop-types": "^15.7.2"
   },
   "devDependencies": {
-    "@types/react-select": "^2.0.19",
+    "@types/react-select": "^3.0.4",
     "react-select": "^3.0.4"
   }
 }

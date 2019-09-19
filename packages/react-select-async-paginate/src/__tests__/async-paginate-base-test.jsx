@@ -1,3 +1,5 @@
+/* eslint-disable max-classes-per-file */
+
 import React, { Component } from 'react';
 import { shallow, mount } from 'enzyme';
 import Select from 'react-select';

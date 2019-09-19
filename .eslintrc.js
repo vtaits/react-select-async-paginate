@@ -29,5 +29,8 @@ module.exports = {
         devDependencies: ['**/*-test.js', '**/*-test.jsx'],
       },
     ],
+
+    /* provide all props to react-select and its components */
+    'react/jsx-props-no-spreading': 'off',
   },
 };

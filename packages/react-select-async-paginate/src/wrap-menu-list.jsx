@@ -5,15 +5,6 @@ export const CHECK_TIMEOUT = 300;
 
 export default function wrapMenuList(MenuList) {
   class WrappedMenuList extends Component {
-    static propTypes = {
-      innerRef: PropTypes.func.isRequired,
-
-      selectProps: PropTypes.shape({
-        handleScrolledToBottom: PropTypes.func.isRequired,
-        shouldLoadMore: PropTypes.func.isRequired,
-      }).isRequired,
-    }
-
     componentDidMount() {
       this.setCheckAndHandleTimeount();
     }
@@ -95,6 +86,15 @@ export default function wrapMenuList(MenuList) {
       );
     }
   }
+
+  WrappedMenuList.propTypes = {
+    innerRef: PropTypes.func.isRequired,
+
+    selectProps: PropTypes.shape({
+      handleScrolledToBottom: PropTypes.func.isRequired,
+      shouldLoadMore: PropTypes.func.isRequired,
+    }).isRequired,
+  };
 
   return WrappedMenuList;
 }

@@ -3,9 +3,13 @@ import React, { Component } from 'react';
 import AsyncPaginateBase from './async-paginate-base';
 
 class AsyncPaginate extends Component {
-  state = {
-    inputValue: '',
-    menuIsOpen: false,
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      inputValue: '',
+      menuIsOpen: false,
+    };
   }
 
   onInputChange = async (inputValue) => {

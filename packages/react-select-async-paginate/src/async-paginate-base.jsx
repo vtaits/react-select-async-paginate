@@ -17,53 +17,6 @@ const sleep = (ms) => new Promise((resolve) => {
 });
 
 class AsyncPaginateBase extends Component {
-  static propTypes = {
-    loadOptions: PropTypes.func.isRequired,
-    debounceTimeout: PropTypes.number,
-    shouldLoadMore: PropTypes.func,
-    inputValue: PropTypes.string.isRequired,
-    menuIsOpen: PropTypes.bool.isRequired,
-
-    options: PropTypes.arrayOf(PropTypes.object),
-    defaultOptions: PropTypes.oneOfType([
-      PropTypes.bool,
-      PropTypes.arrayOf(PropTypes.object),
-    ]),
-
-    // eslint-disable-next-line react/forbid-prop-types
-    additional: PropTypes.any,
-    reduceOptions: PropTypes.func,
-
-    SelectComponent: PropTypes.elementType,
-    components: PropTypes.objectOf(PropTypes.func),
-    filterOption: PropTypes.func,
-
-    onInputChange: PropTypes.func.isRequired,
-
-    // eslint-disable-next-line react/forbid-prop-types
-    cacheUniq: PropTypes.any,
-
-    selectRef: PropTypes.func,
-  };
-
-  static defaultProps = {
-    debounceTimeout: 0,
-    shouldLoadMore: defaultShouldLoadMore,
-
-    options: null,
-    defaultOptions: false,
-    additional: null,
-    reduceOptions: defaultReduceOptions,
-
-    SelectComponent: Select,
-    components: {},
-    filterOption: null,
-
-    cacheUniq: null,
-
-    selectRef: null,
-  };
-
   constructor(props) {
     super(props);
 
@@ -319,5 +272,52 @@ class AsyncPaginateBase extends Component {
     );
   }
 }
+
+AsyncPaginateBase.propTypes = {
+  loadOptions: PropTypes.func.isRequired,
+  debounceTimeout: PropTypes.number,
+  shouldLoadMore: PropTypes.func,
+  inputValue: PropTypes.string.isRequired,
+  menuIsOpen: PropTypes.bool.isRequired,
+
+  options: PropTypes.arrayOf(PropTypes.object),
+  defaultOptions: PropTypes.oneOfType([
+    PropTypes.bool,
+    PropTypes.arrayOf(PropTypes.object),
+  ]),
+
+  // eslint-disable-next-line react/forbid-prop-types
+  additional: PropTypes.any,
+  reduceOptions: PropTypes.func,
+
+  SelectComponent: PropTypes.elementType,
+  components: PropTypes.objectOf(PropTypes.func),
+  filterOption: PropTypes.func,
+
+  onInputChange: PropTypes.func.isRequired,
+
+  // eslint-disable-next-line react/forbid-prop-types
+  cacheUniq: PropTypes.any,
+
+  selectRef: PropTypes.func,
+};
+
+AsyncPaginateBase.defaultProps = {
+  debounceTimeout: 0,
+  shouldLoadMore: defaultShouldLoadMore,
+
+  options: null,
+  defaultOptions: false,
+  additional: null,
+  reduceOptions: defaultReduceOptions,
+
+  SelectComponent: Select,
+  components: {},
+  filterOption: null,
+
+  cacheUniq: null,
+
+  selectRef: null,
+};
 
 export default AsyncPaginateBase;

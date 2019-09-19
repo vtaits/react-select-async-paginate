@@ -9,14 +9,14 @@
   },
   "devDependencies": {
     "babel-loader": "^8.0.6",
-    "webpack": "^4.35.3",
-    "webpack-cli": "^3.3.5",
-    "webpack-dev-server": "^3.7.2"
+    "webpack": "^4.40.2",
+    "webpack-cli": "^3.3.9",
+    "webpack-dev-server": "^3.8.1"
   },
   "dependencies": {
-    "@babel/runtime": "^7.5.4",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6",
+    "@babel/runtime": "^7.6.0",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
     "react-select": "^3.0.4",
     "react-select-async-paginate": "^0.3.4"
   }

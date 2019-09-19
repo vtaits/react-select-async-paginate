@@ -44,11 +44,15 @@ const loadOptions = (search, prevOptions) => new Promise((resolve) => {
 });
 
 class Page extends Component {
-  state = {
-    value1: null,
-    value2: null,
-    value3: null,
-    value4: null,
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      value1: null,
+      value2: null,
+      value3: null,
+      value4: null,
+    };
   }
 
   setValue1 = (value1) => {
