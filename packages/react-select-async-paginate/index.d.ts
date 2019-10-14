@@ -32,4 +32,14 @@ export class AsyncPaginate<OptionType, Additional = any> extends React.Component
   onMenuOpen: () => Promise<void>;
 }
 
+export type BaseState = {
+  optionsCache: { [key: string]: any };
+}
+
+export class AsyncPaginateBase<OptionType, Additional = any> extends React.Component<Props<OptionType, Additional>, BaseState> {
+  onInputChange: (inputValue: string) => Promise<void>;
+  onMenuClose: () => Promise<void>;
+  onMenuOpen: () => Promise<void>;
+}
+
 export default AsyncPaginate;
