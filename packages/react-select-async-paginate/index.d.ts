@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { InputActionMeta, OptionsType } from 'react-select/lib/types';
-import { Props as SelectProps } from 'react-select/lib/Select';
+import { InputActionMeta, OptionsType } from 'react-select/src/types';
+import { Props as SelectProps } from 'react-select/base';
 
 export type AsyncResult<OptionType, Additional = any> = {
   options: OptionType[];
