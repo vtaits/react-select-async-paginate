@@ -25,11 +25,11 @@
     "react-select": "^2.0.0 || ^3.0.0"
   },
   "dependencies": {
-    "@babel/runtime": "^7.6.0",
+    "@babel/runtime": "^7.6.3",
     "prop-types": "^15.7.2"
   },
   "devDependencies": {
-    "@types/react-select": "^3.0.4",
-    "react-select": "^3.0.4"
+    "@types/react-select": "^3.0.5",
+    "react-select": "^3.0.8"
   }
 }

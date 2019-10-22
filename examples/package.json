@@ -9,15 +9,15 @@
   },
   "devDependencies": {
     "babel-loader": "^8.0.6",
-    "webpack": "^4.40.2",
+    "webpack": "^4.41.2",
     "webpack-cli": "^3.3.9",
-    "webpack-dev-server": "^3.8.1"
+    "webpack-dev-server": "^3.8.2"
   },
   "dependencies": {
-    "@babel/runtime": "^7.6.0",
-    "react": "^16.9.0",
-    "react-dom": "^16.9.0",
-    "react-select": "^3.0.4",
+    "@babel/runtime": "^7.6.3",
+    "react": "^16.10.2",
+    "react-dom": "^16.10.2",
+    "react-select": "^3.0.8",
     "react-select-async-paginate": "^0.3.4"
   }
 }
