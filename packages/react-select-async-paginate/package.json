@@ -10,6 +10,12 @@
     "/lib",
     "index.d.ts"
   ],
+  "keywords": [
+    "react",
+    "react-select",
+    "async",
+    "pagination"
+  ],
   "repository": "git@github.com:vtaits/react-select-async-paginate.git",
   "author": "Vadim Taits",
   "license": "MIT",
