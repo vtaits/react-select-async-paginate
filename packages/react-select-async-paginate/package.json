@@ -21,8 +21,8 @@
   "license": "MIT",
   "scripts": {
     "build": "yarn build:cjs && yarn build:es",
-    "build:cjs": "cross-env BABEL_ENV=cjs babel src --out-dir lib --ignore \"src/**/__tests__\"",
-    "build:es": "cross-env BABEL_ENV=es babel src --out-dir es --ignore \"src/**/__tests__\"",
+    "build:cjs": "cross-env BABEL_ENV=cjs babel src --out-dir lib --ignore \"src/**/__tests__\",\"src/**/__stories__\"",
+    "build:es": "cross-env BABEL_ENV=es babel src --out-dir es --ignore \"src/**/__tests__\",\"src/**/__stories__\"",
     "prepare": "yarn build"
   },
   "peerDependencies": {

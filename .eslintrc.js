@@ -26,7 +26,11 @@ module.exports = {
           './examples',
           './packages/react-select-async-paginate',
         ],
-        devDependencies: ['**/*-test.js', '**/*-test.jsx'],
+
+        devDependencies: [
+          '**/__tests__/**/*',
+          '**/__stories__/**/*',
+        ],
       },
     ],
 
