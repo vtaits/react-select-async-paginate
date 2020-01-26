@@ -1,8 +1,7 @@
 {
   "private": true,
   "workspaces": [
-    "packages/*",
-    "examples"
+    "packages/*"
   ],
   "repository": "git@github.com:vtaits/react-select-async-paginate.git",
   "author": "Vadim Taits",
@@ -10,7 +9,7 @@
   "scripts": {
     "start": "BABEL_ENV=es start-storybook",
     "build": "yarn workspace react-select-async-paginate build",
-    "lint": "eslint packages examples --ext .js,.jsx --ignore-path .gitignore",
+    "lint": "eslint packages --ext .js,.jsx --ignore-path .gitignore",
     "test:unit": "jest",
     "test:unit:cov": "jest --coverage",
     "test": "yarn lint && yarn test:unit",
@@ -27,6 +26,7 @@
     "@storybook/react": "^5.3.9",
     "babel-eslint": "^10.0.3",
     "babel-jest": "^25.1.0",
+    "babel-loader": "^8.0.6",
     "codecov": "^3.6.2",
     "cross-env": "^6.0.3",
     "enzyme": "^3.11.0",

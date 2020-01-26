@@ -23,7 +23,6 @@ module.exports = {
       {
         packageDir: [
           './',
-          './examples',
           './packages/react-select-async-paginate',
         ],
 
