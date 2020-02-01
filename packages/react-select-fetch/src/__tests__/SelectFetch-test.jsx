@@ -72,6 +72,7 @@ test('should call get with default arguments', async () => {
     param2: 'value2',
     search: 'testSearch',
     page: 10,
+    offset: 3,
   });
 });
 
@@ -97,6 +98,7 @@ test('should redefine search param name in query params', async () => {
     param2: 'value2',
     search: 'testSearch',
     page: 10,
+    offset: 3,
   });
 });
 
@@ -122,6 +124,7 @@ test('should redefine page param name in query params', async () => {
     param2: 'value2',
     search: 'testSearch',
     currentPage: 10,
+    offset: 3,
   });
 });
 
@@ -146,10 +149,11 @@ test('should not send page if page param name falsy', async () => {
     param1: 'value1',
     param2: 'value2',
     search: 'testSearch',
+    offset: 3,
   });
 });
 
-test('should call get with offset param', async () => {
+test('should redefine offset param name', async () => {
   const get = jest.fn();
 
   const page = setup({
@@ -158,7 +162,7 @@ test('should call get with offset param', async () => {
       param1: 'value1',
       param2: 'value2',
     },
-    offsetParamName: 'offset',
+    offsetParamName: 'otherOffset',
     get,
   });
 
@@ -171,7 +175,32 @@ test('should call get with offset param', async () => {
     param2: 'value2',
     search: 'testSearch',
     page: 10,
-    offset: 3,
+    otherOffset: 3,
+  });
+});
+
+test('should not send offset if offset param name falsy', async () => {
+  const get = jest.fn();
+
+  const page = setup({
+    url: 'test-url',
+    queryParams: {
+      param1: 'value1',
+      param2: 'value2',
+    },
+    offsetParamName: null,
+    get,
+  });
+
+  await page.loadOptions('testSearch', [1, 2, 3], { page: 10 });
+
+  expect(get.mock.calls.length).toBe(1);
+  expect(get.mock.calls[0][0]).toBe('test-url');
+  expect(get.mock.calls[0][1]).toEqual({
+    param1: 'value1',
+    param2: 'value2',
+    search: 'testSearch',
+    page: 10,
   });
 });
 

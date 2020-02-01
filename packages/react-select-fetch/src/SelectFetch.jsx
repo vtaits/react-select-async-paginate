@@ -99,7 +99,7 @@ SelectFetch.defaultProps = {
   queryParams: {},
   searchParamName: 'search',
   pageParamName: 'page',
-  offsetParamName: null,
+  offsetParamName: 'offset',
   mapResponse: defaultResponseMapper,
   get: defaultGet,
 };
