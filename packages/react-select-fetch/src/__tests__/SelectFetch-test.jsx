@@ -227,24 +227,29 @@ test('should return response with increased page in additional', async () => {
 });
 
 test('should return mapped response with increased page in additional', async () => {
-  const get = jest.fn(() => ({
+  const response = {
     results: [4, 5, 6],
     has_more: true,
+  };
+
+  const get = jest.fn(() => response);
+
+  const mapResponse = jest.fn(({
+    results,
+    has_more: hasMore,
+  }) => ({
+    options: results,
+    hasMore,
   }));
 
   const page = setup({
     get,
-
-    mapResponse: ({
-      results,
-      has_more: hasMore,
-    }) => ({
-      options: results,
-      hasMore,
-    }),
+    mapResponse,
   });
 
-  const result = await page.loadOptions('testSearch', [1, 2, 3], { page: 10 });
+  const prevOptions = [1, 2, 3];
+
+  const result = await page.loadOptions('testSearch', prevOptions, { page: 10 });
 
   expect(result).toEqual({
     options: [4, 5, 6],
@@ -254,6 +259,12 @@ test('should return mapped response with increased page in additional', async ()
       page: 11,
     },
   });
+
+  expect(mapResponse.mock.calls.length).toBe(1);
+  expect(mapResponse.mock.calls[0][0]).toBe(response);
+  expect(mapResponse.mock.calls[0][1].search).toBe('testSearch');
+  expect(mapResponse.mock.calls[0][1].prevPage).toBe(10);
+  expect(mapResponse.mock.calls[0][1].prevOptions).toBe(prevOptions);
 });
 
 test('should return empty response on error', async () => {

@@ -24,10 +24,10 @@ const SelectFetch = (props) => {
   } = props;
 
   const loadOptions = useCallback(
-    async (q, loadedOptions, { page }) => {
+    async (search, prevOptions, { page }) => {
       const params = {
         ...queryParams,
-        [searchParamName]: q,
+        [searchParamName]: search,
       };
 
       if (pageParamName) {
@@ -35,7 +35,7 @@ const SelectFetch = (props) => {
       }
 
       if (offsetParamName) {
-        params[offsetParamName] = loadedOptions.length;
+        params[offsetParamName] = prevOptions.length;
       }
 
       let responseRaw;
@@ -54,7 +54,11 @@ const SelectFetch = (props) => {
         };
       }
 
-      const response = mapResponse(responseRaw);
+      const response = mapResponse(responseRaw, {
+        search,
+        prevPage: page,
+        prevOptions,
+      });
 
       return {
         ...response,
