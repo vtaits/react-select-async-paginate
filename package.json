@@ -10,11 +10,11 @@
     "start": "BABEL_ENV=es start-storybook",
     "build": "yarn workspace react-select-async-paginate build",
     "lint": "eslint packages --ext .js,.jsx --ignore-path .gitignore",
-    "test:unit": "jest",
-    "test:unit:cov": "jest --coverage",
+    "test:unit": "yarn workspaces run test:unit",
+    "test:unit:cov": "yarn workspaces run test:unit:cov",
     "test": "yarn lint && yarn test:unit",
     "validate": "yarn build && yarn lint && yarn test:unit:cov",
-    "codecov": "codecov"
+    "codecov": "yarn workspaces run codecov"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
