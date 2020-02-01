@@ -24,6 +24,7 @@ module.exports = {
         packageDir: [
           './',
           './packages/react-select-async-paginate',
+          './packages/react-select-fetch',
         ],
 
         devDependencies: [

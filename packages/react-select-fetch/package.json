@@ -1,0 +1,47 @@
+{
+  "name": "react-select-fetch",
+  "version": "0.1.0",
+  "description": "Wrapper above react-select that supports pagination on menu scroll",
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "typings": "index.d.ts",
+  "files": [
+    "/es",
+    "/lib",
+    "index.d.ts"
+  ],
+  "keywords": [
+    "react",
+    "react-select",
+    "async",
+    "pagination",
+    "fetch"
+  ],
+  "repository": "git@github.com:vtaits/react-select-async-paginate.git",
+  "author": "Vadim Taits",
+  "license": "MIT",
+  "scripts": {
+    "clean": "rimraf es lib",
+    "build": "yarn build:cjs && yarn build:es",
+    "build:cjs": "cross-env BABEL_ENV=cjs babel src --out-dir lib --ignore \"src/**/__tests__\",\"src/**/__stories__\"",
+    "build:es": "cross-env BABEL_ENV=es babel src --out-dir es --ignore \"src/**/__tests__\",\"src/**/__stories__\"",
+    "prepare": "yarn build"
+  },
+  "peerDependencies": {
+    "@types/react-select": "^3.0.0",
+    "react": "^16.8.0",
+    "react-select": "^3.0.0",
+    "react-select-async-paginate": "^0.3.10"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.8.3",
+    "prop-types": "^15.7.2",
+    "qs": "^6.9.1"
+  },
+  "devDependencies": {
+    "@types/react-select": "^3.0.10",
+    "react-select": "^3.0.8",
+    "react-select-async-paginate": "^0.3.10",
+    "rimraf": "^3.0.1"
+  }
+}
