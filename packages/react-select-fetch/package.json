@@ -1,7 +1,7 @@
 {
   "name": "react-select-fetch",
   "version": "0.1.0",
-  "description": "Wrapper above react-select that supports pagination on menu scroll",
+  "description": "Wrapper above react-select-async-paginate that loads options from specified url",
   "main": "lib/index.js",
   "module": "es/index.js",
   "files": [
