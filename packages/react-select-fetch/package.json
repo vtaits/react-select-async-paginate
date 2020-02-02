@@ -4,11 +4,9 @@
   "description": "Wrapper above react-select that supports pagination on menu scroll",
   "main": "lib/index.js",
   "module": "es/index.js",
-  "typings": "index.d.ts",
   "files": [
     "/es",
-    "/lib",
-    "index.d.ts"
+    "/lib"
   ],
   "keywords": [
     "react",
