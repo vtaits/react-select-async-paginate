@@ -8,7 +8,7 @@
   "license": "MIT",
   "scripts": {
     "start": "BABEL_ENV=es start-storybook",
-    "build": "yarn workspace react-select-async-paginate build",
+    "build": "yarn workspaces run build",
     "lint": "eslint packages --ext .js,.jsx --ignore-path .gitignore",
     "test:unit": "yarn workspaces run test:unit",
     "test:unit:cov": "yarn workspaces run test:unit:cov",
