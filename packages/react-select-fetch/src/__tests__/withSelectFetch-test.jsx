@@ -1,9 +1,11 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import AsyncPaginate from 'react-select-async-paginate';
+import withSelectFetch from '../withSelectFetch';
 
-import SelectFetch from '../SelectFetch';
+const TestComponent = () => <div />;
+
+const SelectFetch = withSelectFetch(TestComponent);
 
 const defaultProps = {
   url: 'test-url',
@@ -17,7 +19,7 @@ const setup = (props) => {
     />,
   );
 
-  const getSelectNode = () => wrapper.find(AsyncPaginate);
+  const getSelectNode = () => wrapper.find(TestComponent);
 
   const loadOptions = (...args) => getSelectNode().prop('loadOptions')(...args);
 
