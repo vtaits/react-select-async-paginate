@@ -9,6 +9,7 @@ Wrapper above `react-select-async-paginate` that loads options from specified ur
 ## Sandbox examples
 
 - [Simple](https://codesandbox.io/s/9nfmg)
+- [Manual control of input value and menu opening](https://codesandbox.io/s/34pjt)
 
 ## Installation
 
@@ -131,4 +132,24 @@ const get = async (url, params) => {
 
   return response.data;
 };
+```
+
+## Manual control of input value and menu opening
+
+`SelectFetchBase` is an analog of `AsyncPaginateBase`.
+
+```javascript
+import { SelectFetchBase } from 'react-select-fetch';
+```
+
+## Use other AsyncPaginate-like component
+
+You can use `withSelectFetch` hoc.
+
+```javascript
+import { withSelectFetch } from 'react-select-fetch';
+
+import CustomizedAsyncPaginate from './CustomizedAsyncPaginate';
+
+const CustomizedSelectFetch = withSelectFetch(CustomizedAsyncPaginate);
 ```
