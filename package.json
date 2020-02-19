@@ -27,7 +27,7 @@
     "babel-eslint": "^10.0.3",
     "babel-jest": "^25.1.0",
     "babel-loader": "^8.0.6",
-    "codecov": "^3.6.4",
+    "codecov": "^3.6.5",
     "cross-env": "^7.0.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
