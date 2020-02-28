@@ -299,7 +299,10 @@ AsyncPaginateBase.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   cacheUniq: PropTypes.any,
 
-  selectRef: PropTypes.func,
+  selectRef: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.object,
+  ]),
 };
 
 AsyncPaginateBase.defaultProps = {
