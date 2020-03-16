@@ -1,3 +1,9 @@
+## 0.3.12 (17 mar 2020)
+
+### New features
+
+- Add `loadOptionsOnMenuOpen` prop
+
 ## 0.3.6 (06 aug 2019)
 
 ### Bugfix

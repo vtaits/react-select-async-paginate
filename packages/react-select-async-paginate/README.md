@@ -102,6 +102,10 @@ Should return new options.
 
 Not required. Can take any value. When this prop changed, `AsyncPaginate` cleans all cached options.
 
+### loadOptionsOnMenuOpen
+
+Not required. Boolean. If `false` options will not load on menu opening.
+
 ### selectRef
 
 Ref for take `react-select` instance.
