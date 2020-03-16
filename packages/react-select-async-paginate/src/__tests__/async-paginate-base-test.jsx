@@ -351,6 +351,18 @@ test('should load options on open select if options not cached', async () => {
   expect(loadOptionsMethod.mock.calls.length).toBe(1);
 });
 
+test('should not load options on open select if loadOptionsOnMenuOpen falsy', async () => {
+  const page = setup({
+    loadOptionsOnMenuOpen: false,
+  });
+
+  page.setProps({
+    menuIsOpen: true,
+  });
+
+  expect(loadOptionsMethod.mock.calls.length).toBe(0);
+});
+
 test('should not call loadOptions on open select if options cached', async () => {
   const options = [{
     value: 1,

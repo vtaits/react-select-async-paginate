@@ -86,10 +86,13 @@ class AsyncPaginateBase extends Component {
 
   async onMenuOpen() {
     const {
+      loadOptionsOnMenuOpen,
+    } = this.props;
+    const {
       optionsCache,
     } = this.state;
 
-    if (!optionsCache[''] && this.props.loadOptionsOnMenuOpen === true) {
+    if (!optionsCache[''] && loadOptionsOnMenuOpen) {
       await this.loadOptions();
     }
   }
@@ -275,7 +278,7 @@ class AsyncPaginateBase extends Component {
 
 AsyncPaginateBase.propTypes = {
   loadOptions: PropTypes.func.isRequired,
-  loadOptionsOnMenuOpen: PropTypes.bool.isRequired,
+  loadOptionsOnMenuOpen: PropTypes.bool,
   debounceTimeout: PropTypes.number,
   shouldLoadMore: PropTypes.func,
   inputValue: PropTypes.string.isRequired,
