@@ -455,30 +455,32 @@ test('should not call loadOptions on search change if options cached', async () 
   expect(loadOptionsMethod.mock.calls.length).toBe(0);
 });
 
-['onMenuScrollToBottom', 'handleScrolledToBottom'].forEach((propName) => {
-  describe(propName, () => {
-    test('should load more options on scroll menu to bottom', async () => {
-      const page = setup({
-        inputValue: 'test',
-      });
-
-      page.setState({
-        optionsCache: {
-          test: {
-            options: [],
-            hasMore: true,
-            isLoading: false,
-            isFirstLoad: false,
-            additional: null,
-          },
-        },
-      });
-
-      await page.getSelectNode().prop(propName)();
-
-      expect(loadOptionsMethod.mock.calls.length).toBe(1);
-    });
+test('should load more options on scroll menu to bottom', async () => {
+  const page = setup({
+    inputValue: 'test',
   });
+
+  page.setState({
+    optionsCache: {
+      test: {
+        options: [],
+        hasMore: true,
+        isLoading: false,
+        isFirstLoad: false,
+        additional: null,
+      },
+    },
+  });
+
+  await page.getSelectNode().prop('handleScrolledToBottom')();
+
+  expect(loadOptionsMethod.mock.calls.length).toBe(1);
+});
+
+test('should not use onMenuScrollToBottom', () => {
+  const page = setup({});
+
+  expect(page.getSelectNode().prop('onMenuScrollToBottom')).toBeFalsy();
 });
 
 test('should provide components', () => {

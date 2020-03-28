@@ -261,7 +261,6 @@ class AsyncPaginateBase extends Component {
       <SelectComponent
         {...props}
         inputValue={inputValue}
-        onMenuScrollToBottom={this.handleScrolledToBottom}
         handleScrolledToBottom={this.handleScrolledToBottom}
         isLoading={currentOptions.isLoading}
         isFirstLoad={currentOptions.isFirstLoad}
