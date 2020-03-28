@@ -1,3 +1,9 @@
+## 0.3.13 (28 mar 2020)
+
+### Bugfix
+
+- Fixed checking of the need to load options [#51](https://github.com/vtaits/react-select-async-paginate/issues/51)
+
 ## 0.3.12 (17 mar 2020)
 
 ### New features
