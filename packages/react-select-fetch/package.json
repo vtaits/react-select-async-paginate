@@ -35,9 +35,9 @@
     "react-select-async-paginate": "^0.3.10"
   },
   "dependencies": {
-    "@babel/runtime": "^7.8.7",
+    "@babel/runtime": "^7.9.2",
     "prop-types": "^15.7.2",
-    "qs": "^6.9.1"
+    "qs": "^6.9.3"
   },
   "devDependencies": {
     "@types/react-select": "^3.0.10",

@@ -34,7 +34,7 @@
     "react-select": "^2.0.0 || ^3.0.0"
   },
   "dependencies": {
-    "@babel/runtime": "^7.8.7",
+    "@babel/runtime": "^7.9.2",
     "prop-types": "^15.7.2"
   },
   "devDependencies": {
