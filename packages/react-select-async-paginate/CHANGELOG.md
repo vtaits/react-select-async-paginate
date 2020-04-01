@@ -1,3 +1,9 @@
+## 0.3.14 (01 apr 2020)
+
+### Bugfix
+
+- Removed excess check of scrollability of menu for load more options [#52](https://github.com/vtaits/react-select-async-paginate/issues/52)
+
 ## 0.3.13 (28 mar 2020)
 
 ### Bugfix
