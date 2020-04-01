@@ -63,11 +63,6 @@ export default function wrapMenuList(MenuList) {
         clientHeight,
       } = el;
 
-      // menu hasn't scroll
-      if (scrollHeight <= clientHeight) {
-        return true;
-      }
-
       const {
         selectProps: {
           shouldLoadMore,

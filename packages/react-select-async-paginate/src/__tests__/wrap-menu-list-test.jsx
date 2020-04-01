@@ -4,6 +4,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 
 import wrapMenuList, { CHECK_TIMEOUT } from '../wrap-menu-list';
+import defaultShouldLoadMore from '../default-should-load-more';
 
 jest.useFakeTimers();
 
@@ -16,7 +17,7 @@ const defaultProps = {
 
   selectProps: {
     handleScrolledToBottom: Function.prototype,
-    shouldLoadMore: Function.prototype,
+    shouldLoadMore: defaultShouldLoadMore,
   },
 };
 
