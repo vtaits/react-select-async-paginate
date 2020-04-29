@@ -1,6 +1,7 @@
 [![NPM](https://img.shields.io/npm/v/react-select-fetch.svg)](https://www.npmjs.com/package/react-select-fetch)
 [![Build Status](https://img.shields.io/travis/vtaits/react-select-async-paginate.svg?style=flat)](https://travis-ci.org/vtaits/react-select-async-paginate)
 [![codecov.io](https://codecov.io/gh/vtaits/react-select-async-paginate/branch/master/graph/badge.svg)](https://codecov.io/gh/vtaits/react-select-async-paginate)
+[![Types](https://img.shields.io/npm/types/react-select-fetch.svg)](https://www.npmjs.com/package/react-select-fetch)
 
 # react-select-fetch
 
@@ -14,13 +15,13 @@ Wrapper above `react-select-async-paginate` that loads options from specified ur
 ## Installation
 
 ```
-npm install react-select react-select-async-paginate react-select-fetch
+npm install react-select react-select-async-paginate@next react-select-fetch@next
 ```
 
 or
 
 ```
-yarn add react-select react-select-async-paginate react-select-fetch
+yarn add react-select react-select-async-paginate@next react-select-fetch@next
 ```
 
 ## Motivation
@@ -28,9 +29,27 @@ yarn add react-select react-select-async-paginate react-select-fetch
 Abstractions are wonderful but the most common task for async select is load list of options by specified url and query params. E.g.
 
 ```javascript
+// With SelectFetch
+
+import { SelectFetch } from 'react-select-fetch';
+
+...
+
+<SelectFetch
+  value={value}
+  url="/awesome-api-url/"
+  mapResponse={(response) => ({
+    options: response.results,
+    hasMore: response.has_more,
+  })}
+  onChange={setValue}
+/>
+```
+
+```javascript
 // Without SelectFetch
 
-import AsyncPaginate from 'react-select-async-paginate';
+import { AsyncPaginate } from 'react-select-async-paginate';
 
 ...
 
@@ -52,24 +71,6 @@ import AsyncPaginate from 'react-select-async-paginate';
   additional={{
     page: 1,
   }}
-/>
-```
-
-```javascript
-// With SelectFetch
-
-import SelectFetch from 'react-select-fetch';
-
-...
-
-<SelectFetch
-  value={value}
-  url="/awesome-api-url/"
-  mapResponse={(response) => ({
-    options: response.results,
-    hasMore: response.has_more,
-  })}
-  onChange={setValue}
 />
 ```
 
@@ -142,14 +143,15 @@ const get = async (url, params) => {
 import { SelectFetchBase } from 'react-select-fetch';
 ```
 
-## Use other AsyncPaginate-like component
+## Replacing react-select component
 
-You can use `withSelectFetch` hoc.
+You can use `withSelectFetch` and `withSelectFetchBase` HOCs.
 
 ```javascript
-import { withSelectFetch } from 'react-select-fetch';
+import { withSelectFetch, withSelectFetchBase } from 'react-select-fetch';
 
-import CustomizedAsyncPaginate from './CustomizedAsyncPaginate';
+...
 
-const CustomizedSelectFetch = withSelectFetch(CustomizedAsyncPaginate);
+const CustomSelectFetch = withSelectFetch(CustomSelect);
+const CustomSelectFetchBase = withSelectFetchBase(CustomSelect);
 ```

@@ -4,6 +4,7 @@ module.exports = {
   env: {
     cjs: {
       presets: [
+        '@babel/preset-typescript',
         '@babel/preset-env',
         '@babel/preset-react',
       ],
@@ -11,6 +12,7 @@ module.exports = {
 
     es: {
       presets: [
+        '@babel/preset-typescript',
         [
           '@babel/preset-env',
           {
@@ -23,6 +25,7 @@ module.exports = {
 
     test: {
       presets: [
+        '@babel/preset-typescript',
         '@babel/preset-env',
         '@babel/preset-react',
       ],
@@ -34,6 +37,5 @@ module.exports = {
     ['@babel/plugin-transform-runtime', {
       version: require('@babel/helpers/package.json').version,
     }],
-    '@babel/plugin-proposal-class-properties',
   ],
 };

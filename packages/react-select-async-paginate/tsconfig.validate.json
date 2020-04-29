@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "outDir": "ts",
+    "jsx": "react",
+    "esModuleInterop": true
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

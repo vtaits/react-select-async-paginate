@@ -1,6 +1,7 @@
 [![NPM](https://img.shields.io/npm/v/react-select-async-paginate.svg)](https://www.npmjs.com/package/react-select-async-paginate)
 [![Build Status](https://img.shields.io/travis/vtaits/react-select-async-paginate.svg?style=flat)](https://travis-ci.org/vtaits/react-select-async-paginate)
 [![codecov.io](https://codecov.io/gh/vtaits/react-select-async-paginate/branch/master/graph/badge.svg)](https://codecov.io/gh/vtaits/react-select-async-paginate)
+[![Types](https://img.shields.io/npm/types/react-select-async-paginate.svg)](https://www.npmjs.com/package/react-select-async-paginate)
 
 # react-select-async-paginate
 
@@ -25,20 +26,20 @@ Wrapper above `react-select` that supports pagination on menu scroll.
 
 | react-select | react-select-async-paginate |
 |--------------|-----------------------------|
-| 3.x | ^0.3.2 |
+| 3.x | 0.4.x, ^0.3.2 |
 | 2.x | 0.3.x, 0.2.x |
 | 1.x | 0.1.x |
 
 ## Installation
 
 ```
-npm install react-select react-select-async-paginate
+npm install react-select react-select-async-paginate@next
 ```
 
 or
 
 ```
-yarn add react-select react-select-async-paginate
+yarn add react-select react-select-async-paginate@next
 ```
 
 ## Usage
@@ -98,9 +99,9 @@ Not required. Function. By default new loaded options are concat with previous. 
 
 Should return new options.
 
-### cacheUniq
+### cacheUniqs
 
-Not required. Can take any value. When this prop changed, `AsyncPaginate` cleans all cached options.
+Not required. Array. Works as 2nd argument of `useEffect` hook. When one of items changed, `AsyncPaginate` cleans all cached options.
 
 ### loadOptionsOnMenuOpen
 
@@ -110,16 +111,12 @@ Not required. Boolean. If `false` options will not load on menu opening.
 
 Ref for take `react-select` instance.
 
-### SelectComponent
-
-Not required. React component that will be used instead of `SelectBase` from `react-select`.
-
 ## Example
 
 ### offset way
 
-```
-import AsyncPaginate from 'react-select-async-paginate';
+```javascript
+import { AsyncPaginate } from 'react-select-async-paginate';
 
 ...
 
@@ -163,8 +160,8 @@ async function loadOptions(search, loadedOptions) {
 
 ### page way
 
-```
-import AsyncPaginate from 'react-select-async-paginate';
+```javascript
+import { AsyncPaginate } from 'react-select-async-paginate';
 
 ...
 
@@ -195,8 +192,8 @@ async function loadOptions(search, loadedOptions, { page }) {
 
 You can use `reduceGroupedOptions` util to group options by `label` key.
 
-```
-import AsyncPaginate, { reduceGroupedOptions } from 'react-select-async-paginate';
+```javascript
+import { AsyncPaginate, reduceGroupedOptions } from 'react-select-async-paginate';
 
 /*
  * assuming the API returns something like this:
@@ -234,7 +231,7 @@ import AsyncPaginate, { reduceGroupedOptions } from 'react-select-async-paginate
 
 You can use `AsyncPaginateBase` component.
 
-```
+```javascript
 import React, { useState } from 'react';
 import { AsyncPaginateBase } from 'react-select-async-paginate';
 
@@ -280,12 +277,25 @@ const MyWrapper = ({
 };
 ```
 
+## Replacing react-select component
+
+You can use `withAsyncPaginate` and `withAsyncPaginateBase` HOCs.
+
+```javascript
+import { withAsyncPaginate, withAsyncPaginateBase } from 'react-select-async-paginate';
+
+...
+
+const CustomAsyncPaginate = withAsyncPaginate(CustomSelect);
+const CustomAsyncPaginateBase = withAsyncPaginateBase(CustomSelect);
+```
+
 ## Replacing Components
 
 Usage of replacing components is similar with `react-select`, but there is one difference. If you redefine `MenuList` you should wrap it with `wrapMenuList` for workaround of some internal bugs of `react-select`.
 
-```
-import AsyncPaginate, { wrapMenuList } from 'react-select-async-paginate';
+```javascript
+import { AsyncPaginate, wrapMenuList } from 'react-select-async-paginate';
 
 ...
 
@@ -299,3 +309,62 @@ const MenuList = wrapMenuList(CustomMenuList);
   }}
 />
 ```
+
+## Extended usage
+
+If you want construct own component that uses logic of `react-select-async-paginate` inside, you can use next hooks:
+
+- `useAsyncPaginate`
+- `useAsyncPaginateBase`
+- `useComponents`
+
+```javascript
+import {
+  useAsyncPaginate,
+  useComponents,
+} from 'react-select-async-paginate`;
+
+...
+
+const CustomAsyncPaginateComponent = ({
+  {
+    options,
+    defaultOptions,
+    additional,
+    loadOptionsOnMenuOpen,
+    debounceTimeout,
+    filterOption,
+    reduceOptions,
+    shouldLoadMore,
+
+    components: defaultComponents,
+
+    value,
+    onChange,
+  }
+}) => {
+  const asyncPaginateProps = useAsyncPaginate({
+    options,
+    defaultOptions,
+    additional,
+    loadOptionsOnMenuOpen,
+    debounceTimeout,
+    filterOption,
+    reduceOptions,
+    shouldLoadMore,
+  });
+
+  const components = useComponents(defaultComponents);
+
+  return (
+    <CustomSelect
+      {...asyncPaginateProps}
+      components={components}
+      value={value}
+      onChange={onChange}
+    />
+  );
+}
+```
+
+`useComponents` provides redefined `MenuList` component by default. If you want redefine it, you should also wrap in with `wrapMenuList`.

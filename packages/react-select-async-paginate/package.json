@@ -1,14 +1,14 @@
 {
   "name": "react-select-async-paginate",
-  "version": "0.3.14",
+  "version": "0.4.0-alpha.0",
   "description": "Wrapper above react-select that supports pagination on menu scroll",
   "main": "lib/index.js",
   "module": "es/index.js",
-  "typings": "index.d.ts",
+  "typings": "ts/index.d.ts",
   "files": [
     "/es",
     "/lib",
-    "index.d.ts"
+    "/ts"
   ],
   "keywords": [
     "react",
@@ -20,25 +20,32 @@
   "author": "Vadim Taits",
   "license": "MIT",
   "scripts": {
-    "build": "yarn build:cjs && yarn build:es",
-    "build:cjs": "cross-env BABEL_ENV=cjs babel src --out-dir lib --ignore \"src/**/__tests__\",\"src/**/__stories__\"",
-    "build:es": "cross-env BABEL_ENV=es babel src --out-dir es --ignore \"src/**/__tests__\",\"src/**/__stories__\"",
-    "prepare": "yarn build",
+    "clean": "rimraf es lib ts",
+    "build": "yarn build:cjs && yarn build:es && yarn build:ts",
+    "build:cjs": "cross-env BABEL_ENV=cjs babel --extensions '.ts,.tsx' src --out-dir lib --ignore \"src/**/__tests__\",\"src/**/__stories__\"",
+    "build:es": "cross-env BABEL_ENV=es babel --extensions '.ts,.tsx' src --out-dir es --ignore \"src/**/__tests__\",\"src/**/__stories__\"",
+    "build:ts": "tsc --declaration --emitDeclarationOnly",
+    "lint": "eslint src --ext .ts,.tsx --ignore-path ../../.gitignore",
+    "prepare": "yarn clean && yarn build",
+    "test:ts": "tsc -p ./tsconfig.validate.json --noEmit",
     "test:unit": "jest",
     "test:unit:cov": "jest --coverage",
     "codecov": "codecov -F react_select_async_paginate"
   },
   "peerDependencies": {
-    "@types/react-select": "^3.0.0",
     "react": "^16.8.0",
     "react-select": "^2.0.0 || ^3.0.0"
   },
   "dependencies": {
     "@babel/runtime": "^7.9.2",
-    "prop-types": "^15.7.2"
+    "@seznam/compose-react-refs": "^1.0.4",
+    "react-is-mounted-hook": "^1.0.3",
+    "sleep-promise": "^8.0.1"
   },
   "devDependencies": {
-    "@types/react-select": "^3.0.11",
+    "@storybook/react": "^5.3.18",
+    "@types/react-select": "^3.0.12",
+    "enzyme": "^3.11.0",
     "react-select": "^3.0.8"
   }
 }

@@ -1,12 +1,14 @@
 {
   "name": "react-select-fetch",
-  "version": "0.1.1",
+  "version": "0.2.0-alpha.0",
   "description": "Wrapper above react-select-async-paginate that loads options from specified url",
   "main": "lib/index.js",
   "module": "es/index.js",
+  "typings": "ts/index.d.ts",
   "files": [
     "/es",
-    "/lib"
+    "/lib",
+    "/ts"
   ],
   "keywords": [
     "react",
@@ -19,30 +21,35 @@
   "author": "Vadim Taits",
   "license": "MIT",
   "scripts": {
-    "clean": "rimraf es lib",
-    "build": "yarn build:cjs && yarn build:es",
-    "build:cjs": "cross-env BABEL_ENV=cjs babel src --out-dir lib --ignore \"src/**/__tests__\",\"src/**/__stories__\"",
-    "build:es": "cross-env BABEL_ENV=es babel src --out-dir es --ignore \"src/**/__tests__\",\"src/**/__stories__\"",
-    "prepare": "yarn build",
+    "clean": "rimraf es lib ts",
+    "build": "yarn build:cjs && yarn build:es && yarn build:ts",
+    "build:cjs": "cross-env BABEL_ENV=cjs babel --extensions '.ts,.tsx' src --out-dir lib --ignore \"src/**/__tests__\",\"src/**/__stories__\"",
+    "build:es": "cross-env BABEL_ENV=es babel --extensions '.ts,.tsx' src --out-dir es --ignore \"src/**/__tests__\",\"src/**/__stories__\"",
+    "build:ts": "tsc --declaration --emitDeclarationOnly",
+    "lint": "eslint src --ext .ts,.tsx --ignore-path ../../.gitignore",
+    "prepare": "yarn clean && yarn build",
+    "test:ts": "tsc -p ./tsconfig.validate.json --noEmit",
     "test:unit": "jest",
     "test:unit:cov": "jest --coverage",
     "codecov": "codecov -F react_select_fetch"
   },
   "peerDependencies": {
-    "@types/react-select": "^3.0.0",
     "react": "^16.8.0",
     "react-select": "^3.0.0",
-    "react-select-async-paginate": "^0.3.10"
+    "react-select-async-paginate": "^0.4.0-alpha.0"
   },
   "dependencies": {
     "@babel/runtime": "^7.9.2",
-    "prop-types": "^15.7.2",
     "qs": "^6.9.3"
   },
   "devDependencies": {
+    "@storybook/react": "^5.3.18",
+    "@types/qs": "^6.9.1",
     "@types/react-select": "^3.0.10",
+    "enzyme": "^3.11.0",
     "react-select": "^3.0.8",
-    "react-select-async-paginate": "^0.3.10",
-    "rimraf": "^3.0.1"
+    "react-select-async-paginate": "^0.4.0-alpha.0",
+    "rimraf": "^3.0.1",
+    "sleep-promise": "^8.0.1"
   }
 }
