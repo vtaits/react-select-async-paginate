@@ -1,3 +1,4 @@
+[![NPM](https://img.shields.io/npm/v/react-select-async-paginate/next.svg)](https://www.npmjs.com/package/react-select-async-paginate/v/next)
 [![NPM](https://img.shields.io/npm/v/react-select-async-paginate.svg)](https://www.npmjs.com/package/react-select-async-paginate)
 [![Build Status](https://img.shields.io/travis/vtaits/react-select-async-paginate.svg?style=flat)](https://travis-ci.org/vtaits/react-select-async-paginate)
 [![codecov.io](https://codecov.io/gh/vtaits/react-select-async-paginate/branch/master/graph/badge.svg)](https://codecov.io/gh/vtaits/react-select-async-paginate)
@@ -227,67 +228,16 @@ import { AsyncPaginate, reduceGroupedOptions } from 'react-select-async-paginate
 />
 ```
 
-## Manual control of input value and menu opening
-
-You can use `AsyncPaginateBase` component.
-
-```javascript
-import React, { useState } from 'react';
-import { AsyncPaginateBase } from 'react-select-async-paginate';
-
-...
-
-async function loadOptions(search, loadedOptions) {
-  const response = await fetch(`/awesome-api-url/?search=${search}&offset=${loadedOptions.length}`);
-  const responseJSON = await response.json();
-
-  return {
-    options: responseJSON.results,
-    hasMore: responseJSON.has_more,
-  };
-}
-
-const MyWrapper = ({
-  value,
-  onChange,
-}) => {
-  const [inputValue, onInputChange] = useState('');
-  const [menuIsOpen, setMenuIsOpen] = useState(false);
-
-  const onMenuOpen = () => {
-    setMenuIsOpen(true);
-  };
-
-  const onMenuClose = () => {
-    setMenuIsOpen(false);
-  };
-
-  return (
-    <AsyncPaginate
-      value={value}
-      loadOptions={loadOptions}
-      onChange={onChange}
-      inputValue={inputValue}
-      onInputChange={onInputChange}
-      menuIsOpen={menuIsOpen}
-      onMenuOpen={onMenuOpen}
-      onMenuClose={onMenuClose}
-    />
-  );
-};
-```
-
 ## Replacing react-select component
 
-You can use `withAsyncPaginate` and `withAsyncPaginateBase` HOCs.
+You can use `withAsyncPaginate` HOC.
 
 ```javascript
-import { withAsyncPaginate, withAsyncPaginateBase } from 'react-select-async-paginate';
+import { withAsyncPaginate } from 'react-select-async-paginate';
 
 ...
 
 const CustomAsyncPaginate = withAsyncPaginate(CustomSelect);
-const CustomAsyncPaginateBase = withAsyncPaginateBase(CustomSelect);
 ```
 
 ## Replacing Components

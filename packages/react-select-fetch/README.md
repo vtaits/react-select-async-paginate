@@ -1,3 +1,4 @@
+[![NPM](https://img.shields.io/npm/v/react-select-fetch/next.svg)](https://www.npmjs.com/package/react-select-fetch/v/next)
 [![NPM](https://img.shields.io/npm/v/react-select-fetch.svg)](https://www.npmjs.com/package/react-select-fetch)
 [![Build Status](https://img.shields.io/travis/vtaits/react-select-async-paginate.svg?style=flat)](https://travis-ci.org/vtaits/react-select-async-paginate)
 [![codecov.io](https://codecov.io/gh/vtaits/react-select-async-paginate/branch/master/graph/badge.svg)](https://codecov.io/gh/vtaits/react-select-async-paginate)
@@ -135,23 +136,14 @@ const get = async (url, params) => {
 };
 ```
 
-## Manual control of input value and menu opening
-
-`SelectFetchBase` is an analog of `AsyncPaginateBase`.
-
-```javascript
-import { SelectFetchBase } from 'react-select-fetch';
-```
-
 ## Replacing react-select component
 
-You can use `withSelectFetch` and `withSelectFetchBase` HOCs.
+You can use `withSelectFetch` HOC.
 
 ```javascript
-import { withSelectFetch, withSelectFetchBase } from 'react-select-fetch';
+import { withSelectFetch } from 'react-select-fetch';
 
 ...
 
 const CustomSelectFetch = withSelectFetch(CustomSelect);
-const CustomSelectFetchBase = withSelectFetchBase(CustomSelect);
 ```

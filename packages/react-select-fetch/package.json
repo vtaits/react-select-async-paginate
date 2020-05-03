@@ -1,6 +1,6 @@
 {
   "name": "react-select-fetch",
-  "version": "0.2.0-alpha.0",
+  "version": "0.2.0-alpha.1",
   "description": "Wrapper above react-select-async-paginate that loads options from specified url",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -18,6 +18,7 @@
     "fetch"
   ],
   "repository": "git@github.com:vtaits/react-select-async-paginate.git",
+  "homepage": "https://github.com/vtaits/react-select-async-paginate/tree/master/packages/react-select-fetch",
   "author": "Vadim Taits",
   "license": "MIT",
   "scripts": {

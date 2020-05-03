@@ -1,3 +1,9 @@
+## 0.2.0-alpha.1
+
+### Breaking changes
+
+* `withSelectFetchBase` is removed. `withSelectFetch` supports `inputValue`, `menuIsOpen`, `onInputChange`, `onMenuClose`, `onMenuOpen` now.
+
 ## 0.2.0-alpha.0
 
 The project was fully rewritten to **typescript** and **react hooks**.

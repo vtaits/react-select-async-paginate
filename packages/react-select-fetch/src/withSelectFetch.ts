@@ -31,10 +31,10 @@ export type Props<OptionType = any> =
     useSelectFetch?: typeof useSelectFetch;
   };
 
-export const withSelectFetch = <OptionType = any, Additional = any>(
+export const withSelectFetch = <OptionType = any>(
   SelectComponent: ComponentType<SelectProps<OptionType>>,
 ): FC<Props<OptionType>> => {
-  const WithAsyncPaginate: FC<Props<OptionType>> = (props) => {
+  const WithSelectFetch: FC<Props<OptionType>> = (props) => {
     const {
       components,
       selectRef,
@@ -62,7 +62,7 @@ export const withSelectFetch = <OptionType = any, Additional = any>(
     );
   };
 
-  WithAsyncPaginate.defaultProps = {
+  WithSelectFetch.defaultProps = {
     selectRef: null,
     cacheUniqs: [],
     components: {},
@@ -70,5 +70,5 @@ export const withSelectFetch = <OptionType = any, Additional = any>(
     useSelectFetch,
   };
 
-  return WithAsyncPaginate;
+  return WithSelectFetch;
 };

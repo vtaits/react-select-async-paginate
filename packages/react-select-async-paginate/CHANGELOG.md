@@ -1,22 +1,30 @@
+## 0.4.0-alpha.1
+
+### Breaking changes
+
+* `AsyncPaginateBase` is removed. `AsyncPaginate` supports `inputValue`, `menuIsOpen`, `onInputChange`, `onMenuClose`, `onMenuOpen` now.
+
 ## 0.4.0-alpha.0
 
 The project was fully rewritten to **typescript** and **react hooks**.
 
 ### Breaking changes
 
-* Use `withAsyncPaginate` and `withAsyncPaginateBase` instead of `SelectComponent` prop
+* Use `withAsyncPaginate` and `withAsyncPaginateBase` instead of `SelectComponent` prop.
 
   ```javascript
   const CustomAsyncPagiante = withAsyncPaginate(SelectComponent);
   ```
 
-* `additional` is `undefined` by default instead of `null`
+* `AsyncPaginateBase` is removed. `AsyncPaginate` supports `inputValue`, `menuIsOpen`, `onInputChange`, `onMenuClose`, `onMenuOpen` now.
 
-* Save previous additional if not changed
+* `additional` is `undefined` by default instead of `null`.
 
-* Validate result of `loadOptions` call
+* Save previous additional if not changed.
 
-* Use named export instead of default export
+* Validate result of `loadOptions` call.
+
+* Use named export instead of default export.
 
   ```javascript
   import { AsyncPaginate } from 'react-select-async-paginate';

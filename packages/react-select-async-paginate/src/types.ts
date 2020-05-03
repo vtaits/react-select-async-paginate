@@ -3,6 +3,7 @@ import type {
 } from 'react';
 import type {
   GroupedOptionsType,
+  InputActionMeta,
   OptionsType,
 } from 'react-select';
 
@@ -69,7 +70,7 @@ export type UseAsyncPaginateBaseResult<OptionType = any> = {
 export type UseAsyncPaginateResult<OptionsType = any> = UseAsyncPaginateBaseResult<OptionsType> & {
   inputValue: string;
   menuIsOpen: boolean;
-  onInputChange: (inputValue: string) => void;
+  onInputChange: (inputValue: string, actionMeta: InputActionMeta) => void;
   onMenuClose: () => void;
   onMenuOpen: () => void;
 };
@@ -84,6 +85,11 @@ export type UseAsyncPaginateParams<OptionType = any, Additional = any> = {
   reduceOptions?: ReduceOptions<OptionType>;
   shouldLoadMore?: ShouldLoadMore;
   filterOption?: FilterOption;
+  inputValue?: string;
+  menuIsOpen?: boolean;
+  onInputChange?: (newValue: string, actionMeta: InputActionMeta) => void;
+  onMenuClose?: () => void;
+  onMenuOpen?: () => void;
 };
 
 export type UseAsyncPaginateBaseParams<

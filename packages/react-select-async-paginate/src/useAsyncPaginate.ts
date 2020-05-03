@@ -2,6 +2,9 @@ import {
   useState,
   useCallback,
 } from 'react';
+import type {
+  InputActionMeta,
+} from 'react-select';
 
 import {
   useAsyncPaginateBase,
@@ -20,20 +23,51 @@ export const useAsyncPaginatePure = <OptionType, Additional>(
   params: UseAsyncPaginateParams<OptionType>,
   deps: ReadonlyArray<any> = [],
 ): UseAsyncPaginateResult<OptionType> => {
-  const [inputValue, setInputValue] = useStateParam('');
-  const [menuIsOpen, setMenuIsOpen] = useStateParam(false);
+  const {
+    inputValue: inputValueParam,
+    menuIsOpen: menuIsOpenParam,
+    onInputChange: onInputChangeParam,
+    onMenuClose: onMenuCloseParam,
+    onMenuOpen: onMenuOpenParam,
+  } = params;
 
-  const onInputChange = useCallbackParam((nextInputValue: string): void => {
+  const [inputValueState, setInputValue] = useStateParam('');
+  const [menuIsOpenState, setMenuIsOpen] = useStateParam(false);
+
+  const inputValue: string = typeof inputValueParam === 'string'
+    ? inputValueParam
+    : inputValueState;
+
+  const menuIsOpen: boolean = typeof menuIsOpenParam === 'boolean'
+    ? menuIsOpenParam
+    : menuIsOpenState;
+
+  const onInputChange = useCallbackParam((
+    nextInputValue: string,
+    actionMeta: InputActionMeta,
+  ): void => {
+    if (onInputChangeParam) {
+      onInputChangeParam(nextInputValue, actionMeta);
+    }
+
     setInputValue(nextInputValue);
-  }, []);
+  }, [onInputChangeParam]);
 
   const onMenuClose = useCallbackParam((): void => {
+    if (onMenuCloseParam) {
+      onMenuCloseParam();
+    }
+
     setMenuIsOpen(false);
-  }, []);
+  }, [onMenuCloseParam]);
 
   const onMenuOpen = useCallbackParam((): void => {
+    if (onMenuOpenParam) {
+      onMenuOpenParam();
+    }
+
     setMenuIsOpen(true);
-  }, []);
+  }, [onMenuOpenParam]);
 
   const baseResult: UseAsyncPaginateBaseResult<OptionType> = useAsyncPaginateBaseParam<
   OptionType,

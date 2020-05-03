@@ -1,10 +1,11 @@
 /* eslint-disable react/no-array-index-key */
 
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import type { FC } from 'react';
 import sleep from 'sleep-promise';
+import type { InputActionMeta } from 'react-select';
 
-import { AsyncPaginateBase } from '..';
+import { AsyncPaginate } from '..';
 import type {
   LoadOptions,
 } from '..';
@@ -49,16 +50,14 @@ const Example: FC = () => {
   const [menuIsOpen, setMenuIsOpen] = useState(false);
   const [inputHistory, setInputHistory] = useState([]);
 
-  const onInputChange = (
+  const onInputChange = useCallback((
     newInputValue: string,
     {
       action,
-    }: {
-      action: string;
-    },
+    }: InputActionMeta,
   ): void => {
-    setInputHistory([
-      ...inputHistory,
+    setInputHistory((prevInputHistory) => [
+      ...prevInputHistory,
       {
         inputValue: newInputValue,
         action,
@@ -66,15 +65,15 @@ const Example: FC = () => {
     ]);
 
     onInputChangeRaw(newInputValue);
-  };
+  }, []);
 
-  const onMenuOpen = (): void => {
+  const onMenuOpen = useCallback((): void => {
     setMenuIsOpen(true);
-  };
+  }, []);
 
-  const onMenuClose = (): void => {
+  const onMenuClose = useCallback((): void => {
     setMenuIsOpen(false);
-  };
+  }, []);
 
   return (
     <div
@@ -92,7 +91,7 @@ const Example: FC = () => {
         </button>
       </div>
 
-      <AsyncPaginateBase
+      <AsyncPaginate
         isMulti
         closeMenuOnSelect={false}
         value={value}

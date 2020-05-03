@@ -139,7 +139,7 @@ test('should return all fields from of useAsyncPaginateBase', () => {
   expect(result.options).toBe(options);
 });
 
-test('should provide inputValue to useAsyncPaginateBase and response', () => {
+test('should provide inputValue from state to useAsyncPaginateBase and response', () => {
   const useAsyncPaginateBase = jest.fn<
   UseAsyncPaginateBaseResult,
   [UseAsyncPaginateBaseParams]
@@ -160,7 +160,31 @@ test('should provide inputValue to useAsyncPaginateBase and response', () => {
   expect(params.inputValue).toBe('test');
 });
 
-test('should change inputValue on input change', () => {
+test('should provide inputValue from params to useAsyncPaginateBase and response', () => {
+  const useAsyncPaginateBase = jest.fn<
+  UseAsyncPaginateBaseResult,
+  [UseAsyncPaginateBaseParams]
+  >(defaultUseAsyncPaginateBase);
+
+  const result = useAsyncPaginatePure(
+    jest.fn()
+      .mockReturnValueOnce(['test', (): void => {}])
+      .mockReturnValueOnce([false, (): void => {}]),
+    defaultUseCallback,
+    useAsyncPaginateBase,
+    {
+      ...defaultParams,
+      inputValue: 'test2',
+    },
+  );
+
+  const params = useAsyncPaginateBase.mock.calls[0][0];
+
+  expect(result.inputValue).toBe('test2');
+  expect(params.inputValue).toBe('test2');
+});
+
+test('should change local inputValue on input change', () => {
   const setInputValue = jest.fn();
 
   const result = useAsyncPaginatePure(
@@ -172,13 +196,44 @@ test('should change inputValue on input change', () => {
     defaultParams,
   );
 
-  result.onInputChange('test2');
+  result.onInputChange('test2', {
+    action: 'set-value',
+  });
 
   expect(setInputValue.mock.calls.length).toBe(1);
   expect(setInputValue.mock.calls[0][0]).toBe('test2');
 });
 
-test('should provide truthy menuIsOpen to useAsyncPaginateBase and response', () => {
+test('should change local inputValue and call onInputChange param on input change', () => {
+  const setInputValue = jest.fn();
+  const onInputChange = jest.fn();
+
+  const result = useAsyncPaginatePure(
+    jest.fn()
+      .mockReturnValueOnce(['test', setInputValue])
+      .mockReturnValueOnce([false, (): void => { }]),
+    defaultUseCallback,
+    defaultUseAsyncPaginateBase,
+    {
+      ...defaultParams,
+      onInputChange,
+    },
+  );
+
+  result.onInputChange('test2', {
+    action: 'set-value',
+  });
+
+  expect(setInputValue.mock.calls.length).toBe(1);
+  expect(setInputValue.mock.calls[0][0]).toBe('test2');
+
+  expect(onInputChange).toBeCalledTimes(1);
+  expect(onInputChange).toHaveBeenCalledWith('test2', {
+    action: 'set-value',
+  });
+});
+
+test('should provide truthy menuIsOpen from state to useAsyncPaginateBase and response', () => {
   const useAsyncPaginateBase = jest.fn<
   UseAsyncPaginateBaseResult,
   [UseAsyncPaginateBaseParams]
@@ -199,7 +254,31 @@ test('should provide truthy menuIsOpen to useAsyncPaginateBase and response', ()
   expect(params.menuIsOpen).toBe(true);
 });
 
-test('should provide falsy menuIsOpen to useAsyncPaginateBase and response', () => {
+test('should provide truthy menuIsOpen from params to useAsyncPaginateBase and response', () => {
+  const useAsyncPaginateBase = jest.fn<
+  UseAsyncPaginateBaseResult,
+  [UseAsyncPaginateBaseParams]
+  >(defaultUseAsyncPaginateBase);
+
+  const result = useAsyncPaginatePure(
+    jest.fn()
+      .mockReturnValueOnce(['', (): void => {}])
+      .mockReturnValueOnce([false, (): void => {}]),
+    defaultUseCallback,
+    useAsyncPaginateBase,
+    {
+      ...defaultParams,
+      menuIsOpen: true,
+    },
+  );
+
+  const params = useAsyncPaginateBase.mock.calls[0][0];
+
+  expect(result.menuIsOpen).toBe(true);
+  expect(params.menuIsOpen).toBe(true);
+});
+
+test('should provide falsy menuIsOpen from state to useAsyncPaginateBase and response', () => {
   const useAsyncPaginateBase = jest.fn<
   UseAsyncPaginateBaseResult,
   [UseAsyncPaginateBaseParams]
@@ -212,6 +291,30 @@ test('should provide falsy menuIsOpen to useAsyncPaginateBase and response', () 
     defaultUseCallback,
     useAsyncPaginateBase,
     defaultParams,
+  );
+
+  const params = useAsyncPaginateBase.mock.calls[0][0];
+
+  expect(result.menuIsOpen).toBe(false);
+  expect(params.menuIsOpen).toBe(false);
+});
+
+test('should provide falsy menuIsOpen from params to useAsyncPaginateBase and response', () => {
+  const useAsyncPaginateBase = jest.fn<
+  UseAsyncPaginateBaseResult,
+  [UseAsyncPaginateBaseParams]
+  >(defaultUseAsyncPaginateBase);
+
+  const result = useAsyncPaginatePure(
+    jest.fn()
+      .mockReturnValueOnce(['', (): void => {}])
+      .mockReturnValueOnce([true, (): void => {}]),
+    defaultUseCallback,
+    useAsyncPaginateBase,
+    {
+      ...defaultParams,
+      menuIsOpen: false,
+    },
   );
 
   const params = useAsyncPaginateBase.mock.calls[0][0];
@@ -238,6 +341,30 @@ test('should open menu', () => {
   expect(setMenuIsOpen.mock.calls[0][0]).toBe(true);
 });
 
+test('should open menu and call onMenuOpen param', () => {
+  const setMenuIsOpen = jest.fn();
+  const onMenuOpen = jest.fn();
+
+  const result = useAsyncPaginatePure(
+    jest.fn()
+      .mockReturnValueOnce(['', (): void => { }])
+      .mockReturnValueOnce([false, setMenuIsOpen]),
+    defaultUseCallback,
+    defaultUseAsyncPaginateBase,
+    {
+      ...defaultParams,
+      onMenuOpen,
+    },
+  );
+
+  result.onMenuOpen();
+
+  expect(setMenuIsOpen.mock.calls.length).toBe(1);
+  expect(setMenuIsOpen.mock.calls[0][0]).toBe(true);
+
+  expect(onMenuOpen).toHaveBeenCalledTimes(1);
+});
+
 test('should close menu', () => {
   const setMenuIsOpen = jest.fn();
 
@@ -254,4 +381,28 @@ test('should close menu', () => {
 
   expect(setMenuIsOpen.mock.calls.length).toBe(1);
   expect(setMenuIsOpen.mock.calls[0][0]).toBe(false);
+});
+
+test('should close menu', () => {
+  const setMenuIsOpen = jest.fn();
+  const onMenuClose = jest.fn();
+
+  const result = useAsyncPaginatePure(
+    jest.fn()
+      .mockReturnValueOnce(['', (): void => { }])
+      .mockReturnValueOnce([true, setMenuIsOpen]),
+    defaultUseCallback,
+    defaultUseAsyncPaginateBase,
+    {
+      ...defaultParams,
+      onMenuClose,
+    },
+  );
+
+  result.onMenuClose();
+
+  expect(setMenuIsOpen.mock.calls.length).toBe(1);
+  expect(setMenuIsOpen.mock.calls[0][0]).toBe(false);
+
+  expect(onMenuClose).toHaveBeenCalledTimes(1);
 });
