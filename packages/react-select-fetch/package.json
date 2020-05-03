@@ -37,19 +37,19 @@
   "peerDependencies": {
     "react": "^16.8.0",
     "react-select": "^3.0.0",
-    "react-select-async-paginate": "^0.4.0-alpha.0"
+    "react-select-async-paginate": "^0.4.0-alpha.1"
   },
   "dependencies": {
-    "@babel/runtime": "^7.9.2",
+    "@babel/runtime": "^7.9.6",
     "qs": "^6.9.3"
   },
   "devDependencies": {
     "@storybook/react": "^5.3.18",
     "@types/qs": "^6.9.1",
-    "@types/react-select": "^3.0.10",
+    "@types/react-select": "^3.0.12",
     "enzyme": "^3.11.0",
     "react-select": "^3.0.8",
-    "react-select-async-paginate": "^0.4.0-alpha.0",
+    "react-select-async-paginate": "^0.4.0-alpha.1",
     "rimraf": "^3.0.1",
     "sleep-promise": "^8.0.1"
   }
