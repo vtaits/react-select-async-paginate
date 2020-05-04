@@ -41,7 +41,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.9.6",
-    "qs": "^6.9.3"
+    "qs": "^6.9.4"
   },
   "devDependencies": {
     "@storybook/react": "^5.3.18",
