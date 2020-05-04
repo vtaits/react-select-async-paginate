@@ -1,3 +1,5 @@
+[![devDependencies status](https://david-dm.org/vtaits/react-select-async-paginate/dev-status.svg)](https://david-dm.org/vtaits/react-select-async-paginate?type=dev)
+
 A set of components that make working with asynchronous selects based on `react-select` easier.
 
 ## Packages
