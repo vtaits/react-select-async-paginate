@@ -274,7 +274,7 @@ If you want construct own component that uses logic of `react-select-async-pagin
 import {
   useAsyncPaginate,
   useComponents,
-} from 'react-select-async-paginate`;
+} from 'react-select-async-paginate';
 
 ...
 
