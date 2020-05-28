@@ -1,6 +1,12 @@
-### Are you submitting a **bug report** or a **feature request**?
-<!-- !!! IMPORTANT !!! -->
 
+### FAQ
+
+1. How can I clean all cached options?
+
+  - Check `cacheUniq` param in versions < `0.4.x` and `cacheUniqs` in `0.4.x`
+
+### Are you submitting a **bug report** or a **feature request** or a **question**?
+<!-- !!! IMPORTANT !!! -->
 
 ### What is the current behavior?
 
