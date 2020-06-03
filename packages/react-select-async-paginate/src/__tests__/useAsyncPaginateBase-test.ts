@@ -1068,7 +1068,7 @@ describe('requestOptions', () => {
     current: defaultParams,
   };
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const defaultSleep: typeof sleepLib = async (): Promise<void> => {};
 

@@ -23,6 +23,7 @@ const errorText = '[react-select-async-paginate] response of "loadOptions" shoul
 
 export const validateResponse = (
   console: Console,
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   response: any,
 ): void => {
   if (!response) {

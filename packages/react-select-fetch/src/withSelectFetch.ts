@@ -32,6 +32,7 @@ export type Props<OptionType = any> =
   };
 
 export const withSelectFetch = <OptionType = any>(
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   SelectComponent: ComponentType<SelectProps<OptionType>>,
 ): FC<Props<OptionType>> => {
   const WithSelectFetch: FC<Props<OptionType>> = (props) => {

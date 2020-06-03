@@ -30,6 +30,7 @@ export type Props<OptionType = any, Additional = any> =
   };
 
 export const withAsyncPaginate = <OptionType = any, Additional = any>(
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   SelectComponent: ComponentType<SelectProps<OptionType>>,
 ): FC<Props<OptionType, Additional>> => {
   const WithAsyncPaginate: FC<Props<OptionType, Additional>> = (props) => {

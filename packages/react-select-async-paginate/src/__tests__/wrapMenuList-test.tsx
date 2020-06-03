@@ -27,7 +27,7 @@ const defaultProps: Props = {
     shouldLoadMore: defaultShouldLoadMore,
   },
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   setTimeout: () => 0,
   clearTimeout: () => {},
@@ -304,7 +304,7 @@ test('should call checkAndLoad and start on call setCheckAndHandleTimeout', () =
 
   setup({
     useCallback,
-    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     setTimeout,
 

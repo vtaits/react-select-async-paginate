@@ -37,6 +37,7 @@ type ComponentProps = {
   innerRef: Ref<HTMLElement>;
 };
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 export const wrapMenuList = (MenuList: ComponentType<ComponentProps>): FC<Props> => {
   const WrappedMenuList: FC<Props> = (props) => {
     const {
