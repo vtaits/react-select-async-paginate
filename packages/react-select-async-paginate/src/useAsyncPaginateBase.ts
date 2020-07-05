@@ -94,9 +94,11 @@ export const requestOptions = async <OptionType, Additional>(
 ): Promise<void> => {
   const currentInputValue = paramsRef.current.inputValue;
 
-  const currentOptions: OptionsCacheItem<OptionType, Additional> = optionsCacheRef
-    .current[currentInputValue]
-    || getInitialCache(paramsRef.current);
+  const isCacheEmpty = !optionsCacheRef.current[currentInputValue];
+
+  const currentOptions: OptionsCacheItem<OptionType, Additional> = isCacheEmpty
+    ? getInitialCache(paramsRef.current)
+    : optionsCacheRef.current[currentInputValue];
 
   if (currentOptions.isLoading || !currentOptions.hasMore) {
     return;
@@ -116,13 +118,24 @@ export const requestOptions = async <OptionType, Additional>(
     const newInputValue = paramsRef.current.inputValue;
 
     if (currentInputValue !== newInputValue) {
-      setOptionsCache((prevOptionsCache) => ({
-        ...prevOptionsCache,
-        [currentInputValue]: {
-          ...currentOptions,
-          isLoading: false,
-        },
-      }));
+      setOptionsCache((prevOptionsCache) => {
+        if (isCacheEmpty) {
+          const {
+            [currentInputValue]: itemForDelete,
+            ...restCache
+          } = prevOptionsCache;
+
+          return restCache;
+        }
+
+        return {
+          ...prevOptionsCache,
+          [currentInputValue]: {
+            ...currentOptions,
+            isLoading: false,
+          },
+        };
+      });
 
       return;
     }

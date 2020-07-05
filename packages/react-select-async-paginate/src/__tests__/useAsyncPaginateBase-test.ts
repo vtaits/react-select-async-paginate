@@ -1650,7 +1650,7 @@ describe('requestOptions', () => {
     });
   });
 
-  test('should cancel loading if inputValue has changed during sleep', async () => {
+  test('should cancel loading if inputValue has changed during sleep for empty cache', async () => {
     const newOptions = [
       {
         value: 1,
@@ -1685,6 +1685,80 @@ describe('requestOptions', () => {
       paramsRef,
       {
         current: {},
+      },
+      1234,
+      (async () => {
+        paramsRef.current.inputValue = 'test2';
+      }) as unknown as typeof sleepLib,
+      setOptionsCache,
+      defaultValidateResponse,
+      defaultReduceOptions,
+    );
+
+    expect(loadOptions.mock.calls.length).toBe(0);
+
+    expect(setOptionsCache.mock.calls.length).toBe(2);
+
+    const intermediateCache = setOptionsCache.mock.calls[0][0]({});
+
+    expect(intermediateCache).toEqual({
+      test: {
+        isFirstLoad: true,
+        options: [],
+        hasMore: true,
+        isLoading: true,
+        additional,
+      },
+    });
+
+    const lastCache = setOptionsCache.mock.calls[1][0](intermediateCache);
+
+    expect(lastCache).toEqual({});
+  });
+
+  test('should cancel loading if inputValue has changed during sleep for filled cache', async () => {
+    const newOptions = [
+      {
+        value: 1,
+        label: '1',
+      },
+
+      {
+        value: 2,
+        label: '2',
+      },
+    ];
+
+    const setOptionsCache = jest.fn();
+    const loadOptions = jest.fn<Response, LoadOptionsArgs>(() => ({
+      options: newOptions,
+      hasMore: true,
+    }));
+
+    const additional = Symbol('additional');
+
+    const paramsRef = {
+      ...defaultParamsRef,
+      current: {
+        ...defaultParams,
+        loadOptions,
+        inputValue: 'test',
+        additional,
+      },
+    };
+
+    await requestOptions(
+      paramsRef,
+      {
+        current: {
+          test: {
+            isFirstLoad: true,
+            options: [],
+            hasMore: true,
+            isLoading: false,
+            additional,
+          },
+        },
       },
       1234,
       (async () => {
