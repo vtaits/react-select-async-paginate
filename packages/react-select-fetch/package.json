@@ -40,13 +40,13 @@
     "react-select-async-paginate": "^0.4.0-alpha.1"
   },
   "dependencies": {
-    "@babel/runtime": "^7.10.2",
+    "@babel/runtime": "^7.10.4",
     "qs": "^6.9.4"
   },
   "devDependencies": {
     "@storybook/react": "^5.3.19",
     "@types/qs": "^6.9.3",
-    "@types/react-select": "^3.0.13",
+    "@types/react-select": "^3.0.14",
     "enzyme": "^3.11.0",
     "react-select": "^3.0.8",
     "react-select-async-paginate": "^0.4.0-alpha.1",
