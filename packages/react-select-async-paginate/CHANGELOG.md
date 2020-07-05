@@ -1,3 +1,9 @@
+## 0.4.0-alpha.2
+
+### Bugfix
+
+* Remove empty item from cache if input value changed during debounce timeout [#61](https://github.com/vtaits/react-select-async-paginate/issues/61)
+
 ## 0.4.0-alpha.1
 
 ### Breaking changes
