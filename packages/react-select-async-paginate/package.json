@@ -38,7 +38,7 @@
     "react-select": "^2.0.0 || ^3.0.0"
   },
   "dependencies": {
-    "@babel/runtime": "^7.10.4",
+    "@babel/runtime": "^7.10.5",
     "@seznam/compose-react-refs": "^1.0.4",
     "react-is-mounted-hook": "^1.0.3",
     "sleep-promise": "^8.0.1"
