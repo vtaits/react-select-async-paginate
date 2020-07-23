@@ -1,4 +1,3 @@
-[![NPM](https://img.shields.io/npm/v/react-select-async-paginate/next.svg)](https://www.npmjs.com/package/react-select-async-paginate/v/next)
 [![NPM](https://img.shields.io/npm/v/react-select-async-paginate.svg)](https://www.npmjs.com/package/react-select-async-paginate)
 [![Build Status](https://img.shields.io/travis/vtaits/react-select-async-paginate.svg?style=flat)](https://travis-ci.org/vtaits/react-select-async-paginate)
 [![codecov.io](https://codecov.io/gh/vtaits/react-select-async-paginate/branch/master/graph/badge.svg)](https://codecov.io/gh/vtaits/react-select-async-paginate)
@@ -36,13 +35,13 @@ Wrapper above `react-select` that supports pagination on menu scroll.
 ## Installation
 
 ```
-npm install react-select react-select-async-paginate@next
+npm install react-select react-select-async-paginate
 ```
 
 or
 
 ```
-yarn add react-select react-select-async-paginate@next
+yarn add react-select react-select-async-paginate
 ```
 
 ## Usage
