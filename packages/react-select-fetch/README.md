@@ -1,4 +1,3 @@
-[![NPM](https://img.shields.io/npm/v/react-select-fetch/next.svg)](https://www.npmjs.com/package/react-select-fetch/v/next)
 [![NPM](https://img.shields.io/npm/v/react-select-fetch.svg)](https://www.npmjs.com/package/react-select-fetch)
 [![Build Status](https://img.shields.io/travis/vtaits/react-select-async-paginate.svg?style=flat)](https://travis-ci.org/vtaits/react-select-async-paginate)
 [![codecov.io](https://codecov.io/gh/vtaits/react-select-async-paginate/branch/master/graph/badge.svg)](https://codecov.io/gh/vtaits/react-select-async-paginate)
@@ -18,13 +17,13 @@ Wrapper above `react-select-async-paginate` that loads options from specified ur
 ## Installation
 
 ```
-npm install react-select react-select-async-paginate@next react-select-fetch@next
+npm install react-select react-select-async-paginate react-select-fetch
 ```
 
 or
 
 ```
-yarn add react-select react-select-async-paginate@next react-select-fetch@next
+yarn add react-select react-select-async-paginate react-select-fetch
 ```
 
 ## Motivation
