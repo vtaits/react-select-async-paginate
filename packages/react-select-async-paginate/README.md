@@ -278,21 +278,19 @@ import {
 ...
 
 const CustomAsyncPaginateComponent = ({
-  {
-    options,
-    defaultOptions,
-    additional,
-    loadOptionsOnMenuOpen,
-    debounceTimeout,
-    filterOption,
-    reduceOptions,
-    shouldLoadMore,
+  options,
+  defaultOptions,
+  additional,
+  loadOptionsOnMenuOpen,
+  debounceTimeout,
+  filterOption,
+  reduceOptions,
+  shouldLoadMore,
 
-    components: defaultComponents,
+  components: defaultComponents,
 
-    value,
-    onChange,
-  }
+  value,
+  onChange,
 }) => {
   const asyncPaginateProps = useAsyncPaginate({
     options,
