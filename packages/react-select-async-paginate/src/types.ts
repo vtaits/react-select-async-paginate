@@ -67,13 +67,15 @@ export type UseAsyncPaginateBaseResult<OptionType = any> = {
   filterOption: FilterOption;
 };
 
-export type UseAsyncPaginateResult<OptionsType = any> = UseAsyncPaginateBaseResult<OptionsType> & {
-  inputValue: string;
-  menuIsOpen: boolean;
-  onInputChange: (inputValue: string, actionMeta: InputActionMeta) => void;
-  onMenuClose: () => void;
-  onMenuOpen: () => void;
-};
+export type UseAsyncPaginateResult<OptionsParamType = any> =
+  & UseAsyncPaginateBaseResult<OptionsParamType>
+  & {
+    inputValue: string;
+    menuIsOpen: boolean;
+    onInputChange: (inputValue: string, actionMeta: InputActionMeta) => void;
+    onMenuClose: () => void;
+    onMenuOpen: () => void;
+  };
 
 export type UseAsyncPaginateParams<OptionType = any, Additional = any> = {
   loadOptions: LoadOptions<OptionType>;

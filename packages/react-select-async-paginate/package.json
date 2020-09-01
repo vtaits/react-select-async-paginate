@@ -38,14 +38,14 @@
     "react-select": "^2.0.0 || ^3.0.0"
   },
   "dependencies": {
-    "@babel/runtime": "^7.10.5",
+    "@babel/runtime": "^7.11.2",
     "@seznam/compose-react-refs": "^1.0.4",
     "react-is-mounted-hook": "^1.0.3",
     "sleep-promise": "^8.0.1"
   },
   "devDependencies": {
-    "@storybook/react": "^5.3.19",
-    "@types/react-select": "^3.0.14",
+    "@storybook/react": "^6.0.21",
+    "@types/react-select": "^3.0.19",
     "enzyme": "^3.11.0",
     "react-select": "^3.0.8"
   }

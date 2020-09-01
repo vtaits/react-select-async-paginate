@@ -2,8 +2,8 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 
 import Simple from './Simple';
-import SelectFetchBase from './SelectFetchBase';
+import ManualControl from './ManualControl';
 
 storiesOf('react-select-fetch', module)
   .add('Simple', () => <Simple />)
-  .add('SelectFetchBase', () => <SelectFetchBase />);
+  .add('Manual control', () => <ManualControl />);
