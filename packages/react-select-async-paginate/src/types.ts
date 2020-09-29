@@ -17,12 +17,6 @@ export type ReduceOptions<OptionType = any, Additional = any> = (
   additional: Additional,
 ) => OptionsList<OptionType>;
 
-export type GetInitialOptionsCacheParams<OptionType = any, Additional = any> = {
-  options?: OptionsList<OptionType>;
-  defaultOptions?: boolean | OptionsList<OptionType>;
-  additional?: Additional;
-};
-
 export type OptionsCacheItem<OptionType, Additional> = {
   isFirstLoad: boolean;
   isLoading: boolean;
@@ -82,6 +76,7 @@ export type UseAsyncPaginateParams<OptionType = any, Additional = any> = {
   options?: OptionsList<OptionType>;
   defaultOptions?: boolean | OptionsList<OptionType>;
   additional?: Additional;
+  defaultAdditional?: Additional;
   loadOptionsOnMenuOpen?: boolean;
   debounceTimeout?: number;
   reduceOptions?: ReduceOptions<OptionType>;

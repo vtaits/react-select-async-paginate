@@ -81,6 +81,10 @@ Not required. Number. Debounce timeout for `loadOptions` calls. `0` by default.
 
 Not required. Default `additional` for first request for every search.
 
+### defaultAdditional
+
+Not required. Default `additional` for empty search if `options` or `defaultOptions` defined.
+
 ### shouldLoadMore
 
 Not required. Function. By default new options will load only after scroll menu to bottom. Arguments:

@@ -1,3 +1,13 @@
+## 0.2.1
+
+### New features
+
+- Add `initialPage` and `defaultInitialPage` props
+
+### Bugfix
+
+- Fixed page number in query if `options` or `defaultOptions` defined
+
 ## 0.2.0-alpha.1
 
 ### Breaking changes

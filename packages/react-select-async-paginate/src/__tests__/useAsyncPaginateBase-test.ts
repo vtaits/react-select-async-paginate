@@ -19,7 +19,6 @@ import {
 } from '../useAsyncPaginateBase';
 
 import type {
-  GetInitialOptionsCacheParams,
   OptionsCache,
   OptionsCacheItem,
   UseAsyncPaginateBaseParams,
@@ -86,7 +85,7 @@ describe('increaseStateId', () => {
 
 describe('getInitialOptionsCache', () => {
   test('should return empty options cache', () => {
-    const initialOptionsCache = getInitialOptionsCache({});
+    const initialOptionsCache = getInitialOptionsCache(defaultParams);
 
     expect(initialOptionsCache).toEqual({});
   });
@@ -104,6 +103,7 @@ describe('getInitialOptionsCache', () => {
     ];
 
     const initialOptionsCache = getInitialOptionsCache({
+      ...defaultParams,
       options,
     });
 
@@ -138,6 +138,7 @@ describe('getInitialOptionsCache', () => {
     ];
 
     const initialOptionsCache = getInitialOptionsCache({
+      ...defaultParams,
       options,
       defaultOptions,
     });
@@ -153,6 +154,91 @@ describe('getInitialOptionsCache', () => {
     });
   });
 
+  test('should set "additional" with "additional" param in initialOptionsCache', () => {
+    const options = [
+      {
+        label: 'label 1',
+        value: 'value 1',
+      },
+    ];
+
+    const defaultOptions = [
+      {
+        label: 'label 2',
+        value: 'value 2',
+      },
+      {
+        label: 'label 3',
+        value: 'value 3',
+      },
+    ];
+
+    const initialOptionsCache = getInitialOptionsCache({
+      ...defaultParams,
+      options,
+      defaultOptions,
+      additional: {
+        page: 1,
+      },
+    });
+
+    expect(initialOptionsCache).toEqual({
+      '': {
+        isFirstLoad: false,
+        isLoading: false,
+        hasMore: true,
+        options: defaultOptions,
+        additional: {
+          page: 1,
+        },
+      },
+    });
+  });
+
+  test('should set "additional" with "defaultAdditional" param in initialOptionsCache', () => {
+    const options = [
+      {
+        label: 'label 1',
+        value: 'value 1',
+      },
+    ];
+
+    const defaultOptions = [
+      {
+        label: 'label 2',
+        value: 'value 2',
+      },
+      {
+        label: 'label 3',
+        value: 'value 3',
+      },
+    ];
+
+    const initialOptionsCache = getInitialOptionsCache({
+      ...defaultParams,
+      options,
+      defaultOptions,
+      additional: {
+        page: 1,
+      },
+      defaultAdditional: {
+        page: 2,
+      },
+    });
+
+    expect(initialOptionsCache).toEqual({
+      '': {
+        isFirstLoad: false,
+        isLoading: false,
+        hasMore: true,
+        options: defaultOptions,
+        additional: {
+          page: 2,
+        },
+      },
+    });
+  });
+
   test('should not set options cache if "defaultOptions" is true', () => {
     const options = [
       {
@@ -162,6 +248,7 @@ describe('getInitialOptionsCache', () => {
     ];
 
     const initialOptionsCache = getInitialOptionsCache({
+      ...defaultParams,
       options,
       defaultOptions: true,
     });
@@ -177,6 +264,9 @@ describe('getInitialCache', () => {
     const params = {
       ...defaultParams,
       additional,
+      defautAdditional: {
+        page: 2,
+      },
     };
 
     expect(getInitialCache(params)).toEqual({
@@ -213,7 +303,7 @@ describe('useAsyncPaginateBasePure', () => {
   test('should call getInitialOptionsCache on init', () => {
     const getInitialOptionsCacheParam = jest.fn<
     OptionsCache,
-    [GetInitialOptionsCacheParams]
+    [UseAsyncPaginateBaseParams]
     >(() => ({}));
 
     const options = [
@@ -261,6 +351,7 @@ describe('useAsyncPaginateBasePure', () => {
 
     expect(getInitialOptionsCacheParam.mock.calls.length).toBe(1);
     expect(getInitialOptionsCacheParam.mock.calls[0][0]).toEqual({
+      ...defaultParams,
       options,
       defaultOptions,
       additional,

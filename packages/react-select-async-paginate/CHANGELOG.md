@@ -1,3 +1,9 @@
+## 0.4.1
+
+### New features
+
+- Add `defaultAdditional` prop
+
 ## 0.4.0-alpha.2
 
 ### Bugfix

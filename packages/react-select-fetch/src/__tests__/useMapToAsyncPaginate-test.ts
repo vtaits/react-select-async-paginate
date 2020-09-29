@@ -1,11 +1,13 @@
-import { useCallback as reactUseCallback } from 'react';
+import {
+  useCallback as reactUseCallback,
+  useMemo as reactUseMemo,
+} from 'react';
 
 import type {
   Response,
 } from 'react-select-async-paginate';
 
 import {
-  defaultAdditional,
   useMapToAsyncPaginatePure,
 } from '../useMapToAsyncPaginate';
 
@@ -14,18 +16,37 @@ import type {
 } from '../types';
 
 const defaultUseCallback: typeof reactUseCallback = (callback) => callback;
+const defaultUseMemo: typeof reactUseMemo = (callback) => callback();
 
 const defaultParams = {
   url: '/test/',
 };
 
-test('should provide correct additional', () => {
+test('should provide default additional', () => {
   const result = useMapToAsyncPaginatePure(
     defaultUseCallback,
+    defaultUseMemo,
     defaultParams,
   );
 
-  expect(result.additional).toBe(defaultAdditional);
+  expect(result.additional).toEqual({
+    page: 1,
+  });
+});
+
+test('should redefine page in additional', () => {
+  const result = useMapToAsyncPaginatePure(
+    defaultUseCallback,
+    defaultUseMemo,
+    {
+      ...defaultParams,
+      initialPage: 3,
+    },
+  );
+
+  expect(result.additional).toEqual({
+    page: 3,
+  });
 });
 
 test('should call get with default arguments', async () => {
@@ -33,6 +54,7 @@ test('should call get with default arguments', async () => {
 
   const result = useMapToAsyncPaginatePure(
     defaultUseCallback,
+    defaultUseMemo,
     {
       ...defaultParams,
       url: 'test-url',
@@ -62,6 +84,7 @@ test('should redefine search param name in query params', async () => {
 
   const result = useMapToAsyncPaginatePure(
     defaultUseCallback,
+    defaultUseMemo,
     {
       ...defaultParams,
       url: 'test-url',
@@ -92,6 +115,7 @@ test('should redefine page param name in query params', async () => {
 
   const result = useMapToAsyncPaginatePure(
     defaultUseCallback,
+    defaultUseMemo,
     {
       ...defaultParams,
       url: 'test-url',
@@ -122,6 +146,7 @@ test('should not send page if page param name falsy', async () => {
 
   const result = useMapToAsyncPaginatePure(
     defaultUseCallback,
+    defaultUseMemo,
     {
       ...defaultParams,
       url: 'test-url',
@@ -151,6 +176,7 @@ test('should redefine offset param name', async () => {
 
   const result = useMapToAsyncPaginatePure(
     defaultUseCallback,
+    defaultUseMemo,
     {
       ...defaultParams,
       url: 'test-url',
@@ -181,6 +207,7 @@ test('should not send offset if offset param name falsy', async () => {
 
   const result = useMapToAsyncPaginatePure(
     defaultUseCallback,
+    defaultUseMemo,
     {
       ...defaultParams,
       url: 'test-url',
@@ -213,6 +240,7 @@ test('should return response with increased page in additional', async () => {
 
   const result = useMapToAsyncPaginatePure(
     defaultUseCallback,
+    defaultUseMemo,
     {
       ...defaultParams,
       get,
@@ -249,6 +277,7 @@ test('should return mapped response with increased page in additional', async ()
 
   const result = useMapToAsyncPaginatePure(
     defaultUseCallback,
+    defaultUseMemo,
     {
       ...defaultParams,
       get,
@@ -283,6 +312,7 @@ test('should return empty response on error', async () => {
 
   const result = useMapToAsyncPaginatePure(
     defaultUseCallback,
+    defaultUseMemo,
     {
       ...defaultParams,
       get,

@@ -13,6 +13,7 @@ Wrapper above `react-select-async-paginate` that loads options from specified ur
 
 - [Simple](https://codesandbox.io/s/9nfmg)
 - [Manual control of input value and menu opening](https://codesandbox.io/s/34pjt)
+- [Initial options](https://codesandbox.io/s/8cgpp)
 
 ## Installation
 
@@ -111,6 +112,14 @@ Not required. Function. Mapper from server's response to format of `react-select
     - `payload.search` - current search;
     - `payload.prevPage` - page number before requrest;
     - `payload.prevOptions` - options before request;
+
+### initialPage
+
+Not required. Page number for first request for every search. `1` by default.
+
+### defaultInitialPage
+
+Not required. Page number for first request for empty search if `options` or `defaultOptions` defined. `2` by default.
 
 ### get
 

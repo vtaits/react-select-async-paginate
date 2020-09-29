@@ -16,7 +16,6 @@ export const AsyncPaginate = withAsyncPaginate(Select);
 export type {
   OptionsList,
   ReduceOptions,
-  GetInitialOptionsCacheParams,
   OptionsCacheItem,
   OptionsCache,
   ShouldLoadMore,

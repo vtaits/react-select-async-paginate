@@ -1,4 +1,7 @@
-import { useCallback } from 'react';
+import {
+  useCallback,
+  useMemo,
+} from 'react';
 
 import type {
   LoadOptions,
@@ -15,14 +18,11 @@ import type {
   UseSelectFetchMapParams,
 } from './types';
 
-export const defaultAdditional: Additional = {
-  page: 1,
-};
-
 export const defaultResponseMapper: MapResponse = (response) => response;
 
 export const useMapToAsyncPaginatePure = <OptionType>(
   useCallbackParam: typeof useCallback,
+  useMemoParam: typeof useMemo,
   selectFetchParams: UseSelectFetchMapParams<OptionType>,
 ): UseAsyncPaginateParams<OptionType, Additional> => {
   const {
@@ -33,7 +33,17 @@ export const useMapToAsyncPaginatePure = <OptionType>(
     offsetParamName = 'offset',
     mapResponse = defaultResponseMapper,
     get = defaultGet,
+    initialPage = 1,
+    defaultInitialPage = 2,
   } = selectFetchParams;
+
+  const additional = useMemoParam<Additional>(() => ({
+    page: initialPage,
+  }), [initialPage]);
+
+  const defaultAdditional = useMemoParam<Additional>(() => ({
+    page: defaultInitialPage,
+  }), [defaultInitialPage]);
 
   const loadOptions = useCallbackParam<LoadOptions<OptionType, Additional>>(
     async (search, prevOptions, { page }) => {
@@ -94,7 +104,8 @@ export const useMapToAsyncPaginatePure = <OptionType>(
 
   return {
     loadOptions,
-    additional: defaultAdditional,
+    additional,
+    defaultAdditional,
   };
 };
 
@@ -102,5 +113,6 @@ export const useMapToAsyncPaginate = <OptionType>(
   params: UseSelectFetchMapParams<OptionType>,
 ): UseAsyncPaginateParams<OptionType, Additional> => useMapToAsyncPaginatePure<OptionType>(
     useCallback,
+    useMemo,
     params,
   );

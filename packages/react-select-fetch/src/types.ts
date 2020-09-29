@@ -37,6 +37,8 @@ export type UseSelectFetchMapParams<OptionType = any> = {
   offsetParamName?: string;
   mapResponse?: MapResponse<OptionType>;
   get?: Get;
+  initialPage?: number;
+  defaultInitialPage?: number;
 };
 
 export type UseSelectFetchParams<OptionType = any> =

@@ -11,7 +11,6 @@ import { defaultShouldLoadMore } from './defaultShouldLoadMore';
 import { defaultReduceOptions } from './defaultReduceOptions';
 
 import type {
-  GetInitialOptionsCacheParams,
   OptionsCache,
   OptionsCacheItem,
   UseAsyncPaginateBaseResult,
@@ -41,7 +40,8 @@ export const getInitialOptionsCache = <OptionType, Additional>({
   options,
   defaultOptions,
   additional,
-}: GetInitialOptionsCacheParams<OptionType, Additional>): OptionsCache<OptionType, Additional> => {
+  defaultAdditional,
+}: UseAsyncPaginateBaseParams<OptionType, Additional>): OptionsCache<OptionType, Additional> => {
   const initialOptions = defaultOptions === true
     ? null
     : (defaultOptions instanceof Array)
@@ -55,7 +55,7 @@ export const getInitialOptionsCache = <OptionType, Additional>({
         isLoading: false,
         options: initialOptions,
         hasMore: true,
-        additional,
+        additional: defaultAdditional || additional,
       },
     };
   }
@@ -212,9 +212,7 @@ export const useAsyncPaginateBasePure = <OptionType, Additional>(
   deps: ReadonlyArray<any> = [],
 ): UseAsyncPaginateBaseResult<OptionType> => {
   const {
-    options,
     defaultOptions,
-    additional,
     loadOptionsOnMenuOpen = true,
     debounceTimeout = 0,
     inputValue,
@@ -236,11 +234,7 @@ export const useAsyncPaginateBasePure = <OptionType, Additional>(
   const optionsCacheRef = useRefParam<OptionsCache>(null);
 
   if (optionsCacheRef.current === null) {
-    optionsCacheRef.current = getInitialOptionsCacheParam({
-      options,
-      defaultOptions,
-      additional,
-    });
+    optionsCacheRef.current = getInitialOptionsCacheParam(params);
   }
 
   const callRequestOptions = useCallbackParam((): void => {
