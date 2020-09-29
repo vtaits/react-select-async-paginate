@@ -31,7 +31,7 @@ type UseStateArgs = [() => number];
 type LoadOptionsArgs = [
   string,
   OptionsList,
-  any,
+  any
 ];
 
 const defaultCacheItem: OptionsCacheItem<any, any> = {
@@ -1510,7 +1510,7 @@ describe('requestOptions', () => {
     const reduceOptions = jest.fn<OptionsList, [
       OptionsList,
       OptionsList,
-      any,
+      any
     ]>(() => reducedOptions);
 
     const setOptionsCache = jest.fn();
