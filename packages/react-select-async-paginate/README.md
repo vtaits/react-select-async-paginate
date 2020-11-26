@@ -28,7 +28,7 @@ Wrapper above `react-select` that supports pagination on menu scroll.
 
 | react-select | react-select-async-paginate |
 |--------------|-----------------------------|
-| 3.x | 0.4.x, ^0.3.2 |
+| 3.x | 0.5.x, 0.4.x, ^0.3.2 |
 | 2.x | 0.3.x, 0.2.x |
 | 1.x | 0.1.x |
 

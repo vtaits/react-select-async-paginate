@@ -1,3 +1,13 @@
+## 0.5.0 (26 nov 2020)
+
+### Internal changes
+
+- Migrate to [new JSX transform](https://reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html)
+
+### Breaking changes
+
+- Drop `react` less than `16.14.0`
+
 ## 0.4.1 (30 sep 2020)
 
 ### New features
@@ -8,13 +18,13 @@
 
 ### Bugfix
 
-* Remove empty item from cache if input value changed during debounce timeout [#61](https://github.com/vtaits/react-select-async-paginate/issues/61)
+- Remove empty item from cache if input value changed during debounce timeout [#61](https://github.com/vtaits/react-select-async-paginate/issues/61)
 
 ## 0.4.0-alpha.1
 
 ### Breaking changes
 
-* `AsyncPaginateBase` is removed. `AsyncPaginate` supports `inputValue`, `menuIsOpen`, `onInputChange`, `onMenuClose`, `onMenuOpen` now.
+- `AsyncPaginateBase` is removed. `AsyncPaginate` supports `inputValue`, `menuIsOpen`, `onInputChange`, `onMenuClose`, `onMenuOpen` now.
 
 ## 0.4.0-alpha.0
 
@@ -22,21 +32,21 @@ The project was fully rewritten to **typescript** and **react hooks**.
 
 ### Breaking changes
 
-* Use `withAsyncPaginate` and `withAsyncPaginateBase` instead of `SelectComponent` prop.
+- Use `withAsyncPaginate` and `withAsyncPaginateBase` instead of `SelectComponent` prop.
 
   ```javascript
   const CustomAsyncPagiante = withAsyncPaginate(SelectComponent);
   ```
 
-* `AsyncPaginateBase` is removed. `AsyncPaginate` supports `inputValue`, `menuIsOpen`, `onInputChange`, `onMenuClose`, `onMenuOpen` now.
+- `AsyncPaginateBase` is removed. `AsyncPaginate` supports `inputValue`, `menuIsOpen`, `onInputChange`, `onMenuClose`, `onMenuOpen` now.
 
-* `additional` is `undefined` by default instead of `null`.
+- `additional` is `undefined` by default instead of `null`.
 
-* Save previous additional if not changed.
+- Save previous additional if not changed.
 
-* Validate result of `loadOptions` call.
+- Validate result of `loadOptions` call.
 
-* Use named export instead of default export.
+- Use named export instead of default export.
 
   ```javascript
   import { AsyncPaginate } from 'react-select-async-paginate';
