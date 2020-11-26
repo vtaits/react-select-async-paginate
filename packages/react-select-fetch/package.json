@@ -35,12 +35,12 @@
     "codecov": "codecov -F react_select_fetch"
   },
   "peerDependencies": {
-    "react": "^16.8.0",
+    "react": "^16.14.0 || ^17.0.0",
     "react-select": "^3.0.0",
     "react-select-async-paginate": "^0.4.0"
   },
   "dependencies": {
-    "@babel/runtime": "^7.11.2",
+    "@babel/runtime": "^7.12.5",
     "qs": "^6.9.4"
   },
   "devDependencies": {
@@ -51,6 +51,6 @@
     "react-select": "^3.0.8",
     "react-select-async-paginate": "^0.4.0",
     "rimraf": "^3.0.1",
-    "sleep-promise": "^8.0.1"
+    "sleep-promise": "^9.0.0"
   }
 }

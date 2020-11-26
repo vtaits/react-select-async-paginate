@@ -2,7 +2,7 @@
   "compilerOptions": {
     "outDir": "ts",
     "esModuleInterop": true,
-    "jsx": "react"
+    "jsx": "react-jsx"
   },
   "include": [
     "packages/**/*"

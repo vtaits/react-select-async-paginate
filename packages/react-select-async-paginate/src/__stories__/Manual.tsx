@@ -1,6 +1,6 @@
 /* eslint-disable react/no-array-index-key */
 
-import React, { useState, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import type { FC } from 'react';
 import sleep from 'sleep-promise';
 import type { InputActionMeta } from 'react-select';

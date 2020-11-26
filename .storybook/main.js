@@ -13,12 +13,18 @@ module.exports = {
               modules: false,
 
               targets: {
-                firefox: '64',
-                chrome: '71',
+                firefox: '83',
+                chrome: '87',
               },
             },
           ],
-          '@babel/react',
+
+          [
+            '@babel/preset-react',
+            {
+              runtime: 'automatic',
+            },
+          ],
         ],
 
         plugins: [

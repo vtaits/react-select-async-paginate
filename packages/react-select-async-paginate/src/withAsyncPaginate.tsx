@@ -1,4 +1,3 @@
-import React from 'react';
 import type {
   FC,
   ComponentType,
@@ -29,10 +28,10 @@ export type Props<OptionType = any, Additional = any> =
     useAsyncPaginate?: typeof useAsyncPaginate;
   };
 
-export const withAsyncPaginate = <OptionType = any, Additional = any>(
+export function withAsyncPaginate<OptionType = any, Additional = any>(
   // eslint-disable-next-line @typescript-eslint/naming-convention
   SelectComponent: ComponentType<SelectProps<OptionType>>,
-): FC<Props<OptionType, Additional>> => {
+): FC<Props<OptionType, Additional>> {
   const WithAsyncPaginate: FC<Props<OptionType, Additional>> = (props) => {
     const {
       components,
@@ -50,14 +49,13 @@ export const withAsyncPaginate = <OptionType = any, Additional = any>(
 
     const processedComponents = useComponentsProp<OptionType>(components);
 
-    return React.createElement(
-      SelectComponent,
-      {
-        ...props,
-        ...asyncPaginateProps,
-        components: processedComponents,
-        ref: selectRef,
-      },
+    return (
+      <SelectComponent
+        {...props}
+        {...asyncPaginateProps}
+        components={processedComponents}
+        ref={selectRef}
+      />
     );
   };
 
@@ -70,4 +68,4 @@ export const withAsyncPaginate = <OptionType = any, Additional = any>(
   };
 
   return WithAsyncPaginate;
-};
+}

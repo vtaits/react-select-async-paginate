@@ -1,4 +1,3 @@
-import React from 'react';
 import type {
   FC,
   ComponentType,
@@ -31,10 +30,10 @@ export type Props<OptionType = any> =
     useSelectFetch?: typeof useSelectFetch;
   };
 
-export const withSelectFetch = <OptionType = any>(
+export function withSelectFetch<OptionType = any>(
   // eslint-disable-next-line @typescript-eslint/naming-convention
   SelectComponent: ComponentType<SelectProps<OptionType>>,
-): FC<Props<OptionType>> => {
+): FC<Props<OptionType>> {
   const WithSelectFetch: FC<Props<OptionType>> = (props) => {
     const {
       components,
@@ -52,14 +51,13 @@ export const withSelectFetch = <OptionType = any>(
 
     const processedComponents = useComponentsProp<OptionType>(components);
 
-    return React.createElement(
-      SelectComponent,
-      {
-        ...props,
-        ...asyncPaginateProps,
-        components: processedComponents,
-        ref: selectRef,
-      },
+    return (
+      <SelectComponent
+        {...props}
+        {...asyncPaginateProps}
+        components={processedComponents}
+        ref={selectRef}
+      />
     );
   };
 
@@ -72,4 +70,4 @@ export const withSelectFetch = <OptionType = any>(
   };
 
   return WithSelectFetch;
-};
+}

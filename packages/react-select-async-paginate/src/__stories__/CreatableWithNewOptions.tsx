@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import type { FC } from 'react';
 import sleep from 'sleep-promise';
 import Creatable from 'react-select/creatable';

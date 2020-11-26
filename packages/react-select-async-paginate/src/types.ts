@@ -91,7 +91,7 @@ export type UseAsyncPaginateParams<OptionType = any, Additional = any> = {
 
 export type UseAsyncPaginateBaseParams<
   OptionType = any,
-  Additional = any
+  Additional = any,
 > = UseAsyncPaginateParams<OptionType, Additional> & {
   inputValue: string;
   menuIsOpen: boolean;
