@@ -1,3 +1,13 @@
+## 0.3.0 (26 nov 2020)
+
+### Internal changes
+
+- Migrate to [new JSX transform](https://reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html)
+
+### Breaking changes
+
+- Drop `react` less than `16.14.0`
+
 ## 0.2.1 (30 sep 2020)
 
 ### New features
@@ -12,7 +22,7 @@
 
 ### Breaking changes
 
-* `withSelectFetchBase` is removed. `withSelectFetch` supports `inputValue`, `menuIsOpen`, `onInputChange`, `onMenuClose`, `onMenuOpen` now.
+- `withSelectFetchBase` is removed. `withSelectFetch` supports `inputValue`, `menuIsOpen`, `onInputChange`, `onMenuClose`, `onMenuOpen` now.
 
 ## 0.2.0-alpha.0
 
@@ -20,4 +30,4 @@ The project was fully rewritten to **typescript** and **react hooks**.
 
 ### Breaking changes
 
-* `withSelectFetch` now works with `react-select`-like components instead of `react-select-async-paginate`-like components
+- `withSelectFetch` now works with `react-select`-like components instead of `react-select-async-paginate`-like components
