@@ -7,7 +7,12 @@ import type {
   LoadOptions,
 } from '..';
 
-const options = [];
+type OptionType = {
+  value: number;
+  label: string;
+};
+
+const options: OptionType[] = [];
 for (let i = 0; i < 50; ++i) {
   options.push({
     value: i + 1,
@@ -15,7 +20,7 @@ for (let i = 0; i < 50; ++i) {
   });
 }
 
-const loadOptions: LoadOptions = async (search, prevOptions) => {
+const loadOptions: LoadOptions<OptionType, null> = async (search, prevOptions) => {
   await sleep(1000);
 
   let filteredOptions;
@@ -47,7 +52,7 @@ const Example: FC = () => {
   const [value, onChange] = useState(null);
   const [numberOfRequests, setNumberOfRequests] = useState(0);
 
-  const wrappedLoadOptions: LoadOptions = (inputValue, prevOptions) => {
+  const wrappedLoadOptions: LoadOptions<OptionType, null> = (inputValue, prevOptions) => {
     setNumberOfRequests(increase);
 
     return loadOptions(inputValue, prevOptions);

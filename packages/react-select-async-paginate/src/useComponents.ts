@@ -15,17 +15,17 @@ import { wrapMenuList } from './wrapMenuList';
 
 export const MenuList = wrapMenuList(defaultComponents.MenuList);
 
-export const useComponentsPure = <OptionType>(
+export const useComponentsPure = <OptionType, IsMulti extends boolean>(
   useMemoParam: typeof useMemo,
-  components: SelectComponentsConfig<OptionType>,
-): SelectComponentsConfig<OptionType> => useMemoParam(() => ({
-    MenuList: (MenuList as unknown as ComponentType<MenuListComponentProps<OptionType>>),
+  components: SelectComponentsConfig<OptionType, IsMulti>,
+): SelectComponentsConfig<OptionType, IsMulti> => useMemoParam(() => ({
+    MenuList: (MenuList as unknown as ComponentType<MenuListComponentProps<OptionType, IsMulti>>),
     ...components,
   }), [components]);
 
-export const useComponents = <OptionType = any>(
-  components: SelectComponentsConfig<OptionType>,
-): SelectComponentsConfig<OptionType> => useComponentsPure(
+export const useComponents = <OptionType, IsMulti extends boolean>(
+  components: SelectComponentsConfig<OptionType, IsMulti>,
+): SelectComponentsConfig<OptionType, IsMulti> => useComponentsPure(
     useMemo,
     components,
   );

@@ -13,6 +13,7 @@ import {
 
 import type {
   MapResponse,
+  Additional,
 } from '../types';
 
 const defaultUseCallback: typeof reactUseCallback = (callback) => callback;
@@ -267,7 +268,7 @@ test('should return mapped response with increased page in additional', async ()
 
   const get = jest.fn(() => response);
 
-  const mapResponse = jest.fn<Response, Parameters<MapResponse>>(({
+  const mapResponse = jest.fn<Response<number, Additional>, Parameters<MapResponse<number>>>(({
     results,
     has_more: hasMore,
   }) => ({

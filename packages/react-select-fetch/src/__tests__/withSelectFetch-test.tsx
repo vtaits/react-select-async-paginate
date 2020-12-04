@@ -11,6 +11,7 @@ import type {
 } from 'react-select';
 import type {
   UseAsyncPaginateResult,
+  useComponents as defaultUseComponents,
 } from 'react-select-async-paginate';
 
 import { withSelectFetch } from '../withSelectFetch';
@@ -29,9 +30,9 @@ type PageObject = {
 const defaultProps = {
   url: '',
 
-  useComponents: (): SelectComponentsConfig<any> => ({}),
+  useComponents: (() => ({})) as typeof defaultUseComponents,
 
-  useSelectFetch: (): UseAsyncPaginateResult => ({
+  useSelectFetch: (): UseAsyncPaginateResult<any> => ({
     handleScrolledToBottom: (): void => {},
     shouldLoadMore: (): boolean => true,
     isLoading: true,
@@ -46,7 +47,9 @@ const defaultProps = {
   }),
 };
 
-const setup = (props: Partial<Props>): PageObject => {
+const setup = <OptionType, IsMulti extends boolean>(
+  props: Partial<Props<OptionType, IsMulti>>,
+): PageObject => {
   const wrapper: ShallowWrapper = shallow(
     <SelectFetch
       {...defaultProps}
@@ -81,7 +84,7 @@ test('should provide props from hook to child', () => {
     },
   ];
 
-  const useSelectFetch = (): UseAsyncPaginateResult => ({
+  const useSelectFetch = (): UseAsyncPaginateResult<any> => ({
     handleScrolledToBottom: (): void => {},
     shouldLoadMore: (): boolean => true,
     isLoading: true,
@@ -124,7 +127,7 @@ test('should redefine parent props with hook props', () => {
     },
   ];
 
-  const useSelectFetch = (): UseAsyncPaginateResult => ({
+  const useSelectFetch = (): UseAsyncPaginateResult<any> => ({
     handleScrolledToBottom: (): void => {},
     shouldLoadMore: (): boolean => true,
     isLoading: true,
@@ -208,14 +211,12 @@ test('should call hook with deps from cacheUniq', () => {
 });
 
 test('should call useComponents hook', () => {
-  const useComponents = jest.fn<
-  SelectComponentsConfig<any>,
-  [SelectComponentsConfig<any>]
-  >(() => ({}));
+  const useComponents = jest.fn()
+    .mockReturnValue({});
 
   const Test: FC = () => <div />;
 
-  const components: SelectComponentsConfig<any> = {
+  const components: SelectComponentsConfig<any, false> = {
     Menu: Test,
   };
 
@@ -230,11 +231,11 @@ test('should call useComponents hook', () => {
 test('should use result of useComponents hook', () => {
   const Test: FC = () => <div />;
 
-  const components: SelectComponentsConfig<any> = {
+  const components: SelectComponentsConfig<any, false> = {
     Menu: Test,
   };
 
-  const useComponents = (): SelectComponentsConfig<any> => components;
+  const useComponents = (() => components) as typeof defaultUseComponents;
 
   const page = setup({
     components,

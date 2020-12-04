@@ -21,8 +21,11 @@ import type {
   UseSelectFetchParams,
 } from './types';
 
-export type Props<OptionType = any> =
-  & SelectProps<OptionType>
+export type Props<
+OptionType,
+IsMulti extends boolean,
+> =
+  & SelectProps<OptionType, IsMulti>
   & UseSelectFetchParams<OptionType>
   & ComponentProps
   & {
@@ -30,11 +33,14 @@ export type Props<OptionType = any> =
     useSelectFetch?: typeof useSelectFetch;
   };
 
-export function withSelectFetch<OptionType = any>(
+export function withSelectFetch<
+OptionType,
+IsMulti extends boolean,
+>(
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  SelectComponent: ComponentType<SelectProps<OptionType>>,
-): FC<Props<OptionType>> {
-  const WithSelectFetch: FC<Props<OptionType>> = (props) => {
+  SelectComponent: ComponentType<SelectProps<OptionType, IsMulti>>,
+): FC<Props<OptionType, IsMulti>> {
+  const WithSelectFetch: FC<Props<OptionType, IsMulti>> = (props) => {
     const {
       components,
       selectRef,
@@ -49,7 +55,7 @@ export function withSelectFetch<OptionType = any>(
       cacheUniqs,
     );
 
-    const processedComponents = useComponentsProp<OptionType>(components);
+    const processedComponents = useComponentsProp<OptionType, IsMulti>(components);
 
     return (
       <SelectComponent

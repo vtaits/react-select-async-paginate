@@ -22,17 +22,10 @@ import type {
   OptionsCache,
   OptionsCacheItem,
   UseAsyncPaginateBaseParams,
-  Response,
-  OptionsList,
 } from '../types';
 
-type UseStateResult = [number, (nextCache: OptionsCache) => void];
+type UseStateResult = [number, (nextCache: OptionsCache<any, any>) => void];
 type UseStateArgs = [() => number];
-type LoadOptionsArgs = [
-  string,
-  OptionsList,
-  any,
-];
 
 const defaultCacheItem: OptionsCacheItem<any, any> = {
   options: [],
@@ -42,7 +35,7 @@ const defaultCacheItem: OptionsCacheItem<any, any> = {
   additional: null,
 };
 
-const defaultParams: UseAsyncPaginateBaseParams = {
+const defaultParams: UseAsyncPaginateBaseParams<any, any> = {
   loadOptions: () => ({
     options: [],
   }),
@@ -301,10 +294,8 @@ describe('validateResponse', () => {
 
 describe('useAsyncPaginateBasePure', () => {
   test('should call getInitialOptionsCache on init', () => {
-    const getInitialOptionsCacheParam = jest.fn<
-    OptionsCache,
-    [UseAsyncPaginateBaseParams]
-    >(() => ({}));
+    const getInitialOptionsCacheParam = jest.fn()
+      .mockReturnValue({});
 
     const options = [
       {
@@ -1059,9 +1050,10 @@ describe('useAsyncPaginateBasePure', () => {
     const useState = jest.fn<UseStateResult, UseStateArgs>()
       .mockReturnValue([2, setStateId]);
 
-    const reduceState = jest.fn(() => ({
-      test2: defaultCacheItem,
-    }));
+    const reduceState = jest.fn()
+      .mockReturnValue({
+        test2: defaultCacheItem,
+      });
 
     const optionsCache = {
       current: {
@@ -1110,9 +1102,10 @@ describe('useAsyncPaginateBasePure', () => {
     const useState = jest.fn<UseStateResult, UseStateArgs>()
       .mockReturnValue([2, setStateId]);
 
-    const reduceState = jest.fn(() => ({
-      test2: defaultCacheItem,
-    }));
+    const reduceState = jest.fn()
+      .mockReturnValue({
+        test2: defaultCacheItem,
+      });
 
     const optionsCache = {
       current: {
@@ -1179,10 +1172,11 @@ describe('requestOptions', () => {
     ];
 
     const setOptionsCache = jest.fn();
-    const loadOptions = jest.fn<Response, LoadOptionsArgs>(() => ({
-      options: newOptions,
-      hasMore: true,
-    }));
+    const loadOptions = jest.fn()
+      .mockReturnValue({
+        options: newOptions,
+        hasMore: true,
+      });
 
     const additional = Symbol('additional');
 
@@ -1264,10 +1258,11 @@ describe('requestOptions', () => {
     ];
 
     const setOptionsCache = jest.fn();
-    const loadOptions = jest.fn<Response, LoadOptionsArgs>(() => ({
-      options: newOptions,
-      hasMore: true,
-    }));
+    const loadOptions = jest.fn()
+      .mockReturnValue({
+        options: newOptions,
+        hasMore: true,
+      });
 
     const additional = Symbol('additional');
 
@@ -1337,10 +1332,11 @@ describe('requestOptions', () => {
 
   test('should not request if options are loading for current search', async () => {
     const setOptionsCache = jest.fn();
-    const loadOptions = jest.fn<Response, LoadOptionsArgs>(() => ({
-      options: [],
-      hasMore: true,
-    }));
+    const loadOptions = jest.fn()
+      .mockReturnValue({
+        options: [],
+        hasMore: true,
+      });
 
     const additional = Symbol('additional');
 
@@ -1377,10 +1373,11 @@ describe('requestOptions', () => {
 
   test('should not request if hasMore is false for current search', async () => {
     const setOptionsCache = jest.fn();
-    const loadOptions = jest.fn<Response, LoadOptionsArgs>(() => ({
-      options: [],
-      hasMore: true,
-    }));
+    const loadOptions = jest.fn()
+      .mockReturnValue({
+        options: [],
+        hasMore: true,
+      });
 
     const additional = Symbol('additional');
 
@@ -1417,9 +1414,8 @@ describe('requestOptions', () => {
 
   test('should request with error', async () => {
     const setOptionsCache = jest.fn();
-    const loadOptions = jest.fn<Response, LoadOptionsArgs>(() => {
-      throw new Error();
-    });
+    const loadOptions = jest.fn()
+      .mockRejectedValue(new Error());
 
     const additional = Symbol('additional');
 
@@ -1443,12 +1439,10 @@ describe('requestOptions', () => {
       defaultReduceOptions,
     );
 
-    expect(loadOptions.mock.calls.length).toBe(1);
-    expect(loadOptions.mock.calls[0][0]).toBe('test');
-    expect(loadOptions.mock.calls[0][1]).toEqual([]);
-    expect(loadOptions.mock.calls[0][2]).toEqual(additional);
+    expect(loadOptions).toHaveBeenCalledTimes(1);
+    expect(loadOptions).toHaveBeenCalledWith('test', [], additional);
 
-    expect(setOptionsCache.mock.calls.length).toBe(2);
+    expect(setOptionsCache).toHaveBeenCalledTimes(2);
 
     const intermediateCache = setOptionsCache.mock.calls[0][0]({});
 
@@ -1507,17 +1501,15 @@ describe('requestOptions', () => {
       },
     ];
 
-    const reduceOptions = jest.fn<OptionsList, [
-      OptionsList,
-      OptionsList,
-      any,
-    ]>(() => reducedOptions);
+    const reduceOptions = jest.fn()
+      .mockReturnValue(reducedOptions);
 
     const setOptionsCache = jest.fn();
-    const loadOptions = jest.fn<Response, LoadOptionsArgs>(() => ({
-      options: newOptions,
-      hasMore: true,
-    }));
+    const loadOptions = jest.fn()
+      .mockReturnValue({
+        options: newOptions,
+        hasMore: true,
+      });
 
     const additional = Symbol('additional');
 
@@ -1609,7 +1601,8 @@ describe('requestOptions', () => {
       throw new Error();
     });
 
-    const loadOptions = jest.fn<Response, LoadOptionsArgs>(() => response);
+    const loadOptions = jest.fn()
+      .mockReturnValue(response);
 
     let hasError = false;
     try {
@@ -1679,10 +1672,11 @@ describe('requestOptions', () => {
     ];
 
     const setOptionsCache = jest.fn();
-    const loadOptions = jest.fn<Response, LoadOptionsArgs>(() => ({
-      options: newOptions,
-      hasMore: true,
-    }));
+    const loadOptions = jest.fn()
+      .mockReturnValue({
+        options: newOptions,
+        hasMore: true,
+      });
 
     const additional = Symbol('additional');
 
@@ -1706,15 +1700,13 @@ describe('requestOptions', () => {
       defaultReduceOptions,
     );
 
-    expect(sleep.mock.calls.length).toBe(1);
+    expect(sleep).toHaveBeenCalledTimes(1);
     expect(sleep.mock.calls[0][0]).toBe(1234);
 
-    expect(loadOptions.mock.calls.length).toBe(1);
-    expect(loadOptions.mock.calls[0][0]).toBe('test');
-    expect(loadOptions.mock.calls[0][1]).toEqual([]);
-    expect(loadOptions.mock.calls[0][2]).toEqual(additional);
+    expect(loadOptions).toHaveBeenCalledTimes(1);
+    expect(loadOptions).toHaveBeenCalledWith('test', [], additional);
 
-    expect(setOptionsCache.mock.calls.length).toBe(2);
+    expect(setOptionsCache).toHaveBeenCalledTimes(2);
 
     const intermediateCache = setOptionsCache.mock.calls[0][0]({});
 
@@ -1755,10 +1747,11 @@ describe('requestOptions', () => {
     ];
 
     const setOptionsCache = jest.fn();
-    const loadOptions = jest.fn<Response, LoadOptionsArgs>(() => ({
-      options: newOptions,
-      hasMore: true,
-    }));
+    const loadOptions = jest.fn()
+      .mockReturnValue({
+        options: newOptions,
+        hasMore: true,
+      });
 
     const additional = Symbol('additional');
 
@@ -1821,10 +1814,11 @@ describe('requestOptions', () => {
     ];
 
     const setOptionsCache = jest.fn();
-    const loadOptions = jest.fn<Response, LoadOptionsArgs>(() => ({
-      options: newOptions,
-      hasMore: true,
-    }));
+    const loadOptions = jest.fn()
+      .mockReturnValue({
+        options: newOptions,
+        hasMore: true,
+      });
 
     const additional = Symbol('additional');
 
@@ -1894,11 +1888,12 @@ describe('requestOptions', () => {
     const additional2 = Symbol('additional2');
 
     const setOptionsCache = jest.fn();
-    const loadOptions = jest.fn<Response, LoadOptionsArgs>(() => ({
-      options: [],
-      hasMore: true,
-      additional: additional2,
-    }));
+    const loadOptions = jest.fn()
+      .mockReturnValue({
+        options: [],
+        hasMore: true,
+        additional: additional2,
+      });
 
     await requestOptions(
       {
@@ -1935,10 +1930,11 @@ describe('requestOptions', () => {
     const additional1 = Symbol('additional1');
 
     const setOptionsCache = jest.fn();
-    const loadOptions = jest.fn<Response, LoadOptionsArgs>(() => ({
-      options: [],
-      hasMore: true,
-    }));
+    const loadOptions = jest.fn()
+      .mockReturnValue({
+        options: [],
+        hasMore: true,
+      });
 
     await requestOptions(
       {
@@ -1973,10 +1969,11 @@ describe('requestOptions', () => {
 
   test('should set truthy hasMore with response', async () => {
     const setOptionsCache = jest.fn();
-    const loadOptions = jest.fn<Response, LoadOptionsArgs>(() => ({
-      options: [],
-      hasMore: true,
-    }));
+    const loadOptions = jest.fn()
+      .mockReturnValue({
+        options: [],
+        hasMore: true,
+      });
 
     await requestOptions(
       {
@@ -2010,9 +2007,10 @@ describe('requestOptions', () => {
 
   test('should set falsy hasMore with response', async () => {
     const setOptionsCache = jest.fn();
-    const loadOptions = jest.fn<Response, LoadOptionsArgs>(() => ({
-      options: [],
-    }));
+    const loadOptions = jest.fn()
+      .mockReturnValue({
+        options: [],
+      });
 
     await requestOptions(
       {

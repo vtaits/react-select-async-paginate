@@ -19,8 +19,8 @@ import type {
   ComponentProps,
 } from './types';
 
-export type Props<OptionType = any, Additional = any> =
-  & SelectProps<OptionType>
+export type Props<OptionType, Additional, IsMulti extends boolean> =
+  & SelectProps<OptionType, IsMulti>
   & UseAsyncPaginateParams<OptionType, Additional>
   & ComponentProps
   & {
@@ -28,11 +28,15 @@ export type Props<OptionType = any, Additional = any> =
     useAsyncPaginate?: typeof useAsyncPaginate;
   };
 
-export function withAsyncPaginate<OptionType = any, Additional = any>(
+export function withAsyncPaginate<
+OptionType,
+Additional,
+IsMulti extends boolean,
+>(
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  SelectComponent: ComponentType<SelectProps<OptionType>>,
-): FC<Props<OptionType, Additional>> {
-  const WithAsyncPaginate: FC<Props<OptionType, Additional>> = (props) => {
+  SelectComponent: ComponentType<SelectProps<OptionType, IsMulti>>,
+): FC<Props<OptionType, Additional, IsMulti>> {
+  const WithAsyncPaginate: FC<Props<OptionType, Additional, IsMulti>> = (props) => {
     const {
       components,
       selectRef,
@@ -47,7 +51,7 @@ export function withAsyncPaginate<OptionType = any, Additional = any>(
       cacheUniqs,
     );
 
-    const processedComponents = useComponentsProp<OptionType>(components);
+    const processedComponents = useComponentsProp<OptionType, IsMulti>(components);
 
     return (
       <SelectComponent

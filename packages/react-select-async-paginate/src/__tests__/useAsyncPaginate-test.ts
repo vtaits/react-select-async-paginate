@@ -20,13 +20,13 @@ const makeUseState = (): typeof reactUseState => jest.fn()
   .mockReturnValueOnce(['', (): void => {}])
   .mockReturnValueOnce([false, (): void => {}]);
 
-const defaultParams: UseAsyncPaginateParams = {
+const defaultParams: UseAsyncPaginateParams<any, any> = {
   loadOptions: () => ({
     options: [],
   }),
 };
 
-const defaultUseAsyncPaginateBase = (): UseAsyncPaginateBaseResult => ({
+const defaultUseAsyncPaginateBase = (): UseAsyncPaginateBaseResult<any> => ({
   handleScrolledToBottom: (): void => {},
   shouldLoadMore: (): boolean => true,
   isLoading: true,
@@ -44,7 +44,10 @@ test('should provide all params to useAsyncPaginateBase', () => {
 
   const deps = [1, 2, 3];
 
-  const options: OptionsList = [
+  const options: OptionsList<{
+    value: number;
+    label: string;
+  }> = [
     {
       value: 1,
       label: '1',
@@ -56,7 +59,10 @@ test('should provide all params to useAsyncPaginateBase', () => {
     },
   ];
 
-  const defaultOptions: OptionsList = [
+  const defaultOptions: OptionsList<{
+    value: number;
+    label: string;
+  }> = [
     {
       value: 3,
       label: '3',
@@ -106,7 +112,10 @@ test('should return all fields from of useAsyncPaginateBase', () => {
   const shouldLoadMore = jest.fn();
   const filterOption = jest.fn();
 
-  const options: OptionsList = [
+  const options: UseAsyncPaginateBaseResult<{
+    value: number;
+    label: string;
+  }>['options'] = [
     {
       value: 1,
       label: '1',
@@ -118,7 +127,10 @@ test('should return all fields from of useAsyncPaginateBase', () => {
     },
   ];
 
-  const result = useAsyncPaginatePure(
+  const result = useAsyncPaginatePure<{
+    value: number;
+    label: string;
+  }, null>(
     makeUseState(),
     defaultUseCallback,
     () => ({
@@ -141,8 +153,8 @@ test('should return all fields from of useAsyncPaginateBase', () => {
 
 test('should provide inputValue from state to useAsyncPaginateBase and response', () => {
   const useAsyncPaginateBase = jest.fn<
-  UseAsyncPaginateBaseResult,
-  [UseAsyncPaginateBaseParams]
+  UseAsyncPaginateBaseResult<any>,
+  [UseAsyncPaginateBaseParams<any, any>]
   >(defaultUseAsyncPaginateBase);
 
   const result = useAsyncPaginatePure(
@@ -162,8 +174,8 @@ test('should provide inputValue from state to useAsyncPaginateBase and response'
 
 test('should provide inputValue from params to useAsyncPaginateBase and response', () => {
   const useAsyncPaginateBase = jest.fn<
-  UseAsyncPaginateBaseResult,
-  [UseAsyncPaginateBaseParams]
+  UseAsyncPaginateBaseResult<any>,
+  [UseAsyncPaginateBaseParams<any, any>]
   >(defaultUseAsyncPaginateBase);
 
   const result = useAsyncPaginatePure(
@@ -235,8 +247,8 @@ test('should change local inputValue and call onInputChange param on input chang
 
 test('should provide truthy menuIsOpen from state to useAsyncPaginateBase and response', () => {
   const useAsyncPaginateBase = jest.fn<
-  UseAsyncPaginateBaseResult,
-  [UseAsyncPaginateBaseParams]
+  UseAsyncPaginateBaseResult<any>,
+  [UseAsyncPaginateBaseParams<any, any>]
   >(defaultUseAsyncPaginateBase);
 
   const result = useAsyncPaginatePure(
@@ -256,8 +268,8 @@ test('should provide truthy menuIsOpen from state to useAsyncPaginateBase and re
 
 test('should provide truthy menuIsOpen from params to useAsyncPaginateBase and response', () => {
   const useAsyncPaginateBase = jest.fn<
-  UseAsyncPaginateBaseResult,
-  [UseAsyncPaginateBaseParams]
+  UseAsyncPaginateBaseResult<any>,
+  [UseAsyncPaginateBaseParams<any, any>]
   >(defaultUseAsyncPaginateBase);
 
   const result = useAsyncPaginatePure(
@@ -280,8 +292,8 @@ test('should provide truthy menuIsOpen from params to useAsyncPaginateBase and r
 
 test('should provide falsy menuIsOpen from state to useAsyncPaginateBase and response', () => {
   const useAsyncPaginateBase = jest.fn<
-  UseAsyncPaginateBaseResult,
-  [UseAsyncPaginateBaseParams]
+  UseAsyncPaginateBaseResult<any>,
+  [UseAsyncPaginateBaseParams<any, any>]
   >(defaultUseAsyncPaginateBase);
 
   const result = useAsyncPaginatePure(
@@ -301,8 +313,8 @@ test('should provide falsy menuIsOpen from state to useAsyncPaginateBase and res
 
 test('should provide falsy menuIsOpen from params to useAsyncPaginateBase and response', () => {
   const useAsyncPaginateBase = jest.fn<
-  UseAsyncPaginateBaseResult,
-  [UseAsyncPaginateBaseParams]
+  UseAsyncPaginateBaseResult<any>,
+  [UseAsyncPaginateBaseParams<any, any>]
   >(defaultUseAsyncPaginateBase);
 
   const result = useAsyncPaginatePure(

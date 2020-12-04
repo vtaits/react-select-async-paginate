@@ -295,7 +295,8 @@ test('should call checkAndLoad and start on call setCheckAndHandleTimeout', () =
     .mockReturnValueOnce(jest.fn())
     .mockReturnValueOnce(checkAndHandle)
     .mockReturnValueOnce(setCheckAndHandleTimeout);
-  const setTimeout = jest.fn(() => 123);
+  const setTimeout = jest.fn()
+    .mockReturnValue(123);
 
   const timeoutRef = {
     current: null,

@@ -18,7 +18,7 @@ import type {
   UseSelectFetchMapParams,
 } from './types';
 
-export const defaultResponseMapper: MapResponse = (response) => response;
+export const defaultResponseMapper: MapResponse<any> = (response) => response;
 
 export const useMapToAsyncPaginatePure = <OptionType>(
   useCallbackParam: typeof useCallback,

@@ -23,7 +23,7 @@ for (let i = 0; i < 50; ++i) {
   });
 }
 
-const loadOptions: LoadOptions<OptionType> = async (search, prevOptions) => {
+const loadOptions: LoadOptions<OptionType, null> = async (search, prevOptions) => {
   await sleep(1000);
 
   let filteredOptions;

@@ -12,6 +12,7 @@ import {
 
 import type {
   UseAsyncPaginateParams,
+  UseAsyncPaginateBaseParams,
   UseAsyncPaginateBaseResult,
   UseAsyncPaginateResult,
 } from './types';
@@ -19,8 +20,13 @@ import type {
 export const useAsyncPaginatePure = <OptionType, Additional>(
   useStateParam: typeof useState,
   useCallbackParam: typeof useCallback,
-  useAsyncPaginateBaseParam: typeof useAsyncPaginateBase,
-  params: UseAsyncPaginateParams<OptionType>,
+
+  useAsyncPaginateBaseParam: (
+    params: UseAsyncPaginateBaseParams<OptionType, Additional>,
+    deps: ReadonlyArray<any>,
+  ) => UseAsyncPaginateBaseResult<OptionType>,
+
+  params: UseAsyncPaginateParams<OptionType, Additional>,
   deps: ReadonlyArray<any> = [],
 ): UseAsyncPaginateResult<OptionType> => {
   const {
@@ -69,10 +75,7 @@ export const useAsyncPaginatePure = <OptionType, Additional>(
     setMenuIsOpen(true);
   }, [onMenuOpenParam]);
 
-  const baseResult: UseAsyncPaginateBaseResult<OptionType> = useAsyncPaginateBaseParam<
-  OptionType,
-  Additional
-  >(
+  const baseResult: UseAsyncPaginateBaseResult<OptionType> = useAsyncPaginateBaseParam(
     {
       ...params,
       inputValue,
@@ -91,7 +94,7 @@ export const useAsyncPaginatePure = <OptionType, Additional>(
   };
 };
 
-export const useAsyncPaginate = <OptionType = any, Additional = any>(
+export const useAsyncPaginate = <OptionType, Additional>(
   params: UseAsyncPaginateParams<OptionType, Additional>,
   deps: ReadonlyArray<any> = [],
 ): UseAsyncPaginateResult<OptionType> => useAsyncPaginatePure<OptionType, Additional>(

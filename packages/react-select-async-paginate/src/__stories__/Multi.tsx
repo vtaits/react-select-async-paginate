@@ -7,6 +7,11 @@ import type {
   LoadOptions,
 } from '..';
 
+type OptionType = {
+  value: number;
+  label: string;
+};
+
 const options = [];
 for (let i = 0; i < 50; ++i) {
   options.push({
@@ -15,10 +20,10 @@ for (let i = 0; i < 50; ++i) {
   });
 }
 
-const loadOptions: LoadOptions = async (search, prevOptions) => {
+const loadOptions: LoadOptions<OptionType, null> = async (search, prevOptions) => {
   await sleep(1000);
 
-  let filteredOptions;
+  let filteredOptions: OptionType[];
   if (!search) {
     filteredOptions = options;
   } else {

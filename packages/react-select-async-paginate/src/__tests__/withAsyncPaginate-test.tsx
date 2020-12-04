@@ -16,6 +16,10 @@ import type {
 } from '../withAsyncPaginate';
 
 import type {
+  useComponents as defaultUseComponents,
+} from '../useComponents';
+
+import type {
   LoadOptions,
   UseAsyncPaginateResult,
 } from '../types';
@@ -28,16 +32,16 @@ type PageObject = {
   getChildNode: () => ShallowWrapper;
 };
 
-const defaultLoadOptions: LoadOptions = () => ({
+const defaultLoadOptions: LoadOptions<any, any> = () => ({
   options: [],
 });
 
-const defaultProps = {
+const defaultProps: Props<any, any, false> = {
   loadOptions: defaultLoadOptions,
 
-  useComponents: (): SelectComponentsConfig<any> => ({}),
+  useComponents: (() => ({})) as typeof defaultUseComponents,
 
-  useAsyncPaginate: (): UseAsyncPaginateResult => ({
+  useAsyncPaginate: (): UseAsyncPaginateResult<any> => ({
     handleScrolledToBottom: (): void => {},
     shouldLoadMore: (): boolean => true,
     isLoading: true,
@@ -52,8 +56,8 @@ const defaultProps = {
   }),
 };
 
-const setup = (props: Partial<Props>): PageObject => {
-  const wrapper: ShallowWrapper = shallow(
+const setup = (props: Partial<Props<any, any, false>>): PageObject => {
+  const wrapper = shallow(
     <AsyncPagintate
       {...defaultProps}
       {...props}
@@ -87,7 +91,7 @@ test('should provide props from hook to child', () => {
     },
   ];
 
-  const useAsyncPaginate = (): UseAsyncPaginateResult => ({
+  const useAsyncPaginate = (): UseAsyncPaginateResult<any> => ({
     handleScrolledToBottom: (): void => {},
     shouldLoadMore: (): boolean => true,
     isLoading: true,
@@ -130,7 +134,7 @@ test('should redefine parent props with hook props', () => {
     },
   ];
 
-  const useAsyncPaginate = (): UseAsyncPaginateResult => ({
+  const useAsyncPaginate = (): UseAsyncPaginateResult<any> => ({
     handleScrolledToBottom: (): void => {},
     shouldLoadMore: (): boolean => true,
     isLoading: true,
@@ -214,14 +218,12 @@ test('should call hook with deps from cacheUniq', () => {
 });
 
 test('should call useComponents hook', () => {
-  const useComponents = jest.fn<
-  SelectComponentsConfig<any>,
-  [SelectComponentsConfig<any>]
-  >(() => ({}));
+  const useComponents = jest.fn()
+    .mockReturnValue({});
 
   const Test: FC = () => <div />;
 
-  const components: SelectComponentsConfig<any> = {
+  const components: SelectComponentsConfig<any, false> = {
     Menu: Test,
   };
 
@@ -236,11 +238,11 @@ test('should call useComponents hook', () => {
 test('should use result of useComponents hook', () => {
   const Test: FC = () => <div />;
 
-  const components: SelectComponentsConfig<any> = {
+  const components: SelectComponentsConfig<any, false> = {
     Menu: Test,
   };
 
-  const useComponents = (): SelectComponentsConfig<any> => components;
+  const useComponents = (() => components) as typeof defaultUseComponents;
 
   const page = setup({
     components,

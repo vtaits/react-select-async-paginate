@@ -7,11 +7,11 @@ import type {
   OptionsType,
 } from 'react-select';
 
-export type OptionsList<OptionType = any> =
+export type OptionsList<OptionType> =
   | GroupedOptionsType<OptionType>
   | OptionsType<OptionType>;
 
-export type ReduceOptions<OptionType = any, Additional = any> = (
+export type ReduceOptions<OptionType, Additional> = (
   prevOptions: OptionsList<OptionType>,
   loadedOptions: OptionsList<OptionType>,
   additional: Additional,
@@ -25,7 +25,7 @@ export type OptionsCacheItem<OptionType, Additional> = {
   additional?: Additional;
 };
 
-export type OptionsCache<OptionType = any, Additional = any> = {
+export type OptionsCache<OptionType, Additional> = {
   [key: string]: OptionsCacheItem<OptionType, Additional>;
 };
 
@@ -35,24 +35,24 @@ export type ShouldLoadMore = (
   scrollTop: number,
 ) => boolean;
 
-export type Response<OptionType = any, Additional = any> = {
+export type Response<OptionType, Additional> = {
   options: OptionsList<OptionType>;
   hasMore?: boolean;
   additional?: Additional;
 };
 
-export type LoadOptions<OptionType = any, Additional = any> = (
+export type LoadOptions<OptionType, Additional> = (
   inputValue: string,
   options: OptionsList<OptionType>,
   additional?: Additional,
-) => Response<OptionType> | Promise<Response<OptionType>>;
+) => Response<OptionType, Additional> | Promise<Response<OptionType, Additional>>;
 
 export type FilterOption = ((
   option: any,
   rawInput: string
 ) => boolean) | null;
 
-export type UseAsyncPaginateBaseResult<OptionType = any> = {
+export type UseAsyncPaginateBaseResult<OptionType> = {
   handleScrolledToBottom: () => void;
   shouldLoadMore: ShouldLoadMore;
   isLoading: boolean;
@@ -61,7 +61,7 @@ export type UseAsyncPaginateBaseResult<OptionType = any> = {
   filterOption: FilterOption;
 };
 
-export type UseAsyncPaginateResult<OptionsParamType = any> =
+export type UseAsyncPaginateResult<OptionsParamType> =
   & UseAsyncPaginateBaseResult<OptionsParamType>
   & {
     inputValue: string;
@@ -71,15 +71,15 @@ export type UseAsyncPaginateResult<OptionsParamType = any> =
     onMenuOpen: () => void;
   };
 
-export type UseAsyncPaginateParams<OptionType = any, Additional = any> = {
-  loadOptions: LoadOptions<OptionType>;
+export type UseAsyncPaginateParams<OptionType, Additional> = {
+  loadOptions: LoadOptions<OptionType, Additional>;
   options?: OptionsList<OptionType>;
   defaultOptions?: boolean | OptionsList<OptionType>;
   additional?: Additional;
   defaultAdditional?: Additional;
   loadOptionsOnMenuOpen?: boolean;
   debounceTimeout?: number;
-  reduceOptions?: ReduceOptions<OptionType>;
+  reduceOptions?: ReduceOptions<OptionType, Additional>;
   shouldLoadMore?: ShouldLoadMore;
   filterOption?: FilterOption;
   inputValue?: string;
@@ -90,8 +90,8 @@ export type UseAsyncPaginateParams<OptionType = any, Additional = any> = {
 };
 
 export type UseAsyncPaginateBaseParams<
-  OptionType = any,
-  Additional = any,
+  OptionType,
+  Additional,
 > = UseAsyncPaginateParams<OptionType, Additional> & {
   inputValue: string;
   menuIsOpen: boolean;

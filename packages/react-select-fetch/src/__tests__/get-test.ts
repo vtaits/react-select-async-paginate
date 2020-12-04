@@ -108,9 +108,10 @@ describe('getPure', () => {
   });
 
   test('should call fetch with correct params', async () => {
-    const fetchMock = jest.fn(async () => ({
-      json: async (): Promise<any> => ({}),
-    }));
+    const fetchMock = jest.fn()
+      .mockResolvedValue({
+        json: async (): Promise<any> => ({}),
+      });
 
     await getPure(
       fetchMock as unknown as typeof fetch,
