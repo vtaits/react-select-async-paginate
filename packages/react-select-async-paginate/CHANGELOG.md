@@ -1,3 +1,7 @@
+## 0.5.1 (05 dec 2020)
+
+- Fixed `typescript` crash with latset `@types/react-select`
+
 ## 0.5.0 (26 nov 2020)
 
 ### Internal changes
