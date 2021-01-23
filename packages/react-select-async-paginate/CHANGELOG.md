@@ -1,4 +1,12 @@
+## 0.5.2 (23 jan 2020)
+
+### New features
+
+- Support `defaultInputValue` prop. Thanks [gterral](https://github.com/gterral)!
+
 ## 0.5.1 (05 dec 2020)
+
+### Bugfix
 
 - Fixed `typescript` crash with latest `@types/react-select`
 
