@@ -196,6 +196,34 @@ test('should provide inputValue from params to useAsyncPaginateBase and response
   expect(params.inputValue).toBe('test2');
 });
 
+test('should use defaultInputValue from params as initial value for the inputValue state', () => {
+  const useAsyncPaginateBase = jest.fn<
+  UseAsyncPaginateBaseResult<any>,
+  [UseAsyncPaginateBaseParams<any, any>]
+  >(defaultUseAsyncPaginateBase);
+
+  const useStateParam = jest.fn();
+  const defaultInputValue = 'test3';
+
+  const result = useAsyncPaginatePure(
+    useStateParam
+      .mockReturnValueOnce([defaultInputValue, (): void => {}])
+      .mockReturnValueOnce([false, (): void => {}]),
+    defaultUseCallback,
+    useAsyncPaginateBase,
+    {
+      ...defaultParams,
+      defaultInputValue,
+    },
+  );
+
+  expect(useStateParam).toHaveBeenCalledTimes(2);
+  expect(useStateParam).toHaveBeenNthCalledWith(1, defaultInputValue);
+  expect(useStateParam).toHaveBeenNthCalledWith(2, false);
+
+  expect(result.inputValue).toBe(defaultInputValue);
+});
+
 test('should change local inputValue on input change', () => {
   const setInputValue = jest.fn();
 
