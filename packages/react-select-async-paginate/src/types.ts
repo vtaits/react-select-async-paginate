@@ -85,6 +85,7 @@ export type UseAsyncPaginateParams<OptionType, Additional> = {
   inputValue?: string;
   menuIsOpen?: boolean;
   defaultInputValue?: string;
+  defaultMenuIsOpen?: boolean;
   onInputChange?: (newValue: string, actionMeta: InputActionMeta) => void;
   onMenuClose?: () => void;
   onMenuOpen?: () => void;
