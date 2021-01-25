@@ -1,4 +1,10 @@
-## 0.5.2 (23 jan 2020)
+## 0.5.3 (25 jan 2021)
+
+### New features
+
+- Support `defaultMenuIsOpen` prop. Thanks [gterral](https://github.com/gterral)!
+
+## 0.5.2 (23 jan 2021)
 
 ### New features
 
