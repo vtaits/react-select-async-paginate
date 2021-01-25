@@ -363,6 +363,34 @@ test('should provide falsy menuIsOpen from params to useAsyncPaginateBase and re
   expect(params.menuIsOpen).toBe(false);
 });
 
+test('should use defaultMenuIsOpen from params as initial value for the menuIsOpen state', () => {
+  const useAsyncPaginateBase = jest.fn<
+  UseAsyncPaginateBaseResult<any>,
+  [UseAsyncPaginateBaseParams<any, any>]
+  >(defaultUseAsyncPaginateBase);
+
+  const useStateParam = jest.fn();
+  const defaultMenuIsOpen = true;
+
+  const result = useAsyncPaginatePure(
+    useStateParam
+      .mockReturnValueOnce(['', (): void => {}])
+      .mockReturnValueOnce([defaultMenuIsOpen, (): void => {}]),
+    defaultUseCallback,
+    useAsyncPaginateBase,
+    {
+      ...defaultParams,
+      defaultMenuIsOpen,
+    },
+  );
+
+  expect(useStateParam).toHaveBeenCalledTimes(2);
+  expect(useStateParam).toHaveBeenNthCalledWith(1, '');
+  expect(useStateParam).toHaveBeenNthCalledWith(2, defaultMenuIsOpen);
+
+  expect(result.menuIsOpen).toBe(true);
+});
+
 test('should open menu', () => {
   const setMenuIsOpen = jest.fn();
 

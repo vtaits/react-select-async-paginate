@@ -32,16 +32,19 @@ export const useAsyncPaginatePure = <OptionType, Additional>(
   const {
     inputValue: inputValueParam,
     menuIsOpen: menuIsOpenParam,
+    defaultInputValue: defaultInputValueParam,
+    defaultMenuIsOpen: defaultMenuIsOpenParam,
     onInputChange: onInputChangeParam,
     onMenuClose: onMenuCloseParam,
     onMenuOpen: onMenuOpenParam,
-    defaultInputValue: defaultInputValueParam,
   } = params;
 
   const [inputValueState, setInputValue] = useStateParam(
     defaultInputValueParam || '',
   );
-  const [menuIsOpenState, setMenuIsOpen] = useStateParam(false);
+  const [menuIsOpenState, setMenuIsOpen] = useStateParam(
+    !!defaultMenuIsOpenParam
+  );
 
   const inputValue: string = typeof inputValueParam === 'string'
     ? inputValueParam
