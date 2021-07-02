@@ -40,15 +40,15 @@
     "react-select-async-paginate": "^0.4.0 || ^0.5.0"
   },
   "dependencies": {
-    "@babel/runtime": "^7.12.13",
-    "qs": "^6.9.6"
+    "@babel/runtime": "^7.14.6",
+    "qs": "^6.10.1"
   },
   "devDependencies": {
-    "@storybook/react": "^6.1.16",
-    "@types/qs": "^6.9.5",
-    "@types/react-select": "^4.0.12",
+    "@storybook/react": "^6.3.2",
+    "@types/qs": "^6.9.6",
+    "@types/react-select": "^4.0.16",
     "enzyme": "^3.11.0",
-    "react-select": "^4.0.2",
+    "react-select": "^4.3.1",
     "react-select-async-paginate": "^0.5.0",
     "rimraf": "^3.0.1",
     "sleep-promise": "^9.1.0"

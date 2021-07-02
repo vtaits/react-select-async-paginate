@@ -38,15 +38,15 @@
     "react-select": "^2.0.0 || ^3.0.0 || ^4.0.0"
   },
   "dependencies": {
-    "@babel/runtime": "^7.12.13",
-    "@seznam/compose-react-refs": "^1.0.5",
-    "react-is-mounted-hook": "^1.0.3",
+    "@babel/runtime": "^7.14.6",
+    "@seznam/compose-react-refs": "^1.0.6",
+    "react-is-mounted-hook": "^1.1.1",
     "sleep-promise": "^9.1.0"
   },
   "devDependencies": {
-    "@storybook/react": "^6.1.16",
-    "@types/react-select": "^4.0.12",
+    "@storybook/react": "^6.3.2",
+    "@types/react-select": "^4.0.16",
     "enzyme": "^3.11.0",
-    "react-select": "^4.0.2"
+    "react-select": "^4.3.1"
   }
 }
