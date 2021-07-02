@@ -1,3 +1,7 @@
+## 0.3.2 (02 jun 2021)
+
+- Support `react-select@^4.0.0` in `peerDependencies`
+
 ## 0.3.1 (05 dec 2020)
 
 - Fixed `typescript` crash with latest `@types/react-select`
