@@ -6,6 +6,7 @@
 !.yarn/versions
 .pnp.*
 
+node_modules
 coverage
 *.log
 lib
