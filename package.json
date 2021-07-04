@@ -8,14 +8,15 @@
   "license": "MIT",
   "scripts": {
     "start": "start-storybook",
-    "build": "yarn workspaces run build",
-    "lint": "yarn workspaces run lint",
-    "test:ts": "yarn workspaces run test:ts",
-    "test:unit": "yarn workspaces run test:unit",
-    "test:unit:cov": "yarn workspaces run test:unit:cov",
+    "clean": "yarn workspaces foreach -pt run clean",
+    "build": "yarn workspaces foreach -pt run build",
+    "lint": "yarn workspaces foreach run lint",
+    "test:ts": "yarn workspaces foreach run test:ts",
+    "test:unit": "yarn workspaces foreach run test:unit",
+    "test:unit:cov": "yarn workspaces foreach run test:unit:cov",
     "test": "yarn lint && yarn test:ts && yarn test:unit",
     "validate": "yarn build && yarn lint && yarn test:ts && yarn test:unit:cov",
-    "codecov": "yarn workspaces run codecov"
+    "codecov": "yarn workspaces foreach run codecov"
   },
   "devDependencies": {
     "@babel/cli": "^7.14.5",
@@ -24,6 +25,7 @@
     "@babel/preset-env": "^7.14.7",
     "@babel/preset-react": "^7.14.5",
     "@babel/preset-typescript": "^7.14.5",
+    "@babel/runtime": "^7.14.6",
     "@storybook/react": "^6.3.2",
     "@types/enzyme": "^3.10.8",
     "@types/jest": "^26.0.23",

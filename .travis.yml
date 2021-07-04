@@ -1,8 +1,11 @@
 language: node_js
 
 before_install:
-  - curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.21.1
+  # Upgrade Yarn 1.x: https://classic.yarnpkg.com/en/docs/install
+  - curl -o- -L https://yarnpkg.com/install.sh | bash
   - export PATH="$HOME/.yarn/bin:$PATH"
+  # Then the local Yarn 2 should be available and get used
+  - yarn -v
 
 node_js:
   - "stable"
@@ -13,5 +16,13 @@ script:
 after_success:
   - yarn codecov
 
+# Use custom install step as Travis by default uses the --frozen-lockfile flag, which is deprecated
+install: yarn
+
 cache:
-  yarn: true
+  # Yarn 2 does not store dependencies in node_modules anymore, at least not by default.
+  # If you are using the node-modules plugin, remove the `npm: false` line.
+  npm: false
+  # Yarn 2 caches to the local .yarn directory, not the Travis default `$HOME/.yarn` 
+  directories:
+    - ./.yarn/cache

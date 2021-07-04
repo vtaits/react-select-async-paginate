@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "lib": ["es2020", "DOM"],
     "outDir": "ts",
     "jsx": "react-jsx",
     "esModuleInterop": true
@@ -8,8 +9,6 @@
     "src/**/*"
   ],
   "exclude": [
-    "node_modules",
-    "src/__tests__",
-    "src/__stories__"
+    "src/__tests__"
   ]
 }

@@ -1,10 +1,14 @@
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
+
 coverage
-node_modules
 *.log
 lib
 es
 ts
 .idea/
-
-# Repository is using Yarn
-package-lock.json

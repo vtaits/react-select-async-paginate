@@ -1,13 +1,11 @@
 {
   "compilerOptions": {
+    "lib": ["es2020", "DOM"],
     "outDir": "ts",
     "esModuleInterop": true,
     "jsx": "react-jsx"
   },
   "include": [
     "packages/**/*"
-  ],
-  "exclude": [
-    "node_modules"
   ]
 }
