@@ -1,5 +1,9 @@
 import type {
-  OptionsList,
+  GroupBase,
+  OptionsOrGroups,
+} from 'react-select';
+
+import type {
   Response,
   UseAsyncPaginateParams,
   UseAsyncPaginateBaseParams,
@@ -9,16 +13,16 @@ export type Additional = {
   page: number;
 };
 
-export type MapResponsePayload<OptionType> = {
+export type MapResponsePayload<OptionType, Group extends GroupBase<OptionType>> = {
   search: string;
   prevPage: number;
-  prevOptions: OptionsList<OptionType>;
+  prevOptions: OptionsOrGroups<OptionType, Group>;
 };
 
-export type MapResponse<OptionType> = (
+export type MapResponse<OptionType, Group extends GroupBase<OptionType>> = (
   responseRaw: any,
-  payload: MapResponsePayload<OptionType>,
-) => Response<OptionType, Additional>;
+  payload: MapResponsePayload<OptionType, Group>,
+) => Response<OptionType, Group, Additional>;
 
 export type Get = (
   url: string,
@@ -27,7 +31,7 @@ export type Get = (
   },
 ) => any;
 
-export type UseSelectFetchMapParams<OptionType> = {
+export type UseSelectFetchMapParams<OptionType, Group extends GroupBase<OptionType>> = {
   url: string;
   queryParams?: {
     [key: string]: any;
@@ -35,19 +39,19 @@ export type UseSelectFetchMapParams<OptionType> = {
   searchParamName?: string;
   pageParamName?: string;
   offsetParamName?: string;
-  mapResponse?: MapResponse<OptionType>;
+  mapResponse?: MapResponse<OptionType, Group>;
   get?: Get;
   initialPage?: number;
   defaultInitialPage?: number;
 };
 
-export type UseSelectFetchParams<OptionType> =
-  & UseSelectFetchMapParams<OptionType>
-  & Partial<UseAsyncPaginateParams<OptionType, Additional>>;
+export type UseSelectFetchParams<OptionType, Group extends GroupBase<OptionType>> =
+  & UseSelectFetchMapParams<OptionType, Group>
+  & Partial<UseAsyncPaginateParams<OptionType, Group, Additional>>;
 
-export type UseSelectFetchBaseParams<OptionType> =
-  & UseSelectFetchParams<OptionType>
-  & Partial<UseAsyncPaginateBaseParams<OptionType, Additional>>
+export type UseSelectFetchBaseParams<OptionType, Group extends GroupBase<OptionType>> =
+  & UseSelectFetchParams<OptionType, Group>
+  & Partial<UseAsyncPaginateBaseParams<OptionType, Group, Additional>>
   & {
     inputValue: string;
     menuIsOpen: boolean;

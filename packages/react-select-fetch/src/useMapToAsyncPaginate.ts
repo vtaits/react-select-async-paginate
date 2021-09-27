@@ -4,6 +4,10 @@ import {
 } from 'react';
 
 import type {
+  GroupBase,
+} from 'react-select';
+
+import type {
   LoadOptions,
   UseAsyncPaginateParams,
 } from 'react-select-async-paginate';
@@ -18,13 +22,13 @@ import type {
   UseSelectFetchMapParams,
 } from './types';
 
-export const defaultResponseMapper: MapResponse<any> = (response) => response;
+export const defaultResponseMapper: MapResponse<any, any> = (response) => response;
 
-export const useMapToAsyncPaginatePure = <OptionType>(
+export const useMapToAsyncPaginatePure = <OptionType, Group extends GroupBase<OptionType>>(
   useCallbackParam: typeof useCallback,
   useMemoParam: typeof useMemo,
-  selectFetchParams: UseSelectFetchMapParams<OptionType>,
-): UseAsyncPaginateParams<OptionType, Additional> => {
+  selectFetchParams: UseSelectFetchMapParams<OptionType, Group>,
+): UseAsyncPaginateParams<OptionType, Group, Additional> => {
   const {
     url,
     queryParams = {},
@@ -45,7 +49,7 @@ export const useMapToAsyncPaginatePure = <OptionType>(
     page: defaultInitialPage,
   }), [defaultInitialPage]);
 
-  const loadOptions = useCallbackParam<LoadOptions<OptionType, Additional>>(
+  const loadOptions = useCallbackParam<LoadOptions<OptionType, Group, Additional>>(
     async (search, prevOptions, { page }) => {
       const params = {
         ...queryParams,
@@ -109,9 +113,12 @@ export const useMapToAsyncPaginatePure = <OptionType>(
   };
 };
 
-export const useMapToAsyncPaginate = <OptionType>(
-  params: UseSelectFetchMapParams<OptionType>,
-): UseAsyncPaginateParams<OptionType, Additional> => useMapToAsyncPaginatePure<OptionType>(
+export const useMapToAsyncPaginate = <OptionType, Group extends GroupBase<OptionType>>(
+  params: UseSelectFetchMapParams<OptionType, Group>,
+): UseAsyncPaginateParams<OptionType, Group, Additional> => useMapToAsyncPaginatePure<
+  OptionType,
+  Group
+  >(
     useCallback,
     useMemo,
     params,

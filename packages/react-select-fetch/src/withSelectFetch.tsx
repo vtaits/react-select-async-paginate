@@ -1,9 +1,12 @@
 import type {
-  FC,
   ComponentType,
+  FC,
+  Ref,
 } from 'react';
 import type {
+  GroupBase,
   Props as SelectProps,
+  SelectInstance,
 } from 'react-select';
 import {
   useComponents,
@@ -23,11 +26,12 @@ import type {
 
 export type Props<
 OptionType,
+Group extends GroupBase<OptionType>,
 IsMulti extends boolean,
 > =
-  & SelectProps<OptionType, IsMulti>
-  & UseSelectFetchParams<OptionType>
-  & ComponentProps
+  & SelectProps<OptionType, IsMulti, Group>
+  & UseSelectFetchParams<OptionType, Group>
+  & ComponentProps<OptionType, Group, IsMulti>
   & {
     useComponents?: typeof useComponents;
     useSelectFetch?: typeof useSelectFetch;
@@ -35,12 +39,15 @@ IsMulti extends boolean,
 
 export function withSelectFetch<
 OptionType,
+Group extends GroupBase<OptionType>,
 IsMulti extends boolean,
 >(
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  SelectComponent: ComponentType<SelectProps<OptionType, IsMulti>>,
-): FC<Props<OptionType, IsMulti>> {
-  const WithSelectFetch: FC<Props<OptionType, IsMulti>> = (props) => {
+  SelectComponent: ComponentType<SelectProps<OptionType, IsMulti, Group> & {
+    ref?: Ref<SelectInstance<OptionType, IsMulti, Group>>;
+  }>,
+): FC<Props<OptionType, Group, IsMulti>> {
+  const WithSelectFetch: FC<Props<OptionType, Group, IsMulti>> = (props) => {
     const {
       components,
       selectRef,
@@ -50,12 +57,12 @@ IsMulti extends boolean,
       ...rest
     } = props;
 
-    const asyncPaginateProps: UseAsyncPaginateResult<OptionType> = useSelectFetchProp(
+    const asyncPaginateProps: UseAsyncPaginateResult<OptionType, Group> = useSelectFetchProp(
       rest,
       cacheUniqs,
     );
 
-    const processedComponents = useComponentsProp<OptionType, IsMulti>(components);
+    const processedComponents = useComponentsProp<OptionType, Group, IsMulti>(components);
 
     return (
       <SelectComponent

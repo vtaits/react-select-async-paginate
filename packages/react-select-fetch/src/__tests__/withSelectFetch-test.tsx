@@ -6,7 +6,7 @@ import type {
   ShallowWrapper,
 } from 'enzyme';
 import type {
-  OptionsType,
+  Options,
   SelectComponentsConfig,
 } from 'react-select';
 import type {
@@ -77,7 +77,7 @@ test('should provide props from parent to child', () => {
 });
 
 test('should provide props from hook to child', () => {
-  const options: OptionsType<any> = [
+  const options: Options<any> = [
     {
       value: 1,
       label: '1',
@@ -113,14 +113,14 @@ test('should provide props from hook to child', () => {
 });
 
 test('should redefine parent props with hook props', () => {
-  const optionsProp: OptionsType<any> = [
+  const optionsProp: Options<any> = [
     {
       value: 1,
       label: '1',
     },
   ];
 
-  const optionsHookResult: OptionsType<any> = [
+  const optionsHookResult: Options<any> = [
     {
       value: 1,
       label: '1',

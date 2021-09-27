@@ -24,10 +24,10 @@ import type {
   UseAsyncPaginateBaseParams,
 } from '../types';
 
-type UseStateResult = [number, (nextCache: OptionsCache<any, any>) => void];
+type UseStateResult = [number, (nextCache: OptionsCache<any, any, any>) => void];
 type UseStateArgs = [() => number];
 
-const defaultCacheItem: OptionsCacheItem<any, any> = {
+const defaultCacheItem: OptionsCacheItem<any, any, any> = {
   options: [],
   isLoading: false,
   isFirstLoad: false,
@@ -35,7 +35,7 @@ const defaultCacheItem: OptionsCacheItem<any, any> = {
   additional: null,
 };
 
-const defaultParams: UseAsyncPaginateBaseParams<any, any> = {
+const defaultParams: UseAsyncPaginateBaseParams<any, any, any> = {
   loadOptions: () => ({
     options: [],
   }),
