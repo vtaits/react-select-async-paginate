@@ -9,31 +9,32 @@ import type {
   CreatableProps,
 } from 'react-select/creatable';
 
-import { withAsyncPaginate } from '../src';
 import type {
-  LoadOptions,
-  UseAsyncPaginateParams,
   ComponentProps,
+} from 'react-select-async-paginate';
+
+import { withSelectFetch } from '../src';
+import type {
+  Get,
+  UseSelectFetchParams,
 } from '../src';
 
-type AsyncPaginateCreatableProps<
+type SelectFetchCreatableProps<
 OptionType,
 Group extends GroupBase<OptionType>,
-Additional,
 IsMulti extends boolean,
 > =
   & CreatableProps<OptionType, IsMulti, Group>
-  & UseAsyncPaginateParams<OptionType, Group, Additional>
+  & UseSelectFetchParams<OptionType, Group>
   & ComponentProps<OptionType, Group, IsMulti>;
 
-type AsyncPaginateCreatableType = <
+type SelectFetchCreatableType = <
 OptionType,
 Group extends GroupBase<OptionType>,
-Additional,
 IsMulti extends boolean = false,
->(props: AsyncPaginateCreatableProps<OptionType, Group, Additional, IsMulti>) => ReactElement;
+>(props: SelectFetchCreatableProps<OptionType, Group, IsMulti>) => ReactElement;
 
-const AsyncPaginateCreatable = withAsyncPaginate(Creatable) as AsyncPaginateCreatableType;
+const SelectFetchCreatable = withSelectFetch(Creatable) as SelectFetchCreatableType;
 
 type OptionType = {
   value: number | string;
@@ -48,11 +49,11 @@ for (let i = 0; i < 50; ++i) {
   });
 }
 
-const loadOptions: LoadOptions<
-OptionType,
-GroupBase<OptionType>,
-null
-> = async (search, prevOptions) => {
+const get: Get = async (url, {
+  search,
+  offset,
+  limit,
+}) => {
   await sleep(1000);
 
   let filteredOptions;
@@ -66,10 +67,10 @@ null
     );
   }
 
-  const hasMore = filteredOptions.length > prevOptions.length + 10;
+  const hasMore = filteredOptions.length > offset + limit;
   const slicedOptions = filteredOptions.slice(
-    prevOptions.length,
-    prevOptions.length + 10,
+    offset,
+    offset + 10,
   );
 
   return {
@@ -109,28 +110,30 @@ const Example: FC = () => {
   }, []);
 
   return (
-    <>
-      <div
-        style={{
-          maxWidth: 300,
+    <div
+      style={{
+        maxWidth: 300,
+      }}
+    >
+      <SelectFetchCreatable
+        isDisabled={isAddingInProgress}
+        url="/options/"
+        queryParams={{
+          limit: 10,
         }}
-      >
-        <AsyncPaginateCreatable
-          isDisabled={isAddingInProgress}
-          value={value}
-          loadOptions={loadOptions}
-          onCreateOption={onCreateOption}
-          onChange={onChange}
-          cacheUniqs={[cacheUniq]}
-        />
-      </div>
+        onCreateOption={onCreateOption}
+        value={value}
+        onChange={onChange}
+        cacheUniqs={[cacheUniq]}
+        get={get}
+      />
 
       <p>
         Current value is
         {' '}
         {JSON.stringify(value)}
       </p>
-    </>
+    </div>
   );
 };
 

@@ -157,3 +157,35 @@ import { withSelectFetch } from 'react-select-fetch';
 
 const CustomSelectFetch = withSelectFetch(CustomSelect);
 ```
+
+### typescript
+
+Describing type of component with extra props (example with `Creatable`):
+
+```typescript
+import type { ReactElement } from 'react';
+import type { GroupBase } from 'react-select';
+import Creatable from 'react-select/creatable';
+import type { CreatableProps } from 'react-select/creatable';
+
+import type { ComponentProps } from 'react-select-async-paginate';
+import { withSelectFetch } from 'react-select-fetch';
+import type { UseSelectFetchParams } from 'react-select-fetch';
+
+type SelectFetchCreatableProps<
+OptionType,
+Group extends GroupBase<OptionType>,
+IsMulti extends boolean,
+> =
+  & CreatableProps<OptionType, IsMulti, Group>
+  & UseSelectFetchParams<OptionType, Group>
+  & ComponentProps<OptionType, Group, IsMulti>;
+
+type SelectFetchCreatableType = <
+OptionType,
+Group extends GroupBase<OptionType>,
+IsMulti extends boolean = false,
+>(props: SelectFetchCreatableProps<OptionType, Group, IsMulti>) => ReactElement;
+
+const SelectFetchCreatable = withSelectFetch(Creatable) as SelectFetchCreatableType;
+```
