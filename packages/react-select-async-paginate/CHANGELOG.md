@@ -1,4 +1,4 @@
-## 0.6.0 (27 sep 2021)
+## 0.6.0 (28 sep 2021)
 
 Migrate to `react-select` v5
 

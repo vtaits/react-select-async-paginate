@@ -1,6 +1,6 @@
 {
   "name": "react-select-async-paginate",
-  "version": "0.5.3",
+  "version": "0.6.0",
   "description": "Wrapper above react-select that supports pagination on menu scroll",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -35,7 +35,7 @@
   },
   "peerDependencies": {
     "react": "^16.14.0 || ^17.0.0",
-    "react-select": "^2.0.0 || ^3.0.0 || ^4.0.0"
+    "react-select": "^5.0.0"
   },
   "dependencies": {
     "@babel/runtime": "^7.15.4",

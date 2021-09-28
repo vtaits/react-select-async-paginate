@@ -1,3 +1,7 @@
+## 0.4.0 (28 sep 2021)
+
+Migrate to `react-select` v5
+
 ## 0.3.2 (02 jun 2021)
 
 - Support `react-select@^4.0.0` in `peerDependencies`
