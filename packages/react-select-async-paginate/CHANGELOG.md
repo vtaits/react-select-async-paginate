@@ -1,3 +1,7 @@
+## 0.6.0 (27 sep 2021)
+
+Migrate to `react-select` v5
+
 ## 0.5.3 (25 jan 2021)
 
 ### New features

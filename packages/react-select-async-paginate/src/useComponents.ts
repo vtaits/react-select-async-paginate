@@ -2,11 +2,8 @@ import {
   useMemo,
 } from 'react';
 import type {
-  ComponentType,
-} from 'react';
-import type {
-  MenuListComponentProps,
-  SelectComponentsConfig,
+  GroupBase,
+  Props as SelectProps,
 } from 'react-select';
 
 import { components as defaultComponents } from 'react-select';
@@ -15,17 +12,31 @@ import { wrapMenuList } from './wrapMenuList';
 
 export const MenuList = wrapMenuList(defaultComponents.MenuList);
 
-export const useComponentsPure = <OptionType, IsMulti extends boolean>(
-  useMemoParam: typeof useMemo,
-  components: SelectComponentsConfig<OptionType, IsMulti>,
-): SelectComponentsConfig<OptionType, IsMulti> => useMemoParam(() => ({
-    MenuList: (MenuList as unknown as ComponentType<MenuListComponentProps<OptionType, IsMulti>>),
-    ...components,
-  }), [components]);
+type SelectComponentsConfig<
+OptionType,
+IsMulti extends boolean,
+Group extends GroupBase<OptionType>,
+> = Partial<SelectProps<OptionType, IsMulti, Group>['components']>;
 
-export const useComponents = <OptionType, IsMulti extends boolean>(
-  components: SelectComponentsConfig<OptionType, IsMulti>,
-): SelectComponentsConfig<OptionType, IsMulti> => useComponentsPure(
+export const useComponentsPure = <
+OptionType,
+Group extends GroupBase<OptionType>,
+IsMulti extends boolean,
+>(
+    useMemoParam: typeof useMemo,
+    components: SelectComponentsConfig<OptionType, IsMulti, Group>,
+  ): SelectComponentsConfig<OptionType, IsMulti, Group> => useMemoParam(() => ({
+    MenuList,
+    ...components,
+  } as SelectComponentsConfig<OptionType, IsMulti, Group>), [components]);
+
+export const useComponents = <
+OptionType,
+Group extends GroupBase<OptionType>,
+IsMulti extends boolean,
+>(
+    components: SelectComponentsConfig<OptionType, IsMulti, Group>,
+  ): SelectComponentsConfig<OptionType, IsMulti, Group> => useComponentsPure(
     useMemo,
     components,
   );

@@ -10,12 +10,4 @@ export { useMapToAsyncPaginate } from './useMapToAsyncPaginate';
 
 export const SelectFetch = withSelectFetch(Select);
 
-export type {
-  Additional,
-  MapResponsePayload,
-  MapResponse,
-  Get,
-  UseSelectFetchMapParams,
-  UseSelectFetchParams,
-  UseSelectFetchBaseParams,
-} from './types';
+export * from './types';

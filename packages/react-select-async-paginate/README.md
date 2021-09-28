@@ -246,6 +246,42 @@ import { withAsyncPaginate } from 'react-select-async-paginate';
 const CustomAsyncPaginate = withAsyncPaginate(CustomSelect);
 ```
 
+### typescript
+
+Describing type of component with extra props (example with `Creatable`):
+
+```typescript
+import type { ReactElement } from 'react';
+import type { GroupBase } from 'react-select';
+import Creatable from 'react-select/creatable';
+import type { CreatableProps } from 'react-select/creatable';
+
+import { withAsyncPaginate } from 'react-select-async-paginate';
+import type {
+  UseAsyncPaginateParams,
+  ComponentProps,
+} from 'react-select-async-paginate';
+
+type AsyncPaginateCreatableProps<
+OptionType,
+Group extends GroupBase<OptionType>,
+Additional,
+IsMulti extends boolean,
+> =
+  & CreatableProps<OptionType, IsMulti, Group>
+  & UseAsyncPaginateParams<OptionType, Group, Additional>
+  & ComponentProps<OptionType, Group, IsMulti>;
+
+type AsyncPaginateCreatableType = <
+OptionType,
+Group extends GroupBase<OptionType>,
+Additional,
+IsMulti extends boolean = false,
+>(props: AsyncPaginateCreatableProps<OptionType, Group, Additional, IsMulti>) => ReactElement;
+
+const AsyncPaginateCreatable = withAsyncPaginate(Creatable) as AsyncPaginateCreatableType;
+```
+
 ## Replacing Components
 
 Usage of replacing components is similar with `react-select`, but there is one difference. If you redefine `MenuList` you should wrap it with `wrapMenuList` for workaround of some internal bugs of `react-select`.

@@ -1,9 +1,12 @@
 import type {
-  FC,
   ComponentType,
+  Ref,
+  ReactElement,
 } from 'react';
 import type {
+  GroupBase,
   Props as SelectProps,
+  SelectInstance,
 } from 'react-select';
 
 import {
@@ -15,28 +18,34 @@ import {
 
 import type {
   UseAsyncPaginateResult,
-  UseAsyncPaginateParams,
-  ComponentProps,
+  AsyncPaginateProps,
+  WithAsyncPaginateType,
 } from './types';
 
-export type Props<OptionType, Additional, IsMulti extends boolean> =
-  & SelectProps<OptionType, IsMulti>
-  & UseAsyncPaginateParams<OptionType, Additional>
-  & ComponentProps
+export type Props<
+OptionType,
+Group extends GroupBase<OptionType>,
+Additional,
+IsMulti extends boolean,
+> =
+  & AsyncPaginateProps<OptionType, Group, Additional, IsMulti>
   & {
     useComponents?: typeof useComponents;
     useAsyncPaginate?: typeof useAsyncPaginate;
   };
 
-export function withAsyncPaginate<
-OptionType,
-Additional,
-IsMulti extends boolean,
->(
+export function withAsyncPaginate(
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  SelectComponent: ComponentType<SelectProps<OptionType, IsMulti>>,
-): FC<Props<OptionType, Additional, IsMulti>> {
-  const WithAsyncPaginate: FC<Props<OptionType, Additional, IsMulti>> = (props) => {
+  SelectComponent: ComponentType<SelectProps<any, boolean, any> & {
+    ref?: Ref<SelectInstance<any, boolean, any>>;
+  }>,
+): WithAsyncPaginateType {
+  function WithAsyncPaginate<
+  OptionType,
+  Group extends GroupBase<OptionType>,
+  Additional,
+  IsMulti extends boolean = false,
+  >(props: Props<OptionType, Group, Additional, IsMulti>): ReactElement {
     const {
       components,
       selectRef,
@@ -46,12 +55,12 @@ IsMulti extends boolean,
       ...rest
     } = props;
 
-    const asyncPaginateProps: UseAsyncPaginateResult<OptionType> = useAsyncPaginateProp(
+    const asyncPaginateProps: UseAsyncPaginateResult<OptionType, Group> = useAsyncPaginateProp(
       rest,
       cacheUniqs,
     );
 
-    const processedComponents = useComponentsProp<OptionType, IsMulti>(components);
+    const processedComponents = useComponentsProp<OptionType, Group, IsMulti>(components);
 
     return (
       <SelectComponent
@@ -61,7 +70,7 @@ IsMulti extends boolean,
         ref={selectRef}
       />
     );
-  };
+  }
 
   WithAsyncPaginate.defaultProps = {
     selectRef: null,

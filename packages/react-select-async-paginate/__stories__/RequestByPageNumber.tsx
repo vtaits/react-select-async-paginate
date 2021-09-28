@@ -1,5 +1,8 @@
 import { useState } from 'react';
 import type { FC } from 'react';
+import type {
+  GroupBase,
+} from 'react-select';
 import sleep from 'sleep-promise';
 
 import { AsyncPaginate } from '../src';
@@ -59,7 +62,11 @@ const defaultAdditional = {
   page: 1,
 };
 
-const loadPageOptions: LoadOptions<OptionType, Additional> = async (q, prevOptions, { page }) => {
+const loadPageOptions: LoadOptions<
+OptionType,
+GroupBase<OptionType>,
+Additional
+> = async (q, prevOptions, { page }) => {
   const {
     options: responseOptions,
     hasMore,
@@ -76,7 +83,7 @@ const loadPageOptions: LoadOptions<OptionType, Additional> = async (q, prevOptio
 };
 
 const Example: FC = () => {
-  const [value, onChange] = useState(null);
+  const [value, onChange] = useState<OptionType>(null);
 
   return (
     <div

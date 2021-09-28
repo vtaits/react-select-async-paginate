@@ -1,5 +1,8 @@
 import { useState } from 'react';
 import type { FC } from 'react';
+import type {
+  GroupBase,
+} from 'react-select';
 import sleep from 'sleep-promise';
 
 import { AsyncPaginate, reduceGroupedOptions } from '../src';
@@ -83,7 +86,7 @@ const loadOptions = async (search: string, page: number): Promise<{
   };
 };
 
-const wrapperdLoadOptions: LoadOptions<OptionType, Additional> = async (
+const wrapperdLoadOptions: LoadOptions<OptionType, GroupBase<OptionType>, Additional> = async (
   q,
   prevOptions,
   {
@@ -110,7 +113,7 @@ const defaultAdditional = {
 };
 
 const Example: FC = () => {
-  const [value, onChange] = useState(null);
+  const [value, onChange] = useState<OptionType>(null);
 
   return (
     <div

@@ -1,32 +1,31 @@
 import type {
+  ReactElement,
   Ref,
 } from 'react';
 import type {
-  GroupedOptionsType,
+  GroupBase,
+  OptionsOrGroups,
   InputActionMeta,
-  OptionsType,
+  SelectInstance,
+  Props as SelectProps,
 } from 'react-select';
 
-export type OptionsList<OptionType> =
-  | GroupedOptionsType<OptionType>
-  | OptionsType<OptionType>;
-
-export type ReduceOptions<OptionType, Additional> = (
-  prevOptions: OptionsList<OptionType>,
-  loadedOptions: OptionsList<OptionType>,
+export type ReduceOptions<OptionType, Group extends GroupBase<OptionType>, Additional> = (
+  prevOptions: OptionsOrGroups<OptionType, Group>,
+  loadedOptions: OptionsOrGroups<OptionType, Group>,
   additional: Additional,
-) => OptionsList<OptionType>;
+) => OptionsOrGroups<OptionType, Group>;
 
-export type OptionsCacheItem<OptionType, Additional> = {
+export type OptionsCacheItem<OptionType, Group extends GroupBase<OptionType>, Additional> = {
   isFirstLoad: boolean;
   isLoading: boolean;
-  options: OptionsList<OptionType>;
+  options: OptionsOrGroups<OptionType, Group>;
   hasMore: boolean;
   additional?: Additional;
 };
 
-export type OptionsCache<OptionType, Additional> = {
-  [key: string]: OptionsCacheItem<OptionType, Additional>;
+export type OptionsCache<OptionType, Group extends GroupBase<OptionType>, Additional> = {
+  [key: string]: OptionsCacheItem<OptionType, Group, Additional>;
 };
 
 export type ShouldLoadMore = (
@@ -35,34 +34,34 @@ export type ShouldLoadMore = (
   scrollTop: number,
 ) => boolean;
 
-export type Response<OptionType, Additional> = {
-  options: OptionsList<OptionType>;
+export type Response<OptionType, Group extends GroupBase<OptionType>, Additional> = {
+  options: OptionsOrGroups<OptionType, Group>;
   hasMore?: boolean;
   additional?: Additional;
 };
 
-export type LoadOptions<OptionType, Additional> = (
+export type LoadOptions<OptionType, Group extends GroupBase<OptionType>, Additional> = (
   inputValue: string,
-  options: OptionsList<OptionType>,
+  options: OptionsOrGroups<OptionType, Group>,
   additional?: Additional,
-) => Response<OptionType, Additional> | Promise<Response<OptionType, Additional>>;
+) => Response<OptionType, Group, Additional> | Promise<Response<OptionType, Group, Additional>>;
 
 export type FilterOption = ((
   option: any,
   rawInput: string
 ) => boolean) | null;
 
-export type UseAsyncPaginateBaseResult<OptionType> = {
+export type UseAsyncPaginateBaseResult<OptionType, Group extends GroupBase<OptionType>> = {
   handleScrolledToBottom: () => void;
   shouldLoadMore: ShouldLoadMore;
   isLoading: boolean;
   isFirstLoad: boolean;
-  options: OptionsList<OptionType>;
+  options: OptionsOrGroups<OptionType, Group>;
   filterOption: FilterOption;
 };
 
-export type UseAsyncPaginateResult<OptionsParamType> =
-  & UseAsyncPaginateBaseResult<OptionsParamType>
+export type UseAsyncPaginateResult<OptionType, Group extends GroupBase<OptionType>> =
+  & UseAsyncPaginateBaseResult<OptionType, Group>
   & {
     inputValue: string;
     menuIsOpen: boolean;
@@ -71,15 +70,15 @@ export type UseAsyncPaginateResult<OptionsParamType> =
     onMenuOpen: () => void;
   };
 
-export type UseAsyncPaginateParams<OptionType, Additional> = {
-  loadOptions: LoadOptions<OptionType, Additional>;
-  options?: OptionsList<OptionType>;
-  defaultOptions?: boolean | OptionsList<OptionType>;
+export type UseAsyncPaginateParams<OptionType, Group extends GroupBase<OptionType>, Additional> = {
+  loadOptions: LoadOptions<OptionType, Group, Additional>;
+  options?: OptionsOrGroups<OptionType, Group>;
+  defaultOptions?: boolean | OptionsOrGroups<OptionType, Group>;
   additional?: Additional;
   defaultAdditional?: Additional;
   loadOptionsOnMenuOpen?: boolean;
   debounceTimeout?: number;
-  reduceOptions?: ReduceOptions<OptionType, Additional>;
+  reduceOptions?: ReduceOptions<OptionType, Group, Additional>;
   shouldLoadMore?: ShouldLoadMore;
   filterOption?: FilterOption;
   inputValue?: string;
@@ -93,13 +92,35 @@ export type UseAsyncPaginateParams<OptionType, Additional> = {
 
 export type UseAsyncPaginateBaseParams<
   OptionType,
+  Group extends GroupBase<OptionType>,
   Additional,
-> = UseAsyncPaginateParams<OptionType, Additional> & {
+> = UseAsyncPaginateParams<OptionType, Group, Additional> & {
   inputValue: string;
   menuIsOpen: boolean;
 };
 
-export type ComponentProps = {
-  selectRef?: Ref<any>;
+export type ComponentProps<
+OptionType,
+Group extends GroupBase<OptionType>,
+IsMulti extends boolean,
+> = {
+  selectRef?: Ref<SelectInstance<OptionType, IsMulti, Group>>;
   cacheUniqs?: ReadonlyArray<any>;
 };
+
+export type AsyncPaginateProps<
+OptionType,
+Group extends GroupBase<OptionType>,
+Additional,
+IsMulti extends boolean,
+> =
+  & SelectProps<OptionType, IsMulti, Group>
+  & UseAsyncPaginateParams<OptionType, Group, Additional>
+  & ComponentProps<OptionType, Group, IsMulti>;
+
+export type WithAsyncPaginateType = <
+OptionType,
+Group extends GroupBase<OptionType>,
+Additional,
+IsMulti extends boolean = false,
+>(props: AsyncPaginateProps<OptionType, Group, Additional, IsMulti>) => ReactElement;

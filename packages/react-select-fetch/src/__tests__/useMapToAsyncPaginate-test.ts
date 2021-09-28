@@ -4,6 +4,10 @@ import {
 } from 'react';
 
 import type {
+  GroupBase,
+} from 'react-select';
+
+import type {
   Response,
 } from 'react-select-async-paginate';
 
@@ -268,7 +272,10 @@ test('should return mapped response with increased page in additional', async ()
 
   const get = jest.fn(() => response);
 
-  const mapResponse = jest.fn<Response<number, Additional>, Parameters<MapResponse<number>>>(({
+  const mapResponse = jest.fn<
+  Response<number, GroupBase<number>, Additional>,
+  Parameters<MapResponse<number, GroupBase<number>>>
+  >(({
     results,
     has_more: hasMore,
   }) => ({

@@ -3,6 +3,7 @@ import {
   useCallback,
 } from 'react';
 import type {
+  GroupBase,
   InputActionMeta,
 } from 'react-select';
 
@@ -17,18 +18,18 @@ import type {
   UseAsyncPaginateResult,
 } from './types';
 
-export const useAsyncPaginatePure = <OptionType, Additional>(
+export const useAsyncPaginatePure = <OptionType, Group extends GroupBase<OptionType>, Additional>(
   useStateParam: typeof useState,
   useCallbackParam: typeof useCallback,
 
   useAsyncPaginateBaseParam: (
-    params: UseAsyncPaginateBaseParams<OptionType, Additional>,
+    params: UseAsyncPaginateBaseParams<OptionType, Group, Additional>,
     deps: ReadonlyArray<any>,
-  ) => UseAsyncPaginateBaseResult<OptionType>,
+  ) => UseAsyncPaginateBaseResult<OptionType, Group>,
 
-  params: UseAsyncPaginateParams<OptionType, Additional>,
+  params: UseAsyncPaginateParams<OptionType, Group, Additional>,
   deps: ReadonlyArray<any> = [],
-): UseAsyncPaginateResult<OptionType> => {
+): UseAsyncPaginateResult<OptionType, Group> => {
   const {
     inputValue: inputValueParam,
     menuIsOpen: menuIsOpenParam,
@@ -81,7 +82,7 @@ export const useAsyncPaginatePure = <OptionType, Additional>(
     setMenuIsOpen(true);
   }, [onMenuOpenParam]);
 
-  const baseResult: UseAsyncPaginateBaseResult<OptionType> = useAsyncPaginateBaseParam(
+  const baseResult: UseAsyncPaginateBaseResult<OptionType, Group> = useAsyncPaginateBaseParam(
     {
       ...params,
       inputValue,
@@ -100,10 +101,10 @@ export const useAsyncPaginatePure = <OptionType, Additional>(
   };
 };
 
-export const useAsyncPaginate = <OptionType, Additional>(
-  params: UseAsyncPaginateParams<OptionType, Additional>,
+export const useAsyncPaginate = <OptionType, Group extends GroupBase<OptionType>, Additional>(
+  params: UseAsyncPaginateParams<OptionType, Group, Additional>,
   deps: ReadonlyArray<any> = [],
-): UseAsyncPaginateResult<OptionType> => useAsyncPaginatePure<OptionType, Additional>(
+): UseAsyncPaginateResult<OptionType, Group> => useAsyncPaginatePure<OptionType, Group, Additional>(
     useState,
     useCallback,
     useAsyncPaginateBase,

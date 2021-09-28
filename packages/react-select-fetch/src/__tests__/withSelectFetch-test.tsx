@@ -6,8 +6,9 @@ import type {
   ShallowWrapper,
 } from 'enzyme';
 import type {
-  OptionsType,
-  SelectComponentsConfig,
+  GroupBase,
+  Options,
+  Props as SelectProps,
 } from 'react-select';
 import type {
   UseAsyncPaginateResult,
@@ -18,6 +19,12 @@ import { withSelectFetch } from '../withSelectFetch';
 import type {
   Props,
 } from '../withSelectFetch';
+
+type SelectComponentsConfig<
+OptionType,
+IsMulti extends boolean,
+Group extends GroupBase<OptionType>,
+> = Partial<SelectProps<OptionType, IsMulti, Group>['components']>;
 
 const TestComponent: FC = () => <div />;
 
@@ -32,7 +39,7 @@ const defaultProps = {
 
   useComponents: (() => ({})) as typeof defaultUseComponents,
 
-  useSelectFetch: (): UseAsyncPaginateResult<any> => ({
+  useSelectFetch: (): UseAsyncPaginateResult<any, any> => ({
     handleScrolledToBottom: (): void => {},
     shouldLoadMore: (): boolean => true,
     isLoading: true,
@@ -48,7 +55,7 @@ const defaultProps = {
 };
 
 const setup = <OptionType, IsMulti extends boolean>(
-  props: Partial<Props<OptionType, IsMulti>>,
+  props: Partial<Props<OptionType, GroupBase<OptionType>, IsMulti>>,
 ): PageObject => {
   const wrapper: ShallowWrapper = shallow(
     <SelectFetch
@@ -77,14 +84,14 @@ test('should provide props from parent to child', () => {
 });
 
 test('should provide props from hook to child', () => {
-  const options: OptionsType<any> = [
+  const options: Options<any> = [
     {
       value: 1,
       label: '1',
     },
   ];
 
-  const useSelectFetch = (): UseAsyncPaginateResult<any> => ({
+  const useSelectFetch = (): UseAsyncPaginateResult<any, any> => ({
     handleScrolledToBottom: (): void => {},
     shouldLoadMore: (): boolean => true,
     isLoading: true,
@@ -113,21 +120,21 @@ test('should provide props from hook to child', () => {
 });
 
 test('should redefine parent props with hook props', () => {
-  const optionsProp: OptionsType<any> = [
+  const optionsProp: Options<any> = [
     {
       value: 1,
       label: '1',
     },
   ];
 
-  const optionsHookResult: OptionsType<any> = [
+  const optionsHookResult: Options<any> = [
     {
       value: 1,
       label: '1',
     },
   ];
 
-  const useSelectFetch = (): UseAsyncPaginateResult<any> => ({
+  const useSelectFetch = (): UseAsyncPaginateResult<any, any> => ({
     handleScrolledToBottom: (): void => {},
     shouldLoadMore: (): boolean => true,
     isLoading: true,
@@ -216,7 +223,7 @@ test('should call useComponents hook', () => {
 
   const Test: FC = () => <div />;
 
-  const components: SelectComponentsConfig<any, false> = {
+  const components: SelectComponentsConfig<any, false, any> = {
     Menu: Test,
   };
 
@@ -231,7 +238,7 @@ test('should call useComponents hook', () => {
 test('should use result of useComponents hook', () => {
   const Test: FC = () => <div />;
 
-  const components: SelectComponentsConfig<any, false> = {
+  const components: SelectComponentsConfig<any, false, any> = {
     Menu: Test,
   };
 

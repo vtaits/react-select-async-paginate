@@ -6,8 +6,9 @@ import type {
   ShallowWrapper,
 } from 'enzyme';
 import type {
-  OptionsType,
-  SelectComponentsConfig,
+  GroupBase,
+  Options,
+  Props as SelectProps,
 } from 'react-select';
 
 import { withAsyncPaginate } from '../withAsyncPaginate';
@@ -24,6 +25,12 @@ import type {
   UseAsyncPaginateResult,
 } from '../types';
 
+type SelectComponentsConfig<
+OptionType,
+IsMulti extends boolean,
+Group extends GroupBase<OptionType>,
+> = Partial<SelectProps<OptionType, IsMulti, Group>['components']>;
+
 const TestComponent: FC = () => <div />;
 
 const AsyncPagintate = withAsyncPaginate(TestComponent);
@@ -32,16 +39,16 @@ type PageObject = {
   getChildNode: () => ShallowWrapper;
 };
 
-const defaultLoadOptions: LoadOptions<any, any> = () => ({
+const defaultLoadOptions: LoadOptions<any, any, any> = () => ({
   options: [],
 });
 
-const defaultProps: Props<any, any, false> = {
+const defaultProps: Props<any, any, any, false> = {
   loadOptions: defaultLoadOptions,
 
   useComponents: (() => ({})) as typeof defaultUseComponents,
 
-  useAsyncPaginate: (): UseAsyncPaginateResult<any> => ({
+  useAsyncPaginate: (): UseAsyncPaginateResult<any, any> => ({
     handleScrolledToBottom: (): void => {},
     shouldLoadMore: (): boolean => true,
     isLoading: true,
@@ -56,7 +63,7 @@ const defaultProps: Props<any, any, false> = {
   }),
 };
 
-const setup = (props: Partial<Props<any, any, false>>): PageObject => {
+const setup = (props: Partial<Props<any, any, any, false>>): PageObject => {
   const wrapper = shallow(
     <AsyncPagintate
       {...defaultProps}
@@ -84,14 +91,14 @@ test('should provide props from parent to child', () => {
 });
 
 test('should provide props from hook to child', () => {
-  const options: OptionsType<any> = [
+  const options: Options<any> = [
     {
       value: 1,
       label: '1',
     },
   ];
 
-  const useAsyncPaginate = (): UseAsyncPaginateResult<any> => ({
+  const useAsyncPaginate = (): UseAsyncPaginateResult<any, any> => ({
     handleScrolledToBottom: (): void => {},
     shouldLoadMore: (): boolean => true,
     isLoading: true,
@@ -120,21 +127,21 @@ test('should provide props from hook to child', () => {
 });
 
 test('should redefine parent props with hook props', () => {
-  const optionsProp: OptionsType<any> = [
+  const optionsProp: Options<any> = [
     {
       value: 1,
       label: '1',
     },
   ];
 
-  const optionsHookResult: OptionsType<any> = [
+  const optionsHookResult: Options<any> = [
     {
       value: 1,
       label: '1',
     },
   ];
 
-  const useAsyncPaginate = (): UseAsyncPaginateResult<any> => ({
+  const useAsyncPaginate = (): UseAsyncPaginateResult<any, any> => ({
     handleScrolledToBottom: (): void => {},
     shouldLoadMore: (): boolean => true,
     isLoading: true,
@@ -223,7 +230,7 @@ test('should call useComponents hook', () => {
 
   const Test: FC = () => <div />;
 
-  const components: SelectComponentsConfig<any, false> = {
+  const components: SelectComponentsConfig<any, false, any> = {
     Menu: Test,
   };
 
@@ -238,7 +245,7 @@ test('should call useComponents hook', () => {
 test('should use result of useComponents hook', () => {
   const Test: FC = () => <div />;
 
-  const components: SelectComponentsConfig<any, false> = {
+  const components: SelectComponentsConfig<any, false, any> = {
     Menu: Test,
   };
 

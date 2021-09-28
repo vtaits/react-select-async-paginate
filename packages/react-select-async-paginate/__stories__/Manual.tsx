@@ -2,8 +2,12 @@
 
 import { useState, useCallback } from 'react';
 import type { FC } from 'react';
+import type {
+  GroupBase,
+  InputActionMeta,
+  MultiValue,
+} from 'react-select';
 import sleep from 'sleep-promise';
-import type { InputActionMeta } from 'react-select';
 
 import { AsyncPaginate } from '../src';
 import type {
@@ -23,7 +27,11 @@ for (let i = 0; i < 50; ++i) {
   });
 }
 
-const loadOptions: LoadOptions<OptionType, null> = async (search, prevOptions) => {
+const loadOptions: LoadOptions<
+OptionType,
+GroupBase<OptionType>,
+null
+> = async (search, prevOptions) => {
   await sleep(1000);
 
   let filteredOptions;
@@ -50,7 +58,7 @@ const loadOptions: LoadOptions<OptionType, null> = async (search, prevOptions) =
 };
 
 const Example: FC = () => {
-  const [value, onChange] = useState(null);
+  const [value, onChange] = useState<MultiValue<OptionType>>(null);
   const [inputValue, onInputChangeRaw] = useState('');
   const [menuIsOpen, setMenuIsOpen] = useState(false);
   const [inputHistory, setInputHistory] = useState([]);

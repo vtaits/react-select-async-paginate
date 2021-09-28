@@ -19,7 +19,7 @@ test('should provide correct deps to useMemo', () => {
 
   useComponentsPure(useMemo, components);
 
-  expect(useMemo.mock.calls.length).toBe(1);
+  expect(useMemo).toHaveBeenCalledTimes(1);
   expect(useMemo.mock.calls[0][1]).toEqual([components]);
 });
 

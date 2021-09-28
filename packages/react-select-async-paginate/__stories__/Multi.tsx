@@ -1,5 +1,9 @@
 import { useState } from 'react';
 import type { FC } from 'react';
+import type {
+  GroupBase,
+  MultiValue,
+} from 'react-select';
 import sleep from 'sleep-promise';
 
 import { AsyncPaginate } from '../src';
@@ -20,7 +24,11 @@ for (let i = 0; i < 50; ++i) {
   });
 }
 
-const loadOptions: LoadOptions<OptionType, null> = async (search, prevOptions) => {
+const loadOptions: LoadOptions<
+OptionType,
+GroupBase<OptionType>,
+null
+> = async (search, prevOptions) => {
   await sleep(1000);
 
   let filteredOptions: OptionType[];
@@ -47,7 +55,7 @@ const loadOptions: LoadOptions<OptionType, null> = async (search, prevOptions) =
 };
 
 const Example: FC = () => {
-  const [value, onChange] = useState(null);
+  const [value, onChange] = useState<MultiValue<OptionType>>(null);
 
   return (
     <div

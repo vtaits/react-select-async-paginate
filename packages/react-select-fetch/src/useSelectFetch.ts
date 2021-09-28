@@ -1,3 +1,7 @@
+import type {
+  GroupBase,
+} from 'react-select';
+
 import {
   useAsyncPaginate,
 } from 'react-select-async-paginate';
@@ -11,12 +15,12 @@ import type {
   UseSelectFetchParams,
 } from './types';
 
-export const useSelectFetchPure = <OptionType>(
+export const useSelectFetchPure = <OptionType, Group extends GroupBase<OptionType>>(
   useMapToAsyncPaginateParam: typeof useMapToAsyncPaginate,
   useAsyncPaginateParam: typeof useAsyncPaginate,
-  params: UseSelectFetchParams<OptionType>,
+  params: UseSelectFetchParams<OptionType, Group>,
   deps: ReadonlyArray<any> = [],
-): UseAsyncPaginateResult<OptionType> => {
+): UseAsyncPaginateResult<OptionType, Group> => {
   const mappedParams = useMapToAsyncPaginateParam(params);
 
   const result = useAsyncPaginateParam(
@@ -30,10 +34,10 @@ export const useSelectFetchPure = <OptionType>(
   return result;
 };
 
-export const useSelectFetch = <OptionType>(
-  params: UseSelectFetchParams<OptionType>,
+export const useSelectFetch = <OptionType, Group extends GroupBase<OptionType>>(
+  params: UseSelectFetchParams<OptionType, Group>,
   deps: ReadonlyArray<any> = [],
-): UseAsyncPaginateResult<OptionType> => useSelectFetchPure(
+): UseAsyncPaginateResult<OptionType, Group> => useSelectFetchPure(
     useMapToAsyncPaginate,
     useAsyncPaginate,
     params,
