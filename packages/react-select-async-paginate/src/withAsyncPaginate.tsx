@@ -1,7 +1,7 @@
 import type {
   ComponentType,
-  FC,
   Ref,
+  ReactElement,
 } from 'react';
 import type {
   GroupBase,
@@ -18,8 +18,8 @@ import {
 
 import type {
   UseAsyncPaginateResult,
-  UseAsyncPaginateParams,
-  ComponentProps,
+  AsyncPaginateProps,
+  WithAsyncPaginateType,
 } from './types';
 
 export type Props<
@@ -28,26 +28,24 @@ Group extends GroupBase<OptionType>,
 Additional,
 IsMulti extends boolean,
 > =
-  & SelectProps<OptionType, IsMulti, Group>
-  & UseAsyncPaginateParams<OptionType, Group, Additional>
-  & ComponentProps<OptionType, Group, IsMulti>
+  & AsyncPaginateProps<OptionType, Group, Additional, IsMulti>
   & {
     useComponents?: typeof useComponents;
     useAsyncPaginate?: typeof useAsyncPaginate;
   };
 
-export function withAsyncPaginate<
-OptionType,
-Group extends GroupBase<OptionType>,
-Additional,
-IsMulti extends boolean,
->(
+export function withAsyncPaginate(
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  SelectComponent: ComponentType<SelectProps<OptionType, IsMulti, Group> & {
-    ref?: Ref<SelectInstance<OptionType, IsMulti, Group>>;
+  SelectComponent: ComponentType<SelectProps<any, boolean, any> & {
+    ref?: Ref<SelectInstance<any, boolean, any>>;
   }>,
-): FC<Props<OptionType, Group, Additional, IsMulti>> {
-  const WithAsyncPaginate: FC<Props<OptionType, Group, Additional, IsMulti>> = (props) => {
+): WithAsyncPaginateType {
+  function WithAsyncPaginate<
+  OptionType,
+  Group extends GroupBase<OptionType>,
+  Additional,
+  IsMulti extends boolean = false,
+  >(props: Props<OptionType, Group, Additional, IsMulti>): ReactElement {
     const {
       components,
       selectRef,
@@ -72,7 +70,7 @@ IsMulti extends boolean,
         ref={selectRef}
       />
     );
-  };
+  }
 
   WithAsyncPaginate.defaultProps = {
     selectRef: null,

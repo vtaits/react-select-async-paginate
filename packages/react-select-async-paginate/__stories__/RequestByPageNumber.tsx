@@ -65,7 +65,7 @@ const defaultAdditional = {
 const loadPageOptions: LoadOptions<
 OptionType,
 GroupBase<OptionType>,
-null
+Additional
 > = async (q, prevOptions, { page }) => {
   const {
     options: responseOptions,
@@ -83,7 +83,7 @@ null
 };
 
 const Example: FC = () => {
-  const [value, onChange] = useState(null);
+  const [value, onChange] = useState<OptionType>(null);
 
   return (
     <div

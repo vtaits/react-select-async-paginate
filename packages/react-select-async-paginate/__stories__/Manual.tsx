@@ -4,9 +4,10 @@ import { useState, useCallback } from 'react';
 import type { FC } from 'react';
 import type {
   GroupBase,
+  InputActionMeta,
+  MultiValue,
 } from 'react-select';
 import sleep from 'sleep-promise';
-import type { InputActionMeta } from 'react-select';
 
 import { AsyncPaginate } from '../src';
 import type {
@@ -57,7 +58,7 @@ null
 };
 
 const Example: FC = () => {
-  const [value, onChange] = useState(null);
+  const [value, onChange] = useState<MultiValue<OptionType>>(null);
   const [inputValue, onInputChangeRaw] = useState('');
   const [menuIsOpen, setMenuIsOpen] = useState(false);
   const [inputHistory, setInputHistory] = useState([]);

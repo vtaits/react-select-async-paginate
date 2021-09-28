@@ -2,6 +2,7 @@ import { useState } from 'react';
 import type { FC } from 'react';
 import type {
   GroupBase,
+  MultiValue,
 } from 'react-select';
 import sleep from 'sleep-promise';
 
@@ -54,7 +55,7 @@ null
 };
 
 const Example: FC = () => {
-  const [value, onChange] = useState(null);
+  const [value, onChange] = useState<MultiValue<OptionType>>(null);
 
   return (
     <div

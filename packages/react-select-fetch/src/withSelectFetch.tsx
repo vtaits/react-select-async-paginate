@@ -1,6 +1,6 @@
 import type {
   ComponentType,
-  FC,
+  ReactElement,
   Ref,
 } from 'react';
 import type {
@@ -12,7 +12,6 @@ import {
   useComponents,
 } from 'react-select-async-paginate';
 import type {
-  ComponentProps,
   UseAsyncPaginateResult,
 } from 'react-select-async-paginate';
 
@@ -21,7 +20,8 @@ import {
 } from './useSelectFetch';
 
 import type {
-  UseSelectFetchParams,
+  SelectFetchProps,
+  SelectFetchType,
 } from './types';
 
 export type Props<
@@ -29,25 +29,23 @@ OptionType,
 Group extends GroupBase<OptionType>,
 IsMulti extends boolean,
 > =
-  & SelectProps<OptionType, IsMulti, Group>
-  & UseSelectFetchParams<OptionType, Group>
-  & ComponentProps<OptionType, Group, IsMulti>
+  & SelectFetchProps<OptionType, Group, IsMulti>
   & {
     useComponents?: typeof useComponents;
     useSelectFetch?: typeof useSelectFetch;
   };
 
-export function withSelectFetch<
-OptionType,
-Group extends GroupBase<OptionType>,
-IsMulti extends boolean,
->(
+export function withSelectFetch(
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  SelectComponent: ComponentType<SelectProps<OptionType, IsMulti, Group> & {
-    ref?: Ref<SelectInstance<OptionType, IsMulti, Group>>;
+  SelectComponent: ComponentType<SelectProps<any, boolean, any> & {
+    ref?: Ref<SelectInstance<any, boolean, any>>;
   }>,
-): FC<Props<OptionType, Group, IsMulti>> {
-  const WithSelectFetch: FC<Props<OptionType, Group, IsMulti>> = (props) => {
+): SelectFetchType {
+  function WithSelectFetch<
+  OptionType,
+  Group extends GroupBase<OptionType>,
+  IsMulti extends boolean = false,
+  >(props: Props<OptionType, Group, IsMulti>): ReactElement {
     const {
       components,
       selectRef,
@@ -72,7 +70,7 @@ IsMulti extends boolean,
         ref={selectRef}
       />
     );
-  };
+  }
 
   WithSelectFetch.defaultProps = {
     selectRef: null,

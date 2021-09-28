@@ -1,9 +1,14 @@
 import type {
+  ReactElement,
+} from 'react';
+import type {
   GroupBase,
   OptionsOrGroups,
+  Props as SelectProps,
 } from 'react-select';
 
 import type {
+  ComponentProps,
   Response,
   UseAsyncPaginateParams,
   UseAsyncPaginateBaseParams,
@@ -56,3 +61,18 @@ export type UseSelectFetchBaseParams<OptionType, Group extends GroupBase<OptionT
     inputValue: string;
     menuIsOpen: boolean;
   };
+
+export type SelectFetchProps<
+OptionType,
+Group extends GroupBase<OptionType>,
+IsMulti extends boolean,
+> =
+  & SelectProps<OptionType, IsMulti, Group>
+  & UseSelectFetchParams<OptionType, Group>
+  & ComponentProps<OptionType, Group, IsMulti>;
+
+export type SelectFetchType = <
+OptionType,
+Group extends GroupBase<OptionType>,
+IsMulti extends boolean = false,
+>(props: SelectFetchProps<OptionType, Group, IsMulti>) => ReactElement;

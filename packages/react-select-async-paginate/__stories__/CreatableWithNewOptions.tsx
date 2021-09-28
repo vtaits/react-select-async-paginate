@@ -74,9 +74,9 @@ const increaseUniq = (uniq: number): number => uniq + 1;
 const Example: FC = () => {
   const [cacheUniq, setCacheUniq] = useState(0);
   const [isAddingInProgress, setIsAddingInProgress] = useState(false);
-  const [value, onChange] = useState(null);
+  const [value, onChange] = useState<OptionType>(null);
 
-  const onCreateOption = useCallback(async (inputValue) => {
+  const onCreateOption = useCallback(async (inputValue: string) => {
     setIsAddingInProgress(true);
 
     const newOption = await addNewOption(inputValue);

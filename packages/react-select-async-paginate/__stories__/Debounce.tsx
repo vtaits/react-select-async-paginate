@@ -56,10 +56,14 @@ null
 const increase = (numberOfRequests: number): number => numberOfRequests + 1;
 
 const Example: FC = () => {
-  const [value, onChange] = useState(null);
+  const [value, onChange] = useState<OptionType>(null);
   const [numberOfRequests, setNumberOfRequests] = useState(0);
 
-  const wrappedLoadOptions: LoadOptions<OptionType, GroupBase<OptionType>, null> = (inputValue, prevOptions) => {
+  const wrappedLoadOptions: LoadOptions<
+  OptionType,
+  GroupBase<OptionType>,
+  null
+  > = (inputValue, prevOptions) => {
     setNumberOfRequests(increase);
 
     return loadOptions(inputValue, prevOptions);

@@ -1,4 +1,5 @@
 import type {
+  ReactElement,
   Ref,
 } from 'react';
 import type {
@@ -6,6 +7,7 @@ import type {
   OptionsOrGroups,
   InputActionMeta,
   SelectInstance,
+  Props as SelectProps,
 } from 'react-select';
 
 export type ReduceOptions<OptionType, Group extends GroupBase<OptionType>, Additional> = (
@@ -105,3 +107,20 @@ IsMulti extends boolean,
   selectRef?: Ref<SelectInstance<OptionType, IsMulti, Group>>;
   cacheUniqs?: ReadonlyArray<any>;
 };
+
+export type AsyncPaginateProps<
+OptionType,
+Group extends GroupBase<OptionType>,
+Additional,
+IsMulti extends boolean,
+> =
+  & SelectProps<OptionType, IsMulti, Group>
+  & UseAsyncPaginateParams<OptionType, Group, Additional>
+  & ComponentProps<OptionType, Group, IsMulti>;
+
+export type WithAsyncPaginateType = <
+OptionType,
+Group extends GroupBase<OptionType>,
+Additional,
+IsMulti extends boolean = false,
+>(props: AsyncPaginateProps<OptionType, Group, Additional, IsMulti>) => ReactElement;

@@ -54,7 +54,7 @@ null
 };
 
 const Example: FC = () => {
-  const [value, onChange] = useState(null);
+  const [value, onChange] = useState<OptionType>(null);
 
   return (
     <div

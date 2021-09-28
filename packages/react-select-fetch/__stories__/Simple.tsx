@@ -5,7 +5,12 @@ import sleep from 'sleep-promise';
 import { SelectFetch } from '../src';
 import type { Get } from '../src';
 
-const options = [];
+type OptionType = {
+  value: number;
+  label: string;
+};
+
+const options: OptionType[] = [];
 for (let i = 0; i < 50; ++i) {
   options.push({
     value: i + 1,
@@ -44,7 +49,7 @@ const get: Get = async (url, {
 };
 
 const Example: FC = () => {
-  const [value, onChange] = useState(null);
+  const [value, onChange] = useState<OptionType>(null);
 
   return (
     <div

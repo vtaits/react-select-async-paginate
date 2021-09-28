@@ -12400,6 +12400,7 @@ fsevents@^1.2.7:
     "@babel/runtime": ^7.15.4
     "@seznam/compose-react-refs": ^1.0.6
     "@storybook/react": ^6.3.8
+    "@types/enzyme": ^3.10.9
     "@types/jest": ^27.0.2
     "@types/react": ^17.0.24
     "@typescript-eslint/eslint-plugin": ^4.32.0
@@ -12435,6 +12436,7 @@ fsevents@^1.2.7:
     "@babel/cli": ^7.15.7
     "@babel/runtime": ^7.15.4
     "@storybook/react": ^6.3.8
+    "@types/enzyme": ^3.10.9
     "@types/jest": ^27.0.2
     "@types/qs": ^6.9.7
     "@types/react": ^17.0.24
