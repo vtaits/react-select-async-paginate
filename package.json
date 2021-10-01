@@ -29,7 +29,6 @@
     "@storybook/react": "^6.3.8",
     "@types/enzyme": "^3.10.9",
     "@types/jest": "^27.0.2",
-    "@types/react-select": "^4.0.18",
     "@typescript-eslint/eslint-plugin": "^4.32.0",
     "@typescript-eslint/parser": "^4.32.0",
     "@wojtekmaj/enzyme-adapter-react-17": "^0.6.3",
@@ -53,7 +52,7 @@
     "react-dom": "^17.0.2",
     "rimraf": "^3.0.2",
     "ts-jest": "^27.0.5",
-    "typescript": "4.3.5"
+    "typescript": "^4.4.3"
   },
   "packageManager": "yarn@3.0.2"
 }
