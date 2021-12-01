@@ -1,9 +1,6 @@
 {
   "private": true,
-  "workspaces": [
-    "packages/react-select-async-paginate",
-    "packages/react-select-fetch"
-  ],
+  "workspaces": [ "packages/*" ],
   "repository": "git@github.com:vtaits/react-select-async-paginate.git",
   "author": "Vadim Taits",
   "license": "MIT",
