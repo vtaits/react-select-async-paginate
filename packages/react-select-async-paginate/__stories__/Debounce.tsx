@@ -28,7 +28,7 @@ OptionType,
 GroupBase<OptionType>,
 null
 > = async (search, prevOptions) => {
-  await sleep(1000);
+  await sleep(200);
 
   let filteredOptions;
   if (!search) {
@@ -82,7 +82,7 @@ const Example: FC = () => {
       </p>
 
       <AsyncPaginate
-        debounceTimeout={300}
+        debounceTimeout={3000}
         value={value}
         loadOptions={wrappedLoadOptions}
         onChange={onChange}

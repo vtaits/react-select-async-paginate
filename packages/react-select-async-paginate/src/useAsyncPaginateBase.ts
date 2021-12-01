@@ -124,7 +124,7 @@ export const requestOptions = async <OptionType, Group extends GroupBase<OptionT
     },
   }));
 
-  if (debounceTimeout > 0) {
+  if (debounceTimeout > 0 && currentInputValue !== '') {
     await sleepParam(debounceTimeout);
 
     const newInputValue = paramsRef.current.inputValue;
