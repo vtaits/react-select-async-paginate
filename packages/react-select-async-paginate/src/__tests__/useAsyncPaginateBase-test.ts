@@ -340,7 +340,7 @@ describe('useAsyncPaginateBasePure', () => {
       },
     );
 
-    expect(getInitialOptionsCacheParam.mock.calls.length).toBe(1);
+    expect(getInitialOptionsCacheParam).toHaveBeenCalledTimes(1);
     expect(getInitialOptionsCacheParam.mock.calls[0][0]).toEqual({
       ...defaultParams,
       options,
@@ -390,7 +390,7 @@ describe('useAsyncPaginateBasePure', () => {
 
     useEffect.mock.calls[0][0]();
 
-    expect(requestOptionsParam.mock.calls.length).toBe(0);
+    expect(requestOptionsParam).toHaveBeenCalledTimes(0);
   });
 
   test('should load options from first useEffect if "defaultOptions" is true', async () => {
@@ -414,7 +414,7 @@ describe('useAsyncPaginateBasePure', () => {
 
     useEffect.mock.calls[0][0]();
 
-    expect(requestOptionsParam.mock.calls.length).toBe(1);
+    expect(requestOptionsParam).toHaveBeenCalledTimes(1);
   });
 
   test('should not reset options cache from first useEffect on initial render', async () => {
@@ -454,7 +454,7 @@ describe('useAsyncPaginateBasePure', () => {
     expect(optionsCache.current).toEqual({
       test: defaultCacheItem,
     });
-    expect(setStateId.mock.calls.length).toBe(0);
+    expect(setStateId).toHaveBeenCalledTimes(0);
   });
 
   test('should reset options cache from first useEffect on not initial render', async () => {
@@ -498,7 +498,7 @@ describe('useAsyncPaginateBasePure', () => {
 
     expect(isInit.current).toBe(false);
     expect(optionsCache.current).toEqual({});
-    expect(setStateId.mock.calls.length).toBe(1);
+    expect(setStateId).toHaveBeenCalledTimes(1);
     expect(setStateId.mock.calls[0][0]).toEqual(increaseStateId);
   });
 
@@ -549,7 +549,7 @@ describe('useAsyncPaginateBasePure', () => {
 
     useEffect.mock.calls[1][0]();
 
-    expect(requestOptionsParam.mock.calls.length).toBe(1);
+    expect(requestOptionsParam).toHaveBeenCalledTimes(1);
   });
 
   test('should not load options on inputValue change if options are not cached if menu is not open', async () => {
@@ -578,7 +578,7 @@ describe('useAsyncPaginateBasePure', () => {
 
     useEffect.mock.calls[1][0]();
 
-    expect(requestOptionsParam.mock.calls.length).toBe(0);
+    expect(requestOptionsParam).toHaveBeenCalledTimes(0);
   });
 
   test('should not load options on inputValue change if options are cached', async () => {
@@ -623,7 +623,7 @@ describe('useAsyncPaginateBasePure', () => {
 
     useEffect.mock.calls[1][0]();
 
-    expect(requestOptionsParam.mock.calls.length).toBe(0);
+    expect(requestOptionsParam).toHaveBeenCalledTimes(0);
   });
 
   test('should provide menuIsOpen as dependency to third useEffect', async () => {
@@ -672,7 +672,7 @@ describe('useAsyncPaginateBasePure', () => {
 
     useEffect.mock.calls[2][0]();
 
-    expect(requestOptionsParam.mock.calls.length).toBe(0);
+    expect(requestOptionsParam).toHaveBeenCalledTimes(0);
   });
 
   test('should not load options from third useEffect if optionsCache defined for empty search', async () => {
@@ -707,7 +707,7 @@ describe('useAsyncPaginateBasePure', () => {
 
     useEffect.mock.calls[2][0]();
 
-    expect(requestOptionsParam.mock.calls.length).toBe(0);
+    expect(requestOptionsParam).toHaveBeenCalledTimes(0);
   });
 
   test('should not load options from third useEffect if loadOptionsOnMenuOpen is false', async () => {
@@ -736,7 +736,7 @@ describe('useAsyncPaginateBasePure', () => {
 
     useEffect.mock.calls[2][0]();
 
-    expect(requestOptionsParam.mock.calls.length).toBe(0);
+    expect(requestOptionsParam).toHaveBeenCalledTimes(0);
   });
 
   test('should load options from third useEffect', async () => {
@@ -764,7 +764,7 @@ describe('useAsyncPaginateBasePure', () => {
 
     useEffect.mock.calls[2][0]();
 
-    expect(requestOptionsParam.mock.calls.length).toBe(1);
+    expect(requestOptionsParam).toHaveBeenCalledTimes(1);
   });
 
   test('should not load options on scroll to bottom if cache not defined for current search', async () => {
@@ -791,7 +791,7 @@ describe('useAsyncPaginateBasePure', () => {
 
     result.handleScrolledToBottom();
 
-    expect(requestOptionsParam.mock.calls.length).toBe(0);
+    expect(requestOptionsParam).toHaveBeenCalledTimes(0);
   });
 
   test('should load options on scroll to bottom if cache defined for current search', async () => {
@@ -825,7 +825,7 @@ describe('useAsyncPaginateBasePure', () => {
 
     result.handleScrolledToBottom();
 
-    expect(requestOptionsParam.mock.calls.length).toBe(1);
+    expect(requestOptionsParam).toHaveBeenCalledTimes(1);
   });
 
   test('should provide default shouldLoadMore', async () => {
@@ -1002,8 +1002,8 @@ describe('useAsyncPaginateBasePure', () => {
 
     result.handleScrolledToBottom();
 
-    expect(requestOptionsParam.mock.calls.length).toBe(1);
-    expect(requestOptionsParam.mock.calls[0][6]).toBe(defaultReduceOptions);
+    expect(requestOptionsParam).toHaveBeenCalledTimes(1);
+    expect(requestOptionsParam.mock.calls[0][7]).toBe(defaultReduceOptions);
   });
 
   test('should provide redefined reduceOptions to requestOptions', async () => {
@@ -1039,8 +1039,8 @@ describe('useAsyncPaginateBasePure', () => {
 
     result.handleScrolledToBottom();
 
-    expect(requestOptionsParam.mock.calls.length).toBe(1);
-    expect(requestOptionsParam.mock.calls[0][6]).toBe(reduceOptions);
+    expect(requestOptionsParam).toHaveBeenCalledTimes(1);
+    expect(requestOptionsParam.mock.calls[0][7]).toBe(reduceOptions);
   });
 
   test('should reduce change cached options and set next increase state id if mounted', async () => {
@@ -1080,7 +1080,7 @@ describe('useAsyncPaginateBasePure', () => {
 
     result.handleScrolledToBottom();
 
-    requestOptionsParam.mock.calls[0][4](reduceState);
+    requestOptionsParam.mock.calls[0][5](reduceState);
 
     expect(reduceState).toHaveBeenCalledTimes(1);
     expect(reduceState).toHaveBeenCalledWith({
@@ -1132,7 +1132,7 @@ describe('useAsyncPaginateBasePure', () => {
 
     result.handleScrolledToBottom();
 
-    requestOptionsParam.mock.calls[0][4](reduceState);
+    requestOptionsParam.mock.calls[0][5](reduceState);
 
     expect(reduceState).toHaveBeenCalledTimes(1);
     expect(reduceState).toHaveBeenCalledWith({
@@ -1181,6 +1181,7 @@ describe('requestOptions', () => {
     const additional = Symbol('additional');
 
     await requestOptions(
+      'autoload',
       {
         ...defaultParamsRef,
         current: {
@@ -1200,12 +1201,12 @@ describe('requestOptions', () => {
       defaultReduceOptions,
     );
 
-    expect(loadOptions.mock.calls.length).toBe(1);
+    expect(loadOptions).toHaveBeenCalledTimes(1);
     expect(loadOptions.mock.calls[0][0]).toBe('test');
     expect(loadOptions.mock.calls[0][1]).toEqual([]);
     expect(loadOptions.mock.calls[0][2]).toEqual(additional);
 
-    expect(setOptionsCache.mock.calls.length).toBe(2);
+    expect(setOptionsCache).toHaveBeenCalledTimes(2);
 
     const intermediateCache = setOptionsCache.mock.calls[0][0]({});
 
@@ -1277,6 +1278,7 @@ describe('requestOptions', () => {
     };
 
     await requestOptions(
+      'autoload',
       {
         ...defaultParamsRef,
         current: {
@@ -1295,12 +1297,12 @@ describe('requestOptions', () => {
       defaultReduceOptions,
     );
 
-    expect(loadOptions.mock.calls.length).toBe(1);
+    expect(loadOptions).toHaveBeenCalledTimes(1);
     expect(loadOptions.mock.calls[0][0]).toBe('test');
     expect(loadOptions.mock.calls[0][1]).toBe(prevOptions);
     expect(loadOptions.mock.calls[0][2]).toEqual(additional);
 
-    expect(setOptionsCache.mock.calls.length).toBe(2);
+    expect(setOptionsCache).toHaveBeenCalledTimes(2);
 
     const intermediateCache = setOptionsCache.mock.calls[0][0](initialOptionsCache);
 
@@ -1341,6 +1343,7 @@ describe('requestOptions', () => {
     const additional = Symbol('additional');
 
     await requestOptions(
+      'autoload',
       {
         ...defaultParamsRef,
         current: {
@@ -1367,8 +1370,8 @@ describe('requestOptions', () => {
       defaultReduceOptions,
     );
 
-    expect(loadOptions.mock.calls.length).toBe(0);
-    expect(setOptionsCache.mock.calls.length).toBe(0);
+    expect(loadOptions).toHaveBeenCalledTimes(0);
+    expect(setOptionsCache).toHaveBeenCalledTimes(0);
   });
 
   test('should not request if hasMore is false for current search', async () => {
@@ -1382,6 +1385,7 @@ describe('requestOptions', () => {
     const additional = Symbol('additional');
 
     await requestOptions(
+      'autoload',
       {
         ...defaultParamsRef,
         current: {
@@ -1408,8 +1412,8 @@ describe('requestOptions', () => {
       defaultReduceOptions,
     );
 
-    expect(loadOptions.mock.calls.length).toBe(0);
-    expect(setOptionsCache.mock.calls.length).toBe(0);
+    expect(loadOptions).toHaveBeenCalledTimes(0);
+    expect(setOptionsCache).toHaveBeenCalledTimes(0);
   });
 
   test('should request with error', async () => {
@@ -1420,6 +1424,7 @@ describe('requestOptions', () => {
     const additional = Symbol('additional');
 
     await requestOptions(
+      'autoload',
       {
         ...defaultParamsRef,
         current: {
@@ -1524,6 +1529,7 @@ describe('requestOptions', () => {
     };
 
     await requestOptions(
+      'autoload',
       {
         ...defaultParamsRef,
         current: {
@@ -1542,12 +1548,12 @@ describe('requestOptions', () => {
       reduceOptions,
     );
 
-    expect(loadOptions.mock.calls.length).toBe(1);
+    expect(loadOptions).toHaveBeenCalledTimes(1);
     expect(loadOptions.mock.calls[0][0]).toBe('test');
     expect(loadOptions.mock.calls[0][1]).toBe(prevOptions);
     expect(loadOptions.mock.calls[0][2]).toEqual(additional);
 
-    expect(setOptionsCache.mock.calls.length).toBe(2);
+    expect(setOptionsCache).toHaveBeenCalledTimes(2);
 
     const intermediateCache = setOptionsCache.mock.calls[0][0](initialOptionsCache);
 
@@ -1573,7 +1579,7 @@ describe('requestOptions', () => {
       },
     });
 
-    expect(reduceOptions.mock.calls.length).toBe(1);
+    expect(reduceOptions).toHaveBeenCalledTimes(1);
     expect(reduceOptions.mock.calls[0][0]).toBe(prevOptions);
     expect(reduceOptions.mock.calls[0][1]).toBe(newOptions);
     expect(reduceOptions.mock.calls[0][2]).toBe(additional);
@@ -1607,6 +1613,7 @@ describe('requestOptions', () => {
     let hasError = false;
     try {
       await requestOptions(
+        'autoload',
         {
           ...defaultParamsRef,
           current: {
@@ -1629,7 +1636,7 @@ describe('requestOptions', () => {
 
     expect(hasError).toBe(true);
 
-    expect(validateResponseParam.mock.calls.length).toBe(1);
+    expect(validateResponseParam).toHaveBeenCalledTimes(1);
     expect(validateResponseParam.mock.calls[0][1]).toBe(response);
   });
 
@@ -1637,6 +1644,7 @@ describe('requestOptions', () => {
     const sleep = jest.fn();
 
     await requestOptions(
+      'input-change',
       {
         ...defaultParamsRef,
         current: {
@@ -1653,10 +1661,34 @@ describe('requestOptions', () => {
       defaultReduceOptions,
     );
 
-    expect(sleep.mock.calls.length).toBe(0);
+    expect(sleep).toHaveBeenCalledTimes(0);
   });
 
-  test('should sleep if debounceTimeout bigger than 0', async () => {
+  test('should not sleep if debounceTimeout bigger than 0 and caller is not "input-change"', async () => {
+    const sleep = jest.fn();
+
+    await requestOptions(
+      'autoload',
+      {
+        ...defaultParamsRef,
+        current: {
+          ...defaultParams,
+        },
+      },
+      {
+        current: {},
+      },
+      0,
+      sleep,
+      defaultSetOptionsCache,
+      defaultValidateResponse,
+      defaultReduceOptions,
+    );
+
+    expect(sleep).toHaveBeenCalledTimes(0);
+  });
+
+  test('should sleep if debounceTimeout bigger than 0 and caller is "input-change"', async () => {
     const sleep = jest.fn();
 
     const newOptions = [
@@ -1681,6 +1713,7 @@ describe('requestOptions', () => {
     const additional = Symbol('additional');
 
     await requestOptions(
+      'input-change',
       {
         ...defaultParamsRef,
         current: {
@@ -1766,6 +1799,7 @@ describe('requestOptions', () => {
     };
 
     await requestOptions(
+      'input-change',
       paramsRef,
       {
         current: {},
@@ -1779,9 +1813,9 @@ describe('requestOptions', () => {
       defaultReduceOptions,
     );
 
-    expect(loadOptions.mock.calls.length).toBe(0);
+    expect(loadOptions).toHaveBeenCalledTimes(0);
 
-    expect(setOptionsCache.mock.calls.length).toBe(2);
+    expect(setOptionsCache).toHaveBeenCalledTimes(2);
 
     const intermediateCache = setOptionsCache.mock.calls[0][0]({});
 
@@ -1833,6 +1867,7 @@ describe('requestOptions', () => {
     };
 
     await requestOptions(
+      'input-change',
       paramsRef,
       {
         current: {
@@ -1854,9 +1889,9 @@ describe('requestOptions', () => {
       defaultReduceOptions,
     );
 
-    expect(loadOptions.mock.calls.length).toBe(0);
+    expect(loadOptions).toHaveBeenCalledTimes(0);
 
-    expect(setOptionsCache.mock.calls.length).toBe(2);
+    expect(setOptionsCache).toHaveBeenCalledTimes(2);
 
     const intermediateCache = setOptionsCache.mock.calls[0][0]({});
 
@@ -1896,6 +1931,7 @@ describe('requestOptions', () => {
       });
 
     await requestOptions(
+      'autoload',
       {
         ...defaultParamsRef,
         current: {
@@ -1915,7 +1951,7 @@ describe('requestOptions', () => {
       defaultReduceOptions,
     );
 
-    expect(setOptionsCache.mock.calls.length).toBe(2);
+    expect(setOptionsCache).toHaveBeenCalledTimes(2);
 
     const lastCache = setOptionsCache.mock.calls[1][0](
       setOptionsCache.mock.calls[0][0](
@@ -1937,6 +1973,7 @@ describe('requestOptions', () => {
       });
 
     await requestOptions(
+      'autoload',
       {
         ...defaultParamsRef,
         current: {
@@ -1956,7 +1993,7 @@ describe('requestOptions', () => {
       defaultReduceOptions,
     );
 
-    expect(setOptionsCache.mock.calls.length).toBe(2);
+    expect(setOptionsCache).toHaveBeenCalledTimes(2);
 
     const lastCache = setOptionsCache.mock.calls[1][0](
       setOptionsCache.mock.calls[0][0](
@@ -1976,6 +2013,7 @@ describe('requestOptions', () => {
       });
 
     await requestOptions(
+      'autoload',
       {
         ...defaultParamsRef,
         current: {
@@ -1994,7 +2032,7 @@ describe('requestOptions', () => {
       defaultReduceOptions,
     );
 
-    expect(setOptionsCache.mock.calls.length).toBe(2);
+    expect(setOptionsCache).toHaveBeenCalledTimes(2);
 
     const lastCache = setOptionsCache.mock.calls[1][0](
       setOptionsCache.mock.calls[0][0](
@@ -2013,6 +2051,7 @@ describe('requestOptions', () => {
       });
 
     await requestOptions(
+      'autoload',
       {
         ...defaultParamsRef,
         current: {
@@ -2031,7 +2070,7 @@ describe('requestOptions', () => {
       defaultReduceOptions,
     );
 
-    expect(setOptionsCache.mock.calls.length).toBe(2);
+    expect(setOptionsCache).toHaveBeenCalledTimes(2);
 
     const lastCache = setOptionsCache.mock.calls[1][0](
       setOptionsCache.mock.calls[0][0](

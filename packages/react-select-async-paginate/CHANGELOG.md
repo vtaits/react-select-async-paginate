@@ -3,6 +3,7 @@
 ### Bugfix
 
 - Support `isLoading` prop [#100](https://github.com/vtaits/react-select-async-paginate/issues/100)
+- Don't use debounce if value of input is not changed [#99](https://github.com/vtaits/react-select-async-paginate/pull/99)
 
 ## 0.6.0 (28 sep 2021)
 

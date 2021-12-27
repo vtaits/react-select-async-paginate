@@ -89,7 +89,10 @@ type SetOptionsCache<OptionType, Group extends GroupBase<OptionType>, Additional
   stateMapper: MapOptionsCache<OptionType, Group, Additional>,
 ) => void;
 
+type RequestOptionsCallerType = 'autoload' | 'menu-toggle' | 'input-change' | 'menu-scroll';
+
 export const requestOptions = async <OptionType, Group extends GroupBase<OptionType>, Additional>(
+  caller: RequestOptionsCallerType,
   paramsRef: {
     current: UseAsyncPaginateBaseParams<OptionType, Group, Additional>;
   },
@@ -124,7 +127,7 @@ export const requestOptions = async <OptionType, Group extends GroupBase<OptionT
     },
   }));
 
-  if (debounceTimeout > 0) {
+  if (debounceTimeout > 0 && caller === 'input-change') {
     await sleepParam(debounceTimeout);
 
     const newInputValue = paramsRef.current.inputValue;
@@ -253,8 +256,9 @@ Additional,
     optionsCacheRef.current = getInitialOptionsCacheParam(params);
   }
 
-  const callRequestOptions = useCallbackParam((): void => {
+  const callRequestOptions = useCallbackParam((caller: RequestOptionsCallerType): void => {
     requestOptionsParam(
+      caller,
       paramsRef,
       optionsCacheRef,
       debounceTimeout,
@@ -276,9 +280,9 @@ Additional,
     const currentOptions = optionsCacheRef.current[currentInputValue];
 
     if (currentOptions) {
-      callRequestOptions();
+      callRequestOptions('menu-scroll');
     }
-  }, []);
+  }, [callRequestOptions]);
 
   useEffectParam(() => {
     if (isInitRef.current) {
@@ -289,13 +293,13 @@ Additional,
     }
 
     if (defaultOptions === true) {
-      callRequestOptions();
+      callRequestOptions('autoload');
     }
   }, deps);
 
   useEffectParam(() => {
     if (menuIsOpen && !optionsCacheRef.current[inputValue]) {
-      callRequestOptions();
+      callRequestOptions('input-change');
     }
   }, [inputValue]);
 
@@ -305,7 +309,7 @@ Additional,
       && !optionsCacheRef.current['']
       && loadOptionsOnMenuOpen
     ) {
-      callRequestOptions();
+      callRequestOptions('menu-toggle');
     }
   }, [menuIsOpen]);
 
