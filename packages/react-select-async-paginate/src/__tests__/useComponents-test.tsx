@@ -1,7 +1,3 @@
-import type {
-  FC,
-} from 'react';
-
 import {
   MenuList,
   useComponentsPure,
@@ -10,7 +6,10 @@ import {
 const defaultUseMemo = (callback: () => any): any => callback();
 
 test('should provide correct deps to useMemo', () => {
-  const Test: FC = () => <div />;
+  function Test() {
+    return <div />;
+  }
+
   const useMemo = jest.fn();
 
   const components = {
@@ -24,7 +23,9 @@ test('should provide correct deps to useMemo', () => {
 });
 
 test('should add MenuList to existing components', () => {
-  const Test: FC = () => <div />;
+  function Test() {
+    return <div />;
+  }
 
   const components = {
     Menu: Test,
@@ -39,7 +40,9 @@ test('should add MenuList to existing components', () => {
 });
 
 test('should redefine MenuList', () => {
-  const Test: FC = () => <div />;
+  function Test() {
+    return <div />;
+  }
 
   const components = {
     MenuList: Test,

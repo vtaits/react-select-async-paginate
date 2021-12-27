@@ -1,0 +1,22 @@
+import { Meta, Story } from '@storybook/addon-docs';
+
+import { AsyncPaginate } from '../src';
+import { argTypes } from './argTypes';
+
+import { InitialOptions } from './InitialOptions';
+
+<Meta
+  title="react-select-async-paginate/InitialOptions"
+  component={AsyncPaginate}
+  argTypes={argTypes}
+/>
+
+export const Template = (props) => {
+  return <InitialOptions {...props} />;
+}
+
+# Initial options
+
+<Story name="InitialOptions">
+  {Template.bind({})}
+</Story>

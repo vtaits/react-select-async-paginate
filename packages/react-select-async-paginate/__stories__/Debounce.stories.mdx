@@ -1,0 +1,27 @@
+import { Meta, Story } from '@storybook/addon-docs';
+
+import { AsyncPaginate } from '../src';
+import { argTypes } from './argTypes';
+
+import { Debounce } from './Debounce';
+
+<Meta
+  title="react-select-async-paginate/Debounce"
+  component={AsyncPaginate}
+  argTypes={argTypes}
+/>
+
+export const Template = (props) => {
+  return <Debounce {...props} />;
+}
+
+# Debounce
+
+<Story
+  name="Debounce"
+  args={{
+    debounceTimeout: 300,
+  }}
+>
+  {Template.bind({})}
+</Story>

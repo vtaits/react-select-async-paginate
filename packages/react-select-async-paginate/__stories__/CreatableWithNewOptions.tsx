@@ -1,7 +1,8 @@
 import { useState, useCallback } from 'react';
-import type { FC, ReactElement } from 'react';
+import type { ReactElement } from 'react';
 import type {
   GroupBase,
+  MultiValue,
 } from 'react-select';
 import sleep from 'sleep-promise';
 import Creatable from 'react-select/creatable';
@@ -15,6 +16,10 @@ import type {
   UseAsyncPaginateParams,
   ComponentProps,
 } from '../src';
+
+import type {
+  StoryProps,
+} from './types';
 
 type AsyncPaginateCreatableProps<
 OptionType,
@@ -93,10 +98,10 @@ const addNewOption = async (inputValue: string): Promise<OptionType> => {
 
 const increaseUniq = (uniq: number): number => uniq + 1;
 
-const Example: FC = () => {
+export function CreatableWithNewOptions(props: StoryProps) {
   const [cacheUniq, setCacheUniq] = useState(0);
   const [isAddingInProgress, setIsAddingInProgress] = useState(false);
-  const [value, onChange] = useState<OptionType>(null);
+  const [value, onChange] = useState<OptionType | MultiValue<OptionType>>(null);
 
   const onCreateOption = useCallback(async (inputValue: string) => {
     setIsAddingInProgress(true);
@@ -116,6 +121,7 @@ const Example: FC = () => {
         }}
       >
         <AsyncPaginateCreatable
+          {...props}
           isDisabled={isAddingInProgress}
           value={value}
           loadOptions={loadOptions}
@@ -132,6 +138,4 @@ const Example: FC = () => {
       </p>
     </>
   );
-};
-
-export default Example;
+}

@@ -1,6 +1,3 @@
-import type {
-  FC,
-} from 'react';
 import { shallow } from 'enzyme';
 import type {
   ShallowWrapper,
@@ -14,7 +11,9 @@ import { defaultShouldLoadMore } from '../defaultShouldLoadMore';
 
 jest.useFakeTimers();
 
-const TestComponent: FC = () => <div />;
+function TestComponent() {
+  return <div />;
+}
 
 const WrappedMenuList = wrapMenuList(TestComponent);
 

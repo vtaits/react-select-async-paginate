@@ -269,7 +269,7 @@ Additional,
       validateResponseParam,
       reduceOptions,
     );
-  }, []);
+  }, [debounceTimeout]);
 
   const handleScrolledToBottom = useCallbackParam((): void => {
     const currentInputValue = paramsRef.current.inputValue;

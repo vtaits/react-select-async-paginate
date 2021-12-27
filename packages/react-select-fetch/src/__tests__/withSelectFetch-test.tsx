@@ -1,6 +1,3 @@
-import type {
-  FC,
-} from 'react';
 import { shallow } from 'enzyme';
 import type {
   ShallowWrapper,
@@ -26,7 +23,9 @@ IsMulti extends boolean,
 Group extends GroupBase<OptionType>,
 > = Partial<SelectProps<OptionType, IsMulti, Group>['components']>;
 
-const TestComponent: FC = () => <div />;
+function TestComponent() {
+  return <div />;
+}
 
 const SelectFetch = withSelectFetch(TestComponent);
 
@@ -168,7 +167,9 @@ test('should call hook with correct params', () => {
 
   const useSelectFetch = jest.fn();
 
-  const Test: FC = () => <div />;
+  function Test() {
+    return <div />;
+  }
 
   setup({
     components: {
@@ -221,7 +222,9 @@ test('should call useComponents hook', () => {
   const useComponents = jest.fn()
     .mockReturnValue({});
 
-  const Test: FC = () => <div />;
+  function Test() {
+    return <div />;
+  }
 
   const components: SelectComponentsConfig<any, false, any> = {
     Menu: Test,
@@ -236,7 +239,9 @@ test('should call useComponents hook', () => {
 });
 
 test('should use result of useComponents hook', () => {
-  const Test: FC = () => <div />;
+  function Test() {
+    return <div />;
+  }
 
   const components: SelectComponentsConfig<any, false, any> = {
     Menu: Test,

@@ -1,17 +1,21 @@
 import { useState } from 'react';
-import type { FC } from 'react';
 import type {
   GroupBase,
+  MultiValue,
 } from 'react-select';
 import sleep from 'sleep-promise';
-import Creatable from 'react-select/creatable';
+import CreatableSelect from 'react-select/creatable';
 
 import { withAsyncPaginate } from '../src';
 import type {
   LoadOptions,
 } from '../src';
 
-const AsyncPaginateCreatable = withAsyncPaginate(Creatable);
+import type {
+  StoryProps,
+} from './types';
+
+const AsyncPaginateCreatable = withAsyncPaginate(CreatableSelect);
 
 type OptionType = {
   value: number | string;
@@ -56,8 +60,8 @@ null
   };
 };
 
-const Example: FC = () => {
-  const [value, onChange] = useState<OptionType>(null);
+export function Creatable(props: StoryProps) {
+  const [value, onChange] = useState<OptionType | MultiValue<OptionType>>(null);
 
   return (
     <div
@@ -66,12 +70,11 @@ const Example: FC = () => {
       }}
     >
       <AsyncPaginateCreatable
+        {...props}
         value={value}
         loadOptions={loadOptions}
         onChange={onChange}
       />
     </div>
   );
-};
-
-export default Example;
+}

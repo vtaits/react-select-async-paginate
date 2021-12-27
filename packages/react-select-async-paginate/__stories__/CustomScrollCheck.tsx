@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import type { FC } from 'react';
 import type {
   GroupBase,
+  MultiValue,
 } from 'react-select';
 import sleep from 'sleep-promise';
 
@@ -10,6 +10,10 @@ import type {
   LoadOptions,
   ShouldLoadMore,
 } from '../src';
+
+import type {
+  StoryProps,
+} from './types';
 
 type OptionType = {
   value: number;
@@ -60,8 +64,8 @@ const shouldLoadMore: ShouldLoadMore = (scrollHeight, clientHeight, scrollTop) =
   return bottomBorder < scrollTop;
 };
 
-const Example: FC = () => {
-  const [value, onChange] = useState<OptionType>(null);
+export function CustomScrollCheck(props: StoryProps) {
+  const [value, onChange] = useState<OptionType | MultiValue<OptionType>>(null);
 
   return (
     <div
@@ -72,6 +76,7 @@ const Example: FC = () => {
       <p>New options will load when scrolling to half</p>
 
       <AsyncPaginate
+        {...props}
         value={value}
         loadOptions={loadOptions}
         onChange={onChange}
@@ -79,6 +84,4 @@ const Example: FC = () => {
       />
     </div>
   );
-};
-
-export default Example;
+}

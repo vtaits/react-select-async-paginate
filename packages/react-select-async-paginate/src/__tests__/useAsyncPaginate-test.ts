@@ -240,9 +240,10 @@ test('should change local inputValue on input change', () => {
 
   result.onInputChange('test2', {
     action: 'set-value',
+    prevInputValue: 'test1',
   });
 
-  expect(setInputValue.mock.calls.length).toBe(1);
+  expect(setInputValue).toHaveBeenCalledTimes(1);
   expect(setInputValue.mock.calls[0][0]).toBe('test2');
 });
 
@@ -264,6 +265,7 @@ test('should change local inputValue and call onInputChange param on input chang
 
   result.onInputChange('test2', {
     action: 'set-value',
+    prevInputValue: 'test1',
   });
 
   expect(setInputValue.mock.calls.length).toBe(1);
@@ -272,6 +274,7 @@ test('should change local inputValue and call onInputChange param on input chang
   expect(onInputChange).toBeCalledTimes(1);
   expect(onInputChange).toHaveBeenCalledWith('test2', {
     action: 'set-value',
+    prevInputValue: 'test1',
   });
 });
 

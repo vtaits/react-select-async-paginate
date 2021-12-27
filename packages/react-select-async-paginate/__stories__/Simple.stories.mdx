@@ -1,0 +1,22 @@
+import { Meta, Story } from '@storybook/addon-docs';
+
+import { AsyncPaginate } from '../src';
+import { argTypes } from './argTypes';
+
+import { Simple } from './Simple';
+
+<Meta
+  title="react-select-async-paginate/Simple"
+  component={AsyncPaginate}
+  argTypes={argTypes}
+/>
+
+export const Template = (props) => {
+  return <Simple {...props} />;
+}
+
+# Simple
+
+<Story name="Simple">
+  {Template.bind({})}
+</Story>

@@ -1,5 +1,10 @@
 module.exports = {
-  stories: ['../packages/**/*.stories.tsx'],
+  stories: ['../packages/**/*.stories.mdx'],
+
+  addons: [
+    '@storybook/addon-controls',
+    '@storybook/addon-docs',
+  ],
 
   webpackFinal: (config) => {
     config.module.rules.push({
@@ -13,8 +18,8 @@ module.exports = {
               modules: false,
 
               targets: {
-                firefox: '89',
-                chrome: '91',
+                firefox: '95',
+                chrome: '96',
               },
             },
           ],

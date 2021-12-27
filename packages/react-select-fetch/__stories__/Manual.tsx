@@ -1,7 +1,6 @@
 /* eslint-disable react/no-array-index-key */
 
 import { useState, useCallback } from 'react';
-import type { FC } from 'react';
 import sleep from 'sleep-promise';
 import type {
   InputActionMeta,
@@ -10,6 +9,10 @@ import type {
 
 import { SelectFetch } from '../src';
 import type { Get } from '../src';
+
+import type {
+  StoryProps,
+} from './types';
 
 type OptionType = {
   value: number;
@@ -54,8 +57,8 @@ const get: Get = async (url, {
   };
 };
 
-const Example: FC = () => {
-  const [value, onChange] = useState<MultiValue<OptionType>>(null);
+export function Manual(props: StoryProps) {
+  const [value, onChange] = useState<OptionType | MultiValue<OptionType>>(null);
   const [inputValue, onInputChangeRaw] = useState<string>('');
   const [menuIsOpen, setMenuIsOpen] = useState<boolean>(false);
   const [inputHistory, setInputHistory] = useState([]);
@@ -102,15 +105,14 @@ const Example: FC = () => {
       </div>
 
       <SelectFetch
+        {...props}
         url="/options/"
         queryParams={{
           limit: 10,
         }}
         value={value}
-        isMulti
         inputValue={inputValue}
         onInputChange={onInputChange}
-        closeMenuOnSelect={false}
         onChange={onChange}
         menuIsOpen={menuIsOpen}
         onMenuOpen={onMenuOpen}
@@ -141,6 +143,4 @@ const Example: FC = () => {
       </table>
     </div>
   );
-};
-
-export default Example;
+}

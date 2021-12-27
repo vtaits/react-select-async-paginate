@@ -1,7 +1,6 @@
 /* eslint-disable react/no-array-index-key */
 
 import { useState, useCallback } from 'react';
-import type { FC } from 'react';
 import type {
   GroupBase,
   InputActionMeta,
@@ -13,6 +12,10 @@ import { AsyncPaginate } from '../src';
 import type {
   LoadOptions,
 } from '../src';
+
+import type {
+  StoryProps,
+} from './types';
 
 type OptionType = {
   value: number;
@@ -57,8 +60,8 @@ null
   };
 };
 
-const Example: FC = () => {
-  const [value, onChange] = useState<MultiValue<OptionType>>(null);
+export function Manual(props: StoryProps) {
+  const [value, onChange] = useState<OptionType | MultiValue<OptionType>>(null);
   const [inputValue, onInputChangeRaw] = useState('');
   const [menuIsOpen, setMenuIsOpen] = useState(false);
   const [inputHistory, setInputHistory] = useState([]);
@@ -105,8 +108,7 @@ const Example: FC = () => {
       </div>
 
       <AsyncPaginate
-        isMulti
-        closeMenuOnSelect={false}
+        {...props}
         value={value}
         inputValue={inputValue}
         onInputChange={onInputChange}
@@ -140,6 +142,4 @@ const Example: FC = () => {
       </table>
     </div>
   );
-};
-
-export default Example;
+}

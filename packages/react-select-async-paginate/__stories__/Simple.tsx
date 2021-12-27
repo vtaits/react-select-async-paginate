@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import type { FC } from 'react';
 import type {
   GroupBase,
+  MultiValue,
 } from 'react-select';
 import sleep from 'sleep-promise';
 
@@ -9,6 +9,10 @@ import { AsyncPaginate } from '../src';
 import type {
   LoadOptions,
 } from '../src';
+
+import type {
+  StoryProps,
+} from './types';
 
 type OptionType = {
   value: number;
@@ -53,8 +57,8 @@ null
   };
 };
 
-const Example: FC = () => {
-  const [value, onChange] = useState<OptionType>(null);
+export function Simple(props: StoryProps) {
+  const [value, onChange] = useState<OptionType | MultiValue<OptionType>>(null);
 
   return (
     <div
@@ -63,12 +67,11 @@ const Example: FC = () => {
       }}
     >
       <AsyncPaginate
+        {...props}
         value={value}
         loadOptions={loadOptions}
         onChange={onChange}
       />
     </div>
   );
-};
-
-export default Example;
+}

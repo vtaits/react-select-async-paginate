@@ -39,7 +39,7 @@ type ComponentProps = {
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export const wrapMenuList = (MenuList: ComponentType<ComponentProps>): FC<Props> => {
-  const WrappedMenuList: FC<Props> = (props) => {
+  function WrappedMenuList(props: Props) {
     const {
       selectProps: {
         handleScrolledToBottom,
@@ -105,7 +105,7 @@ export const wrapMenuList = (MenuList: ComponentType<ComponentProps>): FC<Props>
         innerRef={composeRefs<HTMLElement>(innerRef, menuListRef)}
       />
     );
-  };
+  }
 
   WrappedMenuList.defaultProps = {
     useEffect,

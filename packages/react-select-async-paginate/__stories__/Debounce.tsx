@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import type { FC } from 'react';
 import type {
   GroupBase,
+  MultiValue,
 } from 'react-select';
 import sleep from 'sleep-promise';
 
@@ -9,6 +9,10 @@ import { AsyncPaginate } from '../src';
 import type {
   LoadOptions,
 } from '../src';
+
+import type {
+  StoryProps,
+} from './types';
 
 type OptionType = {
   value: number;
@@ -55,8 +59,8 @@ null
 
 const increase = (numberOfRequests: number): number => numberOfRequests + 1;
 
-const Example: FC = () => {
-  const [value, onChange] = useState<OptionType>(null);
+export function Debounce(props: StoryProps) {
+  const [value, onChange] = useState<OptionType | MultiValue<OptionType>>(null);
   const [numberOfRequests, setNumberOfRequests] = useState(0);
 
   const wrappedLoadOptions: LoadOptions<
@@ -82,13 +86,11 @@ const Example: FC = () => {
       </p>
 
       <AsyncPaginate
-        debounceTimeout={300}
+        {...props}
         value={value}
         loadOptions={wrappedLoadOptions}
         onChange={onChange}
       />
     </div>
   );
-};
-
-export default Example;
+}

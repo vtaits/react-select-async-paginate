@@ -1,0 +1,28 @@
+import { Meta, Story } from '@storybook/addon-docs';
+
+import { SelectFetch } from '../src';
+import { argTypes } from './argTypes';
+
+import { Manual } from './Manual';
+
+<Meta
+  title="react-select-fetch/Manual"
+  component={SelectFetch}
+  argTypes={argTypes}
+/>
+
+export const Template = (props) => {
+  return <Manual {...props} />;
+}
+
+# Manual control of input value and menu opening
+
+<Story
+  name="Manual"
+  args={{
+    isMulti: true,
+    closeMenuOnSelect: false,
+  }}
+>
+  {Template.bind({})}
+</Story>

@@ -1,9 +1,15 @@
 import { useState } from 'react';
-import type { FC } from 'react';
 import sleep from 'sleep-promise';
+import type {
+  MultiValue,
+} from 'react-select';
 
 import { SelectFetch } from '../src';
 import type { Get } from '../src';
+
+import type {
+  StoryProps,
+} from './types';
 
 type OptionType = {
   value: number;
@@ -50,8 +56,8 @@ const get: Get = async (url, {
 
 const defaultOptions = options.slice(0, 10);
 
-const Example: FC = () => {
-  const [value, onChange] = useState<OptionType>(null);
+export function InitialOptions(props: StoryProps) {
+  const [value, onChange] = useState<OptionType | MultiValue<OptionType>>(null);
 
   return (
     <div
@@ -60,6 +66,7 @@ const Example: FC = () => {
       }}
     >
       <SelectFetch
+        {...props}
         url="/options/"
         defaultOptions={defaultOptions}
         queryParams={{
@@ -71,6 +78,4 @@ const Example: FC = () => {
       />
     </div>
   );
-};
-
-export default Example;
+}
