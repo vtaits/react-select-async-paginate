@@ -1,5 +1,6 @@
 export type StoryProps = {
-  debounceTimeout?: number;
-  isMulti?: boolean;
   closeMenuOnSelect?: boolean;
+  debounceTimeout?: number;
+  isLoading?: boolean;
+  isMulti?: boolean;
 };

@@ -1,3 +1,9 @@
+## 0.6.1
+
+### Bugfix
+
+- Support `isLoading` prop [#100](https://github.com/vtaits/react-select-async-paginate/issues/100)
+
 ## 0.6.0 (28 sep 2021)
 
 Migrate to `react-select` v5

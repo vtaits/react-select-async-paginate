@@ -125,6 +125,31 @@ test('should provide props from hook to child', () => {
   expect(childNode.prop('menuIsOpen')).toBe(false);
 });
 
+test('should redefine isLoading prop', () => {
+  const useAsyncPaginate = (): UseAsyncPaginateResult<any, any> => ({
+    handleScrolledToBottom: (): void => {},
+    shouldLoadMore: (): boolean => true,
+    isLoading: false,
+    isFirstLoad: true,
+    filterOption: null,
+    inputValue: '',
+    onInputChange: (): void => {},
+    menuIsOpen: false,
+    onMenuOpen: (): void => {},
+    onMenuClose: (): void => {},
+    options: [],
+  });
+
+  const page = setup({
+    isLoading: true,
+    useAsyncPaginate,
+  });
+
+  const childNode = page.getChildNode();
+
+  expect(childNode.prop('isLoading')).toBe(true);
+});
+
 test('should redefine parent props with hook props', () => {
   const optionsProp: Options<any> = [
     {
@@ -172,7 +197,8 @@ test('should call hook with correct params', () => {
     },
   ];
 
-  const useAsyncPaginate = jest.fn();
+  const useAsyncPaginate = jest.fn()
+    .mockReturnValue({});
 
   function Test() {
     return <div />;
@@ -203,7 +229,8 @@ test('should call hook with correct params', () => {
 });
 
 test('should call hook with empty deps', () => {
-  const useAsyncPaginate = jest.fn();
+  const useAsyncPaginate = jest.fn()
+    .mockReturnValue({});
 
   setup({
     useAsyncPaginate,
@@ -215,7 +242,8 @@ test('should call hook with empty deps', () => {
 test('should call hook with deps from cacheUniq', () => {
   const cacheUniqs = [1, 2, 3];
 
-  const useAsyncPaginate = jest.fn();
+  const useAsyncPaginate = jest.fn()
+    .mockReturnValue({});
 
   setup({
     cacheUniqs,

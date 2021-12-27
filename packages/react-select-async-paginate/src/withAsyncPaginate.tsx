@@ -49,6 +49,7 @@ export function withAsyncPaginate(
     const {
       components,
       selectRef,
+      isLoading: isLoadingProp,
       useComponents: useComponentsProp,
       useAsyncPaginate: useAsyncPaginateProp,
       cacheUniqs,
@@ -62,10 +63,15 @@ export function withAsyncPaginate(
 
     const processedComponents = useComponentsProp<OptionType, Group, IsMulti>(components);
 
+    const isLoading = typeof isLoadingProp === 'boolean'
+      ? isLoadingProp
+      : asyncPaginateProps.isLoading;
+
     return (
       <SelectComponent
         {...props}
         {...asyncPaginateProps}
+        isLoading={isLoading}
         components={processedComponents}
         ref={selectRef}
       />

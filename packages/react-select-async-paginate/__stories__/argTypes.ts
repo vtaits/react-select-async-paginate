@@ -1,15 +1,20 @@
 export const argTypes = {
+  closeMenuOnSelect: {
+    options: ['boolean'],
+    control: { type: 'boolean' },
+  },
+
   debounceTimeout: {
     options: ['number'],
     control: { type: 'number' },
   },
 
-  isMulti: {
+  isLoading: {
     options: ['boolean'],
     control: { type: 'boolean' },
   },
 
-  closeMenuOnSelect: {
+  isMulti: {
     options: ['boolean'],
     control: { type: 'boolean' },
   },
