@@ -12748,16 +12748,6 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"react-is-mounted-hook@npm:^1.1.2":
-  version: 1.1.2
-  resolution: "react-is-mounted-hook@npm:1.1.2"
-  peerDependencies:
-    react: ^16.8.6 || ^17
-    react-dom: ^16.8.6 || ^17
-  checksum: 297e28bc6fe77f1ba13536246a1747c1478e1896fe7ade7b0801baf902774116cd2ec38ad91a08eb9b9706e03fbf63ca4534bdbc9b7a0ce9e4a15d9295712f13
-  languageName: node
-  linkType: hard
-
 "react-is@npm:17.0.2, react-is@npm:^16.12.0 || ^17.0.0, react-is@npm:^17.0.0, react-is@npm:^17.0.1, react-is@npm:^17.0.2":
   version: 17.0.2
   resolution: "react-is@npm:17.0.2"
@@ -12859,11 +12849,11 @@ fsevents@^1.2.7:
     eslint-plugin-react-hooks: ^4.3.0
     jest: ^27.4.5
     react: ^17.0.2
-    react-is-mounted-hook: ^1.1.2
     react-select: ^5.2.1
     sleep-promise: ^9.1.0
     ts-jest: ^27.1.2
     typescript: ^4.5.4
+    use-is-mounted-ref: ^1.5.0
   peerDependencies:
     react: ^16.14.0 || ^17.0.0
     react-select: ^5.0.0
@@ -15277,6 +15267,15 @@ typescript@^4.5.4:
   peerDependencies:
     react: ^16.8.0 || ^17.0.0
   checksum: b438c1577eafb26dd8aff8d7ffbeae10b544172fc4c4f38733343f70c04da6f14a748a274cb76b70b829604e1382be56fb37a96f3c62b5aeec50657e23e61097
+  languageName: node
+  linkType: hard
+
+"use-is-mounted-ref@npm:^1.5.0":
+  version: 1.5.0
+  resolution: "use-is-mounted-ref@npm:1.5.0"
+  peerDependencies:
+    react: ">=16.0.0"
+  checksum: 51deac5c49f44128252ec1d7d4864f86585aed450d449007066f93f42aecdd3bab54c3ca2402001ae4ac5b5285b3186feaabadf8bbe148107f3cff1f1e014aa6
   languageName: node
   linkType: hard
 

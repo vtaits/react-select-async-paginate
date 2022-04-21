@@ -3,9 +3,9 @@ import {
   useState as reactUseState,
   useRef as reactUseRef,
 } from 'react';
-import useIsMounted from 'react-is-mounted-hook';
 import sleepLib from 'sleep-promise';
 
+import useIsMounted from '../useIsMounted';
 import { defaultShouldLoadMore } from '../defaultShouldLoadMore';
 import { defaultReduceOptions } from '../defaultReduceOptions';
 

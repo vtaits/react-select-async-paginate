@@ -8,8 +8,8 @@ import type {
   GroupBase,
 } from 'react-select';
 import sleep from 'sleep-promise';
-import useIsMounted from 'react-is-mounted-hook';
 
+import useIsMounted from './useIsMounted';
 import { defaultShouldLoadMore } from './defaultShouldLoadMore';
 import { defaultReduceOptions } from './defaultReduceOptions';
 
