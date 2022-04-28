@@ -35,7 +35,7 @@
     "codecov": "codecov -F react_select_fetch"
   },
   "peerDependencies": {
-    "react": "^16.14.0 || ^17.0.0",
+    "react": "^16.14.0 || ^17.0.0 || ^18.0.0",
     "react-select": "^5.0.0",
     "react-select-async-paginate": "^0.6.0"
   },
