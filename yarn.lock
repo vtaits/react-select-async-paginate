@@ -12853,7 +12853,6 @@ fsevents@^1.2.7:
     sleep-promise: ^9.1.0
     ts-jest: ^27.1.2
     typescript: ^4.5.4
-    use-is-mounted-ref: ^1.5.0
   peerDependencies:
     react: ^16.14.0 || ^17.0.0
     react-select: ^5.0.0
@@ -15267,15 +15266,6 @@ typescript@^4.5.4:
   peerDependencies:
     react: ^16.8.0 || ^17.0.0
   checksum: b438c1577eafb26dd8aff8d7ffbeae10b544172fc4c4f38733343f70c04da6f14a748a274cb76b70b829604e1382be56fb37a96f3c62b5aeec50657e23e61097
-  languageName: node
-  linkType: hard
-
-"use-is-mounted-ref@npm:^1.5.0":
-  version: 1.5.0
-  resolution: "use-is-mounted-ref@npm:1.5.0"
-  peerDependencies:
-    react: ">=16.0.0"
-  checksum: 51deac5c49f44128252ec1d7d4864f86585aed450d449007066f93f42aecdd3bab54c3ca2402001ae4ac5b5285b3186feaabadf8bbe148107f3cff1f1e014aa6
   languageName: node
   linkType: hard
 
