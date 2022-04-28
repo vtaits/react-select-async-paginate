@@ -1,7 +1,9 @@
-import { shallow } from 'enzyme';
 import type {
-  ShallowWrapper,
-} from 'enzyme';
+  ReactElement,
+} from 'react';
+
+import { createRenderer } from 'react-test-renderer/shallow';
+
 import type {
   GroupBase,
   Options,
@@ -17,20 +19,34 @@ import type {
   Props,
 } from '../withSelectFetch';
 
+type ExtendedSelectProps<
+  OptionType,
+  IsMulti extends boolean,
+  Group extends GroupBase<OptionType>,
+  > =
+  & SelectProps<OptionType, IsMulti, Group>
+  & {
+    isFirstLoad: boolean;
+  };
+
 type SelectComponentsConfig<
 OptionType,
 IsMulti extends boolean,
 Group extends GroupBase<OptionType>,
 > = Partial<SelectProps<OptionType, IsMulti, Group>['components']>;
 
-function TestComponent() {
+function TestComponent(): ReactElement {
   return <div />;
 }
 
 const SelectFetch = withSelectFetch(TestComponent);
 
-type PageObject = {
-  getChildNode: () => ShallowWrapper;
+type PageObject<
+  OptionType,
+  IsMulti extends boolean,
+  Group extends GroupBase<OptionType>,
+> = {
+  getChildProps: () => ExtendedSelectProps<OptionType, IsMulti, Group>;
 };
 
 const defaultProps = {
@@ -53,20 +69,28 @@ const defaultProps = {
   }),
 };
 
-const setup = <OptionType, IsMulti extends boolean>(
-  props: Partial<Props<OptionType, GroupBase<OptionType>, IsMulti>>,
-): PageObject => {
-  const wrapper: ShallowWrapper = shallow(
+const setup = <
+  OptionType,
+  IsMulti extends boolean,
+  Group extends GroupBase<OptionType>,
+>(
+    props: Partial<Props<OptionType, GroupBase<OptionType>, IsMulti>>,
+  ): PageObject<OptionType, IsMulti, Group> => {
+  const renderer = createRenderer();
+
+  renderer.render(
     <SelectFetch
       {...defaultProps}
       {...props}
     />,
   );
 
-  const getChildNode = (): ShallowWrapper => wrapper.find(TestComponent);
+  const result = renderer.getRenderOutput();
+
+  const getChildProps = () => result.props as ExtendedSelectProps<OptionType, IsMulti, Group>;
 
   return {
-    getChildNode,
+    getChildProps,
   };
 };
 
@@ -77,9 +101,9 @@ test('should provide props from parent to child', () => {
     getOptionLabel,
   });
 
-  const childNode = page.getChildNode();
+  const childProps = page.getChildProps();
 
-  expect(childNode.prop('getOptionLabel')).toBe(getOptionLabel);
+  expect(childProps.getOptionLabel).toBe(getOptionLabel);
 });
 
 test('should provide props from hook to child', () => {
@@ -108,14 +132,14 @@ test('should provide props from hook to child', () => {
     useSelectFetch,
   });
 
-  const childNode = page.getChildNode();
+  const childProps = page.getChildProps();
 
-  expect(childNode.prop('isLoading')).toBe(true);
-  expect(childNode.prop('isFirstLoad')).toBe(true);
-  expect(childNode.prop('filterOption')).toBe(null);
-  expect(childNode.prop('options')).toBe(options);
-  expect(childNode.prop('inputValue')).toBe('');
-  expect(childNode.prop('menuIsOpen')).toBe(false);
+  expect(childProps.isLoading).toBe(true);
+  expect(childProps.isFirstLoad).toBe(true);
+  expect(childProps.filterOption).toBe(null);
+  expect(childProps.options).toBe(options);
+  expect(childProps.inputValue).toBe('');
+  expect(childProps.menuIsOpen).toBe(false);
 });
 
 test('should redefine parent props with hook props', () => {
@@ -152,9 +176,9 @@ test('should redefine parent props with hook props', () => {
     useSelectFetch,
   });
 
-  const childNode = page.getChildNode();
+  const childProps = page.getChildProps();
 
-  expect(childNode.prop('options')).toBe(optionsHookResult);
+  expect(childProps.options).toBe(optionsHookResult);
 });
 
 test('should call hook with correct params', () => {
@@ -254,5 +278,5 @@ test('should use result of useComponents hook', () => {
     useComponents,
   });
 
-  expect(page.getChildNode().prop('components')).toBe(components);
+  expect(page.getChildProps().components).toBe(components);
 });
