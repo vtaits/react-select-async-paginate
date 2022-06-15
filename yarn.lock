@@ -12318,16 +12318,6 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"react-is-mounted-hook@npm:^1.1.2":
-  version: 1.1.2
-  resolution: "react-is-mounted-hook@npm:1.1.2"
-  peerDependencies:
-    react: ^16.8.6 || ^17
-    react-dom: ^16.8.6 || ^17
-  checksum: 297e28bc6fe77f1ba13536246a1747c1478e1896fe7ade7b0801baf902774116cd2ec38ad91a08eb9b9706e03fbf63ca4534bdbc9b7a0ce9e4a15d9295712f13
-  languageName: node
-  linkType: hard
-
 "react-is@npm:17.0.2, react-is@npm:^17.0.0, react-is@npm:^17.0.1, react-is@npm:^17.0.2":
   version: 17.0.2
   resolution: "react-is@npm:17.0.2"
@@ -12435,7 +12425,6 @@ fsevents@^1.2.7:
     eslint-plugin-react-hooks: ^4.5.0
     jest: ^28.0.2
     react: ^18.1.0
-    react-is-mounted-hook: ^1.1.2
     react-select: ^5.3.1
     react-test-renderer: ^18.1.0
     sleep-promise: ^9.1.0

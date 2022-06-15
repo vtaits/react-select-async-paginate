@@ -40,7 +40,6 @@
   "dependencies": {
     "@babel/runtime": "^7.17.9",
     "@seznam/compose-react-refs": "^1.0.6",
-    "react-is-mounted-hook": "^1.1.2",
     "sleep-promise": "^9.1.0"
   },
   "devDependencies": {
