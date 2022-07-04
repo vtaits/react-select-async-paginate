@@ -1,7 +1,8 @@
-import { shallow } from 'enzyme';
 import type {
-  ShallowWrapper,
-} from 'enzyme';
+  ReactElement,
+} from 'react';
+
+import { createRenderer } from 'react-test-renderer/shallow';
 
 import { wrapMenuList, CHECK_TIMEOUT } from '../wrapMenuList';
 import type {
@@ -11,7 +12,7 @@ import { defaultShouldLoadMore } from '../defaultShouldLoadMore';
 
 jest.useFakeTimers();
 
-function TestComponent() {
+function TestComponent(): ReactElement {
   return <div />;
 }
 
@@ -40,19 +41,23 @@ const defaultProps: Props = {
 };
 
 type PageObject = {
-  getChildNode: () => ShallowWrapper;
+  getChildProps: () => Record<string, any>;
 };
 
 const setup = (props: Partial<Props>): PageObject => {
-  const wrapper: ShallowWrapper = shallow(
+  const renderer = createRenderer();
+
+  renderer.render(
     <WrappedMenuList
       {...defaultProps}
       {...props}
     />,
   );
 
+  const result = renderer.getRenderOutput();
+
   return {
-    getChildNode: (): ShallowWrapper => wrapper.find(TestComponent),
+    getChildProps: () => result.props,
   };
 };
 
@@ -62,10 +67,10 @@ test('should provide props from parent', () => {
     prop2: 'value2',
   });
 
-  const childNode = page.getChildNode();
+  const childProps = page.getChildProps();
 
-  expect(childNode.prop('prop1')).toBe('value1');
-  expect(childNode.prop('prop2')).toBe('value2');
+  expect(childProps.prop1).toBe('value1');
+  expect(childProps.prop2).toBe('value2');
 });
 
 test('should not handle if ref el is falsy', () => {
@@ -141,10 +146,12 @@ test('should call shouldLoadMore with correct arguments', () => {
 
   shouldHandle();
 
-  expect(shouldLoadMore.mock.calls.length).toBe(1);
-  expect(shouldLoadMore.mock.calls[0][0]).toBe(200);
-  expect(shouldLoadMore.mock.calls[0][1]).toBe(100);
-  expect(shouldLoadMore.mock.calls[0][2]).toBe(95);
+  expect(shouldLoadMore).toHaveBeenCalledTimes(1);
+  expect(shouldLoadMore).toHaveBeenCalledWith(
+    200,
+    100,
+    95,
+  );
 });
 
 test('should not handle if ref el is scrollable and shouldLoadMore returns false', () => {
@@ -232,7 +239,7 @@ test('should not call handleScrolledToBottom if should not handle', () => {
 
   checkAndHandle();
 
-  expect(handleScrolledToBottom.mock.calls.length).toBe(0);
+  expect(handleScrolledToBottom).toHaveBeenCalledTimes(0);
 });
 
 test('should call handleScrolledToBottom if should handle', () => {
@@ -266,7 +273,7 @@ test('should call handleScrolledToBottom if should handle', () => {
 
   checkAndHandle();
 
-  expect(handleScrolledToBottom.mock.calls.length).toBe(1);
+  expect(handleScrolledToBottom).toHaveBeenCalledTimes(1);
 });
 
 test('should call checkAndLoad and start timer on mount', () => {
@@ -284,7 +291,7 @@ test('should call checkAndLoad and start timer on mount', () => {
 
   useEffect.mock.calls[0][0]();
 
-  expect(setCheckAndHandleTimeout.mock.calls.length).toBe(1);
+  expect(setCheckAndHandleTimeout).toHaveBeenCalledTimes(1);
 });
 
 test('should call checkAndLoad and start on call setCheckAndHandleTimeout', () => {

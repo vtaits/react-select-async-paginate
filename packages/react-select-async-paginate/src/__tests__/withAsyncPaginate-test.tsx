@@ -1,7 +1,9 @@
-import { shallow } from 'enzyme';
 import type {
-  ShallowWrapper,
-} from 'enzyme';
+  ReactElement,
+} from 'react';
+
+import { createRenderer } from 'react-test-renderer/shallow';
+
 import type {
   GroupBase,
   Options,
@@ -22,27 +24,41 @@ import type {
   UseAsyncPaginateResult,
 } from '../types';
 
+type ExtendedSelectProps<
+  OptionType,
+  IsMulti extends boolean,
+  Group extends GroupBase<OptionType>,
+> =
+  & SelectProps<OptionType, IsMulti, Group>
+  & {
+    isFirstLoad: boolean;
+  };
+
 type SelectComponentsConfig<
 OptionType,
 IsMulti extends boolean,
 Group extends GroupBase<OptionType>,
 > = Partial<SelectProps<OptionType, IsMulti, Group>['components']>;
 
-function TestComponent() {
+function TestComponent(): ReactElement {
   return <div />;
 }
 
 const AsyncPagintate = withAsyncPaginate(TestComponent);
 
-type PageObject = {
-  getChildNode: () => ShallowWrapper;
+type PageObject<
+  OptionType,
+  IsMulti extends boolean,
+  Group extends GroupBase<OptionType>,
+> = {
+  getSelectProps: () => ExtendedSelectProps<OptionType, IsMulti, Group>;
 };
 
 const defaultLoadOptions: LoadOptions<any, any, any> = () => ({
   options: [],
 });
 
-const defaultProps: Props<any, any, any, false> = {
+const defaultProps: Props<any, any, any, boolean> = {
   loadOptions: defaultLoadOptions,
 
   useComponents: (() => ({})) as typeof defaultUseComponents,
@@ -62,18 +78,28 @@ const defaultProps: Props<any, any, any, false> = {
   }),
 };
 
-const setup = (props: Partial<Props<any, any, any, false>>): PageObject => {
-  const wrapper = shallow(
+const setup = <
+  OptionType,
+  IsMulti extends boolean,
+  Group extends GroupBase<OptionType>,
+>(
+    props: Partial<Props<OptionType, Group, any, IsMulti>>,
+  ): PageObject<OptionType, IsMulti, Group> => {
+  const renderer = createRenderer();
+
+  renderer.render(
     <AsyncPagintate
-      {...defaultProps}
+      {...defaultProps as Props<OptionType, Group, any, IsMulti>}
       {...props}
     />,
   );
 
-  const getChildNode = (): ShallowWrapper => wrapper.find(TestComponent);
+  const result = renderer.getRenderOutput();
+
+  const getSelectProps = () => result.props as ExtendedSelectProps<OptionType, IsMulti, Group>;
 
   return {
-    getChildNode,
+    getSelectProps,
   };
 };
 
@@ -84,9 +110,9 @@ test('should provide props from parent to child', () => {
     getOptionLabel,
   });
 
-  const childNode = page.getChildNode();
+  const childProps = page.getSelectProps();
 
-  expect(childNode.prop('getOptionLabel')).toBe(getOptionLabel);
+  expect(childProps.getOptionLabel).toBe(getOptionLabel);
 });
 
 test('should provide props from hook to child', () => {
@@ -115,14 +141,14 @@ test('should provide props from hook to child', () => {
     useAsyncPaginate,
   });
 
-  const childNode = page.getChildNode();
+  const childProps = page.getSelectProps();
 
-  expect(childNode.prop('isLoading')).toBe(true);
-  expect(childNode.prop('isFirstLoad')).toBe(true);
-  expect(childNode.prop('filterOption')).toBe(null);
-  expect(childNode.prop('options')).toBe(options);
-  expect(childNode.prop('inputValue')).toBe('');
-  expect(childNode.prop('menuIsOpen')).toBe(false);
+  expect(childProps.isLoading).toBe(true);
+  expect(childProps.isFirstLoad).toBe(true);
+  expect(childProps.filterOption).toBe(null);
+  expect(childProps.options).toBe(options);
+  expect(childProps.inputValue).toBe('');
+  expect(childProps.menuIsOpen).toBe(false);
 });
 
 test('should redefine isLoading prop', () => {
@@ -145,9 +171,9 @@ test('should redefine isLoading prop', () => {
     useAsyncPaginate,
   });
 
-  const childNode = page.getChildNode();
+  const childProps = page.getSelectProps();
 
-  expect(childNode.prop('isLoading')).toBe(true);
+  expect(childProps.isLoading).toBe(true);
 });
 
 test('should redefine parent props with hook props', () => {
@@ -184,9 +210,9 @@ test('should redefine parent props with hook props', () => {
     useAsyncPaginate,
   });
 
-  const childNode = page.getChildNode();
+  const childProps = page.getSelectProps();
 
-  expect(childNode.prop('options')).toBe(optionsHookResult);
+  expect(childProps.options).toBe(optionsHookResult);
 });
 
 test('should call hook with correct params', () => {
@@ -289,5 +315,5 @@ test('should use result of useComponents hook', () => {
     useComponents,
   });
 
-  expect(page.getChildNode().prop('components')).toBe(components);
+  expect(page.getSelectProps().components).toBe(components);
 });
