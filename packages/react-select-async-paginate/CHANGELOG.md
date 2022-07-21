@@ -1,3 +1,9 @@
+## 0.6.2 (21 jul 2022)
+
+### Internal changes
+
+- Migrate `react-is-mounted-hook` -> `use-is-mounted-ref`
+
 ## 0.6.1 (27 dec 2021)
 
 ### Bugfix
