@@ -8,7 +8,7 @@ import type {
   GroupBase,
 } from 'react-select';
 import sleep from 'sleep-promise';
-import useIsMounted from 'react-is-mounted-hook';
+import useIsMountedRef from 'use-is-mounted-ref';
 
 import { defaultShouldLoadMore } from './defaultShouldLoadMore';
 import { defaultReduceOptions } from './defaultReduceOptions';
@@ -223,7 +223,6 @@ Additional,
     useStateParam: typeof useState,
     useEffectParam: typeof useEffect,
     useCallbackParam: typeof useCallback,
-    useIsMountedParam: typeof useIsMounted,
     validateResponseParam: typeof validateResponse,
     getInitialOptionsCacheParam: typeof getInitialOptionsCache,
     requestOptionsParam: typeof requestOptions,
@@ -241,7 +240,7 @@ Additional,
     shouldLoadMore = defaultShouldLoadMore,
   } = params;
 
-  const isMounted = useIsMountedParam();
+  const isMountedRef = useIsMountedRef();
 
   const isInitRef = useRefParam<boolean>(true);
   const paramsRef = useRefParam<UseAsyncPaginateBaseParams<OptionType, Group, Additional>>(params);
@@ -266,7 +265,7 @@ Additional,
       (reduceState) => {
         optionsCacheRef.current = reduceState(optionsCacheRef.current);
 
-        if (isMounted()) {
+        if (isMountedRef.current) {
           setStateId(increaseStateId);
         }
       },
@@ -341,7 +340,6 @@ export const useAsyncPaginateBase = <OptionType, Group extends GroupBase<OptionT
     useState,
     useEffect,
     useCallback,
-    useIsMounted,
     validateResponse,
     getInitialOptionsCache,
     requestOptions,

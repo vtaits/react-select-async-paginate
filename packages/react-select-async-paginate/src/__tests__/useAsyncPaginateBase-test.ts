@@ -3,7 +3,7 @@ import {
   useState as reactUseState,
   useRef as reactUseRef,
 } from 'react';
-import useIsMounted from 'react-is-mounted-hook';
+import useIsMountedRef from 'use-is-mounted-ref';
 import sleepLib from 'sleep-promise';
 
 import { defaultShouldLoadMore } from '../defaultShouldLoadMore';
@@ -23,6 +23,8 @@ import type {
   OptionsCacheItem,
   UseAsyncPaginateBaseParams,
 } from '../types';
+
+jest.mock('use-is-mounted-ref');
 
 type UseStateResult = [number, (nextCache: OptionsCache<any, any, any>) => void];
 type UseStateArgs = [() => number];
@@ -68,7 +70,15 @@ const defaultRequestOptions = async (): Promise<void> => {};
 
 const defaultUseState = (): [number, () => void] => [1, (): void => {}];
 
-const defaultUseIsMounted: typeof useIsMounted = () => (): boolean => false;
+beforeEach(() => {
+  (useIsMountedRef as jest.Mock).mockReturnValue({
+    current: false,
+  });
+});
+
+afterEach(() => {
+  jest.clearAllMocks();
+});
 
 describe('increaseStateId', () => {
   test('should increase value', () => {
@@ -328,7 +338,6 @@ describe('useAsyncPaginateBasePure', () => {
       defaultUseState,
       defaultUseEffect,
       defaultUseCallback,
-      defaultUseIsMounted,
       defaultValidateResponse,
       getInitialOptionsCacheParam,
       defaultRequestOptions,
@@ -358,7 +367,6 @@ describe('useAsyncPaginateBasePure', () => {
       (defaultUseState as unknown as typeof reactUseState),
       useEffect,
       defaultUseCallback,
-      defaultUseIsMounted,
       defaultValidateResponse,
       getInitialOptionsCache,
       defaultRequestOptions,
@@ -378,7 +386,6 @@ describe('useAsyncPaginateBasePure', () => {
       (defaultUseState as unknown as typeof reactUseState),
       useEffect,
       defaultUseCallback,
-      defaultUseIsMounted,
       defaultValidateResponse,
       getInitialOptionsCache,
       requestOptionsParam,
@@ -402,7 +409,6 @@ describe('useAsyncPaginateBasePure', () => {
       (defaultUseState as unknown as typeof reactUseState),
       useEffect,
       defaultUseCallback,
-      defaultUseIsMounted,
       defaultValidateResponse,
       getInitialOptionsCache,
       requestOptionsParam,
@@ -441,7 +447,6 @@ describe('useAsyncPaginateBasePure', () => {
       (useState as unknown as typeof reactUseState),
       useEffect,
       defaultUseCallback,
-      defaultUseIsMounted,
       defaultValidateResponse,
       getInitialOptionsCache,
       defaultRequestOptions,
@@ -487,7 +492,6 @@ describe('useAsyncPaginateBasePure', () => {
       (useState as unknown as typeof reactUseState),
       useEffect,
       defaultUseCallback,
-      defaultUseIsMounted,
       defaultValidateResponse,
       getInitialOptionsCache,
       defaultRequestOptions,
@@ -510,7 +514,6 @@ describe('useAsyncPaginateBasePure', () => {
       (defaultUseState as unknown as typeof reactUseState),
       useEffect,
       defaultUseCallback,
-      defaultUseIsMounted,
       defaultValidateResponse,
       getInitialOptionsCache,
       defaultRequestOptions,
@@ -536,7 +539,6 @@ describe('useAsyncPaginateBasePure', () => {
       (defaultUseState as unknown as typeof reactUseState),
       useEffect,
       defaultUseCallback,
-      defaultUseIsMounted,
       defaultValidateResponse,
       getInitialOptionsCache,
       requestOptionsParam,
@@ -565,7 +567,6 @@ describe('useAsyncPaginateBasePure', () => {
       (defaultUseState as unknown as typeof reactUseState),
       useEffect,
       defaultUseCallback,
-      defaultUseIsMounted,
       defaultValidateResponse,
       getInitialOptionsCache,
       requestOptionsParam,
@@ -611,7 +612,6 @@ describe('useAsyncPaginateBasePure', () => {
       (defaultUseState as unknown as typeof reactUseState),
       useEffect,
       defaultUseCallback,
-      defaultUseIsMounted,
       defaultValidateResponse,
       getInitialOptionsCache,
       requestOptionsParam,
@@ -634,7 +634,6 @@ describe('useAsyncPaginateBasePure', () => {
       (defaultUseState as unknown as typeof reactUseState),
       useEffect,
       defaultUseCallback,
-      defaultUseIsMounted,
       defaultValidateResponse,
       getInitialOptionsCache,
       defaultRequestOptions,
@@ -660,7 +659,6 @@ describe('useAsyncPaginateBasePure', () => {
       (defaultUseState as unknown as typeof reactUseState),
       useEffect,
       defaultUseCallback,
-      defaultUseIsMounted,
       defaultValidateResponse,
       getInitialOptionsCache,
       requestOptionsParam,
@@ -695,7 +693,6 @@ describe('useAsyncPaginateBasePure', () => {
       (defaultUseState as unknown as typeof reactUseState),
       useEffect,
       defaultUseCallback,
-      defaultUseIsMounted,
       defaultValidateResponse,
       getInitialOptionsCache,
       requestOptionsParam,
@@ -723,7 +720,6 @@ describe('useAsyncPaginateBasePure', () => {
       (defaultUseState as unknown as typeof reactUseState),
       useEffect,
       defaultUseCallback,
-      defaultUseIsMounted,
       defaultValidateResponse,
       getInitialOptionsCache,
       requestOptionsParam,
@@ -752,7 +748,6 @@ describe('useAsyncPaginateBasePure', () => {
       (defaultUseState as unknown as typeof reactUseState),
       useEffect,
       defaultUseCallback,
-      defaultUseIsMounted,
       defaultValidateResponse,
       getInitialOptionsCache,
       requestOptionsParam,
@@ -779,7 +774,6 @@ describe('useAsyncPaginateBasePure', () => {
       (defaultUseState as unknown as typeof reactUseState),
       defaultUseEffect,
       defaultUseCallback,
-      defaultUseIsMounted,
       defaultValidateResponse,
       getInitialOptionsCache,
       requestOptionsParam,
@@ -813,7 +807,6 @@ describe('useAsyncPaginateBasePure', () => {
       (defaultUseState as unknown as typeof reactUseState),
       defaultUseEffect,
       defaultUseCallback,
-      defaultUseIsMounted,
       defaultValidateResponse,
       getInitialOptionsCache,
       requestOptionsParam,
@@ -834,7 +827,6 @@ describe('useAsyncPaginateBasePure', () => {
       (defaultUseState as unknown as typeof reactUseState),
       defaultUseEffect,
       defaultUseCallback,
-      defaultUseIsMounted,
       defaultValidateResponse,
       getInitialOptionsCache,
       defaultRequestOptions,
@@ -852,7 +844,6 @@ describe('useAsyncPaginateBasePure', () => {
       (defaultUseState as unknown as typeof reactUseState),
       defaultUseEffect,
       defaultUseCallback,
-      defaultUseIsMounted,
       defaultValidateResponse,
       getInitialOptionsCache,
       defaultRequestOptions,
@@ -871,7 +862,6 @@ describe('useAsyncPaginateBasePure', () => {
       (defaultUseState as unknown as typeof reactUseState),
       defaultUseEffect,
       defaultUseCallback,
-      defaultUseIsMounted,
       defaultValidateResponse,
       getInitialOptionsCache,
       defaultRequestOptions,
@@ -889,7 +879,6 @@ describe('useAsyncPaginateBasePure', () => {
       (defaultUseState as unknown as typeof reactUseState),
       defaultUseEffect,
       defaultUseCallback,
-      defaultUseIsMounted,
       defaultValidateResponse,
       getInitialOptionsCache,
       defaultRequestOptions,
@@ -912,7 +901,6 @@ describe('useAsyncPaginateBasePure', () => {
       (defaultUseState as unknown as typeof reactUseState),
       defaultUseEffect,
       defaultUseCallback,
-      defaultUseIsMounted,
       defaultValidateResponse,
       getInitialOptionsCache,
       defaultRequestOptions,
@@ -956,7 +944,6 @@ describe('useAsyncPaginateBasePure', () => {
       (defaultUseState as unknown as typeof reactUseState),
       defaultUseEffect,
       defaultUseCallback,
-      defaultUseIsMounted,
       defaultValidateResponse,
       getInitialOptionsCache,
       defaultRequestOptions,
@@ -990,7 +977,6 @@ describe('useAsyncPaginateBasePure', () => {
       (defaultUseState as unknown as typeof reactUseState),
       defaultUseEffect,
       defaultUseCallback,
-      defaultUseIsMounted,
       defaultValidateResponse,
       getInitialOptionsCache,
       requestOptionsParam,
@@ -1026,7 +1012,6 @@ describe('useAsyncPaginateBasePure', () => {
       (defaultUseState as unknown as typeof reactUseState),
       defaultUseEffect,
       defaultUseCallback,
-      defaultUseIsMounted,
       defaultValidateResponse,
       getInitialOptionsCache,
       requestOptionsParam,
@@ -1061,6 +1046,10 @@ describe('useAsyncPaginateBasePure', () => {
       },
     };
 
+    (useIsMountedRef as jest.Mock).mockReturnValue({
+      current: true,
+    });
+
     const result = useAsyncPaginateBasePure(
       makeUseRef({
         optionsCache,
@@ -1068,7 +1057,6 @@ describe('useAsyncPaginateBasePure', () => {
       (useState as unknown as typeof reactUseState),
       defaultUseEffect,
       defaultUseCallback,
-      () => (): boolean => true,
       defaultValidateResponse,
       getInitialOptionsCache,
       requestOptionsParam,
@@ -1120,7 +1108,6 @@ describe('useAsyncPaginateBasePure', () => {
       (useState as unknown as typeof reactUseState),
       defaultUseEffect,
       defaultUseCallback,
-      () => (): boolean => false,
       defaultValidateResponse,
       getInitialOptionsCache,
       requestOptionsParam,
