@@ -1,16 +1,11 @@
-import qs from 'qs';
-
-export const stringifyParams = (params: Record<string, any>): string => qs.stringify(params, {
-  arrayFormat: 'repeat',
-});
+import { stringifyParams } from './stringifyParams';
 
 export const getPure = async (
   fetchParam: typeof fetch,
-  stringifyParamsParam: typeof stringifyParams,
   url: string,
-  params: Record<string, any>,
+  params: Record<string, unknown>,
 ): Promise<any> => {
-  const paramsStr: string = stringifyParamsParam(params);
+  const paramsStr = stringifyParams(params);
 
   const response: Response = await fetchParam(`${url}?${paramsStr}`, {
     credentials: 'same-origin',
@@ -27,10 +22,9 @@ export const getPure = async (
 
 export const get = (
   url: string,
-  params: Record<string, any>,
+  params: Record<string, unknown>,
 ): Promise<any> => getPure(
   fetch,
-  stringifyParams,
   url,
   params,
 );
