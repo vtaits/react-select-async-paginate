@@ -22,18 +22,6 @@ import type {
   WithAsyncPaginateType,
 } from './types';
 
-export type Props<
-OptionType,
-Group extends GroupBase<OptionType>,
-Additional,
-IsMulti extends boolean,
-> =
-  & AsyncPaginateProps<OptionType, Group, Additional, IsMulti>
-  & {
-    useComponents?: typeof useComponents;
-    useAsyncPaginate?: typeof useAsyncPaginate;
-  };
-
 export function withAsyncPaginate(
   // eslint-disable-next-line @typescript-eslint/naming-convention
   SelectComponent: ComponentType<SelectProps<any, boolean, any> & {
@@ -45,23 +33,21 @@ export function withAsyncPaginate(
   Group extends GroupBase<OptionType>,
   Additional,
   IsMulti extends boolean = false,
-  >(props: Props<OptionType, Group, Additional, IsMulti>): ReactElement {
+  >(props: AsyncPaginateProps<OptionType, Group, Additional, IsMulti>): ReactElement {
     const {
       components,
       selectRef,
       isLoading: isLoadingProp,
-      useComponents: useComponentsProp,
-      useAsyncPaginate: useAsyncPaginateProp,
       cacheUniqs,
       ...rest
     } = props;
 
-    const asyncPaginateProps: UseAsyncPaginateResult<OptionType, Group> = useAsyncPaginateProp(
+    const asyncPaginateProps: UseAsyncPaginateResult<OptionType, Group> = useAsyncPaginate(
       rest,
       cacheUniqs,
     );
 
-    const processedComponents = useComponentsProp<OptionType, Group, IsMulti>(components);
+    const processedComponents = useComponents<OptionType, Group, IsMulti>(components);
 
     const isLoading = typeof isLoadingProp === 'boolean'
       ? isLoadingProp
@@ -82,8 +68,6 @@ export function withAsyncPaginate(
     selectRef: null,
     cacheUniqs: [],
     components: {},
-    useComponents,
-    useAsyncPaginate,
   };
 
   return WithAsyncPaginate;

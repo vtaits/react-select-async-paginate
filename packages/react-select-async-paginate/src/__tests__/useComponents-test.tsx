@@ -1,25 +1,36 @@
+import { useMemo } from 'react';
+
 import {
   MenuList,
-  useComponentsPure,
+  useComponents,
 } from '../useComponents';
 
-const defaultUseMemo = (callback: () => any): any => callback();
+jest.mock('react', () => ({
+  ...jest.requireActual('react'),
+  useMemo: jest.fn(),
+}));
+
+beforeEach(() => {
+  (useMemo as jest.Mock<unknown, [() => unknown]>).mockImplementation((callback) => callback());
+});
+
+afterEach(() => {
+  jest.clearAllMocks();
+});
 
 test('should provide correct deps to useMemo', () => {
   function Test() {
     return <div />;
   }
 
-  const useMemo = jest.fn();
-
   const components = {
     Menu: Test,
   };
 
-  useComponentsPure(useMemo, components);
+  useComponents(components);
 
   expect(useMemo).toHaveBeenCalledTimes(1);
-  expect(useMemo.mock.calls[0][1]).toEqual([components]);
+  expect((useMemo as jest.Mock).mock.calls[0][1]).toEqual([components]);
 });
 
 test('should add MenuList to existing components', () => {
@@ -31,7 +42,7 @@ test('should add MenuList to existing components', () => {
     Menu: Test,
   };
 
-  const result = useComponentsPure(defaultUseMemo, components);
+  const result = useComponents(components);
 
   expect(result).toEqual({
     Menu: Test,
@@ -48,7 +59,7 @@ test('should redefine MenuList', () => {
     MenuList: Test,
   };
 
-  const result = useComponentsPure(defaultUseMemo, components);
+  const result = useComponents(components);
 
   expect(result).toEqual({
     MenuList: Test,

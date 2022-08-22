@@ -11,18 +11,42 @@ import type {
 } from 'react-select';
 
 import { withAsyncPaginate } from '../withAsyncPaginate';
-import type {
-  Props,
-} from '../withAsyncPaginate';
+
+import { useComponents } from '../useComponents';
+import { useAsyncPaginate } from '../useAsyncPaginate';
 
 import type {
-  useComponents as defaultUseComponents,
-} from '../useComponents';
-
-import type {
+  AsyncPaginateProps,
   LoadOptions,
   UseAsyncPaginateResult,
 } from '../types';
+
+jest.mock('../useAsyncPaginate');
+jest.mock('../useComponents');
+
+beforeEach(() => {
+  (useComponents as jest.Mock).mockReturnValue({});
+
+  const asyncPaginateResult: UseAsyncPaginateResult<unknown, GroupBase<unknown>> = {
+    handleScrolledToBottom: (): void => {},
+    shouldLoadMore: (): boolean => true,
+    isLoading: true,
+    isFirstLoad: true,
+    options: [],
+    filterOption: null,
+    inputValue: '',
+    onInputChange: (): void => {},
+    menuIsOpen: false,
+    onMenuOpen: (): void => {},
+    onMenuClose: (): void => {},
+  };
+
+  (useAsyncPaginate as jest.Mock).mockReturnValue(asyncPaginateResult);
+});
+
+afterEach(() => {
+  jest.clearAllMocks();
+});
 
 type ExtendedSelectProps<
   OptionType,
@@ -58,24 +82,8 @@ const defaultLoadOptions: LoadOptions<any, any, any> = () => ({
   options: [],
 });
 
-const defaultProps: Props<any, any, any, boolean> = {
+const defaultProps: AsyncPaginateProps<any, any, any, boolean> = {
   loadOptions: defaultLoadOptions,
-
-  useComponents: (() => ({})) as typeof defaultUseComponents,
-
-  useAsyncPaginate: (): UseAsyncPaginateResult<any, any> => ({
-    handleScrolledToBottom: (): void => {},
-    shouldLoadMore: (): boolean => true,
-    isLoading: true,
-    isFirstLoad: true,
-    options: [],
-    filterOption: null,
-    inputValue: '',
-    onInputChange: (): void => {},
-    menuIsOpen: false,
-    onMenuOpen: (): void => {},
-    onMenuClose: (): void => {},
-  }),
 };
 
 const setup = <
@@ -83,13 +91,13 @@ const setup = <
   IsMulti extends boolean,
   Group extends GroupBase<OptionType>,
 >(
-    props: Partial<Props<OptionType, Group, any, IsMulti>>,
+    props: Partial<AsyncPaginateProps<OptionType, Group, any, IsMulti>>,
   ): PageObject<OptionType, IsMulti, Group> => {
   const renderer = createRenderer();
 
   renderer.render(
     <AsyncPagintate
-      {...defaultProps as Props<OptionType, Group, any, IsMulti>}
+      {...defaultProps as AsyncPaginateProps<OptionType, Group, any, IsMulti>}
       {...props}
     />,
   );
@@ -123,7 +131,7 @@ test('should provide props from hook to child', () => {
     },
   ];
 
-  const useAsyncPaginate = (): UseAsyncPaginateResult<any, any> => ({
+  const asyncPaginateResult: UseAsyncPaginateResult<unknown, GroupBase<unknown>> = {
     handleScrolledToBottom: (): void => {},
     shouldLoadMore: (): boolean => true,
     isLoading: true,
@@ -135,11 +143,11 @@ test('should provide props from hook to child', () => {
     onMenuOpen: (): void => {},
     onMenuClose: (): void => {},
     options,
-  });
+  };
 
-  const page = setup({
-    useAsyncPaginate,
-  });
+  (useAsyncPaginate as jest.Mock).mockReturnValue(asyncPaginateResult);
+
+  const page = setup({});
 
   const childProps = page.getSelectProps();
 
@@ -152,7 +160,7 @@ test('should provide props from hook to child', () => {
 });
 
 test('should redefine isLoading prop', () => {
-  const useAsyncPaginate = (): UseAsyncPaginateResult<any, any> => ({
+  const asyncPaginateResult: UseAsyncPaginateResult<unknown, GroupBase<unknown>> = {
     handleScrolledToBottom: (): void => {},
     shouldLoadMore: (): boolean => true,
     isLoading: false,
@@ -164,11 +172,12 @@ test('should redefine isLoading prop', () => {
     onMenuOpen: (): void => {},
     onMenuClose: (): void => {},
     options: [],
-  });
+  };
+
+  (useAsyncPaginate as jest.Mock).mockReturnValue(asyncPaginateResult);
 
   const page = setup({
     isLoading: true,
-    useAsyncPaginate,
   });
 
   const childProps = page.getSelectProps();
@@ -177,21 +186,26 @@ test('should redefine isLoading prop', () => {
 });
 
 test('should redefine parent props with hook props', () => {
-  const optionsProp: Options<any> = [
+  type OptionType = {
+    value: number;
+    label: string;
+  };
+
+  const optionsProp: Options<OptionType> = [
     {
       value: 1,
       label: '1',
     },
   ];
 
-  const optionsHookResult: Options<any> = [
+  const optionsHookResult: Options<OptionType> = [
     {
       value: 1,
       label: '1',
     },
   ];
 
-  const useAsyncPaginate = (): UseAsyncPaginateResult<any, any> => ({
+  const asyncPaginateResult: UseAsyncPaginateResult<OptionType, GroupBase<OptionType>> = {
     handleScrolledToBottom: (): void => {},
     shouldLoadMore: (): boolean => true,
     isLoading: true,
@@ -203,11 +217,12 @@ test('should redefine parent props with hook props', () => {
     onMenuOpen: (): void => {},
     onMenuClose: (): void => {},
     options: optionsHookResult,
-  });
+  };
+
+  (useAsyncPaginate as jest.Mock).mockReturnValue(asyncPaginateResult);
 
   const page = setup({
     options: optionsProp,
-    useAsyncPaginate,
   });
 
   const childProps = page.getSelectProps();
@@ -223,9 +238,6 @@ test('should call hook with correct params', () => {
     },
   ];
 
-  const useAsyncPaginate = jest.fn()
-    .mockReturnValue({});
-
   function Test() {
     return <div />;
   }
@@ -238,51 +250,36 @@ test('should call hook with correct params', () => {
     selectRef: () => {},
     cacheUniqs: [1, 2, 3],
     options,
-    useAsyncPaginate,
   });
 
-  expect(useAsyncPaginate.mock.calls.length).toBe(1);
+  expect(useAsyncPaginate).toHaveBeenCalledTimes(1);
 
-  const params = useAsyncPaginate.mock.calls[0][0];
+  const params = (useAsyncPaginate as jest.Mock).mock.calls[0][0];
 
   expect(params.options).toBe(options);
   // eslint-disable-next-line no-prototype-builtins
   expect(params.hasOwnProperty('cacheUniqs')).toBe(false);
   // eslint-disable-next-line no-prototype-builtins
   expect(params.hasOwnProperty('selectRef')).toBe(false);
-  // eslint-disable-next-line no-prototype-builtins
-  expect(params.hasOwnProperty('useAsyncPaginate')).toBe(false);
 });
 
 test('should call hook with empty deps', () => {
-  const useAsyncPaginate = jest.fn()
-    .mockReturnValue({});
+  setup({});
 
-  setup({
-    useAsyncPaginate,
-  });
-
-  expect(useAsyncPaginate.mock.calls[0][1].length).toBe(0);
+  expect((useAsyncPaginate as jest.Mock).mock.calls[0][1].length).toBe(0);
 });
 
 test('should call hook with deps from cacheUniq', () => {
   const cacheUniqs = [1, 2, 3];
 
-  const useAsyncPaginate = jest.fn()
-    .mockReturnValue({});
-
   setup({
     cacheUniqs,
-    useAsyncPaginate,
   });
 
-  expect(useAsyncPaginate.mock.calls[0][1]).toBe(cacheUniqs);
+  expect((useAsyncPaginate as jest.Mock).mock.calls[0][1]).toBe(cacheUniqs);
 });
 
 test('should call useComponents hook', () => {
-  const useComponents = jest.fn()
-    .mockReturnValue({});
-
   function Test() {
     return <div />;
   }
@@ -293,10 +290,10 @@ test('should call useComponents hook', () => {
 
   setup({
     components,
-    useComponents,
   });
 
-  expect(useComponents.mock.calls[0][0]).toBe(components);
+  expect(useComponents).toHaveBeenCalledTimes(1);
+  expect(useComponents).toHaveBeenCalledWith(components);
 });
 
 test('should use result of useComponents hook', () => {
@@ -308,11 +305,10 @@ test('should use result of useComponents hook', () => {
     Menu: Test,
   };
 
-  const useComponents = (() => components) as typeof defaultUseComponents;
+  (useComponents as jest.Mock).mockReturnValue(components);
 
   const page = setup({
     components,
-    useComponents,
   });
 
   expect(page.getSelectProps().components).toBe(components);

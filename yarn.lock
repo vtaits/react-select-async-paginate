@@ -3427,6 +3427,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/node@npm:^18.7.9":
+  version: 18.7.9
+  resolution: "@types/node@npm:18.7.9"
+  checksum: 691ea1b734c0a39c4fe03c104fed18e0148bda6f2504dd341f84be8153d28e74d8114198d2d064ab7fdd2ece3ee16c60b78eea0101fb004f6e4595a631bc3839
+  languageName: node
+  linkType: hard
+
 "@types/normalize-package-data@npm:^2.4.0":
   version: 2.4.1
   resolution: "@types/normalize-package-data@npm:2.4.1"
@@ -9629,6 +9636,15 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"jest-mock-console@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "jest-mock-console@npm:2.0.0"
+  peerDependencies:
+    jest: ">= 22.4.2"
+  checksum: 6d60407147ae803a039939495a5bad54fb367d26bb7dbf53af8538a57ea9dc5667484252a744bca5e1c99757937f2fb7486d235bf2bf458e06f38c49daa1c72b
+  languageName: node
+  linkType: hard
+
 "jest-mock@npm:^28.1.3":
   version: 28.1.3
   resolution: "jest-mock@npm:28.1.3"
@@ -12420,6 +12436,7 @@ fsevents@^1.2.7:
     "@storybook/addon-docs": ^6.5.9
     "@storybook/react": ^6.5.9
     "@types/jest": ^28.1.6
+    "@types/node": ^18.7.9
     "@types/react": ^18.0.15
     "@types/react-test-renderer": ^18.0.0
     "@typescript-eslint/eslint-plugin": ^5.30.7
@@ -12435,6 +12452,7 @@ fsevents@^1.2.7:
     eslint-plugin-react: ^7.30.1
     eslint-plugin-react-hooks: ^4.6.0
     jest: ^28.1.3
+    jest-mock-console: ^2.0.0
     react: ^18.2.0
     react-select: ^5.4.0
     react-test-renderer: ^18.2.0

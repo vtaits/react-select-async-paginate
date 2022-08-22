@@ -13,20 +13,11 @@ import {
 
 import type {
   UseAsyncPaginateParams,
-  UseAsyncPaginateBaseParams,
   UseAsyncPaginateBaseResult,
   UseAsyncPaginateResult,
 } from './types';
 
-export const useAsyncPaginatePure = <OptionType, Group extends GroupBase<OptionType>, Additional>(
-  useStateParam: typeof useState,
-  useCallbackParam: typeof useCallback,
-
-  useAsyncPaginateBaseParam: (
-    params: UseAsyncPaginateBaseParams<OptionType, Group, Additional>,
-    deps: ReadonlyArray<any>,
-  ) => UseAsyncPaginateBaseResult<OptionType, Group>,
-
+export const useAsyncPaginate = <OptionType, Group extends GroupBase<OptionType>, Additional>(
   params: UseAsyncPaginateParams<OptionType, Group, Additional>,
   deps: ReadonlyArray<any> = [],
 ): UseAsyncPaginateResult<OptionType, Group> => {
@@ -40,10 +31,10 @@ export const useAsyncPaginatePure = <OptionType, Group extends GroupBase<OptionT
     onMenuOpen: onMenuOpenParam,
   } = params;
 
-  const [inputValueState, setInputValue] = useStateParam(
+  const [inputValueState, setInputValue] = useState(
     defaultInputValueParam || '',
   );
-  const [menuIsOpenState, setMenuIsOpen] = useStateParam(
+  const [menuIsOpenState, setMenuIsOpen] = useState(
     !!defaultMenuIsOpenParam,
   );
 
@@ -55,7 +46,7 @@ export const useAsyncPaginatePure = <OptionType, Group extends GroupBase<OptionT
     ? menuIsOpenParam
     : menuIsOpenState;
 
-  const onInputChange = useCallbackParam((
+  const onInputChange = useCallback((
     nextInputValue: string,
     actionMeta: InputActionMeta,
   ): void => {
@@ -66,7 +57,7 @@ export const useAsyncPaginatePure = <OptionType, Group extends GroupBase<OptionT
     setInputValue(nextInputValue);
   }, [onInputChangeParam]);
 
-  const onMenuClose = useCallbackParam((): void => {
+  const onMenuClose = useCallback((): void => {
     if (onMenuCloseParam) {
       onMenuCloseParam();
     }
@@ -74,7 +65,7 @@ export const useAsyncPaginatePure = <OptionType, Group extends GroupBase<OptionT
     setMenuIsOpen(false);
   }, [onMenuCloseParam]);
 
-  const onMenuOpen = useCallbackParam((): void => {
+  const onMenuOpen = useCallback((): void => {
     if (onMenuOpenParam) {
       onMenuOpenParam();
     }
@@ -82,7 +73,7 @@ export const useAsyncPaginatePure = <OptionType, Group extends GroupBase<OptionT
     setMenuIsOpen(true);
   }, [onMenuOpenParam]);
 
-  const baseResult: UseAsyncPaginateBaseResult<OptionType, Group> = useAsyncPaginateBaseParam(
+  const baseResult: UseAsyncPaginateBaseResult<OptionType, Group> = useAsyncPaginateBase(
     {
       ...params,
       inputValue,
@@ -100,14 +91,3 @@ export const useAsyncPaginatePure = <OptionType, Group extends GroupBase<OptionT
     onMenuOpen,
   };
 };
-
-export const useAsyncPaginate = <OptionType, Group extends GroupBase<OptionType>, Additional>(
-  params: UseAsyncPaginateParams<OptionType, Group, Additional>,
-  deps: ReadonlyArray<any> = [],
-): UseAsyncPaginateResult<OptionType, Group> => useAsyncPaginatePure<OptionType, Group, Additional>(
-    useState,
-    useCallback,
-    useAsyncPaginateBase,
-    params,
-    deps,
-  );
