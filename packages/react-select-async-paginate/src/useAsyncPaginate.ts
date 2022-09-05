@@ -19,7 +19,7 @@ import type {
 
 export const useAsyncPaginate = <OptionType, Group extends GroupBase<OptionType>, Additional>(
   params: UseAsyncPaginateParams<OptionType, Group, Additional>,
-  deps: ReadonlyArray<any> = [],
+  deps: ReadonlyArray<unknown> = [],
 ): UseAsyncPaginateResult<OptionType, Group> => {
   const {
     inputValue: inputValueParam,

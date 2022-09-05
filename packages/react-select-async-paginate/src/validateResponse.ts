@@ -34,9 +34,14 @@ export const checkIsResponse = (
   return true;
 };
 
-export const validateResponse = (response: unknown): void => {
+export const validateResponse = (
+  response: unknown,
+): response is Response<unknown, GroupBase<unknown>, unknown> => {
   if (!checkIsResponse(response)) {
+    // eslint-disable-next-line no-console
     console.error(errorText, 'Received:', response);
     throw new Error(errorText);
   }
+
+  return true;
 };

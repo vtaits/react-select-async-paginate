@@ -24,8 +24,11 @@ import type {
 jest.mock('../useAsyncPaginate');
 jest.mock('../useComponents');
 
+const mockedUseComponents = jest.mocked(useComponents, true);
+const mockedUseAsyncPaginate = jest.mocked(useAsyncPaginate, true);
+
 beforeEach(() => {
-  (useComponents as jest.Mock).mockReturnValue({});
+  mockedUseComponents.mockReturnValue({});
 
   const asyncPaginateResult: UseAsyncPaginateResult<unknown, GroupBase<unknown>> = {
     handleScrolledToBottom: (): void => {},
@@ -41,7 +44,7 @@ beforeEach(() => {
     onMenuClose: (): void => {},
   };
 
-  (useAsyncPaginate as jest.Mock).mockReturnValue(asyncPaginateResult);
+  mockedUseAsyncPaginate.mockReturnValue(asyncPaginateResult);
 });
 
 afterEach(() => {
@@ -145,7 +148,7 @@ test('should provide props from hook to child', () => {
     options,
   };
 
-  (useAsyncPaginate as jest.Mock).mockReturnValue(asyncPaginateResult);
+  mockedUseAsyncPaginate.mockReturnValue(asyncPaginateResult);
 
   const page = setup({});
 
@@ -174,7 +177,7 @@ test('should redefine isLoading prop', () => {
     options: [],
   };
 
-  (useAsyncPaginate as jest.Mock).mockReturnValue(asyncPaginateResult);
+  mockedUseAsyncPaginate.mockReturnValue(asyncPaginateResult);
 
   const page = setup({
     isLoading: true,
@@ -219,7 +222,7 @@ test('should redefine parent props with hook props', () => {
     options: optionsHookResult,
   };
 
-  (useAsyncPaginate as jest.Mock).mockReturnValue(asyncPaginateResult);
+  mockedUseAsyncPaginate.mockReturnValue(asyncPaginateResult);
 
   const page = setup({
     options: optionsProp,
@@ -252,9 +255,9 @@ test('should call hook with correct params', () => {
     options,
   });
 
-  expect(useAsyncPaginate).toHaveBeenCalledTimes(1);
+  expect(mockedUseAsyncPaginate).toHaveBeenCalledTimes(1);
 
-  const params = (useAsyncPaginate as jest.Mock).mock.calls[0][0];
+  const params = mockedUseAsyncPaginate.mock.calls[0][0];
 
   expect(params.options).toBe(options);
   // eslint-disable-next-line no-prototype-builtins
@@ -266,7 +269,13 @@ test('should call hook with correct params', () => {
 test('should call hook with empty deps', () => {
   setup({});
 
-  expect((useAsyncPaginate as jest.Mock).mock.calls[0][1].length).toBe(0);
+  const deps = mockedUseAsyncPaginate.mock.calls[0][1];
+
+  if (!Array.isArray(deps)) {
+    throw new Error('Dependencies should be an array');
+  }
+
+  expect(deps.length).toBe(0);
 });
 
 test('should call hook with deps from cacheUniq', () => {
@@ -276,7 +285,7 @@ test('should call hook with deps from cacheUniq', () => {
     cacheUniqs,
   });
 
-  expect((useAsyncPaginate as jest.Mock).mock.calls[0][1]).toBe(cacheUniqs);
+  expect(mockedUseAsyncPaginate.mock.calls[0][1]).toBe(cacheUniqs);
 });
 
 test('should call useComponents hook', () => {
@@ -292,8 +301,8 @@ test('should call useComponents hook', () => {
     components,
   });
 
-  expect(useComponents).toHaveBeenCalledTimes(1);
-  expect(useComponents).toHaveBeenCalledWith(components);
+  expect(mockedUseComponents).toHaveBeenCalledTimes(1);
+  expect(mockedUseComponents).toHaveBeenCalledWith(components);
 });
 
 test('should use result of useComponents hook', () => {
@@ -305,7 +314,7 @@ test('should use result of useComponents hook', () => {
     Menu: Test,
   };
 
-  (useComponents as jest.Mock).mockReturnValue(components);
+  mockedUseComponents.mockReturnValue(components);
 
   const page = setup({
     components,

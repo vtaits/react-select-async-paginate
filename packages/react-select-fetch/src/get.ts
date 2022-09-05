@@ -1,13 +1,12 @@
 import { stringifyParams } from './stringifyParams';
 
-export const getPure = async (
-  fetchParam: typeof fetch,
+export const get = async (
   url: string,
   params: Record<string, unknown>,
-): Promise<any> => {
+): Promise<unknown> => {
   const paramsStr = stringifyParams(params);
 
-  const response: Response = await fetchParam(`${url}?${paramsStr}`, {
+  const response: Response = await fetch(`${url}?${paramsStr}`, {
     credentials: 'same-origin',
   });
 
@@ -19,12 +18,3 @@ export const getPure = async (
 
   return responseJSON;
 };
-
-export const get = (
-  url: string,
-  params: Record<string, unknown>,
-): Promise<any> => getPure(
-  fetch,
-  url,
-  params,
-);

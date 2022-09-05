@@ -1,6 +1,21 @@
 import {
-  useSelectFetchBasePure,
-} from '../useSelectFetchBase';
+  useAsyncPaginateBase,
+} from 'react-select-async-paginate';
+
+import { useMapToAsyncPaginate } from '../useMapToAsyncPaginate';
+
+import { useSelectFetchBase } from '../useSelectFetchBase';
+
+jest.mock('react-select-async-paginate');
+jest.mock('../useMapToAsyncPaginate');
+
+beforeEach(() => {
+  (useMapToAsyncPaginate as jest.Mock).mockReset();
+});
+
+afterEach(() => {
+  jest.clearAllMocks();
+});
 
 const defaultParams = {
   url: '',
@@ -9,12 +24,7 @@ const defaultParams = {
 };
 
 test('should call useMapToAsyncPaginate with correct params', () => {
-  const useMapToAsyncPaginate = jest.fn();
-  const useAsyncPaginateBase = jest.fn();
-
-  useSelectFetchBasePure(
-    useMapToAsyncPaginate,
-    useAsyncPaginateBase,
+  useSelectFetchBase(
     defaultParams,
   );
 
@@ -34,11 +44,9 @@ test('should call useAsyncPaginateBase with correct params', () => {
     additional,
   };
 
-  const useAsyncPaginateBase = jest.fn();
+  (useMapToAsyncPaginate as jest.Mock).mockReturnValue(mappedParams);
 
-  useSelectFetchBasePure(
-    () => mappedParams,
-    useAsyncPaginateBase,
+  useSelectFetchBase(
     {
       ...defaultParams,
       shouldLoadMore,
@@ -58,17 +66,13 @@ test('should call useAsyncPaginateBase with correct params', () => {
 });
 
 test('should provide correct deps to useAsyncPaginateBase', () => {
-  const useAsyncPaginateBase = jest.fn();
-
-  useSelectFetchBasePure(
-    jest.fn(),
-    useAsyncPaginateBase,
+  useSelectFetchBase(
     defaultParams,
     [1, 2, 3],
   );
 
-  expect(useAsyncPaginateBase).toBeCalledTimes(1);
-  expect(useAsyncPaginateBase).toBeCalledWith(
+  expect(useAsyncPaginateBase).toHaveBeenCalledTimes(1);
+  expect(useAsyncPaginateBase).toHaveBeenCalledWith(
     defaultParams,
     [1, 2, 3],
   );
@@ -89,8 +93,9 @@ test('should return correct result', () => {
     onInputChange: jest.fn(),
   };
 
-  const result = useSelectFetchBasePure(
-    jest.fn(),
+  (useAsyncPaginateBase as jest.Mock).mockReturnValue(expectedResult);
+
+  const result = useSelectFetchBase(
     () => expectedResult,
     defaultParams,
     [1, 2, 3],

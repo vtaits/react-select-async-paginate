@@ -10,8 +10,10 @@ jest.mock('react', () => ({
   useMemo: jest.fn(),
 }));
 
+const mockedUseMemo = jest.mocked(useMemo, true);
+
 beforeEach(() => {
-  (useMemo as jest.Mock<unknown, [() => unknown]>).mockImplementation((callback) => callback());
+  mockedUseMemo.mockImplementation((callback) => callback());
 });
 
 afterEach(() => {
@@ -29,8 +31,8 @@ test('should provide correct deps to useMemo', () => {
 
   useComponents(components);
 
-  expect(useMemo).toHaveBeenCalledTimes(1);
-  expect((useMemo as jest.Mock).mock.calls[0][1]).toEqual([components]);
+  expect(mockedUseMemo).toHaveBeenCalledTimes(1);
+  expect(mockedUseMemo.mock.calls[0][1]).toEqual([components]);
 });
 
 test('should add MenuList to existing components', () => {

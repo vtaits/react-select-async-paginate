@@ -9,15 +9,52 @@ import type {
   Options,
   Props as SelectProps,
 } from 'react-select';
+
+import {
+  useComponents,
+} from 'react-select-async-paginate';
 import type {
   UseAsyncPaginateResult,
-  useComponents as defaultUseComponents,
 } from 'react-select-async-paginate';
+
+import { useSelectFetch } from '../useSelectFetch';
 
 import { withSelectFetch } from '../withSelectFetch';
 import type {
-  Props,
-} from '../withSelectFetch';
+  SelectFetchProps,
+  UseSelectFetchParams,
+} from '../types';
+
+jest.mock('react-select-async-paginate');
+jest.mock('../useSelectFetch');
+
+type UseSelectFetchMock = jest.Mock<
+UseAsyncPaginateResult<unknown, GroupBase<unknown>>, [
+  UseSelectFetchParams<unknown, GroupBase<unknown>>,
+  readonly unknown[],
+]>;
+
+beforeEach(() => {
+  (useComponents as jest.Mock).mockReturnValue({});
+
+  (useSelectFetch as UseSelectFetchMock).mockReturnValue({
+    handleScrolledToBottom: () => undefined,
+    shouldLoadMore: (): boolean => true,
+    isLoading: true,
+    isFirstLoad: true,
+    options: [],
+    filterOption: null,
+    inputValue: '',
+    onInputChange: () => undefined,
+    menuIsOpen: false,
+    onMenuOpen: () => undefined,
+    onMenuClose: () => undefined,
+  });
+});
+
+afterEach(() => {
+  jest.clearAllMocks();
+});
 
 type ExtendedSelectProps<
   OptionType,
@@ -51,22 +88,6 @@ type PageObject<
 
 const defaultProps = {
   url: '',
-
-  useComponents: (() => ({})) as typeof defaultUseComponents,
-
-  useSelectFetch: (): UseAsyncPaginateResult<any, any> => ({
-    handleScrolledToBottom: (): void => {},
-    shouldLoadMore: (): boolean => true,
-    isLoading: true,
-    isFirstLoad: true,
-    options: [],
-    filterOption: null,
-    inputValue: '',
-    onInputChange: (): void => {},
-    menuIsOpen: false,
-    onMenuOpen: (): void => {},
-    onMenuClose: (): void => {},
-  }),
 };
 
 const setup = <
@@ -74,7 +95,7 @@ const setup = <
   IsMulti extends boolean,
   Group extends GroupBase<OptionType>,
 >(
-    props: Partial<Props<OptionType, GroupBase<OptionType>, IsMulti>>,
+    props: Partial<SelectFetchProps<OptionType, GroupBase<OptionType>, IsMulti>>,
   ): PageObject<OptionType, IsMulti, Group> => {
   const renderer = createRenderer();
 
@@ -114,23 +135,21 @@ test('should provide props from hook to child', () => {
     },
   ];
 
-  const useSelectFetch = (): UseAsyncPaginateResult<any, any> => ({
-    handleScrolledToBottom: (): void => {},
-    shouldLoadMore: (): boolean => true,
+  (useSelectFetch as UseSelectFetchMock).mockReturnValue({
+    handleScrolledToBottom: () => undefined,
+    shouldLoadMore: () => true,
     isLoading: true,
     isFirstLoad: true,
     filterOption: null,
     inputValue: '',
-    onInputChange: (): void => {},
+    onInputChange: () => undefined,
     menuIsOpen: false,
-    onMenuOpen: (): void => {},
-    onMenuClose: (): void => {},
+    onMenuOpen: () => undefined,
+    onMenuClose: () => undefined,
     options,
   });
 
-  const page = setup({
-    useSelectFetch,
-  });
+  const page = setup({});
 
   const childProps = page.getChildProps();
 
@@ -143,37 +162,36 @@ test('should provide props from hook to child', () => {
 });
 
 test('should redefine parent props with hook props', () => {
-  const optionsProp: Options<any> = [
+  const optionsProp: Options<unknown> = [
     {
       value: 1,
       label: '1',
     },
   ];
 
-  const optionsHookResult: Options<any> = [
+  const optionsHookResult: Options<unknown> = [
     {
       value: 1,
       label: '1',
     },
   ];
 
-  const useSelectFetch = (): UseAsyncPaginateResult<any, any> => ({
-    handleScrolledToBottom: (): void => {},
-    shouldLoadMore: (): boolean => true,
+  (useSelectFetch as UseSelectFetchMock).mockReturnValue({
+    handleScrolledToBottom: () => undefined,
+    shouldLoadMore: () => true,
     isLoading: true,
     isFirstLoad: true,
     filterOption: null,
     inputValue: '',
-    onInputChange: (): void => {},
+    onInputChange: () => undefined,
     menuIsOpen: false,
-    onMenuOpen: (): void => {},
-    onMenuClose: (): void => {},
+    onMenuOpen: () => undefined,
+    onMenuClose: () => undefined,
     options: optionsHookResult,
   });
 
   const page = setup({
     options: optionsProp,
-    useSelectFetch,
   });
 
   const childProps = page.getChildProps();
@@ -189,8 +207,6 @@ test('should call hook with correct params', () => {
     },
   ];
 
-  const useSelectFetch = jest.fn();
-
   function Test() {
     return <div />;
   }
@@ -203,12 +219,11 @@ test('should call hook with correct params', () => {
     selectRef: () => {},
     cacheUniqs: [1, 2, 3],
     options,
-    useSelectFetch,
   });
 
-  expect(useSelectFetch.mock.calls.length).toBe(1);
+  expect(useSelectFetch).toHaveBeenCalledTimes(1);
 
-  const params = useSelectFetch.mock.calls[0][0];
+  const params = (useSelectFetch as UseSelectFetchMock).mock.calls[0][0];
 
   expect(params.options).toBe(options);
   // eslint-disable-next-line no-prototype-builtins
@@ -220,46 +235,36 @@ test('should call hook with correct params', () => {
 });
 
 test('should call hook with empty deps', () => {
-  const useSelectFetch = jest.fn();
+  setup({});
 
-  setup({
-    useSelectFetch,
-  });
-
-  expect(useSelectFetch.mock.calls[0][1].length).toBe(0);
+  expect((useSelectFetch as UseSelectFetchMock).mock.calls[0][1].length).toBe(0);
 });
 
 test('should call hook with deps from cacheUniq', () => {
   const cacheUniqs = [1, 2, 3];
 
-  const useSelectFetch = jest.fn();
-
   setup({
     cacheUniqs,
-    useSelectFetch,
   });
 
-  expect(useSelectFetch.mock.calls[0][1]).toBe(cacheUniqs);
+  expect((useSelectFetch as UseSelectFetchMock).mock.calls[0][1]).toBe(cacheUniqs);
 });
 
 test('should call useComponents hook', () => {
-  const useComponents = jest.fn()
-    .mockReturnValue({});
-
   function Test() {
     return <div />;
   }
 
-  const components: SelectComponentsConfig<any, false, any> = {
+  const components: SelectComponentsConfig<unknown, false, GroupBase<unknown>> = {
     Menu: Test,
   };
 
   setup({
     components,
-    useComponents,
   });
 
-  expect(useComponents.mock.calls[0][0]).toBe(components);
+  expect(useComponents).toHaveBeenCalledTimes(1);
+  expect(useComponents).toHaveBeenCalledWith(components);
 });
 
 test('should use result of useComponents hook', () => {
@@ -267,15 +272,14 @@ test('should use result of useComponents hook', () => {
     return <div />;
   }
 
-  const components: SelectComponentsConfig<any, false, any> = {
+  const components: SelectComponentsConfig<unknown, false, GroupBase<unknown>> = {
     Menu: Test,
   };
 
-  const useComponents = (() => components) as typeof defaultUseComponents;
+  (useComponents as jest.Mock).mockReturnValue(components);
 
   const page = setup({
     components,
-    useComponents,
   });
 
   expect(page.getChildProps().components).toBe(components);

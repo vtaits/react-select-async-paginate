@@ -1,5 +1,4 @@
 import type {
-  ComponentType,
   Ref,
   ReactElement,
 } from 'react';
@@ -22,11 +21,17 @@ import type {
   WithAsyncPaginateType,
 } from './types';
 
+type SelectComponent = <
+Option = unknown,
+IsMulti extends boolean = boolean,
+Group extends GroupBase<Option> = GroupBase<Option>,
+>(props: SelectProps<Option, IsMulti, Group> & {
+  ref?: Ref<SelectInstance<Option, IsMulti, Group>>;
+}) => ReactElement;
+
 export function withAsyncPaginate(
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  SelectComponent: ComponentType<SelectProps<any, boolean, any> & {
-    ref?: Ref<SelectInstance<any, boolean, any>>;
-  }>,
+  SelectComponent: SelectComponent,
 ): WithAsyncPaginateType {
   function WithAsyncPaginate<
   OptionType,

@@ -15,10 +15,12 @@ import type {
 jest.mock('sleep-promise');
 jest.mock('../validateResponse');
 
-beforeEach(() => {
-  (validateResponse as jest.Mock).mockImplementation(() => undefined);
+const mockedValidateResponse = jest.mocked(validateResponse, true);
+const mockedSleep = jest.mocked(sleep, true);
 
-  (sleep as jest.Mock).mockImplementation(() => Promise.resolve());
+beforeEach(() => {
+  mockedValidateResponse.mockReturnValue(true);
+  mockedSleep.mockResolvedValue(undefined);
 });
 
 afterEach(() => {
@@ -472,7 +474,7 @@ test('should validate response', async () => {
     hasMore: true,
   };
 
-  (validateResponse as jest.Mock).mockImplementation(() => {
+  mockedValidateResponse.mockImplementation(() => {
     throw new Error();
   });
 
@@ -524,7 +526,7 @@ test('should not sleep if debounceTimeout is 0', async () => {
     defaultReduceOptions,
   );
 
-  expect(sleep).toHaveBeenCalledTimes(0);
+  expect(mockedSleep).toHaveBeenCalledTimes(0);
 });
 
 test('should not sleep if debounceTimeout bigger than 0 and caller is not "input-change"', async () => {
@@ -544,7 +546,7 @@ test('should not sleep if debounceTimeout bigger than 0 and caller is not "input
     defaultReduceOptions,
   );
 
-  expect(sleep).toHaveBeenCalledTimes(0);
+  expect(mockedSleep).toHaveBeenCalledTimes(0);
 });
 
 test('should sleep if debounceTimeout bigger than 0 and caller is "input-change"', async () => {
@@ -588,8 +590,8 @@ test('should sleep if debounceTimeout bigger than 0 and caller is "input-change"
     defaultReduceOptions,
   );
 
-  expect(sleep).toHaveBeenCalledTimes(1);
-  expect(sleep).toHaveBeenCalledWith(1234);
+  expect(mockedSleep).toHaveBeenCalledTimes(1);
+  expect(mockedSleep).toHaveBeenCalledWith(1234);
 
   expect(loadOptions).toHaveBeenCalledTimes(1);
   expect(loadOptions).toHaveBeenCalledWith('test', [], additional);
@@ -653,9 +655,9 @@ test('should cancel loading if inputValue has changed during sleep for empty cac
     },
   };
 
-  (sleep as jest.Mock).mockImplementation(() => {
+  mockedSleep.mockImplementation(() => {
     paramsRef.current.inputValue = 'test2';
-    return Promise.resolve();
+    return Promise.resolve() as Promise<unknown> & ((value: unknown) => unknown);
   });
 
   await requestOptions(
@@ -722,9 +724,9 @@ test('should cancel loading if inputValue has changed during sleep for filled ca
     },
   };
 
-  (sleep as jest.Mock).mockImplementation(() => {
+  mockedSleep.mockImplementation(() => {
     paramsRef.current.inputValue = 'test2';
-    return Promise.resolve();
+    return Promise.resolve() as Promise<unknown> & ((value: unknown) => unknown);
   });
 
   await requestOptions(

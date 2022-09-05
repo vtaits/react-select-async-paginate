@@ -1,17 +1,54 @@
 import type {
+  GroupBase,
+} from 'react-select';
+
+import type {
   ReduceOptions,
 } from './types';
 
-export const reduceGroupedOptions: ReduceOptions<any, any, any> = (prevOptions, loadedOptions) => {
-  const res = prevOptions.slice();
+export const checkGroup = (group: unknown): group is GroupBase<unknown> => {
+  if (!group) {
+    return false;
+  }
 
-  const mapLabelToIndex = {};
+  const {
+    label,
+    options,
+  } = group as {
+    label?: unknown;
+    options?: unknown;
+  };
+
+  if (typeof label !== 'string' && typeof label !== 'undefined') {
+    return false;
+  }
+
+  if (!Array.isArray(options)) {
+    return false;
+  }
+
+  return true;
+};
+
+export const reduceGroupedOptions: ReduceOptions<unknown, GroupBase<unknown>, unknown> = (
+  prevOptions,
+  loadedOptions,
+) => {
+  const res = prevOptions.slice() as GroupBase<unknown>[];
+
+  const mapLabelToIndex: Record<string, number> = {};
   let prevOptionsIndex = 0;
   const prevOptionsLength = prevOptions.length;
 
-  loadedOptions.forEach((group) => {
+  loadedOptions.forEach((optionOrGroup) => {
+    const group: GroupBase<unknown> = checkGroup(optionOrGroup)
+      ? optionOrGroup
+      : {
+        options: [optionOrGroup],
+      };
+
     const {
-      label,
+      label = '',
     } = group;
 
     let groupIndex = mapLabelToIndex[label];
@@ -21,7 +58,10 @@ export const reduceGroupedOptions: ReduceOptions<any, any, any> = (prevOptions, 
         ++prevOptionsIndex
       ) {
         const prevGroup = prevOptions[prevOptionsIndex];
-        mapLabelToIndex[prevGroup.label] = prevOptionsIndex;
+
+        if (checkGroup(prevGroup)) {
+          mapLabelToIndex[prevGroup.label || ''] = prevOptionsIndex;
+        }
       }
 
       groupIndex = mapLabelToIndex[label];

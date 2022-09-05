@@ -7,6 +7,9 @@ import type {
   GroupBase,
 } from 'react-select';
 
+import {
+  checkIsResponse,
+} from 'react-select-async-paginate';
 import type {
   LoadOptions,
   UseAsyncPaginateParams,
@@ -22,11 +25,19 @@ import type {
   UseSelectFetchMapParams,
 } from './types';
 
-export const defaultResponseMapper: MapResponse<any, any> = (response) => response;
+export const errorText = '[react-select-fetch] response should be an object with "options" prop, which contains array of options. Also you can use `mapResponse` param';
 
-export const useMapToAsyncPaginatePure = <OptionType, Group extends GroupBase<OptionType>>(
-  useCallbackParam: typeof useCallback,
-  useMemoParam: typeof useMemo,
+export const defaultResponseMapper: MapResponse<unknown, GroupBase<unknown>> = (
+  response,
+) => {
+  if (checkIsResponse(response)) {
+    return response;
+  }
+
+  throw new Error(errorText);
+};
+
+export const useMapToAsyncPaginate = <OptionType, Group extends GroupBase<OptionType>>(
   selectFetchParams: UseSelectFetchMapParams<OptionType, Group>,
 ): UseAsyncPaginateParams<OptionType, Group, Additional> => {
   const {
@@ -35,21 +46,21 @@ export const useMapToAsyncPaginatePure = <OptionType, Group extends GroupBase<Op
     searchParamName = 'search',
     pageParamName = 'page',
     offsetParamName = 'offset',
-    mapResponse = defaultResponseMapper,
+    mapResponse = (defaultResponseMapper as MapResponse<OptionType, Group>),
     get = defaultGet,
     initialPage = 1,
     defaultInitialPage = 2,
   } = selectFetchParams;
 
-  const additional = useMemoParam<Additional>(() => ({
+  const additional = useMemo<Additional>(() => ({
     page: initialPage,
   }), [initialPage]);
 
-  const defaultAdditional = useMemoParam<Additional>(() => ({
+  const defaultAdditional = useMemo<Additional>(() => ({
     page: defaultInitialPage,
   }), [defaultInitialPage]);
 
-  const loadOptions = useCallbackParam<LoadOptions<OptionType, Group, Additional>>(
+  const loadOptions = useCallback<LoadOptions<OptionType, Group, Additional>>(
     async (search, prevOptions, { page }) => {
       const params = {
         ...queryParams,
@@ -112,14 +123,3 @@ export const useMapToAsyncPaginatePure = <OptionType, Group extends GroupBase<Op
     defaultAdditional,
   };
 };
-
-export const useMapToAsyncPaginate = <OptionType, Group extends GroupBase<OptionType>>(
-  params: UseSelectFetchMapParams<OptionType, Group>,
-): UseAsyncPaginateParams<OptionType, Group, Additional> => useMapToAsyncPaginatePure<
-  OptionType,
-  Group
-  >(
-    useCallback,
-    useMemo,
-    params,
-  );

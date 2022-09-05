@@ -34,12 +34,21 @@ jest.mock('react', () => ({
 
   useEffect: jest.fn(),
   useRef: jest.fn(),
+
+  // eslint-disable-next-line @typescript-eslint/ban-types
   useCallback: jest.fn(<T extends Function>(callback: T) => callback),
 }));
 
 jest.mock('use-is-mounted-ref');
 jest.mock('../getInitialOptionsCache');
 jest.mock('../requestOptions');
+
+const mockedUseEffect = jest.mocked(useEffect, true);
+const mockedUseState = jest.mocked(useState, true);
+const mockedUseRef = jest.mocked(useRef, true);
+const mockedGetInitialOptionsCache = jest.mocked(getInitialOptionsCache, true);
+const mockedRequestOptions = jest.mocked(requestOptions, true);
+const mockedUseIsMountedRef = jest.mocked(useIsMountedRef, true);
 
 const defaultCacheItem: OptionsCacheItem<unknown, GroupBase<unknown>, unknown> = {
   options: [],
@@ -58,7 +67,7 @@ const defaultParams: UseAsyncPaginateBaseParams<unknown, GroupBase<unknown>, unk
 };
 
 beforeEach(() => {
-  (useRef as jest.Mock)
+  mockedUseRef
     .mockReturnValueOnce({
       current: true,
     })
@@ -69,11 +78,11 @@ beforeEach(() => {
       current: {},
     });
 
-  (getInitialOptionsCache as jest.Mock).mockImplementation(
+  mockedGetInitialOptionsCache.mockImplementation(
     jest.requireActual('../getInitialOptionsCache').getInitialOptionsCache,
   );
 
-  (requestOptions as jest.Mock).mockResolvedValue(undefined);
+  mockedRequestOptions.mockResolvedValue(undefined);
 });
 
 afterEach(() => {
@@ -103,16 +112,16 @@ const mockUseRef = ({
     current: OptionsCache<unknown, GroupBase<unknown>, unknown> | null;
   };
 }) => {
-  (useRef as jest.Mock).mockReset();
+  mockedUseRef.mockReset();
 
-  (useRef as jest.Mock)
+  mockedUseRef
     .mockReturnValueOnce(isInit)
     .mockReturnValueOnce(params)
     .mockReturnValueOnce(optionsCache);
 };
 
 beforeEach(() => {
-  (useIsMountedRef as jest.Mock).mockReturnValue({
+  mockedUseIsMountedRef.mockReturnValue({
     current: false,
   });
 });
@@ -129,8 +138,8 @@ describe('increaseStateId', () => {
 
 describe('useAsyncPaginateBase', () => {
   test('should call getInitialOptionsCache on init', () => {
-    (getInitialOptionsCache as jest.Mock).mockReset();
-    (getInitialOptionsCache as jest.Mock).mockReturnValue({});
+    mockedGetInitialOptionsCache.mockReset();
+    mockedGetInitialOptionsCache.mockReturnValue({});
 
     const options = [
       {
@@ -186,7 +195,7 @@ describe('useAsyncPaginateBase', () => {
       deps,
     );
 
-    expect((useEffect as jest.Mock).mock.calls[0][1]).toBe(deps);
+    expect(mockedUseEffect.mock.calls[0][1]).toBe(deps);
   });
 
   test('should not load options from first useEffect if "defaultOptions" is not true', async () => {
@@ -197,7 +206,7 @@ describe('useAsyncPaginateBase', () => {
       },
     );
 
-    (useEffect as jest.Mock).mock.calls[0][0]();
+    mockedUseEffect.mock.calls[0][0]();
 
     expect(requestOptions).toHaveBeenCalledTimes(0);
   });
@@ -210,14 +219,14 @@ describe('useAsyncPaginateBase', () => {
       },
     );
 
-    (useEffect as jest.Mock).mock.calls[0][0]();
+    mockedUseEffect.mock.calls[0][0]();
 
     expect(requestOptions).toHaveBeenCalledTimes(1);
   });
 
   test('should not reset options cache from first useEffect on initial render', async () => {
     const setStateId = jest.fn();
-    (useState as jest.Mock).mockReturnValue([1, setStateId]);
+    mockedUseState.mockReturnValue([1, setStateId]);
 
     const isInit = {
       current: true,
@@ -238,7 +247,7 @@ describe('useAsyncPaginateBase', () => {
       defaultParams,
     );
 
-    (useEffect as jest.Mock).mock.calls[0][0]();
+    mockedUseEffect.mock.calls[0][0]();
 
     expect(isInit.current).toBe(false);
     expect(optionsCache.current).toEqual({
@@ -249,7 +258,7 @@ describe('useAsyncPaginateBase', () => {
 
   test('should reset options cache from first useEffect on not initial render', async () => {
     const setStateId = jest.fn();
-    (useState as jest.Mock).mockReturnValue([1, setStateId]);
+    mockedUseState.mockReturnValue([1, setStateId]);
 
     const isInit = {
       current: false,
@@ -276,7 +285,7 @@ describe('useAsyncPaginateBase', () => {
       defaultParams,
     );
 
-    (useEffect as jest.Mock).mock.calls[0][0]();
+    mockedUseEffect.mock.calls[0][0]();
 
     expect(isInit.current).toBe(false);
     expect(optionsCache.current).toEqual({});
@@ -292,7 +301,7 @@ describe('useAsyncPaginateBase', () => {
       },
     );
 
-    expect((useEffect as jest.Mock).mock.calls[1][1]).toEqual(['test']);
+    expect(mockedUseEffect.mock.calls[1][1]).toEqual(['test']);
   });
 
   test('should load options on inputValue change if options are not cached if menu is open', async () => {
@@ -304,7 +313,7 @@ describe('useAsyncPaginateBase', () => {
       },
     );
 
-    (useEffect as jest.Mock).mock.calls[1][0]();
+    mockedUseEffect.mock.calls[1][0]();
 
     expect(requestOptions).toHaveBeenCalledTimes(1);
   });
@@ -318,7 +327,7 @@ describe('useAsyncPaginateBase', () => {
       },
     );
 
-    (useEffect as jest.Mock).mock.calls[1][0]();
+    mockedUseEffect.mock.calls[1][0]();
 
     expect(requestOptions).toHaveBeenCalledTimes(0);
   });
@@ -354,7 +363,7 @@ describe('useAsyncPaginateBase', () => {
       },
     );
 
-    (useEffect as jest.Mock).mock.calls[1][0]();
+    mockedUseEffect.mock.calls[1][0]();
 
     expect(requestOptions).toHaveBeenCalledTimes(0);
   });
@@ -367,7 +376,7 @@ describe('useAsyncPaginateBase', () => {
       },
     );
 
-    expect((useEffect as jest.Mock).mock.calls[2][1]).toEqual([true]);
+    expect(mockedUseEffect.mock.calls[2][1]).toEqual([true]);
   });
 
   test('should not load options from third useEffect if menuIsOpen is false', async () => {
@@ -378,7 +387,7 @@ describe('useAsyncPaginateBase', () => {
       },
     );
 
-    (useEffect as jest.Mock).mock.calls[2][0]();
+    mockedUseEffect.mock.calls[2][0]();
 
     expect(requestOptions).toHaveBeenCalledTimes(0);
   });
@@ -404,7 +413,7 @@ describe('useAsyncPaginateBase', () => {
       },
     );
 
-    (useEffect as jest.Mock).mock.calls[2][0]();
+    mockedUseEffect.mock.calls[2][0]();
 
     expect(requestOptions).toHaveBeenCalledTimes(0);
   });
@@ -418,7 +427,7 @@ describe('useAsyncPaginateBase', () => {
       },
     );
 
-    (useEffect as jest.Mock).mock.calls[2][0]();
+    mockedUseEffect.mock.calls[2][0]();
 
     expect(requestOptions).toHaveBeenCalledTimes(0);
   });
@@ -431,7 +440,7 @@ describe('useAsyncPaginateBase', () => {
       },
     );
 
-    (useEffect as jest.Mock).mock.calls[2][0]();
+    mockedUseEffect.mock.calls[2][0]();
 
     expect(requestOptions).toHaveBeenCalledTimes(1);
   });
@@ -592,7 +601,7 @@ describe('useAsyncPaginateBase', () => {
     result.handleScrolledToBottom();
 
     expect(requestOptions).toHaveBeenCalledTimes(1);
-    expect((requestOptions as jest.Mock).mock.calls[0][5]).toBe(defaultReduceOptions);
+    expect(mockedRequestOptions.mock.calls[0][5]).toBe(defaultReduceOptions);
   });
 
   test('should provide redefined reduceOptions to requestOptions', async () => {
@@ -622,7 +631,7 @@ describe('useAsyncPaginateBase', () => {
     result.handleScrolledToBottom();
 
     expect(requestOptions).toHaveBeenCalledTimes(1);
-    expect((requestOptions as jest.Mock).mock.calls[0][5]).toBe(reduceOptions);
+    expect(mockedRequestOptions.mock.calls[0][5]).toBe(reduceOptions);
   });
 
   test('should reduce change cached options and set next increase state id if mounted', async () => {
@@ -632,7 +641,7 @@ describe('useAsyncPaginateBase', () => {
       });
 
     const setStateId = jest.fn();
-    (useState as jest.Mock).mockReturnValue([1, setStateId]);
+    mockedUseState.mockReturnValue([1, setStateId]);
 
     const optionsCache = {
       current: {
@@ -644,7 +653,7 @@ describe('useAsyncPaginateBase', () => {
       optionsCache,
     });
 
-    (useIsMountedRef as jest.Mock).mockReturnValue({
+    mockedUseIsMountedRef.mockReturnValue({
       current: true,
     });
 
@@ -657,7 +666,7 @@ describe('useAsyncPaginateBase', () => {
 
     result.handleScrolledToBottom();
 
-    (requestOptions as jest.Mock).mock.calls[0][4](reduceState);
+    mockedRequestOptions.mock.calls[0][4](reduceState);
 
     expect(reduceState).toHaveBeenCalledTimes(1);
     expect(reduceState).toHaveBeenCalledWith({
@@ -679,7 +688,7 @@ describe('useAsyncPaginateBase', () => {
       });
 
     const setStateId = jest.fn();
-    (useState as jest.Mock).mockReturnValue([1, setStateId]);
+    mockedUseState.mockReturnValue([1, setStateId]);
 
     const optionsCache = {
       current: {
@@ -700,7 +709,7 @@ describe('useAsyncPaginateBase', () => {
 
     result.handleScrolledToBottom();
 
-    (requestOptions as jest.Mock).mock.calls[0][4](reduceState);
+    mockedRequestOptions.mock.calls[0][4](reduceState);
 
     expect(reduceState).toHaveBeenCalledTimes(1);
     expect(reduceState).toHaveBeenCalledWith({

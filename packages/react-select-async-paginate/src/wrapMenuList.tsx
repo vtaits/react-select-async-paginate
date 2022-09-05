@@ -4,10 +4,14 @@ import {
   useCallback,
 } from 'react';
 import type {
-  ComponentType,
-  FC,
-  Ref,
+  ReactElement,
 } from 'react';
+
+import type {
+  GroupBase,
+  MenuListProps,
+} from 'react-select';
+
 import composeRefs from '@seznam/compose-react-refs';
 
 import type {
@@ -16,39 +20,43 @@ import type {
 
 export const CHECK_TIMEOUT = 300;
 
-export type WrappedMenuListProps = {
-  selectProps: {
-    handleScrolledToBottom?: () => void;
-    shouldLoadMore: ShouldLoadMore;
-  };
-
-  innerRef: Ref<HTMLElement>;
-
-  [key: string]: any;
+export type BaseSelectProps = {
+  handleScrolledToBottom?: () => void;
+  shouldLoadMore: ShouldLoadMore;
 };
 
-type ComponentProps = {
-  innerRef: Ref<HTMLElement>;
-};
+type MenuListType = <
+Option = unknown,
+IsMulti extends boolean = boolean,
+Group extends GroupBase<Option> = GroupBase<Option>,
+>(props: MenuListProps<Option, IsMulti, Group>) => ReactElement;
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
-export const wrapMenuList = (MenuList: ComponentType<ComponentProps>): FC<WrappedMenuListProps> => {
-  function WrappedMenuList(props: WrappedMenuListProps) {
+export function wrapMenuList(
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  MenuList: MenuListType,
+) {
+  function WrappedMenuList<
+    OptionType = unknown,
+    IsMulti extends boolean = boolean,
+    Group extends GroupBase<OptionType> = GroupBase<OptionType>,
+  >(props: MenuListProps<OptionType, IsMulti, Group>) {
     const {
-      selectProps: {
-        handleScrolledToBottom,
-        shouldLoadMore,
-      },
+      selectProps,
       innerRef,
     } = props;
 
-    const checkTimeoutRef = useRef(null);
+    const {
+      handleScrolledToBottom,
+      shouldLoadMore,
+    } = selectProps as unknown as BaseSelectProps;
+
+    const checkTimeoutRef = useRef<NodeJS.Timeout>();
     const menuListRef = useRef<HTMLElement>(null);
 
     const shouldHandle = useCallback(() => {
       const el = menuListRef.current;
 
-      // menu not rendered
+      // menu is not rendered
       if (!el) {
         return false;
       }
@@ -95,4 +103,4 @@ export const wrapMenuList = (MenuList: ComponentType<ComponentProps>): FC<Wrappe
   }
 
   return WrappedMenuList;
-};
+}

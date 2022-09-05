@@ -27,4 +27,4 @@ IsMulti extends boolean,
   ): SelectComponentsConfig<OptionType, IsMulti, Group> => useMemo(() => ({
     MenuList,
     ...components,
-  } as SelectComponentsConfig<OptionType, IsMulti, Group>), [components]);
+  }), [components]);

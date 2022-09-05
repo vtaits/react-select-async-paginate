@@ -7,6 +7,10 @@ export { reduceGroupedOptions } from './reduceGroupedOptions';
 
 export { withAsyncPaginate };
 
+export {
+  checkIsResponse,
+  validateResponse,
+} from './validateResponse';
 export { useAsyncPaginateBase } from './useAsyncPaginateBase';
 export { useAsyncPaginate } from './useAsyncPaginate';
 export { useComponents } from './useComponents';

@@ -1,18 +1,28 @@
 import {
-  useSelectFetchPure,
-} from '../useSelectFetch';
+  useAsyncPaginate,
+} from 'react-select-async-paginate';
+
+import { useSelectFetch } from '../useSelectFetch';
+
+import { useMapToAsyncPaginate } from '../useMapToAsyncPaginate';
+
+jest.mock('react-select-async-paginate');
+jest.mock('../useMapToAsyncPaginate');
+
+beforeEach(() => {
+  (useMapToAsyncPaginate as jest.Mock).mockReset();
+});
+
+afterEach(() => {
+  jest.clearAllMocks();
+});
 
 const defaultParams = {
   url: '',
 };
 
 test('should call useMapToAsyncPaginate with correct params', () => {
-  const useMapToAsyncPaginate = jest.fn();
-  const useAsyncPaginate = jest.fn();
-
-  useSelectFetchPure(
-    useMapToAsyncPaginate,
-    useAsyncPaginate,
+  useSelectFetch(
     defaultParams,
   );
 
@@ -32,11 +42,9 @@ test('should call useAsyncPaginate with correct params', () => {
     additional,
   };
 
-  const useAsyncPaginate = jest.fn();
+  (useMapToAsyncPaginate as jest.Mock).mockReturnValue(mappedParams);
 
-  useSelectFetchPure(
-    () => mappedParams,
-    useAsyncPaginate,
+  useSelectFetch(
     {
       ...defaultParams,
       shouldLoadMore,
@@ -56,11 +64,7 @@ test('should call useAsyncPaginate with correct params', () => {
 });
 
 test('should provide correct deps to useAsyncPaginate', () => {
-  const useAsyncPaginate = jest.fn();
-
-  useSelectFetchPure(
-    jest.fn(),
-    useAsyncPaginate,
+  useSelectFetch(
     defaultParams,
     [1, 2, 3],
   );
@@ -87,9 +91,9 @@ test('should return correct result', () => {
     onInputChange: jest.fn(),
   };
 
-  const result = useSelectFetchPure(
-    jest.fn(),
-    () => expectedResult,
+  (useAsyncPaginate as jest.Mock).mockReturnValue(expectedResult);
+
+  const result = useSelectFetch(
     defaultParams,
     [1, 2, 3],
   );

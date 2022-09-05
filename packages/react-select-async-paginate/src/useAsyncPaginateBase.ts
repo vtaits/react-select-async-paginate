@@ -55,9 +55,9 @@ Additional,
 
   const setStateId = useState(0)[1];
 
-  const optionsCacheRef = useRef<OptionsCache<OptionType, Group, Additional>>(null);
+  const optionsCacheRef = useRef<OptionsCache<OptionType, Group, Additional>>();
 
-  if (optionsCacheRef.current === null) {
+  if (!optionsCacheRef.current) {
     optionsCacheRef.current = getInitialOptionsCache(params);
   }
 

@@ -6,15 +6,11 @@ import {
   validateResponse,
 } from '../validateResponse';
 
-const fakeConsole = {
-  error: (): void => {},
-};
-
 describe('checkIsResponse', () => {
   test('should return false if response is falsy', () => {
     expect(checkIsResponse(null)).toBe(false);
   });
-  
+
   test('should return false if list of options is not an array', () => {
     expect(checkIsResponse({
       options: 123,
@@ -71,7 +67,9 @@ describe('validateResponse', () => {
       validateResponse(response);
     }).toThrowError();
 
+    // eslint-disable-next-line no-console
     expect(console.error).toHaveBeenCalledTimes(1);
+    // eslint-disable-next-line no-console
     expect(console.error).toHaveBeenCalledWith(
       errorText,
       'Received:',

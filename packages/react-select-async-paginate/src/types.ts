@@ -15,7 +15,7 @@ export type RequestOptionsCallerType = 'autoload' | 'menu-toggle' | 'input-chang
 export type ReduceOptions<OptionType, Group extends GroupBase<OptionType>, Additional> = (
   prevOptions: OptionsOrGroups<OptionType, Group>,
   loadedOptions: OptionsOrGroups<OptionType, Group>,
-  additional: Additional,
+  additional: Additional | undefined,
 ) => OptionsOrGroups<OptionType, Group>;
 
 export type OptionsCacheItem<OptionType, Group extends GroupBase<OptionType>, Additional> = {

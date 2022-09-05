@@ -1,9 +1,14 @@
+import fetchMock, { enableFetchMocks } from 'jest-fetch-mock';
+
 import { stringifyParams } from '../stringifyParams';
-import { getPure } from '../get';
+import { get } from '../get';
 
 jest.mock('../stringifyParams');
 
+enableFetchMocks();
+
 beforeEach(() => {
+  fetchMock.doMock();
   (stringifyParams as jest.Mock).mockReturnValue('');
 });
 
@@ -16,26 +21,24 @@ test('should return response', async () => {
     key: 'value',
   };
 
-  const response = await getPure(
-    (async () => ({
-      json: async (): Promise<any> => testResponse,
-    })) as unknown as typeof fetch,
-    '/test/',
+  fetchMock.mockResponseOnce(JSON.stringify(testResponse));
+
+  const response = await get(
+    'https://test/',
     {},
   );
 
-  expect(response).toBe(testResponse);
+  expect(response).toEqual(testResponse);
 });
 
 test('should throw an error if fetch failed', async () => {
   let hasError = false;
 
+  fetchMock.mockRejectOnce(new Error());
+
   try {
-    await getPure(
-      (async () => {
-        throw new Error();
-      }) as unknown as typeof fetch,
-      '/test/',
+    await get(
+      'https://test/',
       {},
     );
   } catch (e) {
@@ -48,12 +51,13 @@ test('should throw an error if fetch failed', async () => {
 test('should throw an error if status of response bigger than 400', async () => {
   let hasError = false;
 
+  fetchMock.mockResponseOnce('', {
+    status: 405,
+  });
+
   try {
-    await getPure(
-      (async () => ({
-        status: 405,
-      })) as unknown as typeof fetch,
-      '/test/',
+    await get(
+      'https://test/',
       {},
     );
   } catch (e) {
@@ -66,12 +70,13 @@ test('should throw an error if status of response bigger than 400', async () => 
 test('should throw an error if status of response is 400', async () => {
   let hasError = false;
 
+  fetchMock.mockResponseOnce('', {
+    status: 400,
+  });
+
   try {
-    await getPure(
-      (async () => ({
-        status: 400,
-      })) as unknown as typeof fetch,
-      '/test/',
+    await get(
+      'https://test/',
       {},
     );
   } catch (e) {
@@ -86,11 +91,10 @@ test('should call stringifyParams with correct params', async () => {
     key: 'value',
   };
 
-  await getPure(
-    (async () => ({
-      json: async (): Promise<any> => ({}),
-    })) as unknown as typeof fetch,
-    '/test/',
+  fetchMock.mockResponseOnce('{}');
+
+  await get(
+    'https://test/',
     params,
   );
 
@@ -99,21 +103,17 @@ test('should call stringifyParams with correct params', async () => {
 });
 
 test('should call fetch with correct params', async () => {
-  const fetchMock = jest.fn()
-    .mockResolvedValue({
-      json: async (): Promise<any> => ({}),
-    });
+  fetchMock.mockResponseOnce('{}');
 
   (stringifyParams as jest.Mock).mockReturnValue('paramsStr');
 
-  await getPure(
-    fetchMock as unknown as typeof fetch,
-    '/test/',
+  await get(
+    'https://test/',
     {},
   );
 
-  expect(fetchMock).toBeCalledTimes(1);
-  expect(fetchMock).toBeCalledWith('/test/?paramsStr', {
+  expect(fetchMock).toHaveBeenCalledTimes(1);
+  expect(fetchMock).toHaveBeenCalledWith('https://test/?paramsStr', {
     credentials: 'same-origin',
   });
 });

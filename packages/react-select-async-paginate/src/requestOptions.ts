@@ -114,27 +114,27 @@ export const requestOptions = async <OptionType, Group extends GroupBase<OptionT
     return;
   }
 
-  validateResponse(response);
+  if (validateResponse(response)) {
+    const {
+      options,
+      hasMore,
+    } = response;
 
-  const {
-    options,
-    hasMore,
-  } = response;
+    // eslint-disable-next-line no-prototype-builtins
+    const newAdditional = response.hasOwnProperty('additional')
+      ? response.additional
+      : currentOptions.additional;
 
-  // eslint-disable-next-line no-prototype-builtins
-  const newAdditional = response.hasOwnProperty('additional')
-    ? response.additional
-    : currentOptions.additional;
-
-  setOptionsCache((prevOptionsCache) => ({
-    ...prevOptionsCache,
-    [currentInputValue]: {
-      ...currentOptions,
-      options: reduceOptions(currentOptions.options, options, newAdditional),
-      hasMore: !!hasMore,
-      isLoading: false,
-      isFirstLoad: false,
-      additional: newAdditional,
-    },
-  }));
+    setOptionsCache((prevOptionsCache) => ({
+      ...prevOptionsCache,
+      [currentInputValue]: {
+        ...currentOptions,
+        options: reduceOptions(currentOptions.options, options, newAdditional),
+        hasMore: !!hasMore,
+        isLoading: false,
+        isFirstLoad: false,
+        additional: newAdditional,
+      },
+    }));
+  }
 };
