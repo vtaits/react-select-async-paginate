@@ -1,12 +1,9 @@
 import type {
   GroupBase,
+  OptionsOrGroups,
 } from 'react-select';
 
-import type {
-  ReduceOptions,
-} from './types';
-
-export const defaultReduceOptions: ReduceOptions<unknown, GroupBase<unknown>, unknown> = (
-  prevOptions,
-  loadedOptions,
+export const defaultReduceOptions = <OptionType, Group extends GroupBase<OptionType>>(
+  prevOptions: OptionsOrGroups<OptionType, Group>,
+  loadedOptions: OptionsOrGroups<OptionType, Group>,
 ) => [...prevOptions, ...loadedOptions];

@@ -8,9 +8,9 @@ import type {
 
 export const errorText = '[react-select-async-paginate] response of "loadOptions" should be an object with "options" prop, which contains array of options.';
 
-export const checkIsResponse = (
+export const checkIsResponse = <OptionType, Group extends GroupBase<OptionType>, Additional>(
   response: unknown,
-): response is Response<unknown, GroupBase<unknown>, unknown> => {
+): response is Response<OptionType, Group, Additional> => {
   if (!response) {
     return false;
   }
@@ -34,9 +34,9 @@ export const checkIsResponse = (
   return true;
 };
 
-export const validateResponse = (
+export const validateResponse = <OptionType, Group extends GroupBase<OptionType>, Additional>(
   response: unknown,
-): response is Response<unknown, GroupBase<unknown>, unknown> => {
+): response is Response<OptionType, Group, Additional> => {
   if (!checkIsResponse(response)) {
     // eslint-disable-next-line no-console
     console.error(errorText, 'Received:', response);

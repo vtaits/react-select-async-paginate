@@ -21,16 +21,15 @@ import {
 
 import type {
   Additional,
-  MapResponse,
   UseSelectFetchMapParams,
 } from './types';
 
 export const errorText = '[react-select-fetch] response should be an object with "options" prop, which contains array of options. Also you can use `mapResponse` param';
 
-export const defaultResponseMapper: MapResponse<unknown, GroupBase<unknown>> = (
-  response,
+export const defaultResponseMapper = <OptionType, Group extends GroupBase<OptionType>>(
+  response: unknown,
 ) => {
-  if (checkIsResponse(response)) {
+  if (checkIsResponse<OptionType, Group, Additional>(response)) {
     return response;
   }
 
@@ -46,7 +45,7 @@ export const useMapToAsyncPaginate = <OptionType, Group extends GroupBase<Option
     searchParamName = 'search',
     pageParamName = 'page',
     offsetParamName = 'offset',
-    mapResponse = (defaultResponseMapper as MapResponse<OptionType, Group>),
+    mapResponse = defaultResponseMapper,
     get = defaultGet,
     initialPage = 1,
     defaultInitialPage = 2,
@@ -61,11 +60,20 @@ export const useMapToAsyncPaginate = <OptionType, Group extends GroupBase<Option
   }), [defaultInitialPage]);
 
   const loadOptions = useCallback<LoadOptions<OptionType, Group, Additional>>(
-    async (search, prevOptions, { page }) => {
-      const params = {
+    async (search, prevOptions, additional) => {
+      if (additional === undefined) {
+        throw new Error();
+      }
+
+      const { page } = additional;
+
+      const params: Record<string, unknown> = {
         ...queryParams,
-        [searchParamName]: search,
       };
+
+      if (searchParamName) {
+        params[searchParamName] = search;
+      }
 
       if (pageParamName) {
         params[pageParamName] = page;

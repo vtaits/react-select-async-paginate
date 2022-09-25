@@ -21,7 +21,7 @@ import type {
   WithAsyncPaginateType,
 } from './types';
 
-type SelectComponent = <
+type SelectComponentType = <
 Option = unknown,
 IsMulti extends boolean = boolean,
 Group extends GroupBase<Option> = GroupBase<Option>,
@@ -31,7 +31,7 @@ Group extends GroupBase<Option> = GroupBase<Option>,
 
 export function withAsyncPaginate(
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  SelectComponent: SelectComponent,
+  SelectComponent: SelectComponentType,
 ): WithAsyncPaginateType {
   function WithAsyncPaginate<
   OptionType,

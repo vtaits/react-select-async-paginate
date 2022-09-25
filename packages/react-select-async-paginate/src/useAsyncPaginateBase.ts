@@ -11,6 +11,8 @@ import type {
 
 import useIsMountedRef from 'use-is-mounted-ref';
 
+import { useLazyRef } from '@vtaits/use-lazy-ref';
+
 import { getInitialCache } from './getInitialCache';
 import { getInitialOptionsCache } from './getInitialOptionsCache';
 import { defaultShouldLoadMore } from './defaultShouldLoadMore';
@@ -18,7 +20,6 @@ import { defaultReduceOptions } from './defaultReduceOptions';
 import { requestOptions } from './requestOptions';
 
 import type {
-  OptionsCache,
   OptionsCacheItem,
   UseAsyncPaginateBaseResult,
   UseAsyncPaginateBaseParams,
@@ -55,11 +56,7 @@ Additional,
 
   const setStateId = useState(0)[1];
 
-  const optionsCacheRef = useRef<OptionsCache<OptionType, Group, Additional>>();
-
-  if (!optionsCacheRef.current) {
-    optionsCacheRef.current = getInitialOptionsCache(params);
-  }
+  const optionsCacheRef = useLazyRef(() => getInitialOptionsCache(params));
 
   const callRequestOptions = useCallback((caller: RequestOptionsCallerType): void => {
     requestOptions(

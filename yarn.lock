@@ -3746,6 +3746,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@vtaits/use-lazy-ref@npm:^0.1.0":
+  version: 0.1.0
+  resolution: "@vtaits/use-lazy-ref@npm:0.1.0"
+  peerDependencies:
+    react: ^17.0.0 || ^18.0.0
+  checksum: ee34c7e34cdc8fca2bfa445c6beb6468b15bc8299f61902406270536c8e63e84f542a4fbed69e92ac6e66dc8fc6d12e5efa116411ad3ba502cdeae400f86bf29
+  languageName: node
+  linkType: hard
+
 "@webassemblyjs/ast@npm:1.11.1":
   version: 1.11.1
   resolution: "@webassemblyjs/ast@npm:1.11.1"
@@ -12467,6 +12476,7 @@ fsevents@^1.2.7:
     "@types/react-test-renderer": ^18.0.0
     "@typescript-eslint/eslint-plugin": ^5.30.7
     "@typescript-eslint/parser": ^5.30.7
+    "@vtaits/use-lazy-ref": ^0.1.0
     cross-env: ^7.0.3
     eslint: ^8.20.0
     eslint-config-airbnb-typescript: ^17.0.0

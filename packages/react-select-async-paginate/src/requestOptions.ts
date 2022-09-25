@@ -1,4 +1,8 @@
 import type {
+  MutableRefObject,
+} from 'react';
+
+import type {
   GroupBase,
 } from 'react-select';
 import sleep from 'sleep-promise';
@@ -24,12 +28,8 @@ type SetOptionsCache<OptionType, Group extends GroupBase<OptionType>, Additional
 
 export const requestOptions = async <OptionType, Group extends GroupBase<OptionType>, Additional>(
   caller: RequestOptionsCallerType,
-  paramsRef: {
-    current: UseAsyncPaginateBaseParams<OptionType, Group, Additional>;
-  },
-  optionsCacheRef: {
-    current: OptionsCache<OptionType, Group, Additional>;
-  },
+  paramsRef: MutableRefObject<UseAsyncPaginateBaseParams<OptionType, Group, Additional>>,
+  optionsCacheRef: MutableRefObject<OptionsCache<OptionType, Group, Additional>>,
   debounceTimeout: number,
   setOptionsCache: SetOptionsCache<OptionType, Group, Additional>,
   reduceOptions: ReduceOptions<OptionType, Group, Additional>,

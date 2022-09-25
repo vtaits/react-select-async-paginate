@@ -26,11 +26,17 @@ import type {
   SelectFetchType,
 } from './types';
 
+type SelectComponentType = <
+Option = unknown,
+IsMulti extends boolean = boolean,
+Group extends GroupBase<Option> = GroupBase<Option>,
+>(props: SelectProps<Option, IsMulti, Group> & {
+  ref?: Ref<SelectInstance<Option, IsMulti, Group>>;
+}) => ReactElement;
+
 export function withSelectFetch(
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  SelectComponent: ComponentType<SelectProps<unknown, boolean, GroupBase<unknown>> & {
-    ref?: Ref<SelectInstance<unknown, boolean, GroupBase<unknown>>>;
-  }>,
+  SelectComponent: SelectComponentType,
 ): SelectFetchType {
   function WithSelectFetch<
   OptionType,
