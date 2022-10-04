@@ -5,7 +5,8 @@
     "outDir": "ts",
     "esModuleInterop": true,
     "strict": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "skipLibCheck": true
   },
   "include": [
     "packages/**/*"
