@@ -5,6 +5,7 @@ import {
 } from 'react';
 
 import useIsMountedRef from 'use-is-mounted-ref';
+import { useLazyRef } from '@vtaits/use-lazy-ref';
 
 import type {
   GroupBase,
@@ -21,7 +22,6 @@ import {
 } from '../useAsyncPaginateBase';
 
 import type {
-  OptionsCache,
   OptionsCacheItem,
   UseAsyncPaginateBaseParams,
 } from '../types';
@@ -40,6 +40,7 @@ jest.mock('react', () => ({
 }));
 
 jest.mock('use-is-mounted-ref');
+jest.mock('@vtaits/use-lazy-ref');
 jest.mock('../getInitialOptionsCache');
 jest.mock('../requestOptions');
 
@@ -49,6 +50,7 @@ const mockedUseRef = jest.mocked(useRef, true);
 const mockedGetInitialOptionsCache = jest.mocked(getInitialOptionsCache, true);
 const mockedRequestOptions = jest.mocked(requestOptions, true);
 const mockedUseIsMountedRef = jest.mocked(useIsMountedRef, true);
+const mockedUseLazyRef = jest.mocked(useLazyRef, true);
 
 const defaultCacheItem: OptionsCacheItem<unknown, GroupBase<unknown>, unknown> = {
   options: [],
@@ -73,8 +75,10 @@ beforeEach(() => {
     })
     .mockReturnValueOnce({
       current: defaultParams,
-    })
-    .mockReturnValueOnce({
+    });
+
+  mockedUseLazyRef
+    .mockReturnValue({
       current: {},
     });
 
@@ -96,9 +100,6 @@ const mockUseRef = ({
   params = {
     current: defaultParams,
   },
-  optionsCache = {
-    current: {},
-  },
 }: {
   isInit?: {
     current: boolean;
@@ -107,17 +108,12 @@ const mockUseRef = ({
   params?: {
     current: UseAsyncPaginateBaseParams<unknown, GroupBase<unknown>, unknown>;
   };
-
-  optionsCache?: {
-    current: OptionsCache<unknown, GroupBase<unknown>, unknown> | null;
-  };
 }) => {
   mockedUseRef.mockReset();
 
   mockedUseRef
     .mockReturnValueOnce(isInit)
-    .mockReturnValueOnce(params)
-    .mockReturnValueOnce(optionsCache);
+    .mockReturnValueOnce(params);
 };
 
 beforeEach(() => {
@@ -163,12 +159,6 @@ describe('useAsyncPaginateBase', () => {
       page: 2,
     };
 
-    mockUseRef({
-      optionsCache: {
-        current: null,
-      },
-    });
-
     useAsyncPaginateBase(
       {
         ...defaultParams,
@@ -177,6 +167,9 @@ describe('useAsyncPaginateBase', () => {
         additional,
       },
     );
+
+    const initFn = mockedUseLazyRef.mock.calls[0][0];
+    initFn();
 
     expect(getInitialOptionsCache).toHaveBeenCalledTimes(1);
     expect(getInitialOptionsCache).toHaveBeenCalledWith({
@@ -240,8 +233,10 @@ describe('useAsyncPaginateBase', () => {
 
     mockUseRef({
       isInit,
-      optionsCache,
     });
+
+    mockedUseLazyRef
+      .mockReturnValueOnce(optionsCache);
 
     useAsyncPaginateBase(
       defaultParams,
@@ -278,8 +273,10 @@ describe('useAsyncPaginateBase', () => {
 
     mockUseRef({
       isInit,
-      optionsCache,
     });
+
+    mockedUseLazyRef
+      .mockReturnValueOnce(optionsCache);
 
     useAsyncPaginateBase(
       defaultParams,
@@ -333,8 +330,8 @@ describe('useAsyncPaginateBase', () => {
   });
 
   test('should not load options on inputValue change if options are cached', async () => {
-    mockUseRef({
-      optionsCache: {
+    mockedUseLazyRef
+      .mockReturnValueOnce({
         current: {
           test: {
             options: [
@@ -353,8 +350,7 @@ describe('useAsyncPaginateBase', () => {
             isFirstLoad: false,
           },
         },
-      },
-    });
+      });
 
     useAsyncPaginateBase(
       {
@@ -393,8 +389,8 @@ describe('useAsyncPaginateBase', () => {
   });
 
   test('should not load options from third useEffect if optionsCache defined for empty search', async () => {
-    mockUseRef({
-      optionsCache: {
+    mockedUseLazyRef
+      .mockReturnValueOnce({
         current: {
           '': {
             options: [],
@@ -403,8 +399,7 @@ describe('useAsyncPaginateBase', () => {
             isFirstLoad: false,
           },
         },
-      },
-    });
+      });
 
     useAsyncPaginateBase(
       {
@@ -459,8 +454,8 @@ describe('useAsyncPaginateBase', () => {
   });
 
   test('should load options on scroll to bottom if cache defined for current search', async () => {
-    mockUseRef({
-      optionsCache: {
+    mockedUseLazyRef
+      .mockReturnValueOnce({
         current: {
           test: {
             options: [],
@@ -469,8 +464,7 @@ describe('useAsyncPaginateBase', () => {
             isFirstLoad: false,
           },
         },
-      },
-    });
+      });
 
     const result = useAsyncPaginateBase(
       {
@@ -552,8 +546,8 @@ describe('useAsyncPaginateBase', () => {
       },
     ];
 
-    mockUseRef({
-      optionsCache: {
+    mockedUseLazyRef
+      .mockReturnValueOnce({
         current: {
           test: {
             options,
@@ -562,8 +556,7 @@ describe('useAsyncPaginateBase', () => {
             isFirstLoad: false,
           },
         },
-      },
-    });
+      });
 
     const result = useAsyncPaginateBase(
       {
@@ -578,8 +571,8 @@ describe('useAsyncPaginateBase', () => {
   });
 
   test('should provide default reduceOptions to requestOptions', async () => {
-    mockUseRef({
-      optionsCache: {
+    mockedUseLazyRef
+      .mockReturnValueOnce({
         current: {
           test: {
             options: [],
@@ -588,8 +581,7 @@ describe('useAsyncPaginateBase', () => {
             isFirstLoad: false,
           },
         },
-      },
-    });
+      });
 
     const result = useAsyncPaginateBase(
       {
@@ -607,8 +599,8 @@ describe('useAsyncPaginateBase', () => {
   test('should provide redefined reduceOptions to requestOptions', async () => {
     const reduceOptions = jest.fn();
 
-    mockUseRef({
-      optionsCache: {
+    mockedUseLazyRef
+      .mockReturnValueOnce({
         current: {
           test: {
             options: [],
@@ -617,8 +609,7 @@ describe('useAsyncPaginateBase', () => {
             isFirstLoad: false,
           },
         },
-      },
-    });
+      });
 
     const result = useAsyncPaginateBase(
       {
@@ -649,9 +640,8 @@ describe('useAsyncPaginateBase', () => {
       },
     };
 
-    mockUseRef({
-      optionsCache,
-    });
+    mockedUseLazyRef
+      .mockReturnValueOnce(optionsCache);
 
     mockedUseIsMountedRef.mockReturnValue({
       current: true,
@@ -696,9 +686,8 @@ describe('useAsyncPaginateBase', () => {
       },
     };
 
-    mockUseRef({
-      optionsCache,
-    });
+    mockedUseLazyRef
+      .mockReturnValueOnce(optionsCache);
 
     const result = useAsyncPaginateBase(
       {
