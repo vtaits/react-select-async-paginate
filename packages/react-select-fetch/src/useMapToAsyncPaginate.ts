@@ -60,12 +60,12 @@ export const useMapToAsyncPaginate = <OptionType, Group extends GroupBase<Option
   }), [defaultInitialPage]);
 
   const loadOptions = useCallback<LoadOptions<OptionType, Group, Additional>>(
-    async (search, prevOptions, additional) => {
-      if (additional === undefined) {
+    async (search, prevOptions, currentAdditional) => {
+      if (currentAdditional === undefined) {
         throw new Error();
       }
 
-      const { page } = additional;
+      const { page } = currentAdditional;
 
       const params: Record<string, unknown> = {
         ...queryParams,

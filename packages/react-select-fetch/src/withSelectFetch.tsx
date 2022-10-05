@@ -1,5 +1,4 @@
 import type {
-  ComponentType,
   ReactElement,
   Ref,
 } from 'react';
