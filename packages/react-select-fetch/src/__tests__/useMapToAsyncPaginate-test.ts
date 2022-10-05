@@ -1,17 +1,4 @@
-import type {
-  GroupBase,
-} from 'react-select';
-
-import type {
-  Response,
-} from 'react-select-async-paginate';
-
 import { useMapToAsyncPaginate } from '../useMapToAsyncPaginate';
-
-import type {
-  MapResponse,
-  Additional,
-} from '../types';
 
 jest.mock('react', () => ({
   ...jest.requireActual('react'),
@@ -285,18 +272,15 @@ test('should return mapped response with increased page in additional', async ()
     has_more: true,
   };
 
+  const resultResponse = {
+    options: [1, 2, 3],
+    hasMore: false,
+  };
+
   const get = jest.fn(() => response);
 
-  const mapResponse = jest.fn<
-  Response<number, GroupBase<number>, Additional>,
-  Parameters<MapResponse<number, GroupBase<number>>>
-  >(({
-    results,
-    has_more: hasMore,
-  }) => ({
-    options: results,
-    hasMore,
-  }));
+  const mapResponse = jest.fn()
+    .mockReturnValue(resultResponse);
 
   const result = useMapToAsyncPaginate(
     {
@@ -311,8 +295,8 @@ test('should return mapped response with increased page in additional', async ()
   const loadOptionsResponse = await result.loadOptions('testSearch', prevOptions, { page: 10 });
 
   expect(loadOptionsResponse).toEqual({
-    options: [4, 5, 6],
-    hasMore: true,
+    options: [1, 2, 3],
+    hasMore: false,
 
     additional: {
       page: 11,

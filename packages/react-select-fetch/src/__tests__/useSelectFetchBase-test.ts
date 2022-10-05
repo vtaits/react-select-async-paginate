@@ -96,7 +96,6 @@ test('should return correct result', () => {
   (useAsyncPaginateBase as jest.Mock).mockReturnValue(expectedResult);
 
   const result = useSelectFetchBase(
-    () => expectedResult,
     defaultParams,
     [1, 2, 3],
   );
