@@ -1,3 +1,8 @@
+## 0.5.0 (06 oct 2022)
+
+- Improved typing
+- Types are strict now
+
 ## 0.4.0 (28 sep 2021)
 
 Migrate to `react-select` v5

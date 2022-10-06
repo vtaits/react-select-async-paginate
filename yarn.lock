@@ -12434,7 +12434,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"react-select-async-paginate@^0.6.0, react-select-async-paginate@workspace:packages/react-select-async-paginate":
+"react-select-async-paginate@^0.7.0, react-select-async-paginate@workspace:packages/react-select-async-paginate":
   version: 0.0.0-use.local
   resolution: "react-select-async-paginate@workspace:packages/react-select-async-paginate"
   dependencies:
@@ -12506,7 +12506,7 @@ fsevents@^1.2.7:
     qs: ^6.11.0
     react: ^18.2.0
     react-select: ^5.4.0
-    react-select-async-paginate: ^0.6.0
+    react-select-async-paginate: ^0.7.0
     react-test-renderer: ^18.2.0
     rimraf: ^3.0.2
     sleep-promise: ^9.1.0
@@ -12515,7 +12515,7 @@ fsevents@^1.2.7:
   peerDependencies:
     react: ^16.14.0 || ^17.0.0 || ^18.0.0
     react-select: ^5.0.0
-    react-select-async-paginate: ^0.6.0
+    react-select-async-paginate: ^0.7.0
   languageName: unknown
   linkType: soft
 

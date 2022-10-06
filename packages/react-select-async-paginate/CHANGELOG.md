@@ -1,3 +1,8 @@
+## 0.7.0 (06 oct 2022)
+
+- Improved typing
+- Types are strict now
+
 ## 0.6.2 (21 jul 2022)
 
 ### Internal changes
