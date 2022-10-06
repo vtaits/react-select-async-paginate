@@ -1,5 +1,9 @@
 import { useState } from 'react';
 import type {
+  ReactElement,
+} from 'react';
+
+import type {
   GroupBase,
   MultiValue,
 } from 'react-select';
@@ -34,7 +38,7 @@ null
 > = async (search, prevOptions) => {
   await sleep(1000);
 
-  let filteredOptions;
+  let filteredOptions: OptionType[];
   if (!search) {
     filteredOptions = options;
   } else {
@@ -57,8 +61,8 @@ null
   };
 };
 
-export function Autoload(props: StoryProps) {
-  const [value, onChange] = useState<OptionType | MultiValue<OptionType>>(null);
+export function Autoload(props: StoryProps): ReactElement {
+  const [value, onChange] = useState<OptionType | MultiValue<OptionType> | null>(null);
 
   return (
     <div

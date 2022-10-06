@@ -1,9 +1,15 @@
 import { useState } from 'react';
 import type {
+  ReactElement,
+} from 'react';
+
+import type {
   GroupBase,
   MultiValue,
 } from 'react-select';
+
 import sleep from 'sleep-promise';
+
 import CreatableSelect from 'react-select/creatable';
 
 import { withAsyncPaginate } from '../src';
@@ -22,7 +28,7 @@ type OptionType = {
   label: string;
 };
 
-const options = [];
+const options: OptionType[] = [];
 for (let i = 0; i < 50; ++i) {
   options.push({
     value: i + 1,
@@ -37,7 +43,7 @@ null
 > = async (search, prevOptions) => {
   await sleep(1000);
 
-  let filteredOptions;
+  let filteredOptions: OptionType[];
   if (!search) {
     filteredOptions = options;
   } else {
@@ -60,8 +66,8 @@ null
   };
 };
 
-export function Creatable(props: StoryProps) {
-  const [value, onChange] = useState<OptionType | MultiValue<OptionType>>(null);
+export function Creatable(props: StoryProps): ReactElement {
+  const [value, onChange] = useState<OptionType | MultiValue<OptionType> | null>(null);
 
   return (
     <div

@@ -25,7 +25,7 @@ export type MapResponsePayload<OptionType, Group extends GroupBase<OptionType>> 
 };
 
 export type MapResponse<OptionType, Group extends GroupBase<OptionType>> = (
-  responseRaw: any,
+  responseRaw: unknown,
   payload: MapResponsePayload<OptionType, Group>,
 ) => Response<OptionType, Group, Additional>;
 
@@ -41,9 +41,9 @@ export type UseSelectFetchMapParams<OptionType, Group extends GroupBase<OptionTy
   queryParams?: {
     [key: string]: any;
   };
-  searchParamName?: string;
-  pageParamName?: string;
-  offsetParamName?: string;
+  searchParamName?: string | null;
+  pageParamName?: string | null;
+  offsetParamName?: string | null;
   mapResponse?: MapResponse<OptionType, Group>;
   get?: Get;
   initialPage?: number;

@@ -4,10 +4,14 @@ import {
   useCallback,
 } from 'react';
 import type {
-  ComponentType,
-  FC,
-  Ref,
+  ReactElement,
 } from 'react';
+
+import type {
+  GroupBase,
+  MenuListProps,
+} from 'react-select';
+
 import composeRefs from '@seznam/compose-react-refs';
 
 import type {
@@ -16,52 +20,43 @@ import type {
 
 export const CHECK_TIMEOUT = 300;
 
-export type Props = {
-  selectProps: {
-    handleScrolledToBottom?: () => void;
-    shouldLoadMore: ShouldLoadMore;
-  };
-
-  innerRef: Ref<HTMLElement>;
-
-  useEffect?: typeof useEffect;
-  useRef?: typeof useRef;
-  useCallback?: typeof useCallback;
-  setTimeout?: typeof setTimeout;
-  clearTimeout?: typeof clearTimeout;
-
-  [key: string]: any;
+export type BaseSelectProps = {
+  handleScrolledToBottom?: () => void;
+  shouldLoadMore: ShouldLoadMore;
 };
 
-type ComponentProps = {
-  innerRef: Ref<HTMLElement>;
-};
+type MenuListType = <
+Option = unknown,
+IsMulti extends boolean = boolean,
+Group extends GroupBase<Option> = GroupBase<Option>,
+>(props: MenuListProps<Option, IsMulti, Group>) => ReactElement;
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
-export const wrapMenuList = (MenuList: ComponentType<ComponentProps>): FC<Props> => {
-  function WrappedMenuList(props: Props) {
+export function wrapMenuList(
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  MenuList: MenuListType,
+) {
+  function WrappedMenuList<
+    OptionType = unknown,
+    IsMulti extends boolean = boolean,
+    Group extends GroupBase<OptionType> = GroupBase<OptionType>,
+  >(props: MenuListProps<OptionType, IsMulti, Group>) {
     const {
-      selectProps: {
-        handleScrolledToBottom,
-        shouldLoadMore,
-      },
+      selectProps,
       innerRef,
-
-      useEffect: useEffectProp,
-      useRef: useRefProp,
-      useCallback: useCallbackProp,
-
-      setTimeout: setTimeoutProp,
-      clearTimeout: clearTimeoutProp,
     } = props;
 
-    const checkTimeoutRef = useRefProp(null);
-    const menuListRef = useRefProp<HTMLElement>(null);
+    const {
+      handleScrolledToBottom,
+      shouldLoadMore,
+    } = selectProps as unknown as BaseSelectProps;
 
-    const shouldHandle = useCallbackProp(() => {
+    const checkTimeoutRef = useRef<NodeJS.Timeout>();
+    const menuListRef = useRef<HTMLElement>(null);
+
+    const shouldHandle = useCallback(() => {
       const el = menuListRef.current;
 
-      // menu not rendered
+      // menu is not rendered
       if (!el) {
         return false;
       }
@@ -75,7 +70,7 @@ export const wrapMenuList = (MenuList: ComponentType<ComponentProps>): FC<Props>
       return shouldLoadMore(scrollHeight, clientHeight, scrollTop);
     }, [shouldLoadMore]);
 
-    const checkAndHandle = useCallbackProp(() => {
+    const checkAndHandle = useCallback(() => {
       if (shouldHandle()) {
         if (handleScrolledToBottom) {
           handleScrolledToBottom();
@@ -83,18 +78,18 @@ export const wrapMenuList = (MenuList: ComponentType<ComponentProps>): FC<Props>
       }
     }, [shouldHandle, handleScrolledToBottom]);
 
-    const setCheckAndHandleTimeout = useCallbackProp(() => {
+    const setCheckAndHandleTimeout = useCallback(() => {
       checkAndHandle();
 
-      checkTimeoutRef.current = setTimeoutProp(setCheckAndHandleTimeout, CHECK_TIMEOUT);
+      checkTimeoutRef.current = setTimeout(setCheckAndHandleTimeout, CHECK_TIMEOUT);
     }, [checkAndHandle]);
 
-    useEffectProp(() => {
+    useEffect(() => {
       setCheckAndHandleTimeout();
 
       return (): void => {
         if (checkTimeoutRef.current) {
-          clearTimeoutProp(checkTimeoutRef.current);
+          clearTimeout(checkTimeoutRef.current);
         }
       };
     }, []);
@@ -107,13 +102,5 @@ export const wrapMenuList = (MenuList: ComponentType<ComponentProps>): FC<Props>
     );
   }
 
-  WrappedMenuList.defaultProps = {
-    useEffect,
-    useRef,
-    useCallback,
-    setTimeout,
-    clearTimeout,
-  };
-
   return WrappedMenuList;
-};
+}

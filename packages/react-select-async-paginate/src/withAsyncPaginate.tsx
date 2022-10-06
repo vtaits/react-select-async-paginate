@@ -1,5 +1,4 @@
 import type {
-  ComponentType,
   Ref,
   ReactElement,
 } from 'react';
@@ -22,46 +21,38 @@ import type {
   WithAsyncPaginateType,
 } from './types';
 
-export type Props<
-OptionType,
-Group extends GroupBase<OptionType>,
-Additional,
-IsMulti extends boolean,
-> =
-  & AsyncPaginateProps<OptionType, Group, Additional, IsMulti>
-  & {
-    useComponents?: typeof useComponents;
-    useAsyncPaginate?: typeof useAsyncPaginate;
-  };
+type SelectComponentType = <
+Option = unknown,
+IsMulti extends boolean = boolean,
+Group extends GroupBase<Option> = GroupBase<Option>,
+>(props: SelectProps<Option, IsMulti, Group> & {
+  ref?: Ref<SelectInstance<Option, IsMulti, Group>>;
+}) => ReactElement;
 
 export function withAsyncPaginate(
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  SelectComponent: ComponentType<SelectProps<any, boolean, any> & {
-    ref?: Ref<SelectInstance<any, boolean, any>>;
-  }>,
+  SelectComponent: SelectComponentType,
 ): WithAsyncPaginateType {
   function WithAsyncPaginate<
   OptionType,
   Group extends GroupBase<OptionType>,
   Additional,
   IsMulti extends boolean = false,
-  >(props: Props<OptionType, Group, Additional, IsMulti>): ReactElement {
+  >(props: AsyncPaginateProps<OptionType, Group, Additional, IsMulti>): ReactElement {
     const {
       components,
       selectRef,
       isLoading: isLoadingProp,
-      useComponents: useComponentsProp,
-      useAsyncPaginate: useAsyncPaginateProp,
       cacheUniqs,
       ...rest
     } = props;
 
-    const asyncPaginateProps: UseAsyncPaginateResult<OptionType, Group> = useAsyncPaginateProp(
+    const asyncPaginateProps: UseAsyncPaginateResult<OptionType, Group> = useAsyncPaginate(
       rest,
       cacheUniqs,
     );
 
-    const processedComponents = useComponentsProp<OptionType, Group, IsMulti>(components);
+    const processedComponents = useComponents<OptionType, Group, IsMulti>(components);
 
     const isLoading = typeof isLoadingProp === 'boolean'
       ? isLoadingProp
@@ -82,8 +73,6 @@ export function withAsyncPaginate(
     selectRef: null,
     cacheUniqs: [],
     components: {},
-    useComponents,
-    useAsyncPaginate,
   };
 
   return WithAsyncPaginate;

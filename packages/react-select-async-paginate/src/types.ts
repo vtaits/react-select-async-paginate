@@ -10,10 +10,12 @@ import type {
   Props as SelectProps,
 } from 'react-select';
 
+export type RequestOptionsCallerType = 'autoload' | 'menu-toggle' | 'input-change' | 'menu-scroll';
+
 export type ReduceOptions<OptionType, Group extends GroupBase<OptionType>, Additional> = (
   prevOptions: OptionsOrGroups<OptionType, Group>,
   loadedOptions: OptionsOrGroups<OptionType, Group>,
-  additional: Additional,
+  additional: Additional | undefined,
 ) => OptionsOrGroups<OptionType, Group>;
 
 export type OptionsCacheItem<OptionType, Group extends GroupBase<OptionType>, Additional> = {

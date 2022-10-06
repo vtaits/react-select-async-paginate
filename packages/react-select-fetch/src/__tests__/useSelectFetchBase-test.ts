@@ -1,6 +1,24 @@
 import {
-  useSelectFetchBasePure,
-} from '../useSelectFetchBase';
+  useAsyncPaginateBase,
+} from 'react-select-async-paginate';
+
+import { useMapToAsyncPaginate } from '../useMapToAsyncPaginate';
+
+import { useSelectFetchBase } from '../useSelectFetchBase';
+
+jest.mock('react-select-async-paginate');
+jest.mock('../useMapToAsyncPaginate');
+
+const mockedUseAsyncPaginateBase = jest.mocked(useAsyncPaginateBase);
+const mockedUseMapToAsyncPaginate = jest.mocked(useMapToAsyncPaginate);
+
+beforeEach(() => {
+  mockedUseMapToAsyncPaginate.mockReset();
+});
+
+afterEach(() => {
+  jest.clearAllMocks();
+});
 
 const defaultParams = {
   url: '',
@@ -9,17 +27,12 @@ const defaultParams = {
 };
 
 test('should call useMapToAsyncPaginate with correct params', () => {
-  const useMapToAsyncPaginate = jest.fn();
-  const useAsyncPaginateBase = jest.fn();
-
-  useSelectFetchBasePure(
-    useMapToAsyncPaginate,
-    useAsyncPaginateBase,
+  useSelectFetchBase(
     defaultParams,
   );
 
-  expect(useMapToAsyncPaginate).toBeCalledTimes(1);
-  expect(useMapToAsyncPaginate).toBeCalledWith(defaultParams);
+  expect(mockedUseMapToAsyncPaginate).toBeCalledTimes(1);
+  expect(mockedUseMapToAsyncPaginate).toBeCalledWith(defaultParams);
 });
 
 test('should call useAsyncPaginateBase with correct params', () => {
@@ -34,19 +47,17 @@ test('should call useAsyncPaginateBase with correct params', () => {
     additional,
   };
 
-  const useAsyncPaginateBase = jest.fn();
+  mockedUseMapToAsyncPaginate.mockReturnValue(mappedParams);
 
-  useSelectFetchBasePure(
-    () => mappedParams,
-    useAsyncPaginateBase,
+  useSelectFetchBase(
     {
       ...defaultParams,
       shouldLoadMore,
     },
   );
 
-  expect(useAsyncPaginateBase).toBeCalledTimes(1);
-  expect(useAsyncPaginateBase).toBeCalledWith(
+  expect(mockedUseAsyncPaginateBase).toBeCalledTimes(1);
+  expect(mockedUseAsyncPaginateBase).toBeCalledWith(
     {
       ...defaultParams,
       loadOptions,
@@ -58,17 +69,13 @@ test('should call useAsyncPaginateBase with correct params', () => {
 });
 
 test('should provide correct deps to useAsyncPaginateBase', () => {
-  const useAsyncPaginateBase = jest.fn();
-
-  useSelectFetchBasePure(
-    jest.fn(),
-    useAsyncPaginateBase,
+  useSelectFetchBase(
     defaultParams,
     [1, 2, 3],
   );
 
-  expect(useAsyncPaginateBase).toBeCalledTimes(1);
-  expect(useAsyncPaginateBase).toBeCalledWith(
+  expect(mockedUseAsyncPaginateBase).toHaveBeenCalledTimes(1);
+  expect(mockedUseAsyncPaginateBase).toHaveBeenCalledWith(
     defaultParams,
     [1, 2, 3],
   );
@@ -89,9 +96,9 @@ test('should return correct result', () => {
     onInputChange: jest.fn(),
   };
 
-  const result = useSelectFetchBasePure(
-    jest.fn(),
-    () => expectedResult,
+  mockedUseAsyncPaginateBase.mockReturnValue(expectedResult);
+
+  const result = useSelectFetchBase(
     defaultParams,
     [1, 2, 3],
   );

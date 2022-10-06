@@ -1,36 +1,24 @@
-import {
-  useCallback as reactUseCallback,
-  useMemo as reactUseMemo,
-} from 'react';
+import { useMapToAsyncPaginate } from '../useMapToAsyncPaginate';
 
-import type {
-  GroupBase,
-} from 'react-select';
+jest.mock('react', () => ({
+  ...jest.requireActual('react'),
 
-import type {
-  Response,
-} from 'react-select-async-paginate';
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  useCallback: jest.fn(<T extends Function>(callback: T) => callback),
 
-import {
-  useMapToAsyncPaginatePure,
-} from '../useMapToAsyncPaginate';
+  useMemo: jest.fn(<T>(callback: () => T) => callback()),
+}));
 
-import type {
-  MapResponse,
-  Additional,
-} from '../types';
-
-const defaultUseCallback: typeof reactUseCallback = (callback) => callback;
-const defaultUseMemo: typeof reactUseMemo = (callback) => callback();
+afterEach(() => {
+  jest.clearAllMocks();
+});
 
 const defaultParams = {
   url: '/test/',
 };
 
 test('should provide default additional', () => {
-  const result = useMapToAsyncPaginatePure(
-    defaultUseCallback,
-    defaultUseMemo,
+  const result = useMapToAsyncPaginate(
     defaultParams,
   );
 
@@ -40,9 +28,7 @@ test('should provide default additional', () => {
 });
 
 test('should redefine page in additional', () => {
-  const result = useMapToAsyncPaginatePure(
-    defaultUseCallback,
-    defaultUseMemo,
+  const result = useMapToAsyncPaginate(
     {
       ...defaultParams,
       initialPage: 3,
@@ -55,11 +41,12 @@ test('should redefine page in additional', () => {
 });
 
 test('should call get with default arguments', async () => {
-  const get = jest.fn();
+  const get = jest.fn()
+    .mockReturnValue({
+      options: [],
+    });
 
-  const result = useMapToAsyncPaginatePure(
-    defaultUseCallback,
-    defaultUseMemo,
+  const result = useMapToAsyncPaginate(
     {
       ...defaultParams,
       url: 'test-url',
@@ -73,23 +60,26 @@ test('should call get with default arguments', async () => {
 
   await result.loadOptions('testSearch', [1, 2, 3], { page: 10 });
 
-  expect(get.mock.calls.length).toBe(1);
-  expect(get.mock.calls[0][0]).toBe('test-url');
-  expect(get.mock.calls[0][1]).toEqual({
-    param1: 'value1',
-    param2: 'value2',
-    search: 'testSearch',
-    page: 10,
-    offset: 3,
-  });
+  expect(get).toHaveBeenCalledTimes(1);
+  expect(get).toHaveBeenCalledWith(
+    'test-url',
+    {
+      param1: 'value1',
+      param2: 'value2',
+      search: 'testSearch',
+      page: 10,
+      offset: 3,
+    },
+  );
 });
 
 test('should redefine search param name in query params', async () => {
-  const get = jest.fn();
+  const get = jest.fn()
+    .mockReturnValue({
+      options: [],
+    });
 
-  const result = useMapToAsyncPaginatePure(
-    defaultUseCallback,
-    defaultUseMemo,
+  const result = useMapToAsyncPaginate(
     {
       ...defaultParams,
       url: 'test-url',
@@ -104,23 +94,26 @@ test('should redefine search param name in query params', async () => {
 
   await result.loadOptions('testSearch', [1, 2, 3], { page: 10 });
 
-  expect(get.mock.calls.length).toBe(1);
-  expect(get.mock.calls[0][0]).toBe('test-url');
-  expect(get.mock.calls[0][1]).toEqual({
-    param1: 'value1',
-    param2: 'value2',
-    search: 'testSearch',
-    page: 10,
-    offset: 3,
-  });
+  expect(get).toHaveBeenCalledTimes(1);
+  expect(get).toHaveBeenCalledWith(
+    'test-url',
+    {
+      param1: 'value1',
+      param2: 'value2',
+      search: 'testSearch',
+      page: 10,
+      offset: 3,
+    },
+  );
 });
 
 test('should redefine page param name in query params', async () => {
-  const get = jest.fn();
+  const get = jest.fn()
+    .mockReturnValue({
+      options: [],
+    });
 
-  const result = useMapToAsyncPaginatePure(
-    defaultUseCallback,
-    defaultUseMemo,
+  const result = useMapToAsyncPaginate(
     {
       ...defaultParams,
       url: 'test-url',
@@ -135,23 +128,26 @@ test('should redefine page param name in query params', async () => {
 
   await result.loadOptions('testSearch', [1, 2, 3], { page: 10 });
 
-  expect(get.mock.calls.length).toBe(1);
-  expect(get.mock.calls[0][0]).toBe('test-url');
-  expect(get.mock.calls[0][1]).toEqual({
-    param1: 'value1',
-    param2: 'value2',
-    search: 'testSearch',
-    currentPage: 10,
-    offset: 3,
-  });
+  expect(get).toHaveBeenCalledTimes(1);
+  expect(get).toHaveBeenCalledWith(
+    'test-url',
+    {
+      param1: 'value1',
+      param2: 'value2',
+      search: 'testSearch',
+      currentPage: 10,
+      offset: 3,
+    },
+  );
 });
 
-test('should not send page if page param name falsy', async () => {
-  const get = jest.fn();
+test('should not send page if page param name is null', async () => {
+  const get = jest.fn()
+    .mockReturnValue({
+      options: [],
+    });
 
-  const result = useMapToAsyncPaginatePure(
-    defaultUseCallback,
-    defaultUseMemo,
+  const result = useMapToAsyncPaginate(
     {
       ...defaultParams,
       url: 'test-url',
@@ -166,22 +162,25 @@ test('should not send page if page param name falsy', async () => {
 
   await result.loadOptions('testSearch', [1, 2, 3], { page: 10 });
 
-  expect(get.mock.calls.length).toBe(1);
-  expect(get.mock.calls[0][0]).toBe('test-url');
-  expect(get.mock.calls[0][1]).toEqual({
-    param1: 'value1',
-    param2: 'value2',
-    search: 'testSearch',
-    offset: 3,
-  });
+  expect(get).toHaveBeenCalledTimes(1);
+  expect(get).toHaveBeenCalledWith(
+    'test-url',
+    {
+      param1: 'value1',
+      param2: 'value2',
+      search: 'testSearch',
+      offset: 3,
+    },
+  );
 });
 
 test('should redefine offset param name', async () => {
-  const get = jest.fn();
+  const get = jest.fn()
+    .mockReturnValue({
+      options: [],
+    });
 
-  const result = useMapToAsyncPaginatePure(
-    defaultUseCallback,
-    defaultUseMemo,
+  const result = useMapToAsyncPaginate(
     {
       ...defaultParams,
       url: 'test-url',
@@ -196,23 +195,26 @@ test('should redefine offset param name', async () => {
 
   await result.loadOptions('testSearch', [1, 2, 3], { page: 10 });
 
-  expect(get.mock.calls.length).toBe(1);
-  expect(get.mock.calls[0][0]).toBe('test-url');
-  expect(get.mock.calls[0][1]).toEqual({
-    param1: 'value1',
-    param2: 'value2',
-    search: 'testSearch',
-    page: 10,
-    otherOffset: 3,
-  });
+  expect(get).toHaveBeenCalledTimes(1);
+  expect(get).toHaveBeenCalledWith(
+    'test-url',
+    {
+      param1: 'value1',
+      param2: 'value2',
+      search: 'testSearch',
+      page: 10,
+      otherOffset: 3,
+    },
+  );
 });
 
-test('should not send offset if offset param name falsy', async () => {
-  const get = jest.fn();
+test('should not send offset if offset param name is null', async () => {
+  const get = jest.fn()
+    .mockReturnValue({
+      options: [],
+    });
 
-  const result = useMapToAsyncPaginatePure(
-    defaultUseCallback,
-    defaultUseMemo,
+  const result = useMapToAsyncPaginate(
     {
       ...defaultParams,
       url: 'test-url',
@@ -227,25 +229,25 @@ test('should not send offset if offset param name falsy', async () => {
 
   await result.loadOptions('testSearch', [1, 2, 3], { page: 10 });
 
-  expect(get.mock.calls.length).toBe(1);
-  expect(get.mock.calls[0][0]).toBe('test-url');
-  expect(get.mock.calls[0][1]).toEqual({
-    param1: 'value1',
-    param2: 'value2',
-    search: 'testSearch',
-    page: 10,
-  });
+  expect(get).toHaveBeenCalledTimes(1);
+  expect(get).toHaveBeenCalledWith(
+    'test-url',
+    {
+      param1: 'value1',
+      param2: 'value2',
+      search: 'testSearch',
+      page: 10,
+    },
+  );
 });
 
 test('should return response with increased page in additional', async () => {
-  const get = jest.fn(() => ({
+  const get = jest.fn().mockReturnValue({
     options: [4, 5, 6],
     hasMore: true,
-  }));
+  });
 
-  const result = useMapToAsyncPaginatePure(
-    defaultUseCallback,
-    defaultUseMemo,
+  const result = useMapToAsyncPaginate(
     {
       ...defaultParams,
       get,
@@ -270,22 +272,17 @@ test('should return mapped response with increased page in additional', async ()
     has_more: true,
   };
 
+  const resultResponse = {
+    options: [1, 2, 3],
+    hasMore: false,
+  };
+
   const get = jest.fn(() => response);
 
-  const mapResponse = jest.fn<
-  Response<number, GroupBase<number>, Additional>,
-  Parameters<MapResponse<number, GroupBase<number>>>
-  >(({
-    results,
-    has_more: hasMore,
-  }) => ({
-    options: results,
-    hasMore,
-  }));
+  const mapResponse = jest.fn()
+    .mockReturnValue(resultResponse);
 
-  const result = useMapToAsyncPaginatePure(
-    defaultUseCallback,
-    defaultUseMemo,
+  const result = useMapToAsyncPaginate(
     {
       ...defaultParams,
       get,
@@ -298,19 +295,23 @@ test('should return mapped response with increased page in additional', async ()
   const loadOptionsResponse = await result.loadOptions('testSearch', prevOptions, { page: 10 });
 
   expect(loadOptionsResponse).toEqual({
-    options: [4, 5, 6],
-    hasMore: true,
+    options: [1, 2, 3],
+    hasMore: false,
 
     additional: {
       page: 11,
     },
   });
 
-  expect(mapResponse.mock.calls.length).toBe(1);
-  expect(mapResponse.mock.calls[0][0]).toBe(response);
-  expect(mapResponse.mock.calls[0][1].search).toBe('testSearch');
-  expect(mapResponse.mock.calls[0][1].prevPage).toBe(10);
-  expect(mapResponse.mock.calls[0][1].prevOptions).toBe(prevOptions);
+  expect(mapResponse).toBeCalledTimes(1);
+  expect(mapResponse).toHaveBeenCalledWith(
+    response,
+    {
+      search: 'testSearch',
+      prevPage: 10,
+      prevOptions,
+    },
+  );
 });
 
 test('should return empty response on error', async () => {
@@ -318,9 +319,7 @@ test('should return empty response on error', async () => {
     throw new Error('Test error');
   });
 
-  const result = useMapToAsyncPaginatePure(
-    defaultUseCallback,
-    defaultUseMemo,
+  const result = useMapToAsyncPaginate(
     {
       ...defaultParams,
       get,

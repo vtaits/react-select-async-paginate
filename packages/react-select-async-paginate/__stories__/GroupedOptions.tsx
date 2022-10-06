@@ -1,8 +1,12 @@
 import { useState } from 'react';
 import type {
-  GroupBase,
+  ReactElement,
+} from 'react';
+
+import type {
   MultiValue,
 } from 'react-select';
+
 import sleep from 'sleep-promise';
 
 import { AsyncPaginate, reduceGroupedOptions } from '../src';
@@ -18,6 +22,11 @@ type OptionType = {
   value: number | string;
   type: number;
   label: string;
+};
+
+type GroupType = {
+  label: string;
+  options: OptionType[];
 };
 
 type Additional = {
@@ -63,15 +72,15 @@ const loadOptions = async (search: string, page: number): Promise<{
 
   const mapTypeToIndex = new Map<number, number>();
 
-  const result = [];
+  const result: GroupType[] = [];
 
   slicedOptions.forEach((option) => {
     const { type } = option;
 
-    if (mapTypeToIndex.has(type)) {
-      const index = mapTypeToIndex.get(type);
+    const mappedIndex = mapTypeToIndex.get(type);
 
-      result[index].options.push(option);
+    if (typeof mappedIndex === 'number') {
+      result[mappedIndex].options.push(option);
     } else {
       const index = result.length;
 
@@ -90,13 +99,19 @@ const loadOptions = async (search: string, page: number): Promise<{
   };
 };
 
-const wrapperdLoadOptions: LoadOptions<OptionType, GroupBase<OptionType>, Additional> = async (
+const wrapperdLoadOptions: LoadOptions<OptionType, GroupType, Additional> = async (
   q,
   prevOptions,
-  {
-    page,
-  },
+  additional,
 ) => {
+  if (!additional) {
+    throw new Error('additional should be defined');
+  }
+
+  const {
+    page,
+  } = additional;
+
   const {
     options: responseOptions,
     hasMore,
@@ -116,8 +131,8 @@ const defaultAdditional = {
   page: 1,
 };
 
-export function GroupedOptions(props: StoryProps) {
-  const [value, onChange] = useState<OptionType | MultiValue<OptionType>>(null);
+export function GroupedOptions(props: StoryProps): ReactElement {
+  const [value, onChange] = useState<OptionType | MultiValue<OptionType> | null>(null);
 
   return (
     <div

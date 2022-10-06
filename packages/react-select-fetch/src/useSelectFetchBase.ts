@@ -15,15 +15,13 @@ import type {
   UseSelectFetchBaseParams,
 } from './types';
 
-export const useSelectFetchBasePure = <OptionType, Group extends GroupBase<OptionType>>(
-  useMapToAsyncPaginateParam: typeof useMapToAsyncPaginate,
-  useAsyncPaginateParam: typeof useAsyncPaginateBase,
+export const useSelectFetchBase = <OptionType, Group extends GroupBase<OptionType>>(
   params: UseSelectFetchBaseParams<OptionType, Group>,
-  deps: ReadonlyArray<any> = [],
+  deps: ReadonlyArray<unknown> = [],
 ): UseAsyncPaginateBaseResult<OptionType, Group> => {
-  const mappedParams = useMapToAsyncPaginateParam(params);
+  const mappedParams = useMapToAsyncPaginate(params);
 
-  const result = useAsyncPaginateParam(
+  const result = useAsyncPaginateBase(
     {
       ...params,
       ...mappedParams,
@@ -33,13 +31,3 @@ export const useSelectFetchBasePure = <OptionType, Group extends GroupBase<Optio
 
   return result;
 };
-
-export const useSelectFetchBase = <OptionType, Group extends GroupBase<OptionType>>(
-  params: UseSelectFetchBaseParams<OptionType, Group>,
-  deps: ReadonlyArray<any> = [],
-): UseAsyncPaginateBaseResult<OptionType, Group> => useSelectFetchBasePure(
-    useMapToAsyncPaginate,
-    useAsyncPaginateBase,
-    params,
-    deps,
-  );

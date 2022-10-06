@@ -1,18 +1,12 @@
-import qs from 'qs';
+import { stringifyParams } from './stringifyParams';
 
-export const stringifyParams = (params: Record<string, any>): string => qs.stringify(params, {
-  arrayFormat: 'repeat',
-});
-
-export const getPure = async (
-  fetchParam: typeof fetch,
-  stringifyParamsParam: typeof stringifyParams,
+export const get = async (
   url: string,
-  params: Record<string, any>,
-): Promise<any> => {
-  const paramsStr: string = stringifyParamsParam(params);
+  params: Record<string, unknown>,
+): Promise<unknown> => {
+  const paramsStr = stringifyParams(params);
 
-  const response: Response = await fetchParam(`${url}?${paramsStr}`, {
+  const response: Response = await fetch(`${url}?${paramsStr}`, {
     credentials: 'same-origin',
   });
 
@@ -24,13 +18,3 @@ export const getPure = async (
 
   return responseJSON;
 };
-
-export const get = (
-  url: string,
-  params: Record<string, any>,
-): Promise<any> => getPure(
-  fetch,
-  stringifyParams,
-  url,
-  params,
-);

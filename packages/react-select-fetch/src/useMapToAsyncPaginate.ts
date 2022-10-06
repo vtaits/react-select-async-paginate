@@ -7,6 +7,9 @@ import type {
   GroupBase,
 } from 'react-select';
 
+import {
+  checkIsResponse,
+} from 'react-select-async-paginate';
 import type {
   LoadOptions,
   UseAsyncPaginateParams,
@@ -18,15 +21,22 @@ import {
 
 import type {
   Additional,
-  MapResponse,
   UseSelectFetchMapParams,
 } from './types';
 
-export const defaultResponseMapper: MapResponse<any, any> = (response) => response;
+export const errorText = '[react-select-fetch] response should be an object with "options" prop, which contains array of options. Also you can use `mapResponse` param';
 
-export const useMapToAsyncPaginatePure = <OptionType, Group extends GroupBase<OptionType>>(
-  useCallbackParam: typeof useCallback,
-  useMemoParam: typeof useMemo,
+export const defaultResponseMapper = <OptionType, Group extends GroupBase<OptionType>>(
+  response: unknown,
+) => {
+  if (checkIsResponse<OptionType, Group, Additional>(response)) {
+    return response;
+  }
+
+  throw new Error(errorText);
+};
+
+export const useMapToAsyncPaginate = <OptionType, Group extends GroupBase<OptionType>>(
   selectFetchParams: UseSelectFetchMapParams<OptionType, Group>,
 ): UseAsyncPaginateParams<OptionType, Group, Additional> => {
   const {
@@ -41,20 +51,29 @@ export const useMapToAsyncPaginatePure = <OptionType, Group extends GroupBase<Op
     defaultInitialPage = 2,
   } = selectFetchParams;
 
-  const additional = useMemoParam<Additional>(() => ({
+  const additional = useMemo<Additional>(() => ({
     page: initialPage,
   }), [initialPage]);
 
-  const defaultAdditional = useMemoParam<Additional>(() => ({
+  const defaultAdditional = useMemo<Additional>(() => ({
     page: defaultInitialPage,
   }), [defaultInitialPage]);
 
-  const loadOptions = useCallbackParam<LoadOptions<OptionType, Group, Additional>>(
-    async (search, prevOptions, { page }) => {
-      const params = {
+  const loadOptions = useCallback<LoadOptions<OptionType, Group, Additional>>(
+    async (search, prevOptions, currentAdditional) => {
+      if (currentAdditional === undefined) {
+        throw new Error();
+      }
+
+      const { page } = currentAdditional;
+
+      const params: Record<string, unknown> = {
         ...queryParams,
-        [searchParamName]: search,
       };
+
+      if (searchParamName) {
+        params[searchParamName] = search;
+      }
 
       if (pageParamName) {
         params[pageParamName] = page;
@@ -112,14 +131,3 @@ export const useMapToAsyncPaginatePure = <OptionType, Group extends GroupBase<Op
     defaultAdditional,
   };
 };
-
-export const useMapToAsyncPaginate = <OptionType, Group extends GroupBase<OptionType>>(
-  params: UseSelectFetchMapParams<OptionType, Group>,
-): UseAsyncPaginateParams<OptionType, Group, Additional> => useMapToAsyncPaginatePure<
-  OptionType,
-  Group
-  >(
-    useCallback,
-    useMemo,
-    params,
-  );

@@ -1,17 +1,54 @@
 import type {
-  ReduceOptions,
-} from './types';
+  GroupBase,
+  OptionsOrGroups,
+} from 'react-select';
 
-export const reduceGroupedOptions: ReduceOptions<any, any, any> = (prevOptions, loadedOptions) => {
+export const checkGroup = (group: unknown): group is GroupBase<unknown> => {
+  if (!group) {
+    return false;
+  }
+
+  const {
+    label,
+    options,
+  } = group as {
+    label?: unknown;
+    options?: unknown;
+  };
+
+  if (typeof label !== 'string' && typeof label !== 'undefined') {
+    return false;
+  }
+
+  if (!Array.isArray(options)) {
+    return false;
+  }
+
+  return true;
+};
+
+export const reduceGroupedOptions = <
+OptionType,
+Group extends GroupBase<OptionType>,
+>(
+    prevOptions: OptionsOrGroups<OptionType, Group>,
+    loadedOptions: OptionsOrGroups<OptionType, Group>,
+  ): OptionsOrGroups<OptionType, Group> => {
   const res = prevOptions.slice();
 
-  const mapLabelToIndex = {};
+  const mapLabelToIndex: Record<string, number> = {};
   let prevOptionsIndex = 0;
   const prevOptionsLength = prevOptions.length;
 
-  loadedOptions.forEach((group) => {
+  loadedOptions.forEach((optionOrGroup) => {
+    const group = checkGroup(optionOrGroup)
+      ? optionOrGroup
+      : {
+        options: [optionOrGroup],
+      } as unknown as Group;
+
     const {
-      label,
+      label = '',
     } = group;
 
     let groupIndex = mapLabelToIndex[label];
@@ -21,7 +58,10 @@ export const reduceGroupedOptions: ReduceOptions<any, any, any> = (prevOptions, 
         ++prevOptionsIndex
       ) {
         const prevGroup = prevOptions[prevOptionsIndex];
-        mapLabelToIndex[prevGroup.label] = prevOptionsIndex;
+
+        if (checkGroup(prevGroup)) {
+          mapLabelToIndex[prevGroup.label || ''] = prevOptionsIndex;
+        }
       }
 
       groupIndex = mapLabelToIndex[label];
@@ -35,7 +75,7 @@ export const reduceGroupedOptions: ReduceOptions<any, any, any> = (prevOptions, 
 
     res[groupIndex] = {
       ...res[groupIndex],
-      options: res[groupIndex].options.concat(group.options),
+      options: [...(res[groupIndex] as Group).options, ...group.options],
     };
   });
 

@@ -1,8 +1,13 @@
 import { useState } from 'react';
 import type {
+  ReactElement,
+} from 'react';
+
+import type {
   GroupBase,
   MultiValue,
 } from 'react-select';
+
 import sleep from 'sleep-promise';
 
 import { AsyncPaginate } from '../src';
@@ -14,18 +19,18 @@ import type {
   StoryProps,
 } from './types';
 
-const options = [];
+type OptionType = {
+  value: number;
+  label: string;
+};
+
+const options: OptionType[] = [];
 for (let i = 0; i < 50; ++i) {
   options.push({
     value: i + 1,
     label: `Option ${i + 1}`,
   });
 }
-
-type OptionType = {
-  value: number;
-  label: string;
-};
 
 type Additional = {
   page: number;
@@ -39,7 +44,7 @@ const loadOptions = async (search: string, page: number): Promise<{
 }> => {
   await sleep(1000);
 
-  let filteredOptions;
+  let filteredOptions: OptionType[];
   if (!search) {
     filteredOptions = options;
   } else {
@@ -70,7 +75,15 @@ const loadPageOptions: LoadOptions<
 OptionType,
 GroupBase<OptionType>,
 Additional
-> = async (q, prevOptions, { page }) => {
+> = async (q, prevOptions, additional) => {
+  if (!additional) {
+    throw new Error('additional should be defined');
+  }
+
+  const {
+    page,
+  } = additional;
+
   const {
     options: responseOptions,
     hasMore,
@@ -86,8 +99,8 @@ Additional
   };
 };
 
-export function RequestByPageNumber(props: StoryProps) {
-  const [value, onChange] = useState<OptionType | MultiValue<OptionType>>(null);
+export function RequestByPageNumber(props: StoryProps): ReactElement {
+  const [value, onChange] = useState<OptionType | MultiValue<OptionType> | null>(null);
 
   return (
     <div
