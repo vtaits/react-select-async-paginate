@@ -321,10 +321,20 @@ describe('reduceGroupedOptions', () => {
       },
     ];
 
-    expect(reduceGroupedOptions(prevOptions, nextOptions, null)).toEqual(expectedOptions);
+    expect(reduceGroupedOptions(prevOptions, nextOptions)).toEqual(expectedOptions);
   });
 
   test('should work with simple options', () => {
+    type OptionType = {
+      value: number;
+      type: number;
+      label: string;
+    };
+
+    type GroupType = {
+      options: OptionType[];
+    };
+
     const prevOptions = [
       {
         options: [
@@ -382,6 +392,8 @@ describe('reduceGroupedOptions', () => {
       },
     ];
 
-    expect(reduceGroupedOptions(prevOptions, nextOptions, null)).toEqual(expectedOptions);
+    expect(
+      reduceGroupedOptions<OptionType, GroupType>(prevOptions, nextOptions),
+    ).toEqual(expectedOptions);
   });
 });

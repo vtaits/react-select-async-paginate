@@ -1,10 +1,7 @@
 import type {
   GroupBase,
+  OptionsOrGroups,
 } from 'react-select';
-
-import type {
-  ReduceOptions,
-} from './types';
 
 export const checkGroup = (group: unknown): group is GroupBase<unknown> => {
   if (!group) {
@@ -30,22 +27,25 @@ export const checkGroup = (group: unknown): group is GroupBase<unknown> => {
   return true;
 };
 
-export const reduceGroupedOptions: ReduceOptions<unknown, GroupBase<unknown>, unknown> = (
-  prevOptions,
-  loadedOptions,
-) => {
-  const res = prevOptions.slice() as GroupBase<unknown>[];
+export const reduceGroupedOptions = <
+OptionType,
+Group extends GroupBase<OptionType>,
+>(
+    prevOptions: OptionsOrGroups<OptionType, Group>,
+    loadedOptions: OptionsOrGroups<OptionType, Group>,
+  ): OptionsOrGroups<OptionType, Group> => {
+  const res = prevOptions.slice();
 
   const mapLabelToIndex: Record<string, number> = {};
   let prevOptionsIndex = 0;
   const prevOptionsLength = prevOptions.length;
 
   loadedOptions.forEach((optionOrGroup) => {
-    const group: GroupBase<unknown> = checkGroup(optionOrGroup)
+    const group = checkGroup(optionOrGroup)
       ? optionOrGroup
       : {
         options: [optionOrGroup],
-      };
+      } as unknown as Group;
 
     const {
       label = '',
@@ -75,7 +75,7 @@ export const reduceGroupedOptions: ReduceOptions<unknown, GroupBase<unknown>, un
 
     res[groupIndex] = {
       ...res[groupIndex],
-      options: res[groupIndex].options.concat(group.options),
+      options: [...(res[groupIndex] as Group).options, ...group.options],
     };
   });
 
