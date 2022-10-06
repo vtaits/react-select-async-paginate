@@ -25,21 +25,21 @@ export type BaseSelectProps = {
   shouldLoadMore: ShouldLoadMore;
 };
 
-type MenuListType = <
+type MenuListType <
 Option = unknown,
 IsMulti extends boolean = boolean,
 Group extends GroupBase<Option> = GroupBase<Option>,
->(props: MenuListProps<Option, IsMulti, Group>) => ReactElement;
+> = (props: MenuListProps<Option, IsMulti, Group>) => ReactElement;
 
-export function wrapMenuList(
+export function wrapMenuList<
+Option = unknown,
+IsMulti extends boolean = boolean,
+Group extends GroupBase<Option> = GroupBase<Option>,
+>(
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  MenuList: MenuListType,
+  MenuList: MenuListType<Option, IsMulti, Group>,
 ) {
-  function WrappedMenuList<
-    OptionType = unknown,
-    IsMulti extends boolean = boolean,
-    Group extends GroupBase<OptionType> = GroupBase<OptionType>,
-  >(props: MenuListProps<OptionType, IsMulti, Group>) {
+  function WrappedMenuList(props: MenuListProps<Option, IsMulti, Group>) {
     const {
       selectProps,
       innerRef,
