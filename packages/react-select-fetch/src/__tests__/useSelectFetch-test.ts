@@ -9,8 +9,11 @@ import { useMapToAsyncPaginate } from '../useMapToAsyncPaginate';
 jest.mock('react-select-async-paginate');
 jest.mock('../useMapToAsyncPaginate');
 
+const mockedUseAsyncPaginate = jest.mocked(useAsyncPaginate);
+const mockedUseMapToAsyncPaginate = jest.mocked(useMapToAsyncPaginate);
+
 beforeEach(() => {
-  (useMapToAsyncPaginate as jest.Mock).mockReset();
+  mockedUseMapToAsyncPaginate.mockReset();
 });
 
 afterEach(() => {
@@ -26,8 +29,8 @@ test('should call useMapToAsyncPaginate with correct params', () => {
     defaultParams,
   );
 
-  expect(useMapToAsyncPaginate).toBeCalledTimes(1);
-  expect(useMapToAsyncPaginate).toBeCalledWith(defaultParams);
+  expect(mockedUseMapToAsyncPaginate).toBeCalledTimes(1);
+  expect(mockedUseMapToAsyncPaginate).toBeCalledWith(defaultParams);
 });
 
 test('should call useAsyncPaginate with correct params', () => {
@@ -42,7 +45,7 @@ test('should call useAsyncPaginate with correct params', () => {
     additional,
   };
 
-  (useMapToAsyncPaginate as jest.Mock).mockReturnValue(mappedParams);
+  mockedUseMapToAsyncPaginate.mockReturnValue(mappedParams);
 
   useSelectFetch(
     {
@@ -51,8 +54,8 @@ test('should call useAsyncPaginate with correct params', () => {
     },
   );
 
-  expect(useAsyncPaginate).toBeCalledTimes(1);
-  expect(useAsyncPaginate).toBeCalledWith(
+  expect(mockedUseAsyncPaginate).toBeCalledTimes(1);
+  expect(mockedUseAsyncPaginate).toBeCalledWith(
     {
       ...defaultParams,
       loadOptions,
@@ -69,8 +72,8 @@ test('should provide correct deps to useAsyncPaginate', () => {
     [1, 2, 3],
   );
 
-  expect(useAsyncPaginate).toBeCalledTimes(1);
-  expect(useAsyncPaginate).toBeCalledWith(
+  expect(mockedUseAsyncPaginate).toBeCalledTimes(1);
+  expect(mockedUseAsyncPaginate).toBeCalledWith(
     defaultParams,
     [1, 2, 3],
   );
@@ -91,7 +94,7 @@ test('should return correct result', () => {
     onInputChange: jest.fn(),
   };
 
-  (useAsyncPaginate as jest.Mock).mockReturnValue(expectedResult);
+  mockedUseAsyncPaginate.mockReturnValue(expectedResult);
 
   const result = useSelectFetch(
     defaultParams,

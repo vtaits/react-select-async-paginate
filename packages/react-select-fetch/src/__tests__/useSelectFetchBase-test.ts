@@ -9,8 +9,11 @@ import { useSelectFetchBase } from '../useSelectFetchBase';
 jest.mock('react-select-async-paginate');
 jest.mock('../useMapToAsyncPaginate');
 
+const mockedUseAsyncPaginateBase = jest.mocked(useAsyncPaginateBase);
+const mockedUseMapToAsyncPaginate = jest.mocked(useMapToAsyncPaginate);
+
 beforeEach(() => {
-  (useMapToAsyncPaginate as jest.Mock).mockReset();
+  mockedUseMapToAsyncPaginate.mockReset();
 });
 
 afterEach(() => {
@@ -28,8 +31,8 @@ test('should call useMapToAsyncPaginate with correct params', () => {
     defaultParams,
   );
 
-  expect(useMapToAsyncPaginate).toBeCalledTimes(1);
-  expect(useMapToAsyncPaginate).toBeCalledWith(defaultParams);
+  expect(mockedUseMapToAsyncPaginate).toBeCalledTimes(1);
+  expect(mockedUseMapToAsyncPaginate).toBeCalledWith(defaultParams);
 });
 
 test('should call useAsyncPaginateBase with correct params', () => {
@@ -44,7 +47,7 @@ test('should call useAsyncPaginateBase with correct params', () => {
     additional,
   };
 
-  (useMapToAsyncPaginate as jest.Mock).mockReturnValue(mappedParams);
+  mockedUseMapToAsyncPaginate.mockReturnValue(mappedParams);
 
   useSelectFetchBase(
     {
@@ -53,8 +56,8 @@ test('should call useAsyncPaginateBase with correct params', () => {
     },
   );
 
-  expect(useAsyncPaginateBase).toBeCalledTimes(1);
-  expect(useAsyncPaginateBase).toBeCalledWith(
+  expect(mockedUseAsyncPaginateBase).toBeCalledTimes(1);
+  expect(mockedUseAsyncPaginateBase).toBeCalledWith(
     {
       ...defaultParams,
       loadOptions,
@@ -71,8 +74,8 @@ test('should provide correct deps to useAsyncPaginateBase', () => {
     [1, 2, 3],
   );
 
-  expect(useAsyncPaginateBase).toHaveBeenCalledTimes(1);
-  expect(useAsyncPaginateBase).toHaveBeenCalledWith(
+  expect(mockedUseAsyncPaginateBase).toHaveBeenCalledTimes(1);
+  expect(mockedUseAsyncPaginateBase).toHaveBeenCalledWith(
     defaultParams,
     [1, 2, 3],
   );
@@ -93,7 +96,7 @@ test('should return correct result', () => {
     onInputChange: jest.fn(),
   };
 
-  (useAsyncPaginateBase as jest.Mock).mockReturnValue(expectedResult);
+  mockedUseAsyncPaginateBase.mockReturnValue(expectedResult);
 
   const result = useSelectFetchBase(
     defaultParams,

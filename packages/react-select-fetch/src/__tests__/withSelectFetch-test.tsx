@@ -13,31 +13,24 @@ import type {
 import {
   useComponents,
 } from 'react-select-async-paginate';
-import type {
-  UseAsyncPaginateResult,
-} from 'react-select-async-paginate';
 
 import { useSelectFetch } from '../useSelectFetch';
 
 import { withSelectFetch } from '../withSelectFetch';
 import type {
   SelectFetchProps,
-  UseSelectFetchParams,
 } from '../types';
 
 jest.mock('react-select-async-paginate');
 jest.mock('../useSelectFetch');
 
-type UseSelectFetchMock = jest.Mock<
-UseAsyncPaginateResult<unknown, GroupBase<unknown>>, [
-  UseSelectFetchParams<unknown, GroupBase<unknown>>,
-  readonly unknown[],
-]>;
+const mockedUseComponents = jest.mocked(useComponents);
+const mockedUseSelectFetch = jest.mocked(useSelectFetch);
 
 beforeEach(() => {
-  (useComponents as jest.Mock).mockReturnValue({});
+  mockedUseComponents.mockReturnValue({});
 
-  (useSelectFetch as UseSelectFetchMock).mockReturnValue({
+  mockedUseSelectFetch.mockReturnValue({
     handleScrolledToBottom: () => undefined,
     shouldLoadMore: (): boolean => true,
     isLoading: true,
@@ -135,7 +128,7 @@ test('should provide props from hook to child', () => {
     },
   ];
 
-  (useSelectFetch as UseSelectFetchMock).mockReturnValue({
+  mockedUseSelectFetch.mockReturnValue({
     handleScrolledToBottom: () => undefined,
     shouldLoadMore: () => true,
     isLoading: true,
@@ -176,7 +169,7 @@ test('should redefine parent props with hook props', () => {
     },
   ];
 
-  (useSelectFetch as UseSelectFetchMock).mockReturnValue({
+  mockedUseSelectFetch.mockReturnValue({
     handleScrolledToBottom: () => undefined,
     shouldLoadMore: () => true,
     isLoading: true,
@@ -221,9 +214,9 @@ test('should call hook with correct params', () => {
     options,
   });
 
-  expect(useSelectFetch).toHaveBeenCalledTimes(1);
+  expect(mockedUseSelectFetch).toHaveBeenCalledTimes(1);
 
-  const params = (useSelectFetch as UseSelectFetchMock).mock.calls[0][0];
+  const params = mockedUseSelectFetch.mock.calls[0][0];
 
   expect(params.options).toBe(options);
   // eslint-disable-next-line no-prototype-builtins
@@ -237,7 +230,13 @@ test('should call hook with correct params', () => {
 test('should call hook with empty deps', () => {
   setup({});
 
-  expect((useSelectFetch as UseSelectFetchMock).mock.calls[0][1].length).toBe(0);
+  const deps = mockedUseSelectFetch.mock.calls[0][1];
+
+  if (!Array.isArray(deps)) {
+    throw new Error('deps should be an array');
+  }
+
+  expect(deps.length).toBe(0);
 });
 
 test('should call hook with deps from cacheUniq', () => {
@@ -247,7 +246,7 @@ test('should call hook with deps from cacheUniq', () => {
     cacheUniqs,
   });
 
-  expect((useSelectFetch as UseSelectFetchMock).mock.calls[0][1]).toBe(cacheUniqs);
+  expect(mockedUseSelectFetch.mock.calls[0][1]).toBe(cacheUniqs);
 });
 
 test('should call useComponents hook', () => {
@@ -263,8 +262,8 @@ test('should call useComponents hook', () => {
     components,
   });
 
-  expect(useComponents).toHaveBeenCalledTimes(1);
-  expect(useComponents).toHaveBeenCalledWith(components);
+  expect(mockedUseComponents).toHaveBeenCalledTimes(1);
+  expect(mockedUseComponents).toHaveBeenCalledWith(components);
 });
 
 test('should use result of useComponents hook', () => {
@@ -276,7 +275,7 @@ test('should use result of useComponents hook', () => {
     Menu: Test,
   };
 
-  (useComponents as jest.Mock).mockReturnValue(components);
+  mockedUseComponents.mockReturnValue(components);
 
   const page = setup({
     components,

@@ -7,9 +7,11 @@ jest.mock('../stringifyParams');
 
 enableFetchMocks();
 
+const mockedStringifyParams = jest.mocked(stringifyParams);
+
 beforeEach(() => {
   fetchMock.doMock();
-  (stringifyParams as jest.Mock).mockReturnValue('');
+  mockedStringifyParams.mockReturnValue('');
 });
 
 afterEach(() => {
@@ -98,14 +100,14 @@ test('should call stringifyParams with correct params', async () => {
     params,
   );
 
-  expect(stringifyParams).toHaveBeenCalledTimes(1);
-  expect(stringifyParams).toHaveBeenCalledWith(params);
+  expect(mockedStringifyParams).toHaveBeenCalledTimes(1);
+  expect(mockedStringifyParams).toHaveBeenCalledWith(params);
 });
 
 test('should call fetch with correct params', async () => {
   fetchMock.mockResponseOnce('{}');
 
-  (stringifyParams as jest.Mock).mockReturnValue('paramsStr');
+  mockedStringifyParams.mockReturnValue('paramsStr');
 
   await get(
     'https://test/',
