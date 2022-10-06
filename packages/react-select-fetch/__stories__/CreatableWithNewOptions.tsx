@@ -1,14 +1,21 @@
-import { useState, useCallback } from 'react';
-import type { ReactElement } from 'react';
+import {
+  useState,
+  useCallback,
+} from 'react';
 import type {
-  GroupBase,
-  MultiValue,
-} from 'react-select';
+  ReactElement,
+} from 'react';
+
 import sleep from 'sleep-promise';
+
 import Creatable from 'react-select/creatable';
 import type {
   CreatableProps,
 } from 'react-select/creatable';
+import type {
+  GroupBase,
+  MultiValue,
+} from 'react-select';
 
 import type {
   ComponentProps,
@@ -61,7 +68,7 @@ const get: Get = async (url, {
 }) => {
   await sleep(1000);
 
-  let filteredOptions;
+  let filteredOptions: OptionType[];
   if (!search) {
     filteredOptions = options;
   } else {
@@ -99,10 +106,10 @@ const addNewOption = async (inputValue: string): Promise<OptionType> => {
 
 const increaseUniq = (uniq: number): number => uniq + 1;
 
-export function CreatableWithNewOptions(props: StoryProps) {
+export function CreatableWithNewOptions(props: StoryProps): ReactElement {
   const [cacheUniq, setCacheUniq] = useState(0);
   const [isAddingInProgress, setIsAddingInProgress] = useState(false);
-  const [value, onChange] = useState<OptionType | MultiValue<OptionType>>(null);
+  const [value, onChange] = useState<OptionType | MultiValue<OptionType> | null>(null);
 
   const onCreateOption = useCallback(async (inputValue: string) => {
     setIsAddingInProgress(true);

@@ -1,8 +1,13 @@
 import { useState } from 'react';
 import type {
+  ReactElement,
+} from 'react';
+
+import type {
   GroupBase,
   MultiValue,
 } from 'react-select';
+
 import sleep from 'sleep-promise';
 
 import { AsyncPaginate } from '../src';
@@ -34,7 +39,7 @@ null
 > = async (search, prevOptions) => {
   await sleep(1000);
 
-  let filteredOptions;
+  let filteredOptions: OptionType[];
   if (!search) {
     filteredOptions = options;
   } else {
@@ -59,8 +64,8 @@ null
 
 const initialOptions = options.slice(0, 10);
 
-export function InitialOptions(props: StoryProps) {
-  const [value, onChange] = useState<OptionType | MultiValue<OptionType>>(null);
+export function InitialOptions(props: StoryProps): ReactElement {
+  const [value, onChange] = useState<OptionType | MultiValue<OptionType> | null>(null);
 
   return (
     <div

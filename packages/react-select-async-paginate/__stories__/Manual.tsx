@@ -2,10 +2,16 @@
 
 import { useState, useCallback } from 'react';
 import type {
+  ReactElement,
+} from 'react';
+
+import type {
   GroupBase,
   InputActionMeta,
+  InputAction,
   MultiValue,
 } from 'react-select';
+
 import sleep from 'sleep-promise';
 
 import { AsyncPaginate } from '../src';
@@ -22,7 +28,7 @@ type OptionType = {
   label: string;
 };
 
-const options = [];
+const options: OptionType[] = [];
 for (let i = 0; i < 50; ++i) {
   options.push({
     value: i + 1,
@@ -60,11 +66,16 @@ null
   };
 };
 
-export function Manual(props: StoryProps) {
-  const [value, onChange] = useState<OptionType | MultiValue<OptionType>>(null);
+type HistoryItemType = {
+  action: InputAction;
+  inputValue: string;
+};
+
+export function Manual(props: StoryProps): ReactElement {
+  const [value, onChange] = useState<OptionType | MultiValue<OptionType> | null>(null);
   const [inputValue, onInputChangeRaw] = useState('');
   const [menuIsOpen, setMenuIsOpen] = useState(false);
-  const [inputHistory, setInputHistory] = useState([]);
+  const [inputHistory, setInputHistory] = useState<HistoryItemType[]>([]);
 
   const onInputChange = useCallback((
     newInputValue: string,

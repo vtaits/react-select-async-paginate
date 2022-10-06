@@ -1,8 +1,17 @@
 /* eslint-disable react/no-array-index-key */
 
-import { useState, useCallback } from 'react';
-import sleep from 'sleep-promise';
+import {
+  useState,
+  useCallback,
+} from 'react';
 import type {
+  ReactElement,
+} from 'react';
+
+import sleep from 'sleep-promise';
+
+import type {
+  InputAction,
   InputActionMeta,
   MultiValue,
 } from 'react-select';
@@ -26,6 +35,11 @@ for (let i = 0; i < 50; ++i) {
     label: `Option ${i + 1}`,
   });
 }
+
+type HistoryItemType = {
+  action: InputAction;
+  inputValue: string;
+};
 
 const get: Get = async (url, {
   search,
@@ -57,11 +71,11 @@ const get: Get = async (url, {
   };
 };
 
-export function Manual(props: StoryProps) {
-  const [value, onChange] = useState<OptionType | MultiValue<OptionType>>(null);
+export function Manual(props: StoryProps): ReactElement {
+  const [value, onChange] = useState<OptionType | MultiValue<OptionType> | null>(null);
   const [inputValue, onInputChangeRaw] = useState<string>('');
   const [menuIsOpen, setMenuIsOpen] = useState<boolean>(false);
-  const [inputHistory, setInputHistory] = useState([]);
+  const [inputHistory, setInputHistory] = useState<HistoryItemType[]>([]);
 
   const onInputChange = useCallback((
     newInputValue: string,

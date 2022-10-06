@@ -1,8 +1,13 @@
 import { useState } from 'react';
 import type {
+  ReactElement,
+} from 'react';
+
+import type {
   GroupBase,
   MultiValue,
 } from 'react-select';
+
 import sleep from 'sleep-promise';
 
 import { AsyncPaginate } from '../src';
@@ -19,7 +24,7 @@ type OptionType = {
   label: string;
 };
 
-const options = [];
+const options: OptionType[] = [];
 for (let i = 0; i < 50; ++i) {
   options.push({
     value: i + 1,
@@ -30,7 +35,7 @@ for (let i = 0; i < 50; ++i) {
 const loadOptions: LoadOptions<
 OptionType,
 GroupBase<OptionType>,
-null
+unknown
 > = async (search, prevOptions) => {
   await sleep(1000);
 
@@ -57,8 +62,8 @@ null
   };
 };
 
-export function Simple(props: StoryProps) {
-  const [value, onChange] = useState<OptionType | MultiValue<OptionType>>(null);
+export function Simple(props: StoryProps): ReactElement {
+  const [value, onChange] = useState<OptionType | MultiValue<OptionType> | null>(null);
 
   return (
     <div

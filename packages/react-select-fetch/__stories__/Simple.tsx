@@ -1,5 +1,12 @@
-import { useState } from 'react';
+import {
+  useState,
+} from 'react';
+import type {
+  ReactElement,
+} from 'react';
+
 import sleep from 'sleep-promise';
+
 import type {
   MultiValue,
 } from 'react-select';
@@ -31,7 +38,7 @@ const get: Get = async (url, {
 }) => {
   await sleep(1000);
 
-  let filteredOptions;
+  let filteredOptions: OptionType[];
   if (!search) {
     filteredOptions = options;
   } else {
@@ -54,8 +61,8 @@ const get: Get = async (url, {
   };
 };
 
-export function Simple(props: StoryProps) {
-  const [value, onChange] = useState<OptionType | MultiValue<OptionType>>(null);
+export function Simple(props: StoryProps): ReactElement {
+  const [value, onChange] = useState<OptionType | MultiValue<OptionType> | null>(null);
 
   return (
     <div
