@@ -274,6 +274,30 @@ test('should call handleScrolledToBottom if should handle', () => {
   expect(handleScrolledToBottom).toHaveBeenCalledTimes(1);
 });
 
+test('should work if handleScrolledToBottom is not provided', () => {
+  mockedUseCallback
+    .mockReturnValueOnce(() => true)
+    .mockReturnValue(jest.fn());
+
+  mockedUseRef
+    .mockReturnValueOnce({
+      current: null,
+    })
+    .mockReturnValueOnce({
+      current: {
+        scrollTop: 0,
+        scrollHeight: 100,
+        clientHeight: 100,
+      },
+    });
+
+  setup({});
+
+  const checkAndHandle = mockedUseCallback.mock.calls[1][0];
+
+  checkAndHandle();
+});
+
 test('should call checkAndLoad and start timer on mount', () => {
   const setCheckAndHandleTimeout = jest.fn();
 

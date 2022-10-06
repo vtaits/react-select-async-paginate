@@ -2,6 +2,8 @@ import { checkGroup, reduceGroupedOptions } from '../reduceGroupedOptions';
 
 describe('checkGroup', () => {
   test('not groups', () => {
+    expect(checkGroup(null)).toBe(false);
+
     expect(checkGroup({})).toBe(false);
 
     expect(checkGroup({

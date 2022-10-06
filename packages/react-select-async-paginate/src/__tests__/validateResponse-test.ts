@@ -76,4 +76,12 @@ describe('validateResponse', () => {
       response,
     );
   });
+
+  test('should accept valid response', () => {
+    const response = {
+      options: [1, 2, 3],
+    };
+
+    expect(validateResponse(response)).toBe(true);
+  });
 });

@@ -1,4 +1,7 @@
-import { useMapToAsyncPaginate } from '../useMapToAsyncPaginate';
+import {
+  useMapToAsyncPaginate,
+  defaultResponseMapper,
+} from '../useMapToAsyncPaginate';
 
 jest.mock('react', () => ({
   ...jest.requireActual('react'),
@@ -16,6 +19,22 @@ afterEach(() => {
 const defaultParams = {
   url: '/test/',
 };
+
+test('should return response if valid', () => {
+  const response = {
+    options: [1, 2, 3],
+  };
+
+  expect(defaultResponseMapper(response)).toBe(response);
+});
+
+test('should throw error if response is invalid', () => {
+  const response = {};
+
+  expect(() => {
+    defaultResponseMapper(response);
+  }).toThrow();
+});
 
 test('should provide default additional', () => {
   const result = useMapToAsyncPaginate(
@@ -332,4 +351,27 @@ test('should return empty response on error', async () => {
     options: [],
     hasMore: false,
   });
+});
+
+test('should throw an error if additional is not defined', async () => {
+  const get = jest.fn(() => {
+    throw new Error('Test error');
+  });
+
+  const result = useMapToAsyncPaginate(
+    {
+      ...defaultParams,
+      get,
+    },
+  );
+
+  let hasError = false;
+
+  try {
+    await result.loadOptions('testSearch', [1, 2, 3], undefined);
+  } catch (e) {
+    hasError = true;
+  }
+
+  expect(hasError).toBe(true);
 });
