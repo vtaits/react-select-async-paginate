@@ -29,8 +29,8 @@ jest.mock('react', () => ({
 
 jest.mock('../useAsyncPaginateBase');
 
-const mockedUseAsyncPaginateBase = jest.mocked(useAsyncPaginateBase, true);
-const mockedUseState = jest.mocked(useState, true);
+const mockedUseAsyncPaginateBase = jest.mocked(useAsyncPaginateBase);
+const mockedUseState = jest.mocked(useState);
 
 beforeEach(() => {
   mockedUseAsyncPaginateBase.mockReturnValue({

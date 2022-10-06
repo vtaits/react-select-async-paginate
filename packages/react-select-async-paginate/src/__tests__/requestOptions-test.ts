@@ -15,8 +15,8 @@ import type {
 jest.mock('sleep-promise');
 jest.mock('../validateResponse');
 
-const mockedValidateResponse = jest.mocked(validateResponse, true);
-const mockedSleep = jest.mocked(sleep, true);
+const mockedValidateResponse = jest.mocked(validateResponse);
+const mockedSleep = jest.mocked(sleep);
 
 beforeEach(() => {
   mockedValidateResponse.mockReturnValue(true);

@@ -44,13 +44,13 @@ jest.mock('@vtaits/use-lazy-ref');
 jest.mock('../getInitialOptionsCache');
 jest.mock('../requestOptions');
 
-const mockedUseEffect = jest.mocked(useEffect, true);
-const mockedUseState = jest.mocked(useState, true);
-const mockedUseRef = jest.mocked(useRef, true);
-const mockedGetInitialOptionsCache = jest.mocked(getInitialOptionsCache, true);
-const mockedRequestOptions = jest.mocked(requestOptions, true);
-const mockedUseIsMountedRef = jest.mocked(useIsMountedRef, true);
-const mockedUseLazyRef = jest.mocked(useLazyRef, true);
+const mockedUseEffect = jest.mocked(useEffect);
+const mockedUseState = jest.mocked(useState);
+const mockedUseRef = jest.mocked(useRef);
+const mockedGetInitialOptionsCache = jest.mocked(getInitialOptionsCache);
+const mockedRequestOptions = jest.mocked(requestOptions);
+const mockedUseIsMountedRef = jest.mocked(useIsMountedRef);
+const mockedUseLazyRef = jest.mocked(useLazyRef);
 
 const defaultCacheItem: OptionsCacheItem<unknown, GroupBase<unknown>, unknown> = {
   options: [],

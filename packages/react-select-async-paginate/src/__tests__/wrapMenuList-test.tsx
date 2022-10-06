@@ -31,10 +31,10 @@ jest.useFakeTimers();
 jest.spyOn(global, 'setTimeout');
 jest.spyOn(global, 'clearTimeout');
 
-const mockedUseCallback = jest.mocked(useCallback, true);
-const mockedUseEffect = jest.mocked(useEffect, true);
-const mockedUseRef = jest.mocked(useRef, true);
-const mockedSetTimeout = jest.mocked(setTimeout, true);
+const mockedUseCallback = jest.mocked(useCallback);
+const mockedUseEffect = jest.mocked(useEffect);
+const mockedUseRef = jest.mocked(useRef);
+const mockedSetTimeout = jest.mocked(setTimeout);
 
 beforeEach(() => {
   mockedUseEffect.mockReturnValue(undefined);

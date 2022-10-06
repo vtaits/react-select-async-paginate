@@ -24,8 +24,8 @@ import type {
 jest.mock('../useAsyncPaginate');
 jest.mock('../useComponents');
 
-const mockedUseComponents = jest.mocked(useComponents, true);
-const mockedUseAsyncPaginate = jest.mocked(useAsyncPaginate, true);
+const mockedUseComponents = jest.mocked(useComponents);
+const mockedUseAsyncPaginate = jest.mocked(useAsyncPaginate);
 
 beforeEach(() => {
   mockedUseComponents.mockReturnValue({});

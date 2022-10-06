@@ -10,7 +10,7 @@ jest.mock('react', () => ({
   useMemo: jest.fn(),
 }));
 
-const mockedUseMemo = jest.mocked(useMemo, true);
+const mockedUseMemo = jest.mocked(useMemo);
 
 beforeEach(() => {
   mockedUseMemo.mockImplementation((callback) => callback());
