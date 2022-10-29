@@ -2,14 +2,18 @@
   "name": "react-select-fetch",
   "version": "0.5.0",
   "description": "Wrapper above react-select-async-paginate that loads options from specified url",
-  "main": "lib/index.js",
-  "module": "es/index.js",
-  "typings": "ts/index.d.ts",
   "files": [
-    "/es",
-    "/lib",
-    "/ts"
+    "dist"
   ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "typings": "dist/index.d.ts",
   "keywords": [
     "react",
     "react-select",
@@ -22,11 +26,7 @@
   "author": "Vadim Taits",
   "license": "MIT",
   "scripts": {
-    "clean": "rimraf es lib ts",
-    "build": "yarn build:cjs && yarn build:es && yarn build:ts",
-    "build:cjs": "cross-env BABEL_ENV=cjs babel --root-mode upward --extensions '.ts,.tsx' src --out-dir lib --ignore \"src/**/__tests__\"",
-    "build:es": "cross-env BABEL_ENV=es babel --root-mode upward --extensions '.ts,.tsx' src --out-dir es --ignore \"src/**/__tests__\"",
-    "build:ts": "tsc --declaration --emitDeclarationOnly",
+    "build": "tsup src/index.ts --sourcemap --format esm,cjs --dts",
     "lint": "eslint src --ext .ts,.tsx --ignore-path ../../.gitignore",
     "prepare": "yarn clean && yarn build",
     "test:ts": "tsc -p ./tsconfig.validate.json --noEmit",
@@ -40,11 +40,9 @@
     "react-select-async-paginate": "^0.7.0"
   },
   "dependencies": {
-    "@babel/runtime": "^7.19.0",
     "qs": "^6.11.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.19.3",
     "@mdx-js/react": "^1.6.22",
     "@storybook/addon-controls": "^6.5.12",
     "@storybook/addon-docs": "^6.5.12",
@@ -69,9 +67,9 @@
     "react-select": "^5.4.0",
     "react-select-async-paginate": "^0.7.0",
     "react-test-renderer": "^18.2.0",
-    "rimraf": "^3.0.2",
     "sleep-promise": "^9.1.0",
     "ts-jest": "^29.0.3",
+    "tsup": "^6.3.0",
     "typescript": "^4.7.4"
   }
 }

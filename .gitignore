@@ -9,7 +9,5 @@
 node_modules
 coverage
 *.log
-lib
-es
-ts
+dist
 .idea/

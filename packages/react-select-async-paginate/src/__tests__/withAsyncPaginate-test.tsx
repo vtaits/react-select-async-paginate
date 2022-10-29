@@ -293,7 +293,7 @@ test('should call useComponents hook', () => {
     return <div />;
   }
 
-  const components: SelectComponentsConfig<any, false, any> = {
+  const components = {
     Menu: Test,
   };
 
@@ -310,7 +310,7 @@ test('should use result of useComponents hook', () => {
     return <div />;
   }
 
-  const components: SelectComponentsConfig<any, false, any> = {
+  const components = {
     Menu: Test,
   };
 

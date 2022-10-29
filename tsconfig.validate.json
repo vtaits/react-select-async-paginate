@@ -1,12 +1,22 @@
 {
   "compilerOptions": {
-    "lib": ["es2020", "DOM"],
-    "target": "es5",
-    "outDir": "ts",
-    "esModuleInterop": true,
-    "strict": true,
+    "target": "ES2021",
+    "outDir": "dist/ts",
     "jsx": "react-jsx",
-    "skipLibCheck": true
+    "lib": [
+      "ESNext",
+      "DOM"
+    ],
+    "allowJs": false,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "resolveJsonModule": true,
+    "isolatedModules": true
   },
   "include": [
     "packages/**/*"
