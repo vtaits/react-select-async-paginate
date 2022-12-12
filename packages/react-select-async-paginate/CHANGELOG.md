@@ -1,3 +1,9 @@
+## 0.7.1 (12 dec 2022)
+
+# Bugfix
+
+- Fixed type of `wrapMenuList` [#125](https://github.com/vtaits/react-select-async-paginate/pull/125)
+
 ## 0.7.0 (06 oct 2022)
 
 - Improved typing
