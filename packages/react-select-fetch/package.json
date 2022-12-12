@@ -28,7 +28,7 @@
   "scripts": {
     "build": "tsup src/index.ts --sourcemap --format esm,cjs --dts",
     "lint": "eslint src --ext .ts,.tsx --ignore-path ../../.gitignore",
-    "prepare": "yarn clean && yarn build",
+    "prepare": "yarn build",
     "test:ts": "tsc --noEmit",
     "test:unit": "jest",
     "test:unit:cov": "jest --coverage",
