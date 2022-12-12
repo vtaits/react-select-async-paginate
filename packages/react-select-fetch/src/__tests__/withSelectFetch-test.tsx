@@ -254,7 +254,7 @@ test('should call useComponents hook', () => {
     return <div />;
   }
 
-  const components = {
+  const components: SelectComponentsConfig<unknown, boolean, GroupBase<unknown>> = {
     Menu: Test,
   };
 
@@ -271,7 +271,7 @@ test('should use result of useComponents hook', () => {
     return <div />;
   }
 
-  const components = {
+  const components: SelectComponentsConfig<unknown, boolean, GroupBase<unknown>> = {
     Menu: Test,
   };
 
