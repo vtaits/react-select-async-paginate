@@ -14,6 +14,7 @@ module.exports = {
   },
 
   features: {
+    previewMdx2: true,
     storyStoreV7: true,
   },
 };
