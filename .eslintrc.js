@@ -21,7 +21,7 @@ module.exports = {
   ],
 
   parserOptions: {
-    project: './tsconfig.validate.json',
+    project: './tsconfig.json',
   },
 
   settings: {
