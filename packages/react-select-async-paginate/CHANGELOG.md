@@ -1,3 +1,9 @@
+## 0.7.2 (14 dec 2022)
+
+# Bugfix
+
+- Use only `.js` extension in output files to work correctly with webpack
+
 ## 0.7.1 (12 dec 2022)
 
 # Bugfix

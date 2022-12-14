@@ -6,10 +6,10 @@
     "dist"
   ],
   "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
+  "module": "./dist/esm/index.js",
   "exports": {
     ".": {
-      "import": "./dist/index.mjs",
+      "import": "./dist/esm/index.js",
       "require": "./dist/index.js"
     }
   },
@@ -26,7 +26,7 @@
   "author": "Vadim Taits",
   "license": "MIT",
   "scripts": {
-    "build": "tsup src/index.ts --sourcemap --format esm,cjs --dts",
+    "build": "tsup src/index.ts --sourcemap --format esm,cjs --dts --legacy-output",
     "lint": "eslint src --ext .ts,.tsx --ignore-path ../../.gitignore",
     "prepare": "yarn build",
     "test:ts": "tsc --noEmit",
