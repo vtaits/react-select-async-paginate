@@ -10,7 +10,9 @@ A set of components that make working with asynchronous selects based on `react-
 
 ## Local development
 
-Repository is using [yarn 2](https://yarnpkg.com/getting-started).
+Repository is using stable version of [yarn](https://yarnpkg.com/getting-started).
+
+There is an [installation guide](https://yarnpkg.com/getting-started/install).
 
 ### Commands
 
