@@ -9,7 +9,7 @@
   "scripts": {
     "start": "start-storybook",
     "clean": "yarn workspaces foreach -pt run clean",
-    "build": "yarn workspaces foreach -pt run build",
+    "build": "yarn workspaces foreach -t run build",
     "lint": "yarn workspaces foreach run lint",
     "test:ts": "yarn workspaces foreach run test:ts",
     "test:unit": "yarn workspaces foreach run test:unit",
