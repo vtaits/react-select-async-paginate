@@ -2,6 +2,12 @@ import { requestOptions } from './requestOptions';
 
 import type {
   Dispatch,
+} from '../thunkHelpers';
+
+import {
+  RequestOptionsCaller,
+} from '../types';
+import type {
   State,
 } from '../types';
 
@@ -17,6 +23,6 @@ export const loadMore = <OptionType, Additional>() => (
   const currentCache = cache[inputValue];
 
   if (currentCache) {
-    dispatch(requestOptions('menu-scroll'));
+    dispatch(requestOptions(RequestOptionsCaller.MenuScroll));
   }
 };

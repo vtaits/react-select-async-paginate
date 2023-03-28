@@ -6,6 +6,12 @@ import { requestOptions } from './requestOptions';
 
 import type {
   Dispatch,
+} from '../thunkHelpers';
+
+import {
+  RequestOptionsCaller,
+} from '../types';
+import type {
   Params,
   State,
 } from '../types';
@@ -22,6 +28,6 @@ export const reset = <OptionType, Additional>() => (
   } = getParams();
 
   if (autoload) {
-    dispatch(requestOptions('autoload'));
+    dispatch(requestOptions(RequestOptionsCaller.Autoload));
   }
 };

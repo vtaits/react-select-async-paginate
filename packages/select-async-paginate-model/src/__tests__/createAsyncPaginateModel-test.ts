@@ -13,6 +13,9 @@ import { reset } from '../thunks/reset';
 
 import { createAsyncPaginateModel } from '../createAsyncPaginateModel';
 
+import {
+  RequestOptionsCaller,
+} from '../types';
 import type {
   Params,
   State,
@@ -268,7 +271,7 @@ test('should load options automatically on init if autoload is `true`', () => {
   expect(store.dispatch).toHaveBeenCalledWith(resThunk);
 
   expect(mockedRequestOptions).toHaveBeenCalledTimes(1);
-  expect(mockedRequestOptions).toHaveBeenCalledWith('autoload');
+  expect(mockedRequestOptions).toHaveBeenCalledWith(RequestOptionsCaller.Autoload);
 });
 
 test('should update params', () => {

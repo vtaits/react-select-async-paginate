@@ -13,6 +13,10 @@ import { requestOptions } from '../requestOptions';
 
 import { reset } from '../reset';
 
+import {
+  RequestOptionsCaller,
+} from '../../types';
+
 jest.mock('../../actions');
 const mockedResetAction = jest.mocked(resetAction);
 
@@ -73,7 +77,7 @@ test('should call reset and load options', () => {
   expect(mockedResetAction).toHaveBeenCalledTimes(1);
 
   expect(mockedRequestOptions).toHaveBeenCalledTimes(1);
-  expect(mockedRequestOptions).toHaveBeenCalledWith('autoload');
+  expect(mockedRequestOptions).toHaveBeenCalledWith(RequestOptionsCaller.Autoload);
 
   expect(dispatch).toHaveBeenCalledTimes(2);
   expect(dispatch).toHaveBeenNthCalledWith(

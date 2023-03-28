@@ -6,6 +6,12 @@ import { requestOptions } from './requestOptions';
 
 import type {
   Dispatch,
+} from '../thunkHelpers';
+
+import {
+  RequestOptionsCaller,
+} from '../types';
+import type {
   Params,
   State,
 } from '../types';
@@ -35,6 +41,6 @@ export const setMenuIsOpen = <OptionType, Additional>(
       && !currentCache
       && loadOptionsOnMenuOpen
     ) {
-      dispatch(requestOptions('menu-toggle'));
+      dispatch(requestOptions(RequestOptionsCaller.MenuToggle));
     }
   };

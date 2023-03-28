@@ -11,13 +11,18 @@ import { validateResponse } from '../validateResponse';
 
 import type {
   Dispatch,
+} from '../thunkHelpers';
+
+import {
+  RequestOptionsCaller,
+} from '../types';
+import type {
   Params,
-  RequestOptionsCallerType,
   State,
 } from '../types';
 
 export const requestOptions = <OptionType, Additional>(
-  caller: RequestOptionsCallerType,
+  caller: RequestOptionsCaller,
 ) => async (
     dispatch: Dispatch<OptionType, Additional>,
     getState: () => State<OptionType, Additional>,
@@ -45,7 +50,7 @@ export const requestOptions = <OptionType, Additional>(
 
     dispatch(setLoading(inputValue));
 
-    if (debounceTimeout > 0 && caller === 'input-change') {
+    if (debounceTimeout > 0 && caller === RequestOptionsCaller.InputChange) {
       await sleep(debounceTimeout);
 
       const newInputValue = getState().inputValue;

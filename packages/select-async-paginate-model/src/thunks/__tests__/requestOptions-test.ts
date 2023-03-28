@@ -22,11 +22,13 @@ import { validateResponse } from '../../validateResponse';
 
 import { requestOptions } from '../requestOptions';
 
+import {
+  RequestOptionsCaller,
+} from '../../types';
 import type {
   LoadOptions,
   OptionsCacheItem,
   Params,
-  RequestOptionsCallerType,
   Response,
   State,
 } from '../../types';
@@ -116,7 +118,7 @@ beforeEach(() => {
   });
 });
 
-const setup = async (caller: RequestOptionsCallerType): Promise<void> => {
+const setup = async (caller: RequestOptionsCaller): Promise<void> => {
   const thunkAction = requestOptions(caller);
 
   await thunkAction(
@@ -139,7 +141,7 @@ test('should not request options if options are loading', async () => {
     menuIsOpen: false,
   });
 
-  await setup('autoload');
+  await setup(RequestOptionsCaller.Autoload);
 
   expect(dispatch).toHaveBeenCalledTimes(0);
 });
@@ -157,7 +159,7 @@ test('should not request options if there are not more options', async () => {
     menuIsOpen: false,
   });
 
-  await setup('autoload');
+  await setup(RequestOptionsCaller.Autoload);
 
   expect(dispatch).toHaveBeenCalledTimes(0);
 });
@@ -169,7 +171,7 @@ test('should make request if options are not cached', async () => {
     menuIsOpen: false,
   });
 
-  await setup('autoload');
+  await setup(RequestOptionsCaller.Autoload);
 
   expect(dispatch).toHaveBeenCalledTimes(2);
   expect(dispatch).toHaveBeenNthCalledWith(1, setLoadingAction);
@@ -199,7 +201,7 @@ test('should make request if options are cached', async () => {
     menuIsOpen: false,
   });
 
-  await setup('autoload');
+  await setup(RequestOptionsCaller.Autoload);
 
   expect(dispatch).toHaveBeenCalledTimes(2);
   expect(dispatch).toHaveBeenNthCalledWith(1, setLoadingAction);
@@ -229,7 +231,7 @@ test('should request successfully', async () => {
 
   loadOptions.mockResolvedValue(response);
 
-  await setup('autoload');
+  await setup(RequestOptionsCaller.Autoload);
 
   expect(dispatch).toHaveBeenCalledTimes(2);
   expect(dispatch).toHaveBeenNthCalledWith(1, setLoadingAction);
@@ -259,7 +261,7 @@ test('should request with error', async () => {
 
   loadOptions.mockRejectedValue(null);
 
-  await setup('autoload');
+  await setup(RequestOptionsCaller.Autoload);
 
   expect(dispatch).toHaveBeenCalledTimes(2);
   expect(dispatch).toHaveBeenNthCalledWith(1, setLoadingAction);
@@ -295,7 +297,7 @@ test('should validate response', async () => {
 
   mockedValidateResponse.mockReturnValue(false);
 
-  await setup('autoload');
+  await setup(RequestOptionsCaller.Autoload);
 
   expect(dispatch).toHaveBeenCalledTimes(2);
   expect(dispatch).toHaveBeenNthCalledWith(1, setLoadingAction);
@@ -317,7 +319,7 @@ test('should validate response', async () => {
 });
 
 test('should not sleep if `debounceTimeout` is 0', async () => {
-  await setup('autoload');
+  await setup(RequestOptionsCaller.Autoload);
 
   expect(dispatch).toHaveBeenCalledTimes(2);
   expect(dispatch).toHaveBeenNthCalledWith(1, setLoadingAction);
@@ -332,7 +334,7 @@ test('should not sleep if `debounceTimeout` bigger than 0 and caller is not "inp
     debounceTimeout: 100,
   });
 
-  await setup('autoload');
+  await setup(RequestOptionsCaller.Autoload);
 
   expect(dispatch).toHaveBeenCalledTimes(2);
   expect(dispatch).toHaveBeenNthCalledWith(1, setLoadingAction);
@@ -347,7 +349,7 @@ test('should sleep if `debounceTimeout` bigger than 0 and caller is "input-chang
     debounceTimeout: 100,
   });
 
-  await setup('input-change');
+  await setup(RequestOptionsCaller.InputChange);
 
   expect(dispatch).toHaveBeenCalledTimes(2);
   expect(dispatch).toHaveBeenNthCalledWith(1, setLoadingAction);
@@ -375,7 +377,7 @@ test('should cancel loading if `inputValue` has changed during sleep for empty c
     debounceTimeout: 100,
   });
 
-  await setup('input-change');
+  await setup(RequestOptionsCaller.InputChange);
 
   expect(dispatch).toHaveBeenCalledTimes(2);
   expect(dispatch).toHaveBeenNthCalledWith(1, setLoadingAction);
@@ -413,7 +415,7 @@ test('should cancel loading if `inputValue` has changed during sleep for filled 
     debounceTimeout: 100,
   });
 
-  await setup('input-change');
+  await setup(RequestOptionsCaller.InputChange);
 
   expect(dispatch).toHaveBeenCalledTimes(2);
   expect(dispatch).toHaveBeenNthCalledWith(1, setLoadingAction);

@@ -9,5 +9,6 @@
 node_modules
 coverage
 *.log
+docs
 dist
 .idea/

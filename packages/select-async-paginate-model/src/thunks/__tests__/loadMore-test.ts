@@ -2,6 +2,10 @@ import { requestOptions } from '../requestOptions';
 
 import { loadMore } from '../loadMore';
 
+import {
+  RequestOptionsCaller,
+} from '../../types';
+
 jest.mock('../requestOptions');
 const mockedRequestOptions = jest.mocked(requestOptions);
 
@@ -52,7 +56,7 @@ test('should call not load options if cache is defined for current input', () =>
   );
 
   expect(mockedRequestOptions).toHaveBeenCalledTimes(1);
-  expect(mockedRequestOptions).toHaveBeenCalledWith('menu-scroll');
+  expect(mockedRequestOptions).toHaveBeenCalledWith(RequestOptionsCaller.MenuScroll);
 
   expect(dispatch).toHaveBeenCalledTimes(1);
   expect(dispatch).toHaveBeenCalledWith(requestOptionsThunkAction);

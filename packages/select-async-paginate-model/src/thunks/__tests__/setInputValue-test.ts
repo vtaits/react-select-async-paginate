@@ -13,6 +13,10 @@ import { requestOptions } from '../requestOptions';
 
 import { setInputValue } from '../setInputValue';
 
+import {
+  RequestOptionsCaller,
+} from '../../types';
+
 jest.mock('../../actions');
 const mockedSetInputValueAction = jest.mocked(setInputValueAction);
 
@@ -103,7 +107,7 @@ test('should load options', () => {
   expect(mockedSetInputValueAction).toHaveBeenCalledWith('testInput');
 
   expect(mockedRequestOptions).toHaveBeenCalledTimes(1);
-  expect(mockedRequestOptions).toHaveBeenCalledWith('input-change');
+  expect(mockedRequestOptions).toHaveBeenCalledWith(RequestOptionsCaller.InputChange);
 
   expect(dispatch).toHaveBeenCalledTimes(2);
   expect(dispatch).toHaveBeenNthCalledWith(1, action);

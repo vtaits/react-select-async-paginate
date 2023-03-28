@@ -13,6 +13,10 @@ import { requestOptions } from '../requestOptions';
 
 import { setMenuIsOpen } from '../setMenuIsOpen';
 
+import {
+  RequestOptionsCaller,
+} from '../../types';
+
 jest.mock('../../actions');
 const mockedSetMenuIsOpenAction = jest.mocked(setMenuIsOpenAction);
 
@@ -136,7 +140,7 @@ test('should load options', () => {
   expect(mockedSetMenuIsOpenAction).toHaveBeenCalledWith(true);
 
   expect(mockedRequestOptions).toHaveBeenCalledTimes(1);
-  expect(mockedRequestOptions).toHaveBeenCalledWith('menu-toggle');
+  expect(mockedRequestOptions).toHaveBeenCalledWith(RequestOptionsCaller.MenuToggle);
 
   expect(dispatch).toHaveBeenCalledTimes(2);
   expect(dispatch).toHaveBeenNthCalledWith(1, action);

@@ -13,12 +13,24 @@ import { setMenuIsOpen } from './thunks/setMenuIsOpen';
 
 import type {
   Dispatch,
+} from './thunkHelpers';
+
+import {
+  RequestOptionsCaller,
+} from './types';
+import type {
+  Model,
   Params,
 } from './types';
 
+/**
+ * Creates the model for asyncronous select that supports pagination on menu scroll
+ * @param initialParams parameters
+ * @returns the model
+ */
 export const createAsyncPaginateModel = <OptionType, Additional>(
   initialParams: Params<OptionType, Additional>,
-) => {
+): Model<OptionType, Additional> => {
   let params = initialParams;
 
   const getParams = () => params;
@@ -64,7 +76,7 @@ export const createAsyncPaginateModel = <OptionType, Additional>(
   };
 
   if (params.autoload) {
-    dispatch(requestOptions('autoload'));
+    dispatch(requestOptions(RequestOptionsCaller.Autoload));
   }
 
   return {
