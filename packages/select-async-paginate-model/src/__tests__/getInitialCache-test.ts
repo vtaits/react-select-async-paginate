@@ -2,7 +2,7 @@ import { getInitialCache } from '../getInitialCache';
 
 import type {
   Params,
-} from '../types';
+} from '../types/public';
 
 const defaultParams: Params<unknown, unknown> = {
   loadOptions: () => ({

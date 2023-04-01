@@ -15,7 +15,7 @@ import { setInputValue } from '../setInputValue';
 
 import {
   RequestOptionsCaller,
-} from '../../types';
+} from '../../types/internal';
 
 jest.mock('../../actions');
 const mockedSetInputValueAction = jest.mocked(setInputValueAction);

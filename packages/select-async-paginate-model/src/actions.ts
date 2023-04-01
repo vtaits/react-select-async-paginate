@@ -13,7 +13,7 @@ import {
 
 import type {
   Response,
-} from './types';
+} from './types/public';
 
 export type SetLoadingAction = Action<typeof SET_LOADING> & {
   payload: {

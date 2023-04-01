@@ -1,2 +1,2 @@
 export { createAsyncPaginateModel } from './createAsyncPaginateModel';
-export * from './types';
+export * from './types/public';

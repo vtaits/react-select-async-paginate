@@ -1,6 +1,6 @@
 import type {
   State,
-} from '../types';
+} from '../types/internal';
 
 export const setInputValue = <OptionType, Additional>(
   prevState: State<OptionType, Additional>,

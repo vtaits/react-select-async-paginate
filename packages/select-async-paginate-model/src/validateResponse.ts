@@ -1,6 +1,6 @@
 import type {
   Response,
-} from './types';
+} from './types/public';
 
 export const errorText = '[select-async-paginate-model] response of "loadOptions" should be an object with "options" prop, which contains array of options.';
 

@@ -15,11 +15,13 @@ import { createAsyncPaginateModel } from '../createAsyncPaginateModel';
 
 import {
   RequestOptionsCaller,
-} from '../types';
+} from '../types/internal';
+import type {
+  State,
+} from '../types/internal';
 import type {
   Params,
-  State,
-} from '../types';
+} from '../types/public';
 
 jest.mock('redux');
 const mockedCreateStore = jest.mocked(legacy_createStore);

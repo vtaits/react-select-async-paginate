@@ -4,7 +4,7 @@ import { loadMore } from '../loadMore';
 
 import {
   RequestOptionsCaller,
-} from '../../types';
+} from '../../types/internal';
 
 jest.mock('../requestOptions');
 const mockedRequestOptions = jest.mocked(requestOptions);

@@ -15,7 +15,7 @@ import { setMenuIsOpen } from '../setMenuIsOpen';
 
 import {
   RequestOptionsCaller,
-} from '../../types';
+} from '../../types/internal';
 
 jest.mock('../../actions');
 const mockedSetMenuIsOpenAction = jest.mocked(setMenuIsOpenAction);

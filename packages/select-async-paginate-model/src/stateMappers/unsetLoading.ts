@@ -1,6 +1,6 @@
 import type {
   State,
-} from '../types';
+} from '../types/internal';
 
 export const unsetLoading = <OptionType, Additional>(
   prevState: State<OptionType, Additional>,

@@ -12,9 +12,11 @@ import {
 } from './actions';
 
 import type {
-  Params,
   State,
-} from './types';
+} from './types/internal';
+import type {
+  Params,
+} from './types/public';
 
 import { onLoadSuccess } from './stateMappers/onLoadSuccess';
 import { setInputValue } from './stateMappers/setInputValue';

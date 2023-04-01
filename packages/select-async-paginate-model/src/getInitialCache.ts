@@ -1,7 +1,7 @@
 import type {
   Params,
   OptionsCacheItem,
-} from './types';
+} from './types/public';
 
 export const getInitialCache = <OptionType, Additional>(
   params: Params<OptionType, Additional>,

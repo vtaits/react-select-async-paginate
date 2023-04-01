@@ -24,14 +24,16 @@ import { requestOptions } from '../requestOptions';
 
 import {
   RequestOptionsCaller,
-} from '../../types';
+} from '../../types/internal';
+import type {
+  State,
+} from '../../types/internal';
 import type {
   LoadOptions,
   OptionsCacheItem,
   Params,
   Response,
-  State,
-} from '../../types';
+} from '../../types/public';
 
 jest.mock('../../actions');
 

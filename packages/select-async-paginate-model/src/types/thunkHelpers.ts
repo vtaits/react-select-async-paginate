@@ -4,12 +4,14 @@ import type {
 
 import type {
   ActionType,
-} from './actions';
+} from '../actions';
 
 import type {
-  Params,
   State,
-} from './types';
+} from './internal';
+import type {
+  Params,
+} from './public';
 
 export type Dispatch<OptionType, Additional> = ThunkDispatch<
 State<OptionType, Additional>,

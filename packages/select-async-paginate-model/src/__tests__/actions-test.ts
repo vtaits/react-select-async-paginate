@@ -18,7 +18,7 @@ import {
 
 import type {
   Response,
-} from '../types';
+} from '../types/public';
 
 test('onLoadSuccess', () => {
   const response: Response<number, unknown> = {

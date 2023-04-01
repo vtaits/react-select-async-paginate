@@ -1,6 +1,6 @@
 import type {
   State,
-} from '../types';
+} from '../types/internal';
 
 export const reset = <OptionType, Additional>(
   prevState: State<OptionType, Additional>,

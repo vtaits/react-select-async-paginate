@@ -1,9 +1,11 @@
 import { getInitialCache } from '../getInitialCache';
 
 import type {
-  Params,
   State,
-} from '../types';
+} from '../types/internal';
+import type {
+  Params,
+} from '../types/public';
 
 export const setLoading = <OptionType, Additional>(
   prevState: State<OptionType, Additional>,

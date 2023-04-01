@@ -15,7 +15,7 @@ import { reset } from '../reset';
 
 import {
   RequestOptionsCaller,
-} from '../../types';
+} from '../../types/internal';
 
 jest.mock('../../actions');
 const mockedResetAction = jest.mocked(resetAction);

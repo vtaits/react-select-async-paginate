@@ -17,9 +17,11 @@ import { unsetLoading } from '../stateMappers/unsetLoading';
 import { createReducer } from '../createReducer';
 
 import type {
-  Params,
   State,
-} from '../types';
+} from '../types/internal';
+import type {
+  Params,
+} from '../types/public';
 
 jest.mock('../stateMappers/onLoadSuccess');
 jest.mock('../stateMappers/setInputValue');

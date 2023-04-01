@@ -13,15 +13,15 @@ import { setMenuIsOpen } from './thunks/setMenuIsOpen';
 
 import type {
   Dispatch,
-} from './thunkHelpers';
+} from './types/thunkHelpers';
 
 import {
   RequestOptionsCaller,
-} from './types';
+} from './types/internal';
 import type {
   Model,
   Params,
-} from './types';
+} from './types/public';
 
 /**
  * Creates the model for asyncronous select that supports pagination on menu scroll

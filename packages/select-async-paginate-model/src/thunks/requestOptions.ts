@@ -11,15 +11,17 @@ import { validateResponse } from '../validateResponse';
 
 import type {
   Dispatch,
-} from '../thunkHelpers';
+} from '../types/thunkHelpers';
 
 import {
   RequestOptionsCaller,
-} from '../types';
+} from '../types/internal';
+import type {
+  State,
+} from '../types/internal';
 import type {
   Params,
-  State,
-} from '../types';
+} from '../types/public';
 
 export const requestOptions = <OptionType, Additional>(
   caller: RequestOptionsCaller,

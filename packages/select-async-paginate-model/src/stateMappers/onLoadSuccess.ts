@@ -1,10 +1,12 @@
 import { defaultReduceOptions } from '../defaultReduceOptions';
 
 import type {
+  State,
+} from '../types/internal';
+import type {
   Params,
   Response,
-  State,
-} from '../types';
+} from '../types/public';
 
 export const onLoadSuccess = <OptionType, Additional>(
   prevState: State<OptionType, Additional>,

@@ -1,7 +1,9 @@
 import type {
-  Params,
   OptionsCache,
-} from './types';
+} from './types/internal';
+import type {
+  Params,
+} from './types/public';
 
 export const getInitialOptionsCache = <
 OptionType,

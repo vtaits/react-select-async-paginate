@@ -1,9 +1,11 @@
 import { getInitialOptionsCache } from './getInitialOptionsCache';
 
 import type {
-  Params,
   State,
-} from './types';
+} from './types/internal';
+import type {
+  Params,
+} from './types/public';
 
 export const getInitialState = <OptionType, Additional>(
   params: Params<OptionType, Additional>,

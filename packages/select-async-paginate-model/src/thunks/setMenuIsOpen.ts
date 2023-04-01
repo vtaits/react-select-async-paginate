@@ -6,15 +6,17 @@ import { requestOptions } from './requestOptions';
 
 import type {
   Dispatch,
-} from '../thunkHelpers';
+} from '../types/thunkHelpers';
 
 import {
   RequestOptionsCaller,
-} from '../types';
+} from '../types/internal';
+import type {
+  State,
+} from '../types/internal';
 import type {
   Params,
-  State,
-} from '../types';
+} from '../types/public';
 
 export const setMenuIsOpen = <OptionType, Additional>(
   menuIsOpen: boolean,

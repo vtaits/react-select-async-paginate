@@ -2,14 +2,14 @@ import { requestOptions } from './requestOptions';
 
 import type {
   Dispatch,
-} from '../thunkHelpers';
+} from '../types/thunkHelpers';
 
 import {
   RequestOptionsCaller,
-} from '../types';
+} from '../types/internal';
 import type {
   State,
-} from '../types';
+} from '../types/internal';
 
 export const loadMore = <OptionType, Additional>() => (
   dispatch: Dispatch<OptionType, Additional>,
