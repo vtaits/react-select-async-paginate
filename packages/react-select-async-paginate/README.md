@@ -22,6 +22,7 @@ Wrapper above `react-select` that supports pagination on menu scroll.
 - [Grouped options](https://codesandbox.io/s/oxv62x8j4y)
 - [Custom select base](https://codesandbox.io/s/l2pjrv0ryl)
 - [Manual control of input value and menu opening](https://codesandbox.io/s/6y34j51k1n)
+- [react-hook-form integration](https://codesandbox.io/s/x7vw8c)
 
 ## Versions
 
