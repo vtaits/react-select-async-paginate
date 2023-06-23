@@ -1,3 +1,9 @@
+## 0.5.1 (23 jun 2023)
+
+# Bugfix
+
+- Fixed types import in modern environments [#150](https://github.com/vtaits/react-select-async-paginate/issues/150)
+
 ## 0.5.0 (06 oct 2022)
 
 - Improved typing
