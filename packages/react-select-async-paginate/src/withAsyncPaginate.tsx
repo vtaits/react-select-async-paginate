@@ -21,6 +21,9 @@ import type {
   WithAsyncPaginateType,
 } from './types';
 
+const defaultCacheUniqs: unknown[] = [];
+const defaultComponents = {};
+
 type SelectComponentType = <
 Option = unknown,
 IsMulti extends boolean = boolean,
@@ -40,10 +43,10 @@ export function withAsyncPaginate(
   IsMulti extends boolean = false,
   >(props: AsyncPaginateProps<OptionType, Group, Additional, IsMulti>): ReactElement {
     const {
-      components,
-      selectRef,
+      components = defaultComponents,
+      selectRef = undefined,
       isLoading: isLoadingProp,
-      cacheUniqs,
+      cacheUniqs = defaultCacheUniqs,
       ...rest
     } = props;
 
@@ -68,12 +71,6 @@ export function withAsyncPaginate(
       />
     );
   }
-
-  WithAsyncPaginate.defaultProps = {
-    selectRef: null,
-    cacheUniqs: [],
-    components: {},
-  };
 
   return WithAsyncPaginate;
 }

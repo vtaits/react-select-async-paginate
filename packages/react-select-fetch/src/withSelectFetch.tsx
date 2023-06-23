@@ -25,6 +25,9 @@ import type {
   SelectFetchType,
 } from './types';
 
+const defaultCacheUniqs: unknown[] = [];
+const defaultComponents = {};
+
 type SelectComponentType = <
 Option = unknown,
 IsMulti extends boolean = boolean,
@@ -43,9 +46,9 @@ export function withSelectFetch(
   IsMulti extends boolean = false,
   >(props: SelectFetchProps<OptionType, Group, IsMulti>): ReactElement {
     const {
-      components,
-      selectRef,
-      cacheUniqs,
+      components = defaultComponents,
+      selectRef = undefined,
+      cacheUniqs = defaultCacheUniqs,
       ...rest
     } = props;
 
@@ -65,12 +68,6 @@ export function withSelectFetch(
       />
     );
   }
-
-  WithSelectFetch.defaultProps = {
-    selectRef: null,
-    cacheUniqs: [],
-    components: {},
-  };
 
   return WithSelectFetch;
 }

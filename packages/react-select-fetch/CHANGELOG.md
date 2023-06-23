@@ -4,6 +4,10 @@
 
 - Fixed types import in modern environments [#150](https://github.com/vtaits/react-select-async-paginate/issues/150)
 
+## Improvement
+
+- Migrate `defaultProps` to default arguments [#147](https://github.com/vtaits/react-select-async-paginate/issues/147)
+
 ## 0.5.0 (06 oct 2022)
 
 - Improved typing
