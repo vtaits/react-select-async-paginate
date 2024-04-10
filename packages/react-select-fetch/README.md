@@ -1,8 +1,6 @@
 [![NPM](https://img.shields.io/npm/v/react-select-fetch.svg)](https://www.npmjs.com/package/react-select-fetch)
-[![Build Status](https://img.shields.io/travis/vtaits/react-select-async-paginate.svg?style=flat)](https://travis-ci.org/vtaits/react-select-async-paginate)
 [![codecov.io](https://codecov.io/gh/vtaits/react-select-async-paginate/branch/master/graph/badge.svg)](https://codecov.io/gh/vtaits/react-select-async-paginate)
 ![dependencies status](https://img.shields.io/librariesio/release/npm/react-select-fetch)
-[![Types](https://img.shields.io/npm/types/react-select-fetch.svg)](https://www.npmjs.com/package/react-select-fetch)
 
 # react-select-fetch
 
