@@ -8,15 +8,15 @@
   "license": "MIT",
   "scripts": {
     "start": "storybook dev -p 6006",
-    "clean": "yarn workspaces foreach -pt run clean",
-    "build": "yarn workspaces foreach -t run build",
-    "lint": "yarn workspaces foreach run lint",
-    "test:ts": "yarn workspaces foreach run test:ts",
-    "test:unit": "yarn workspaces foreach run test:unit",
-    "test:unit:cov": "yarn workspaces foreach run test:unit:cov",
+    "clean": "yarn workspaces foreach --all -pt run clean",
+    "build": "yarn workspaces foreach --all -t run build",
+    "lint": "yarn workspaces foreach --all run lint",
+    "test:ts": "yarn workspaces foreach --all run test:ts",
+    "test:unit": "yarn workspaces foreach --all run test:unit",
+    "test:unit:cov": "yarn workspaces foreach --all run test:unit:cov",
     "test": "yarn lint && yarn test:ts && yarn test:unit",
     "validate": "yarn build && yarn lint && yarn test:ts && yarn test:unit:cov",
-    "codecov": "yarn workspaces foreach run codecov"
+    "codecov": "yarn workspaces foreach --all run codecov"
   },
   "devDependencies": {
     "@babel/types": "^7.22.5",
