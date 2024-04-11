@@ -1,6 +1,6 @@
 {
   "name": "react-select-fetch",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "description": "Wrapper above react-select-async-paginate that loads options from specified url",
   "files": [
     "dist"
@@ -44,8 +44,7 @@
   },
   "dependencies": {
     "krustykrab": "^1.0.0",
-    "qs": "^6.12.0",
-    "vitest-fetch-mock": "^0.2.2"
+    "qs": "^6.12.0"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.6.4",
@@ -61,6 +60,7 @@
     "sleep-promise": "^9.1.0",
     "tsup": "^8.0.2",
     "typescript": "5.4.5",
-    "vitest": "^1.4.0"
+    "vitest": "^1.4.0",
+    "vitest-fetch-mock": "^0.2.2"
   }
 }
