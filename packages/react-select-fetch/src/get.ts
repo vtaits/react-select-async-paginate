@@ -1,20 +1,20 @@
-import { stringifyParams } from './stringifyParams';
+import { stringifyParams } from "./stringifyParams";
 
 export const get = async (
-  url: string,
-  params: Record<string, unknown>,
+	url: string,
+	params: Record<string, unknown>,
 ): Promise<unknown> => {
-  const paramsStr = stringifyParams(params);
+	const paramsStr = stringifyParams(params);
 
-  const response: Response = await fetch(`${url}?${paramsStr}`, {
-    credentials: 'same-origin',
-  });
+	const response: Response = await fetch(`${url}?${paramsStr}`, {
+		credentials: "same-origin",
+	});
 
-  if (response.status >= 400) {
-    throw new Error('Failed to fetch');
-  }
+	if (response.status >= 400) {
+		throw new Error("Failed to fetch");
+	}
 
-  const responseJSON: any = await response.json();
+	const responseJSON = await response.json();
 
-  return responseJSON;
+	return responseJSON;
 };

@@ -1,73 +1,58 @@
+import type { ReactElement, Ref } from "react";
 import type {
-  ReactElement,
-  Ref,
-} from 'react';
-
-import type {
-  GroupBase,
-  Props as SelectProps,
-  SelectInstance,
-} from 'react-select';
-
-import {
-  useComponents,
-} from 'react-select-async-paginate';
-import type {
-  UseAsyncPaginateResult,
-} from 'react-select-async-paginate';
-
-import {
-  useSelectFetch,
-} from './useSelectFetch';
-
-import type {
-  SelectFetchProps,
-  SelectFetchType,
-} from './types';
+	GroupBase,
+	SelectInstance,
+	Props as SelectProps,
+} from "react-select";
+import { useComponents } from "react-select-async-paginate";
+import type { UseAsyncPaginateResult } from "react-select-async-paginate";
+import type { SelectFetchProps, SelectFetchType } from "./types";
+import { useSelectFetch } from "./useSelectFetch";
 
 const defaultCacheUniqs: unknown[] = [];
 const defaultComponents = {};
 
 type SelectComponentType = <
-Option = unknown,
-IsMulti extends boolean = boolean,
-Group extends GroupBase<Option> = GroupBase<Option>,
->(props: SelectProps<Option, IsMulti, Group> & {
-  ref?: Ref<SelectInstance<Option, IsMulti, Group>>;
-}) => ReactElement;
+	Option = unknown,
+	IsMulti extends boolean = boolean,
+	Group extends GroupBase<Option> = GroupBase<Option>,
+>(
+	props: SelectProps<Option, IsMulti, Group> & {
+		ref?: Ref<SelectInstance<Option, IsMulti, Group>>;
+	},
+) => ReactElement;
 
 export function withSelectFetch(
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  SelectComponent: SelectComponentType,
+	SelectComponent: SelectComponentType,
 ): SelectFetchType {
-  function WithSelectFetch<
-  OptionType,
-  Group extends GroupBase<OptionType>,
-  IsMulti extends boolean = false,
-  >(props: SelectFetchProps<OptionType, Group, IsMulti>): ReactElement {
-    const {
-      components = defaultComponents,
-      selectRef = undefined,
-      cacheUniqs = defaultCacheUniqs,
-      ...rest
-    } = props;
+	function WithSelectFetch<
+		OptionType,
+		Group extends GroupBase<OptionType>,
+		IsMulti extends boolean = false,
+	>(props: SelectFetchProps<OptionType, Group, IsMulti>): ReactElement {
+		const {
+			components = defaultComponents,
+			selectRef = undefined,
+			cacheUniqs = defaultCacheUniqs,
+			...rest
+		} = props;
 
-    const asyncPaginateProps: UseAsyncPaginateResult<OptionType, Group> = useSelectFetch(
-      rest,
-      cacheUniqs,
-    );
+		const asyncPaginateProps: UseAsyncPaginateResult<OptionType, Group> =
+			useSelectFetch(rest, cacheUniqs);
 
-    const processedComponents = useComponents<OptionType, Group, IsMulti>(components);
+		const processedComponents = useComponents<OptionType, Group, IsMulti>(
+			components,
+		);
 
-    return (
-      <SelectComponent
-        {...props}
-        {...asyncPaginateProps}
-        components={processedComponents}
-        ref={selectRef}
-      />
-    );
-  }
+		return (
+			<SelectComponent
+				{...props}
+				{...asyncPaginateProps}
+				components={processedComponents}
+				ref={selectRef}
+			/>
+		);
+	}
 
-  return WithSelectFetch;
+	return WithSelectFetch;
 }

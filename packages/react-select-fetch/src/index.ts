@@ -1,13 +1,13 @@
-import Select from 'react-select';
+import Select from "react-select";
 
-import { withSelectFetch } from './withSelectFetch';
+import { withSelectFetch } from "./withSelectFetch";
 
 export { withSelectFetch };
 
-export { useSelectFetchBase } from './useSelectFetchBase';
-export { useSelectFetch } from './useSelectFetch';
-export { useMapToAsyncPaginate } from './useMapToAsyncPaginate';
+export { useSelectFetchBase } from "./useSelectFetchBase";
+export { useSelectFetch } from "./useSelectFetch";
+export { useMapToAsyncPaginate } from "./useMapToAsyncPaginate";
 
 export const SelectFetch = withSelectFetch(Select);
 
-export * from './types';
+export * from "./types";

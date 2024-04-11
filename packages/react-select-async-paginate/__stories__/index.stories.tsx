@@ -16,6 +16,7 @@ import { Simple } from './Simple';
 const meta: Meta<typeof AsyncPaginate> = {
   title: 'react-select-async-paginate',
   component: AsyncPaginate,
+  tags: ['autoload']
 };
 
 export default meta;
@@ -23,50 +24,53 @@ type Story = StoryObj<typeof AsyncPaginate>;
 
 export const AutoloadStory: Story = {
   name: 'Autoload',
-  render: () => <Autoload />,
+  render: (props) => <Autoload {...props} />,
 };
 
 export const CreatableStory: Story = {
   name: 'Creatable',
-  render: () => <Creatable />,
+  render: (props) => <Creatable {...props} />,
 };
 
 export const CreatableWithNewOptionsStory: Story = {
   name: 'Creatable with new options',
-  render: () => <CreatableWithNewOptions />,
+  render: (props) => <CreatableWithNewOptions {...props} />,
 };
 
 export const CustomScrollCheckStory: Story = {
   name: 'Customization check of the need of load options',
-  render: () => <CustomScrollCheck />,
+  render: (props) => <CustomScrollCheck {...props} />,
 };
 
 export const DebounceStory: Story = {
   name: 'Debounce',
-  render: () => <Debounce />,
+  args: {
+    debounceTimeout: 300,
+  },
+  render: (props) => <Debounce {...props} />,
 };
 
 export const GroupedOptionsStory: Story = {
   name: 'Grouped options',
-  render: () => <GroupedOptions />,
+  render: (props) => <GroupedOptions {...props} />,
 };
 
 export const InitialOptionsStory: Story = {
   name: 'Initial options',
-  render: () => <InitialOptions />,
+  render: (props) => <InitialOptions {...props} />,
 };
 
 export const ManualStory: Story = {
   name: 'Manual control of input value and menu opening',
-  render: () => <Manual />,
+  render: (props) => <Manual {...props} />,
 };
 
 export const RequestByPageNumberStory: Story = {
   name: 'Request by page number',
-  render: () => <RequestByPageNumber />,
+  render: (props) => <RequestByPageNumber {...props} />,
 };
 
 export const SimpleStory: Story = {
   name: 'Simple',
-  render: () => <Simple />,
+  render: (props) => <Simple {...props} />,
 };

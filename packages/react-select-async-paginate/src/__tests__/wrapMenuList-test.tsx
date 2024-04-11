@@ -1,401 +1,391 @@
-import {
-  useEffect,
-  useRef,
-  useCallback,
-} from 'react';
-import type {
-  ReactElement,
-} from 'react';
+import { useCallback, useEffect, useMemo, useRef } from "react";
+import type { ReactElement } from "react";
+import type { GroupBase, MenuListProps } from "react-select";
+import { createRenderer } from "react-test-renderer/shallow";
+import { defaultShouldLoadMore } from "../defaultShouldLoadMore";
+import { CHECK_TIMEOUT, wrapMenuList } from "../wrapMenuList";
+import type { BaseSelectProps } from "../wrapMenuList";
 
-import type {
-  GroupBase,
-  MenuListProps,
-} from 'react-select';
-
-import { createRenderer } from 'react-test-renderer/shallow';
-
-import { wrapMenuList, CHECK_TIMEOUT } from '../wrapMenuList';
-import type { BaseSelectProps } from '../wrapMenuList';
-
-import { defaultShouldLoadMore } from '../defaultShouldLoadMore';
-
-jest.mock('react', () => ({
-  ...jest.requireActual('react'),
-  useEffect: jest.fn(),
-  useRef: jest.fn(),
-  useCallback: jest.fn(),
+jest.mock("react", () => ({
+	...jest.requireActual("react"),
+	useEffect: jest.fn(),
+	useRef: jest.fn(),
+	useCallback: jest.fn(),
+	useMemo: jest.fn(),
 }));
 
 jest.useFakeTimers();
 
-jest.spyOn(global, 'setTimeout');
-jest.spyOn(global, 'clearTimeout');
+jest.spyOn(global, "setTimeout");
+jest.spyOn(global, "clearTimeout");
 
 const mockedUseCallback = jest.mocked(useCallback);
+const mockedUseMemo = jest.mocked(useMemo);
 const mockedUseEffect = jest.mocked(useEffect);
 const mockedUseRef = jest.mocked(useRef);
 const mockedSetTimeout = jest.mocked(setTimeout);
 
 beforeEach(() => {
-  mockedUseEffect.mockReturnValue(undefined);
-  mockedUseCallback.mockImplementation((callback) => callback);
-  mockedUseRef.mockReturnValue({
-    current: null,
-  });
+	mockedUseEffect.mockReturnValue(undefined);
+	mockedUseCallback.mockImplementation((callback) => callback);
+	mockedUseRef.mockReturnValue({
+		current: null,
+	});
 });
 
 afterEach(() => {
-  jest.clearAllMocks();
+	jest.clearAllMocks();
 });
 
 function TestComponent(): ReactElement {
-  return <div />;
+	return <div />;
 }
 
 const WrappedMenuList = wrapMenuList(TestComponent);
 
-type WrappedSelectProps = Omit<MenuListProps<unknown, boolean, GroupBase<unknown>>, 'selectProps'> & {
-  selectProps: BaseSelectProps;
+type WrappedSelectProps = Omit<
+	MenuListProps<unknown, boolean, GroupBase<unknown>>,
+	"selectProps"
+> & {
+	selectProps: BaseSelectProps;
 };
 
 const defaultProps = {
-  innerRef: () => undefined,
+	innerRef: () => undefined,
 
-  selectProps: {
-    handleScrolledToBottom: () => undefined,
-    shouldLoadMore: defaultShouldLoadMore,
-  } as unknown as MenuListProps<unknown, boolean, GroupBase<unknown>>['selectProps'],
+	selectProps: {
+		handleScrolledToBottom: () => undefined,
+		shouldLoadMore: defaultShouldLoadMore,
+	} as unknown as MenuListProps<
+		unknown,
+		boolean,
+		GroupBase<unknown>
+	>["selectProps"],
 } as unknown as WrappedSelectProps;
 
 type PageObject = {
-  getChildProps: () => Record<string, any>;
+	getChildProps: () => Record<string, unknown>;
 };
 
 const setup = (props: Partial<WrappedSelectProps>): PageObject => {
-  const renderer = createRenderer();
+	const renderer = createRenderer();
 
-  renderer.render(
-    <WrappedMenuList
-      {...defaultProps as unknown as MenuListProps<unknown, boolean, GroupBase<unknown>>}
-      {...props as unknown as Partial<MenuListProps<unknown, boolean, GroupBase<unknown>>>}
-    />,
-  );
+	renderer.render(
+		<WrappedMenuList
+			{...(defaultProps as unknown as MenuListProps<
+				unknown,
+				boolean,
+				GroupBase<unknown>
+			>)}
+			{...(props as unknown as Partial<
+				MenuListProps<unknown, boolean, GroupBase<unknown>>
+			>)}
+		/>,
+	);
 
-  const result = renderer.getRenderOutput();
+	const result = renderer.getRenderOutput();
 
-  return {
-    getChildProps: () => result.props,
-  };
+	return {
+		getChildProps: () => result.props,
+	};
 };
 
-test('should provide props from parent', () => {
-  const page = setup({
-    maxHeight: 160,
-    children: 'testChildren',
-  });
+test("should provide props from parent", () => {
+	const page = setup({
+		maxHeight: 160,
+		children: "testChildren",
+	});
 
-  const childProps = page.getChildProps();
+	const childProps = page.getChildProps();
 
-  expect(childProps.maxHeight).toBe(160);
-  expect(childProps.children).toBe('testChildren');
+	expect(childProps.maxHeight).toBe(160);
+	expect(childProps.children).toBe("testChildren");
 });
 
-test('should not handle if ref el is falsy', () => {
-  setup({});
+test("should not handle if ref el is falsy", () => {
+	setup({});
 
-  const shouldHandle = mockedUseCallback.mock.calls[0][0];
+	const shouldHandle = mockedUseCallback.mock.calls[0][0];
 
-  expect(shouldHandle()).toBe(false);
+	expect(shouldHandle()).toBe(false);
 });
 
-test('should handle if ref el is not scrollable', () => {
-  mockedUseRef
-    .mockReturnValue({
-      current: null,
-    })
-    .mockReturnValue({
-      current: {
-        scrollTop: 0,
-        scrollHeight: 100,
-        clientHeight: 100,
-      },
-    });
+test("should handle if ref el is not scrollable", () => {
+	mockedUseRef
+		.mockReturnValue({
+			current: null,
+		})
+		.mockReturnValue({
+			current: {
+				scrollTop: 0,
+				scrollHeight: 100,
+				clientHeight: 100,
+			},
+		});
 
-  setup({});
+	setup({});
 
-  const shouldHandle = mockedUseCallback.mock.calls[0][0];
+	const shouldHandle = mockedUseCallback.mock.calls[0][0];
 
-  expect(shouldHandle()).toBe(true);
+	expect(shouldHandle()).toBe(true);
 });
 
-test('should call shouldLoadMore with correct arguments', () => {
-  const shouldLoadMore = jest.fn();
+test("should call shouldLoadMore with correct arguments", () => {
+	const shouldLoadMore = jest.fn();
 
-  mockedUseRef
-    .mockReturnValue({
-      current: null,
-    })
-    .mockReturnValue({
-      current: {
-        scrollTop: 95,
-        scrollHeight: 200,
-        clientHeight: 100,
-      },
-    });
+	mockedUseRef
+		.mockReturnValue({
+			current: null,
+		})
+		.mockReturnValue({
+			current: {
+				scrollTop: 95,
+				scrollHeight: 200,
+				clientHeight: 100,
+			},
+		});
 
-  setup({
-    selectProps: {
-      ...defaultProps.selectProps,
-      shouldLoadMore,
-    },
-  });
+	setup({
+		selectProps: {
+			...defaultProps.selectProps,
+			shouldLoadMore,
+		},
+	});
 
-  const shouldHandle = mockedUseCallback.mock.calls[0][0];
+	const shouldHandle = mockedUseCallback.mock.calls[0][0];
 
-  shouldHandle();
+	shouldHandle();
 
-  expect(shouldLoadMore).toHaveBeenCalledTimes(1);
-  expect(shouldLoadMore).toHaveBeenCalledWith(
-    200,
-    100,
-    95,
-  );
+	expect(shouldLoadMore).toHaveBeenCalledTimes(1);
+	expect(shouldLoadMore).toHaveBeenCalledWith(200, 100, 95);
 });
 
-test('should not handle if ref el is scrollable and shouldLoadMore returns false', () => {
-  mockedUseRef
-    .mockReturnValue({
-      current: null,
-    })
-    .mockReturnValue({
-      current: {
-        scrollTop: 30,
-        scrollHeight: 200,
-        clientHeight: 100,
-      },
-    });
+test("should not handle if ref el is scrollable and shouldLoadMore returns false", () => {
+	mockedUseRef
+		.mockReturnValue({
+			current: null,
+		})
+		.mockReturnValue({
+			current: {
+				scrollTop: 30,
+				scrollHeight: 200,
+				clientHeight: 100,
+			},
+		});
 
-  setup({
-    selectProps: {
-      ...defaultProps.selectProps,
-      shouldLoadMore: (): boolean => false,
-    },
-  });
+	setup({
+		selectProps: {
+			...defaultProps.selectProps,
+			shouldLoadMore: (): boolean => false,
+		},
+	});
 
-  const shouldHandle = mockedUseCallback.mock.calls[0][0];
+	const shouldHandle = mockedUseCallback.mock.calls[0][0];
 
-  expect(shouldHandle()).toBe(false);
+	expect(shouldHandle()).toBe(false);
 });
 
-test('should handle if ref el is scrollable and shouldLoadMore returns true', () => {
-  mockedUseRef
-    .mockReturnValue({
-      current: null,
-    })
-    .mockReturnValue({
-      current: {
-        scrollTop: 95,
-        scrollHeight: 200,
-        clientHeight: 100,
-      },
-    });
+test("should handle if ref el is scrollable and shouldLoadMore returns true", () => {
+	mockedUseRef
+		.mockReturnValue({
+			current: null,
+		})
+		.mockReturnValue({
+			current: {
+				scrollTop: 95,
+				scrollHeight: 200,
+				clientHeight: 100,
+			},
+		});
 
-  setup({
-    selectProps: {
-      ...defaultProps.selectProps,
-      shouldLoadMore: (): boolean => true,
-    },
-  });
+	setup({
+		selectProps: {
+			...defaultProps.selectProps,
+			shouldLoadMore: (): boolean => true,
+		},
+	});
 
-  const shouldHandle = mockedUseCallback.mock.calls[0][0];
+	const shouldHandle = mockedUseCallback.mock.calls[0][0];
 
-  expect(shouldHandle()).toBe(true);
+	expect(shouldHandle()).toBe(true);
 });
 
-test('should not call handleScrolledToBottom if should not handle', () => {
-  mockedUseCallback
-    .mockReturnValueOnce(() => false)
-    .mockReturnValue(jest.fn());
+test("should not call handleScrolledToBottom if should not handle", () => {
+	mockedUseCallback.mockReturnValueOnce(() => false).mockReturnValue(jest.fn());
 
-  mockedUseRef
-    .mockReturnValue({
-      current: null,
-    })
-    .mockReturnValue({
-      current: null,
-    });
+	mockedUseRef
+		.mockReturnValue({
+			current: null,
+		})
+		.mockReturnValue({
+			current: null,
+		});
 
-  const handleScrolledToBottom = jest.fn();
+	const handleScrolledToBottom = jest.fn();
 
-  setup({
-    selectProps: {
-      ...defaultProps.selectProps,
-      handleScrolledToBottom,
-    },
-  });
+	setup({
+		selectProps: {
+			...defaultProps.selectProps,
+			handleScrolledToBottom,
+		},
+	});
 
-  const checkAndHandle = mockedUseCallback.mock.calls[1][0];
+	const checkAndHandle = mockedUseCallback.mock.calls[1][0];
 
-  checkAndHandle();
+	checkAndHandle();
 
-  expect(handleScrolledToBottom).toHaveBeenCalledTimes(0);
+	expect(handleScrolledToBottom).toHaveBeenCalledTimes(0);
 });
 
-test('should call handleScrolledToBottom if should handle', () => {
-  mockedUseCallback
-    .mockReturnValueOnce(() => true)
-    .mockReturnValue(jest.fn());
+test("should call handleScrolledToBottom if should handle", () => {
+	mockedUseCallback.mockReturnValueOnce(() => true).mockReturnValue(jest.fn());
 
-  mockedUseRef
-    .mockReturnValueOnce({
-      current: null,
-    })
-    .mockReturnValueOnce({
-      current: {
-        scrollTop: 0,
-        scrollHeight: 100,
-        clientHeight: 100,
-      },
-    });
+	mockedUseRef
+		.mockReturnValueOnce({
+			current: null,
+		})
+		.mockReturnValueOnce({
+			current: {
+				scrollTop: 0,
+				scrollHeight: 100,
+				clientHeight: 100,
+			},
+		});
 
-  const handleScrolledToBottom = jest.fn();
+	const handleScrolledToBottom = jest.fn();
 
-  setup({
-    selectProps: {
-      ...defaultProps.selectProps,
-      handleScrolledToBottom,
-    },
-  });
+	setup({
+		selectProps: {
+			...defaultProps.selectProps,
+			handleScrolledToBottom,
+		},
+	});
 
-  const checkAndHandle = mockedUseCallback.mock.calls[1][0];
+	const checkAndHandle = mockedUseCallback.mock.calls[1][0];
 
-  checkAndHandle();
+	checkAndHandle();
 
-  expect(handleScrolledToBottom).toHaveBeenCalledTimes(1);
+	expect(handleScrolledToBottom).toHaveBeenCalledTimes(1);
 });
 
-test('should work if handleScrolledToBottom is not provided', () => {
-  mockedUseCallback
-    .mockReturnValueOnce(() => true)
-    .mockReturnValue(jest.fn());
+test("should work if handleScrolledToBottom is not provided", () => {
+	mockedUseCallback.mockReturnValueOnce(() => true).mockReturnValue(jest.fn());
 
-  mockedUseRef
-    .mockReturnValueOnce({
-      current: null,
-    })
-    .mockReturnValueOnce({
-      current: {
-        scrollTop: 0,
-        scrollHeight: 100,
-        clientHeight: 100,
-      },
-    });
+	mockedUseRef
+		.mockReturnValueOnce({
+			current: null,
+		})
+		.mockReturnValueOnce({
+			current: {
+				scrollTop: 0,
+				scrollHeight: 100,
+				clientHeight: 100,
+			},
+		});
 
-  setup({});
+	setup({});
 
-  const checkAndHandle = mockedUseCallback.mock.calls[1][0];
+	const checkAndHandle = mockedUseCallback.mock.calls[1][0];
 
-  checkAndHandle();
+	checkAndHandle();
 });
 
-test('should call checkAndLoad and start timer on mount', () => {
-  const setCheckAndHandleTimeout = jest.fn();
+test("should call checkAndLoad and start timer on mount", () => {
+	const setCheckAndHandleTimeout = jest.fn();
 
-  mockedUseCallback
-    .mockReturnValueOnce(jest.fn())
-    .mockReturnValueOnce(jest.fn())
-    .mockReturnValueOnce(setCheckAndHandleTimeout);
+	mockedUseMemo.mockReturnValueOnce(setCheckAndHandleTimeout);
 
-  setup({});
+	setup({});
 
-  mockedUseEffect.mock.calls[0][0]();
+	mockedUseEffect.mock.calls[0][0]();
 
-  expect(setCheckAndHandleTimeout).toHaveBeenCalledTimes(1);
+	expect(setCheckAndHandleTimeout).toHaveBeenCalledTimes(1);
 });
 
-test('should call checkAndLoad and start on call setCheckAndHandleTimeout', () => {
-  const checkAndHandle = jest.fn();
-  const setCheckAndHandleTimeout = jest.fn();
+test("should call checkAndLoad and start on call setCheckAndHandleTimeout", () => {
+	const checkAndHandle = jest.fn();
+	const setCheckAndHandleTimeout = jest.fn();
 
-  mockedUseCallback
-    .mockReturnValueOnce(jest.fn())
-    .mockReturnValueOnce(checkAndHandle)
-    .mockReturnValueOnce(setCheckAndHandleTimeout);
+	mockedUseCallback
+		.mockReturnValueOnce(jest.fn())
+		.mockReturnValueOnce(checkAndHandle);
 
-  mockedSetTimeout
-    .mockReturnValue(123 as unknown as NodeJS.Timeout);
+	mockedUseMemo.mockReturnValueOnce(setCheckAndHandleTimeout);
 
-  const timeoutRef = {
-    current: null,
-  };
+	mockedSetTimeout.mockReturnValue(123 as unknown as NodeJS.Timeout);
 
-  mockedUseRef
-    .mockReturnValueOnce(timeoutRef)
-    .mockReturnValueOnce({
-      current: null,
-    });
+	const timeoutRef = {
+		current: null,
+	};
 
-  setup({});
+	mockedUseRef.mockReturnValueOnce(timeoutRef).mockReturnValueOnce({
+		current: null,
+	});
 
-  mockedUseCallback.mock.calls[2][0]();
+	setup({});
 
-  expect(checkAndHandle.mock.calls.length).toBe(1);
-  expect(setTimeout).toHaveBeenCalledTimes(1);
-  expect(setTimeout).toHaveBeenLastCalledWith(
-    setCheckAndHandleTimeout,
-    CHECK_TIMEOUT,
-  );
+	const useMemoReturn = mockedUseMemo.mock.calls[0][0]();
 
-  expect(timeoutRef.current).toBe(123);
+	if (typeof useMemoReturn !== "function") {
+		throw new Error("`setCheckAndHandleTimeout` is not a function");
+	}
+
+	useMemoReturn();
+
+	expect(checkAndHandle).toHaveBeenCalledTimes(1);
+	expect(setTimeout).toHaveBeenCalledTimes(1);
+	expect(setTimeout).toHaveBeenLastCalledWith(useMemoReturn, CHECK_TIMEOUT);
+
+	expect(timeoutRef.current).toBe(123);
 });
 
-test('should stop timer on unmount', () => {
-  mockedUseCallback
-    .mockReturnValue(jest.fn());
+test("should stop timer on unmount", () => {
+	mockedUseCallback.mockReturnValue(jest.fn());
+	mockedUseMemo.mockReturnValueOnce(jest.fn());
 
-  mockedUseRef
-    .mockReturnValueOnce({
-      current: 123,
-    })
-    .mockReturnValueOnce({
-      current: null,
-    });
+	mockedUseRef
+		.mockReturnValueOnce({
+			current: 123,
+		})
+		.mockReturnValueOnce({
+			current: null,
+		});
 
-  setup({});
+	setup({});
 
-  const destructor = mockedUseEffect.mock.calls[0][0]();
+	const destructor = mockedUseEffect.mock.calls[0][0]();
 
-  if (typeof destructor !== 'function') {
-    throw new Error('Destructor should be a function');
-  }
+	if (typeof destructor !== "function") {
+		throw new Error("Destructor should be a function");
+	}
 
-  destructor();
+	destructor();
 
-  expect(clearTimeout).toHaveBeenCalledTimes(1);
-  expect(clearTimeout).toHaveBeenLastCalledWith(123);
+	expect(clearTimeout).toHaveBeenCalledTimes(1);
+	expect(clearTimeout).toHaveBeenLastCalledWith(123);
 });
 
-test('should not call extra clearTimeout', () => {
-  mockedUseCallback
-    .mockReturnValue(jest.fn());
+test("should not call extra clearTimeout", () => {
+	mockedUseCallback.mockReturnValue(jest.fn());
+	mockedUseMemo.mockReturnValueOnce(jest.fn());
 
-  mockedUseRef
-    .mockReturnValueOnce({
-      current: null,
-    })
-    .mockReturnValueOnce({
-      current: null,
-    });
+	mockedUseRef
+		.mockReturnValueOnce({
+			current: null,
+		})
+		.mockReturnValueOnce({
+			current: null,
+		});
 
-  setup({});
+	setup({});
 
-  const destructor = mockedUseEffect.mock.calls[0][0]();
+	const destructor = mockedUseEffect.mock.calls[0][0]();
 
-  if (typeof destructor !== 'function') {
-    throw new Error('Destructor should be a function');
-  }
+	if (typeof destructor !== "function") {
+		throw new Error("Destructor should be a function");
+	}
 
-  destructor();
+	destructor();
 
-  expect(clearTimeout).toHaveBeenCalledTimes(0);
+	expect(clearTimeout).toHaveBeenCalledTimes(0);
 });

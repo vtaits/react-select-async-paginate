@@ -1,18 +1,16 @@
-import type {
-  GroupBase,
-} from 'react-select';
+import type { GroupBase } from "react-select";
+import type { OptionsCacheItem, UseAsyncPaginateBaseParams } from "./types";
 
-import type {
-  OptionsCacheItem,
-  UseAsyncPaginateBaseParams,
-} from './types';
-
-export const getInitialCache = <OptionType, Group extends GroupBase<OptionType>, Additional>(
-  params: UseAsyncPaginateBaseParams<OptionType, Group, Additional>,
+export const getInitialCache = <
+	OptionType,
+	Group extends GroupBase<OptionType>,
+	Additional,
+>(
+	params: UseAsyncPaginateBaseParams<OptionType, Group, Additional>,
 ): OptionsCacheItem<OptionType, Group, Additional> => ({
-    isFirstLoad: true,
-    options: [],
-    hasMore: true,
-    isLoading: false,
-    additional: params.additional,
-  });
+	isFirstLoad: true,
+	options: [],
+	hasMore: true,
+	isLoading: false,
+	additional: params.additional,
+});
