@@ -1,22 +1,29 @@
+## 0.7.4 (11 apr 2024)
+
+### Internal changes
+
+- Migrate `eslint` -> `@biomejs/biome`
+- Migrate `jest` -> `vitest`
+
 ## 0.7.3 (23 jun 2023)
 
-# Bugfix
+### Bugfix
 
 - Fixed types import in modern environments [#150](https://github.com/vtaits/react-select-async-paginate/issues/150)
 
-## Improvement
+### Improvement
 
 - Migrate `defaultProps` to default arguments [#147](https://github.com/vtaits/react-select-async-paginate/issues/147)
 
 ## 0.7.2 (14 dec 2022)
 
-# Bugfix
+### Bugfix
 
 - Use only `.js` extension in output files to work correctly with webpack
 
 ## 0.7.1 (12 dec 2022)
 
-# Bugfix
+### Bugfix
 
 - Fixed type of `wrapMenuList` [#125](https://github.com/vtaits/react-select-async-paginate/pull/125)
 
