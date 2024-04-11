@@ -1,6 +1,6 @@
 {
   "name": "react-select-fetch",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "description": "Wrapper above react-select-async-paginate that loads options from specified url",
   "files": [
     "dist"
