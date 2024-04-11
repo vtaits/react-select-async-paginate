@@ -1,9 +1,9 @@
-import mockConsole from "jest-mock-console";
+import { afterAll, describe, expect, test, vi } from "vitest";
 import {
 	checkIsResponse,
 	errorText,
 	validateResponse,
-} from "../validateResponse";
+} from "./validateResponse";
 
 describe("checkIsResponse", () => {
 	test("should return false if response is falsy", () => {
@@ -65,10 +65,12 @@ describe("checkIsResponse", () => {
 });
 
 describe("validateResponse", () => {
-	const restoreConsole = mockConsole();
+	const consoleMock = vi
+		.spyOn(console, "error")
+		.mockImplementation(() => undefined);
 
 	afterAll(() => {
-		restoreConsole();
+		consoleMock.mockReset();
 	});
 
 	test("should throw error if response is invalid", () => {

@@ -1,19 +1,24 @@
+import { afterEach, expect, test, vi } from "vitest";
 import {
 	defaultResponseMapper,
 	useMapToAsyncPaginate,
-} from "../useMapToAsyncPaginate";
+} from "./useMapToAsyncPaginate";
 
-jest.mock("react", () => ({
-	...jest.requireActual("react"),
+vi.mock("react", async () => {
+	const actual = await vi.importActual("react");
 
-	// biome-ignore lint/complexity/noBannedTypes: supports any function
-	useCallback: jest.fn(<T extends Function>(callback: T) => callback),
+	return {
+		...actual,
 
-	useMemo: jest.fn(<T>(callback: () => T) => callback()),
-}));
+		// biome-ignore lint/complexity/noBannedTypes: supports any function
+		useCallback: vi.fn(<T extends Function>(callback: T) => callback),
+
+		useMemo: vi.fn(<T>(callback: () => T) => callback()),
+	};
+});
 
 afterEach(() => {
-	jest.clearAllMocks();
+	vi.clearAllMocks();
 });
 
 const defaultParams = {
@@ -56,7 +61,7 @@ test("should redefine page in additional", () => {
 });
 
 test("should call get with default arguments", async () => {
-	const get = jest.fn().mockResolvedValue({
+	const get = vi.fn().mockResolvedValue({
 		options: [],
 	});
 
@@ -83,7 +88,7 @@ test("should call get with default arguments", async () => {
 });
 
 test("should redefine search param name in query params", async () => {
-	const get = jest.fn().mockResolvedValue({
+	const get = vi.fn().mockResolvedValue({
 		options: [],
 	});
 
@@ -111,7 +116,7 @@ test("should redefine search param name in query params", async () => {
 });
 
 test("should redefine page param name in query params", async () => {
-	const get = jest.fn().mockResolvedValue({
+	const get = vi.fn().mockResolvedValue({
 		options: [],
 	});
 
@@ -139,7 +144,7 @@ test("should redefine page param name in query params", async () => {
 });
 
 test("should not send page if page param name is null", async () => {
-	const get = jest.fn().mockResolvedValue({
+	const get = vi.fn().mockResolvedValue({
 		options: [],
 	});
 
@@ -166,7 +171,7 @@ test("should not send page if page param name is null", async () => {
 });
 
 test("should redefine offset param name", async () => {
-	const get = jest.fn().mockResolvedValue({
+	const get = vi.fn().mockResolvedValue({
 		options: [],
 	});
 
@@ -194,7 +199,7 @@ test("should redefine offset param name", async () => {
 });
 
 test("should not send offset if offset param name is null", async () => {
-	const get = jest.fn().mockResolvedValue({
+	const get = vi.fn().mockResolvedValue({
 		options: [],
 	});
 
@@ -221,7 +226,7 @@ test("should not send offset if offset param name is null", async () => {
 });
 
 test("should return response with increased page in additional", async () => {
-	const get = jest.fn().mockResolvedValue({
+	const get = vi.fn().mockResolvedValue({
 		options: [4, 5, 6],
 		hasMore: true,
 	});
@@ -256,9 +261,9 @@ test("should return mapped response with increased page in additional", async ()
 		hasMore: false,
 	};
 
-	const get = jest.fn().mockResolvedValue(response);
+	const get = vi.fn().mockResolvedValue(response);
 
-	const mapResponse = jest.fn().mockReturnValue(resultResponse);
+	const mapResponse = vi.fn().mockReturnValue(resultResponse);
 
 	const result = useMapToAsyncPaginate({
 		...defaultParams,
@@ -292,7 +297,7 @@ test("should return mapped response with increased page in additional", async ()
 });
 
 test("should return empty response on error", async () => {
-	const get = jest.fn().mockRejectedValue(new Error("Test error"));
+	const get = vi.fn().mockRejectedValue(new Error("Test error"));
 
 	const result = useMapToAsyncPaginate({
 		...defaultParams,
@@ -310,7 +315,7 @@ test("should return empty response on error", async () => {
 });
 
 test("should throw an error if additional is not defined", async () => {
-	const get = jest.fn(() => {
+	const get = vi.fn(() => {
 		throw new Error("Test error");
 	});
 

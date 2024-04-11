@@ -1,4 +1,5 @@
-import { stringifyParams } from "../stringifyParams";
+import { expect, test } from "vitest";
+import { stringifyParams } from "./stringifyParams";
 
 test("should stringify params", () => {
 	expect(

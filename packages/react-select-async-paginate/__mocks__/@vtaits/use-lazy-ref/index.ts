@@ -1,1 +1,3 @@
-export const useLazyRef = jest.fn();
+import { vi } from 'vitest';
+
+export const useLazyRef = vi.fn();

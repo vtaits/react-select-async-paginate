@@ -3,38 +3,43 @@ import { useEffect, useRef, useState } from "react";
 import type { GroupBase } from "react-select";
 import useIsMountedRef from "use-is-mounted-ref";
 import useLatest from "use-latest";
-import { defaultReduceOptions } from "../defaultReduceOptions";
-import { defaultShouldLoadMore } from "../defaultShouldLoadMore";
-import { getInitialOptionsCache } from "../getInitialOptionsCache";
-import { requestOptions } from "../requestOptions";
-import type { OptionsCacheItem, UseAsyncPaginateBaseParams } from "../types";
-import { increaseStateId, useAsyncPaginateBase } from "../useAsyncPaginateBase";
+import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
+import { defaultReduceOptions } from "./defaultReduceOptions";
+import { defaultShouldLoadMore } from "./defaultShouldLoadMore";
+import { getInitialOptionsCache } from "./getInitialOptionsCache";
+import { requestOptions } from "./requestOptions";
+import type { OptionsCacheItem, UseAsyncPaginateBaseParams } from "./types";
+import { increaseStateId, useAsyncPaginateBase } from "./useAsyncPaginateBase";
 
-jest.mock("react", () => ({
-	...jest.requireActual("react"),
+vi.mock("react", async () => {
+	const actual = await vi.importActual("react");
 
-	useState: jest.fn().mockReturnValue([1, () => undefined]),
+	return {
+		...actual,
 
-	useEffect: jest.fn(),
-	useRef: jest.fn(),
+		useState: vi.fn().mockReturnValue([1, () => undefined]),
 
-	// biome-ignore lint/complexity/noBannedTypes: supports any function
-	useCallback: jest.fn(<T extends Function>(callback: T) => callback),
-}));
+		useEffect: vi.fn(),
+		useRef: vi.fn(),
 
-jest.mock("use-is-mounted-ref");
-jest.mock("@vtaits/use-lazy-ref");
-jest.mock("../getInitialOptionsCache");
-jest.mock("../requestOptions");
-jest.mock("use-latest");
+		// biome-ignore lint/complexity/noBannedTypes: supports any function
+		useCallback: vi.fn(<T extends Function>(callback: T) => callback),
+	};
+});
 
-const mockedUseEffect = jest.mocked(useEffect);
-const mockedUseState = jest.mocked(useState);
-const mockedUseRef = jest.mocked(useRef);
-const mockedGetInitialOptionsCache = jest.mocked(getInitialOptionsCache);
-const mockedRequestOptions = jest.mocked(requestOptions);
-const mockedUseIsMountedRef = jest.mocked(useIsMountedRef);
-const mockedUseLazyRef = jest.mocked(useLazyRef);
+vi.mock("use-is-mounted-ref");
+vi.mock("@vtaits/use-lazy-ref");
+vi.mock("./getInitialOptionsCache");
+vi.mock("./requestOptions");
+vi.mock("use-latest");
+
+const mockedUseEffect = vi.mocked(useEffect);
+const mockedUseState = vi.mocked(useState);
+const mockedUseRef = vi.mocked(useRef);
+const mockedGetInitialOptionsCache = vi.mocked(getInitialOptionsCache);
+const mockedRequestOptions = vi.mocked(requestOptions);
+const mockedUseIsMountedRef = vi.mocked(useIsMountedRef);
+const mockedUseLazyRef = vi.mocked(useLazyRef);
 
 const defaultCacheItem: OptionsCacheItem<
 	unknown,
@@ -73,15 +78,11 @@ beforeEach(() => {
 		current: {},
 	});
 
-	mockedGetInitialOptionsCache.mockImplementation(
-		jest.requireActual("../getInitialOptionsCache").getInitialOptionsCache,
-	);
-
 	mockedRequestOptions.mockResolvedValue(undefined);
 });
 
 afterEach(() => {
-	jest.clearAllMocks();
+	vi.clearAllMocks();
 });
 
 const mockUseRef = ({
@@ -110,13 +111,13 @@ beforeEach(() => {
 		current: false,
 	});
 
-	jest.mocked(useLatest).mockImplementation((value) => ({
+	vi.mocked(useLatest).mockImplementation((value) => ({
 		current: value,
 	}));
 });
 
 afterEach(() => {
-	jest.clearAllMocks();
+	vi.clearAllMocks();
 });
 
 describe("increaseStateId", () => {
@@ -202,7 +203,7 @@ describe("useAsyncPaginateBase", () => {
 	});
 
 	test("should not reset options cache from first useEffect on initial render", async () => {
-		const setStateId = jest.fn();
+		const setStateId = vi.fn();
 		mockedUseState.mockReturnValue([1, setStateId]);
 
 		const isInit = {
@@ -233,7 +234,7 @@ describe("useAsyncPaginateBase", () => {
 	});
 
 	test("should reset options cache from first useEffect on not initial render", async () => {
-		const setStateId = jest.fn();
+		const setStateId = vi.fn();
 		mockedUseState.mockReturnValue([1, setStateId]);
 
 		const isInit = {
@@ -438,7 +439,7 @@ describe("useAsyncPaginateBase", () => {
 	});
 
 	test("should provide redefined shouldLoadMore", async () => {
-		const shouldLoadMore = jest.fn();
+		const shouldLoadMore = vi.fn();
 
 		const result = useAsyncPaginateBase({
 			...defaultParams,
@@ -455,7 +456,7 @@ describe("useAsyncPaginateBase", () => {
 	});
 
 	test("should provide redefined filterOption", async () => {
-		const filterOption = jest.fn();
+		const filterOption = vi.fn();
 
 		const result = useAsyncPaginateBase({
 			...defaultParams,
@@ -534,7 +535,7 @@ describe("useAsyncPaginateBase", () => {
 	});
 
 	test("should provide redefined reduceOptions to requestOptions", async () => {
-		const reduceOptions = jest.fn();
+		const reduceOptions = vi.fn();
 
 		mockedUseLazyRef.mockReturnValueOnce({
 			current: {
@@ -560,11 +561,11 @@ describe("useAsyncPaginateBase", () => {
 	});
 
 	test("should reduce change cached options and set next increase state id if mounted", async () => {
-		const reduceState = jest.fn().mockReturnValue({
+		const reduceState = vi.fn().mockReturnValue({
 			test2: defaultCacheItem,
 		});
 
-		const setStateId = jest.fn();
+		const setStateId = vi.fn();
 		mockedUseState.mockReturnValue([1, setStateId]);
 
 		const optionsCache = {
@@ -602,11 +603,11 @@ describe("useAsyncPaginateBase", () => {
 	});
 
 	test("should reduce change cached options and not set next increase state id if not mounted", async () => {
-		const reduceState = jest.fn().mockReturnValue({
+		const reduceState = vi.fn().mockReturnValue({
 			test2: defaultCacheItem,
 		});
 
-		const setStateId = jest.fn();
+		const setStateId = vi.fn();
 		mockedUseState.mockReturnValue([1, setStateId]);
 
 		const optionsCache = {

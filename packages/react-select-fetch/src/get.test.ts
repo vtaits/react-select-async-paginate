@@ -1,12 +1,14 @@
-import fetchMock, { enableFetchMocks } from "jest-fetch-mock";
-import { get } from "../get";
-import { stringifyParams } from "../stringifyParams";
+import { afterEach, beforeEach, expect, test, vi } from "vitest";
+import createFetchMock from "vitest-fetch-mock";
+import { get } from "./get";
+import { stringifyParams } from "./stringifyParams";
 
-jest.mock("../stringifyParams");
+vi.mock("./stringifyParams");
 
-enableFetchMocks();
+const fetchMocker = createFetchMock(vi);
+fetchMocker.enableMocks();
 
-const mockedStringifyParams = jest.mocked(stringifyParams);
+const mockedStringifyParams = vi.mocked(stringifyParams);
 
 beforeEach(() => {
 	fetchMock.doMock();
@@ -14,7 +16,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-	jest.clearAllMocks();
+	vi.clearAllMocks();
 });
 
 test("should return response", async () => {

@@ -1,4 +1,5 @@
-import { checkGroup, reduceGroupedOptions } from "../reduceGroupedOptions";
+import { describe, expect, test } from "vitest";
+import { checkGroup, reduceGroupedOptions } from "./reduceGroupedOptions";
 
 describe("checkGroup", () => {
 	test("not groups", () => {

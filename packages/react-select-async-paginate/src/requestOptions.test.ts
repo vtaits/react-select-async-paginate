@@ -1,15 +1,16 @@
 import type { GroupBase } from "react-select";
 import sleep from "sleep-promise";
-import { defaultReduceOptions } from "../defaultReduceOptions";
-import { requestOptions } from "../requestOptions";
-import type { UseAsyncPaginateBaseParams } from "../types";
-import { validateResponse } from "../validateResponse";
+import { afterEach, beforeEach, expect, test, vi } from "vitest";
+import { defaultReduceOptions } from "./defaultReduceOptions";
+import { requestOptions } from "./requestOptions";
+import type { UseAsyncPaginateBaseParams } from "./types";
+import { validateResponse } from "./validateResponse";
 
-jest.mock("sleep-promise");
-jest.mock("../validateResponse");
+vi.mock("sleep-promise");
+vi.mock("./validateResponse");
 
-const mockedValidateResponse = jest.mocked(validateResponse);
-const mockedSleep = jest.mocked(sleep);
+const mockedValidateResponse = vi.mocked(validateResponse);
+const mockedSleep = vi.mocked(sleep);
 
 beforeEach(() => {
 	mockedValidateResponse.mockReturnValue(true);
@@ -17,7 +18,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-	jest.clearAllMocks();
+	vi.clearAllMocks();
 });
 
 const defaultParams: UseAsyncPaginateBaseParams<
@@ -51,8 +52,8 @@ test("should request if options not cached", async () => {
 		},
 	];
 
-	const setOptionsCache = jest.fn();
-	const loadOptions = jest.fn().mockReturnValue({
+	const setOptionsCache = vi.fn();
+	const loadOptions = vi.fn().mockReturnValue({
 		options: newOptions,
 		hasMore: true,
 	});
@@ -135,8 +136,8 @@ test("should request if options cached", async () => {
 		},
 	];
 
-	const setOptionsCache = jest.fn();
-	const loadOptions = jest.fn().mockReturnValue({
+	const setOptionsCache = vi.fn();
+	const loadOptions = vi.fn().mockReturnValue({
 		options: newOptions,
 		hasMore: true,
 	});
@@ -205,8 +206,8 @@ test("should request if options cached", async () => {
 });
 
 test("should not request if options are loading for current search", async () => {
-	const setOptionsCache = jest.fn();
-	const loadOptions = jest.fn().mockReturnValue({
+	const setOptionsCache = vi.fn();
+	const loadOptions = vi.fn().mockReturnValue({
 		options: [],
 		hasMore: true,
 	});
@@ -244,8 +245,8 @@ test("should not request if options are loading for current search", async () =>
 });
 
 test("should not request if hasMore is false for current search", async () => {
-	const setOptionsCache = jest.fn();
-	const loadOptions = jest.fn().mockReturnValue({
+	const setOptionsCache = vi.fn();
+	const loadOptions = vi.fn().mockReturnValue({
 		options: [],
 		hasMore: true,
 	});
@@ -283,8 +284,8 @@ test("should not request if hasMore is false for current search", async () => {
 });
 
 test("should request with error", async () => {
-	const setOptionsCache = jest.fn();
-	const loadOptions = jest.fn().mockRejectedValue(new Error());
+	const setOptionsCache = vi.fn();
+	const loadOptions = vi.fn().mockRejectedValue(new Error());
 
 	const additional = Symbol("additional");
 
@@ -369,10 +370,10 @@ test("should redefine reduceOptions", async () => {
 		},
 	];
 
-	const reduceOptions = jest.fn().mockReturnValue(reducedOptions);
+	const reduceOptions = vi.fn().mockReturnValue(reducedOptions);
 
-	const setOptionsCache = jest.fn();
-	const loadOptions = jest.fn().mockReturnValue({
+	const setOptionsCache = vi.fn();
+	const loadOptions = vi.fn().mockReturnValue({
 		options: newOptions,
 		hasMore: true,
 	});
@@ -467,7 +468,7 @@ test("should validate response", async () => {
 		throw new Error();
 	});
 
-	const loadOptions = jest.fn().mockReturnValue(response);
+	const loadOptions = vi.fn().mockReturnValue(response);
 
 	let hasError = false;
 	try {
@@ -550,8 +551,8 @@ test('should sleep if debounceTimeout bigger than 0 and caller is "input-change"
 		},
 	];
 
-	const setOptionsCache = jest.fn();
-	const loadOptions = jest.fn().mockReturnValue({
+	const setOptionsCache = vi.fn();
+	const loadOptions = vi.fn().mockReturnValue({
 		options: newOptions,
 		hasMore: true,
 	});
@@ -623,8 +624,8 @@ test("should cancel loading if inputValue has changed during sleep for empty cac
 		},
 	];
 
-	const setOptionsCache = jest.fn();
-	const loadOptions = jest.fn().mockReturnValue({
+	const setOptionsCache = vi.fn();
+	const loadOptions = vi.fn().mockReturnValue({
 		options: newOptions,
 		hasMore: true,
 	});
@@ -692,8 +693,8 @@ test("should cancel loading if inputValue has changed during sleep for filled ca
 		},
 	];
 
-	const setOptionsCache = jest.fn();
-	const loadOptions = jest.fn().mockReturnValue({
+	const setOptionsCache = vi.fn();
+	const loadOptions = vi.fn().mockReturnValue({
 		options: newOptions,
 		hasMore: true,
 	});
@@ -768,8 +769,8 @@ test("should redefine additional with response", async () => {
 	const additional1 = Symbol("additional1");
 	const additional2 = Symbol("additional2");
 
-	const setOptionsCache = jest.fn();
-	const loadOptions = jest.fn().mockReturnValue({
+	const setOptionsCache = vi.fn();
+	const loadOptions = vi.fn().mockReturnValue({
 		options: [],
 		hasMore: true,
 		additional: additional2,
@@ -806,8 +807,8 @@ test("should redefine additional with response", async () => {
 test("should not redefine additional with response", async () => {
 	const additional1 = Symbol("additional1");
 
-	const setOptionsCache = jest.fn();
-	const loadOptions = jest.fn().mockReturnValue({
+	const setOptionsCache = vi.fn();
+	const loadOptions = vi.fn().mockReturnValue({
 		options: [],
 		hasMore: true,
 	});
@@ -841,8 +842,8 @@ test("should not redefine additional with response", async () => {
 });
 
 test("should set truthy hasMore with response", async () => {
-	const setOptionsCache = jest.fn();
-	const loadOptions = jest.fn().mockReturnValue({
+	const setOptionsCache = vi.fn();
+	const loadOptions = vi.fn().mockReturnValue({
 		options: [],
 		hasMore: true,
 	});
@@ -875,8 +876,8 @@ test("should set truthy hasMore with response", async () => {
 });
 
 test("should set falsy hasMore with response", async () => {
-	const setOptionsCache = jest.fn();
-	const loadOptions = jest.fn().mockReturnValue({
+	const setOptionsCache = vi.fn();
+	const loadOptions = vi.fn().mockReturnValue({
 		options: [],
 	});
 

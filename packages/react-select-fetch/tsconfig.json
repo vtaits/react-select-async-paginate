@@ -5,7 +5,7 @@
     "jsx": "react-jsx",
     "lib": [
       "ESNext",
-      "DOM"
+      "DOM",
     ],
     "allowJs": false,
     "skipLibCheck": true,

@@ -1,8 +1,9 @@
-import * as lib from "../index";
-import { useMapToAsyncPaginate } from "../useMapToAsyncPaginate";
-import { useSelectFetch } from "../useSelectFetch";
-import { useSelectFetchBase } from "../useSelectFetchBase";
-import { withSelectFetch } from "../withSelectFetch";
+import { expect, test } from "vitest";
+import * as lib from "./index";
+import { useMapToAsyncPaginate } from "./useMapToAsyncPaginate";
+import { useSelectFetch } from "./useSelectFetch";
+import { useSelectFetchBase } from "./useSelectFetchBase";
+import { withSelectFetch } from "./withSelectFetch";
 
 test("should export needed modules", () => {
 	expect(lib.SelectFetch).toBeTruthy();

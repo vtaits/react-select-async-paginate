@@ -1,19 +1,24 @@
 import { useMemo } from "react";
-import { MenuList, useComponents } from "../useComponents";
+import { afterEach, beforeEach, expect, test, vi } from "vitest";
+import { MenuList, useComponents } from "./useComponents";
 
-jest.mock("react", () => ({
-	...jest.requireActual("react"),
-	useMemo: jest.fn(),
-}));
+vi.mock("react", async () => {
+	const actual = await vi.importActual("react");
 
-const mockedUseMemo = jest.mocked(useMemo);
+	return {
+		...actual,
+		useMemo: vi.fn(),
+	};
+});
+
+const mockedUseMemo = vi.mocked(useMemo);
 
 beforeEach(() => {
 	mockedUseMemo.mockImplementation((callback) => callback());
 });
 
 afterEach(() => {
-	jest.clearAllMocks();
+	vi.clearAllMocks();
 });
 
 test("should provide correct deps to useMemo", () => {

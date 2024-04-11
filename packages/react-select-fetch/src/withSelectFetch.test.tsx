@@ -2,15 +2,16 @@ import type { ReactElement } from "react";
 import type { GroupBase, Options, Props as SelectProps } from "react-select";
 import { useComponents } from "react-select-async-paginate";
 import { createRenderer } from "react-test-renderer/shallow";
-import type { SelectFetchProps } from "../types";
-import { useSelectFetch } from "../useSelectFetch";
-import { withSelectFetch } from "../withSelectFetch";
+import { afterEach, beforeEach, expect, test, vi } from "vitest";
+import type { SelectFetchProps } from "./types";
+import { useSelectFetch } from "./useSelectFetch";
+import { withSelectFetch } from "./withSelectFetch";
 
-jest.mock("react-select-async-paginate");
-jest.mock("../useSelectFetch");
+vi.mock("react-select-async-paginate");
+vi.mock("./useSelectFetch");
 
-const mockedUseComponents = jest.mocked(useComponents);
-const mockedUseSelectFetch = jest.mocked(useSelectFetch);
+const mockedUseComponents = vi.mocked(useComponents);
+const mockedUseSelectFetch = vi.mocked(useSelectFetch);
 
 beforeEach(() => {
 	mockedUseComponents.mockReturnValue({});
@@ -31,7 +32,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-	jest.clearAllMocks();
+	vi.clearAllMocks();
 });
 
 type ExtendedSelectProps<
@@ -88,7 +89,7 @@ const setup = <
 };
 
 test("should provide props from parent to child", () => {
-	const getOptionLabel = jest.fn();
+	const getOptionLabel = vi.fn();
 
 	const page = setup({
 		getOptionLabel,

@@ -2,28 +2,33 @@ import { useCallback, useEffect, useMemo, useRef } from "react";
 import type { ReactElement } from "react";
 import type { GroupBase, MenuListProps } from "react-select";
 import { createRenderer } from "react-test-renderer/shallow";
-import { defaultShouldLoadMore } from "../defaultShouldLoadMore";
-import { CHECK_TIMEOUT, wrapMenuList } from "../wrapMenuList";
-import type { BaseSelectProps } from "../wrapMenuList";
+import { afterEach, beforeEach, expect, test, vi } from "vitest";
+import { defaultShouldLoadMore } from "./defaultShouldLoadMore";
+import { CHECK_TIMEOUT, wrapMenuList } from "./wrapMenuList";
+import type { BaseSelectProps } from "./wrapMenuList";
 
-jest.mock("react", () => ({
-	...jest.requireActual("react"),
-	useEffect: jest.fn(),
-	useRef: jest.fn(),
-	useCallback: jest.fn(),
-	useMemo: jest.fn(),
-}));
+vi.mock("react", async () => {
+	const actual = await vi.importActual("react");
 
-jest.useFakeTimers();
+	return {
+		...actual,
+		useEffect: vi.fn(),
+		useRef: vi.fn(),
+		useCallback: vi.fn(),
+		useMemo: vi.fn(),
+	};
+});
 
-jest.spyOn(global, "setTimeout");
-jest.spyOn(global, "clearTimeout");
+vi.useFakeTimers();
 
-const mockedUseCallback = jest.mocked(useCallback);
-const mockedUseMemo = jest.mocked(useMemo);
-const mockedUseEffect = jest.mocked(useEffect);
-const mockedUseRef = jest.mocked(useRef);
-const mockedSetTimeout = jest.mocked(setTimeout);
+vi.spyOn(global, "setTimeout");
+vi.spyOn(global, "clearTimeout");
+
+const mockedUseCallback = vi.mocked(useCallback);
+const mockedUseMemo = vi.mocked(useMemo);
+const mockedUseEffect = vi.mocked(useEffect);
+const mockedUseRef = vi.mocked(useRef);
+const mockedSetTimeout = vi.mocked(setTimeout);
 
 beforeEach(() => {
 	mockedUseEffect.mockReturnValue(undefined);
@@ -34,7 +39,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-	jest.clearAllMocks();
+	vi.clearAllMocks();
 });
 
 function TestComponent(): ReactElement {
@@ -131,7 +136,7 @@ test("should handle if ref el is not scrollable", () => {
 });
 
 test("should call shouldLoadMore with correct arguments", () => {
-	const shouldLoadMore = jest.fn();
+	const shouldLoadMore = vi.fn();
 
 	mockedUseRef
 		.mockReturnValue({
@@ -211,7 +216,7 @@ test("should handle if ref el is scrollable and shouldLoadMore returns true", ()
 });
 
 test("should not call handleScrolledToBottom if should not handle", () => {
-	mockedUseCallback.mockReturnValueOnce(() => false).mockReturnValue(jest.fn());
+	mockedUseCallback.mockReturnValueOnce(() => false).mockReturnValue(vi.fn());
 
 	mockedUseRef
 		.mockReturnValue({
@@ -221,7 +226,7 @@ test("should not call handleScrolledToBottom if should not handle", () => {
 			current: null,
 		});
 
-	const handleScrolledToBottom = jest.fn();
+	const handleScrolledToBottom = vi.fn();
 
 	setup({
 		selectProps: {
@@ -238,7 +243,7 @@ test("should not call handleScrolledToBottom if should not handle", () => {
 });
 
 test("should call handleScrolledToBottom if should handle", () => {
-	mockedUseCallback.mockReturnValueOnce(() => true).mockReturnValue(jest.fn());
+	mockedUseCallback.mockReturnValueOnce(() => true).mockReturnValue(vi.fn());
 
 	mockedUseRef
 		.mockReturnValueOnce({
@@ -252,7 +257,7 @@ test("should call handleScrolledToBottom if should handle", () => {
 			},
 		});
 
-	const handleScrolledToBottom = jest.fn();
+	const handleScrolledToBottom = vi.fn();
 
 	setup({
 		selectProps: {
@@ -269,7 +274,7 @@ test("should call handleScrolledToBottom if should handle", () => {
 });
 
 test("should work if handleScrolledToBottom is not provided", () => {
-	mockedUseCallback.mockReturnValueOnce(() => true).mockReturnValue(jest.fn());
+	mockedUseCallback.mockReturnValueOnce(() => true).mockReturnValue(vi.fn());
 
 	mockedUseRef
 		.mockReturnValueOnce({
@@ -291,7 +296,7 @@ test("should work if handleScrolledToBottom is not provided", () => {
 });
 
 test("should call checkAndLoad and start timer on mount", () => {
-	const setCheckAndHandleTimeout = jest.fn();
+	const setCheckAndHandleTimeout = vi.fn();
 
 	mockedUseMemo.mockReturnValueOnce(setCheckAndHandleTimeout);
 
@@ -303,11 +308,11 @@ test("should call checkAndLoad and start timer on mount", () => {
 });
 
 test("should call checkAndLoad and start on call setCheckAndHandleTimeout", () => {
-	const checkAndHandle = jest.fn();
-	const setCheckAndHandleTimeout = jest.fn();
+	const checkAndHandle = vi.fn();
+	const setCheckAndHandleTimeout = vi.fn();
 
 	mockedUseCallback
-		.mockReturnValueOnce(jest.fn())
+		.mockReturnValueOnce(vi.fn())
 		.mockReturnValueOnce(checkAndHandle);
 
 	mockedUseMemo.mockReturnValueOnce(setCheckAndHandleTimeout);
@@ -340,8 +345,8 @@ test("should call checkAndLoad and start on call setCheckAndHandleTimeout", () =
 });
 
 test("should stop timer on unmount", () => {
-	mockedUseCallback.mockReturnValue(jest.fn());
-	mockedUseMemo.mockReturnValueOnce(jest.fn());
+	mockedUseCallback.mockReturnValue(vi.fn());
+	mockedUseMemo.mockReturnValueOnce(vi.fn());
 
 	mockedUseRef
 		.mockReturnValueOnce({
@@ -366,8 +371,8 @@ test("should stop timer on unmount", () => {
 });
 
 test("should not call extra clearTimeout", () => {
-	mockedUseCallback.mockReturnValue(jest.fn());
-	mockedUseMemo.mockReturnValueOnce(jest.fn());
+	mockedUseCallback.mockReturnValue(vi.fn());
+	mockedUseMemo.mockReturnValueOnce(vi.fn());
 
 	mockedUseRef
 		.mockReturnValueOnce({

@@ -1,19 +1,20 @@
 import { useAsyncPaginateBase } from "react-select-async-paginate";
-import { useMapToAsyncPaginate } from "../useMapToAsyncPaginate";
-import { useSelectFetchBase } from "../useSelectFetchBase";
+import { afterEach, beforeEach, expect, test, vi } from "vitest";
+import { useMapToAsyncPaginate } from "./useMapToAsyncPaginate";
+import { useSelectFetchBase } from "./useSelectFetchBase";
 
-jest.mock("react-select-async-paginate");
-jest.mock("../useMapToAsyncPaginate");
+vi.mock("react-select-async-paginate");
+vi.mock("./useMapToAsyncPaginate");
 
-const mockedUseAsyncPaginateBase = jest.mocked(useAsyncPaginateBase);
-const mockedUseMapToAsyncPaginate = jest.mocked(useMapToAsyncPaginate);
+const mockedUseAsyncPaginateBase = vi.mocked(useAsyncPaginateBase);
+const mockedUseMapToAsyncPaginate = vi.mocked(useMapToAsyncPaginate);
 
 beforeEach(() => {
 	mockedUseMapToAsyncPaginate.mockReset();
 });
 
 afterEach(() => {
-	jest.clearAllMocks();
+	vi.clearAllMocks();
 });
 
 const defaultParams = {
@@ -30,8 +31,8 @@ test("should call useMapToAsyncPaginate with correct params", () => {
 });
 
 test("should call useAsyncPaginateBase with correct params", () => {
-	const shouldLoadMore = jest.fn();
-	const loadOptions = jest.fn();
+	const shouldLoadMore = vi.fn();
+	const loadOptions = vi.fn();
 	const additional = {
 		page: 1,
 	};
@@ -73,16 +74,16 @@ test("should provide correct deps to useAsyncPaginateBase", () => {
 test("should return correct result", () => {
 	const expectedResult = {
 		options: [],
-		handleScrolledToBottom: jest.fn(),
-		shouldLoadMore: jest.fn(),
+		handleScrolledToBottom: vi.fn(),
+		shouldLoadMore: vi.fn(),
 		isLoading: false,
 		isFirstLoad: false,
 		menuIsOpen: false,
 		inputValue: "",
 		filterOption: null,
-		onMenuOpen: jest.fn(),
-		onMenuClose: jest.fn(),
-		onInputChange: jest.fn(),
+		onMenuOpen: vi.fn(),
+		onMenuClose: vi.fn(),
+		onInputChange: vi.fn(),
 	};
 
 	mockedUseAsyncPaginateBase.mockReturnValue(expectedResult);

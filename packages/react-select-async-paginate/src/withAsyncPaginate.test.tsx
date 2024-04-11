@@ -1,20 +1,21 @@
 import type { ReactElement } from "react";
 import type { GroupBase, Options, Props as SelectProps } from "react-select";
 import { createRenderer } from "react-test-renderer/shallow";
+import { afterEach, beforeEach, expect, test, vi } from "vitest";
 import type {
 	AsyncPaginateProps,
 	LoadOptions,
 	UseAsyncPaginateResult,
-} from "../types";
-import { useAsyncPaginate } from "../useAsyncPaginate";
-import { useComponents } from "../useComponents";
-import { withAsyncPaginate } from "../withAsyncPaginate";
+} from "./types";
+import { useAsyncPaginate } from "./useAsyncPaginate";
+import { useComponents } from "./useComponents";
+import { withAsyncPaginate } from "./withAsyncPaginate";
 
-jest.mock("../useAsyncPaginate");
-jest.mock("../useComponents");
+vi.mock("./useAsyncPaginate");
+vi.mock("./useComponents");
 
-const mockedUseComponents = jest.mocked(useComponents);
-const mockedUseAsyncPaginate = jest.mocked(useAsyncPaginate);
+const mockedUseComponents = vi.mocked(useComponents);
+const mockedUseAsyncPaginate = vi.mocked(useAsyncPaginate);
 
 beforeEach(() => {
 	mockedUseComponents.mockReturnValue({});
@@ -40,7 +41,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-	jest.clearAllMocks();
+	vi.clearAllMocks();
 });
 
 type ExtendedSelectProps<
@@ -113,7 +114,7 @@ const setup = <
 };
 
 test("should provide props from parent to child", () => {
-	const getOptionLabel = jest.fn();
+	const getOptionLabel = vi.fn();
 
 	const page = setup({
 		getOptionLabel,

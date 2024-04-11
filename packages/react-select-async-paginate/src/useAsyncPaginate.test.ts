@@ -1,25 +1,30 @@
 import { useState } from "react";
 import type { GroupBase, OptionsOrGroups } from "react-select";
+import { afterEach, beforeEach, expect, test, vi } from "vitest";
 import type {
 	UseAsyncPaginateBaseResult,
 	UseAsyncPaginateParams,
-} from "../types";
-import { useAsyncPaginate } from "../useAsyncPaginate";
-import { useAsyncPaginateBase } from "../useAsyncPaginateBase";
+} from "./types";
+import { useAsyncPaginate } from "./useAsyncPaginate";
+import { useAsyncPaginateBase } from "./useAsyncPaginateBase";
 
-jest.mock("react", () => ({
-	...jest.requireActual("react"),
+vi.mock("react", async () => {
+	const actual = await vi.importActual("react");
 
-	useState: jest.fn(),
+	return {
+		...actual,
 
-	// biome-ignore lint/complexity/noBannedTypes: supports any function
-	useCallback: jest.fn(<T extends Function>(callback: T) => callback),
-}));
+		useState: vi.fn(),
 
-jest.mock("../useAsyncPaginateBase");
+		// biome-ignore lint/complexity/noBannedTypes: supports any function
+		useCallback: vi.fn(<T extends Function>(callback: T) => callback),
+	};
+});
 
-const mockedUseAsyncPaginateBase = jest.mocked(useAsyncPaginateBase);
-const mockedUseState = jest.mocked(useState);
+vi.mock("./useAsyncPaginateBase");
+
+const mockedUseAsyncPaginateBase = vi.mocked(useAsyncPaginateBase);
+const mockedUseState = vi.mocked(useState);
 
 beforeEach(() => {
 	mockedUseAsyncPaginateBase.mockReturnValue({
@@ -37,7 +42,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-	jest.clearAllMocks();
+	vi.clearAllMocks();
 });
 
 // biome-ignore lint/suspicious/noExplicitAny: suitable for any component
@@ -48,9 +53,9 @@ const defaultParams: UseAsyncPaginateParams<any, any, any> = {
 };
 
 test("should provide all params to useAsyncPaginateBase", () => {
-	const loadOptions = jest.fn();
-	const reduceOptions = jest.fn();
-	const shouldLoadMore = jest.fn();
+	const loadOptions = vi.fn();
+	const reduceOptions = vi.fn();
+	const shouldLoadMore = vi.fn();
 
 	const deps = [1, 2, 3];
 
@@ -114,9 +119,9 @@ test("should provide all params to useAsyncPaginateBase", () => {
 });
 
 test("should return all fields from of useAsyncPaginateBase", () => {
-	const handleScrolledToBottom = jest.fn();
-	const shouldLoadMore = jest.fn();
-	const filterOption = jest.fn();
+	const handleScrolledToBottom = vi.fn();
+	const shouldLoadMore = vi.fn();
+	const filterOption = vi.fn();
 
 	type OptionType = {
 		value: number;
@@ -210,7 +215,7 @@ test("should use defaultInputValue from params as initial value for the inputVal
 });
 
 test("should change local inputValue on input change", () => {
-	const setInputValue = jest.fn();
+	const setInputValue = vi.fn();
 
 	mockedUseState.mockReset();
 	mockedUseState
@@ -229,8 +234,8 @@ test("should change local inputValue on input change", () => {
 });
 
 test("should change local inputValue and call onInputChange param on input change", () => {
-	const setInputValue = jest.fn();
-	const onInputChange = jest.fn();
+	const setInputValue = vi.fn();
+	const onInputChange = vi.fn();
 
 	mockedUseState.mockReset();
 	mockedUseState
@@ -340,7 +345,7 @@ test("should use defaultMenuIsOpen from params as initial value for the menuIsOp
 });
 
 test("should open menu", () => {
-	const setMenuIsOpen = jest.fn();
+	const setMenuIsOpen = vi.fn();
 
 	mockedUseState.mockReset();
 	mockedUseState
@@ -356,8 +361,8 @@ test("should open menu", () => {
 });
 
 test("should open menu and call onMenuOpen param", () => {
-	const setMenuIsOpen = jest.fn();
-	const onMenuOpen = jest.fn();
+	const setMenuIsOpen = vi.fn();
+	const onMenuOpen = vi.fn();
 
 	mockedUseState.mockReset();
 	mockedUseState
@@ -378,7 +383,7 @@ test("should open menu and call onMenuOpen param", () => {
 });
 
 test("should close menu", () => {
-	const setMenuIsOpen = jest.fn();
+	const setMenuIsOpen = vi.fn();
 
 	mockedUseState.mockReset();
 	mockedUseState
@@ -394,8 +399,8 @@ test("should close menu", () => {
 });
 
 test("should close menu", () => {
-	const setMenuIsOpen = jest.fn();
-	const onMenuClose = jest.fn();
+	const setMenuIsOpen = vi.fn();
+	const onMenuClose = vi.fn();
 
 	mockedUseState.mockReset();
 	mockedUseState
