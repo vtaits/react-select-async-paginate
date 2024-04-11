@@ -30,7 +30,7 @@
     "@storybook/react-vite": "^8.0.6",
     "@storybook/testing-library": "^0.2.2",
     "@types/react-test-renderer": "^18.0.7",
-    "@vitejs/plugin-react": "^4.0.1",
+    "@vitejs/plugin-react": "^4.2.1",
     "codecov": "^3.8.3",
     "cross-env": "^7.0.3",
     "path": "^0.12.7",
