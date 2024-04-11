@@ -1,9 +1,6 @@
 [![NPM](https://img.shields.io/npm/v/react-select-async-paginate.svg)](https://www.npmjs.com/package/react-select-async-paginate)
-[![Build Status](https://img.shields.io/travis/vtaits/react-select-async-paginate.svg?style=flat)](https://travis-ci.org/vtaits/react-select-async-paginate)
 [![codecov.io](https://codecov.io/gh/vtaits/react-select-async-paginate/branch/master/graph/badge.svg)](https://codecov.io/gh/vtaits/react-select-async-paginate)
-[![dependencies status](https://david-dm.org/vtaits/react-select-async-paginate/status.svg?path=packages/react-select-async-paginate)](https://david-dm.org/vtaits/react-select-async-paginate?path=packages/react-select-async-paginate)
-[![devDependencies status](https://david-dm.org/vtaits/react-select-async-paginate/dev-status.svg?path=packages/react-select-async-paginate)](https://david-dm.org/vtaits/react-select-async-paginate?path=packages/react-select-async-paginate&type=dev)
-[![Types](https://img.shields.io/npm/types/react-select-async-paginate.svg)](https://www.npmjs.com/package/react-select-async-paginate)
+![dependencies status](https://img.shields.io/librariesio/release/npm/react-select-async-paginate)
 
 # react-select-async-paginate
 
@@ -23,6 +20,7 @@ Wrapper above `react-select` that supports pagination on menu scroll.
 - [Grouped options](https://codesandbox.io/s/oxv62x8j4y)
 - [Custom select base](https://codesandbox.io/s/l2pjrv0ryl)
 - [Manual control of input value and menu opening](https://codesandbox.io/s/6y34j51k1n)
+- [react-hook-form integration](https://codesandbox.io/s/x7vw8c)
 
 ## Versions
 

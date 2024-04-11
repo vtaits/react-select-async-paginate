@@ -1,93 +1,84 @@
-import {
-  useState,
-  useCallback,
-} from 'react';
+import { useCallback, useState } from "react";
+import type { GroupBase, InputActionMeta } from "react-select";
 import type {
-  GroupBase,
-  InputActionMeta,
-} from 'react-select';
+	UseAsyncPaginateBaseResult,
+	UseAsyncPaginateParams,
+	UseAsyncPaginateResult,
+} from "./types";
+import { useAsyncPaginateBase } from "./useAsyncPaginateBase";
 
-import {
-  useAsyncPaginateBase,
-} from './useAsyncPaginateBase';
-
-import type {
-  UseAsyncPaginateParams,
-  UseAsyncPaginateBaseResult,
-  UseAsyncPaginateResult,
-} from './types';
-
-export const useAsyncPaginate = <OptionType, Group extends GroupBase<OptionType>, Additional>(
-  params: UseAsyncPaginateParams<OptionType, Group, Additional>,
-  deps: ReadonlyArray<unknown> = [],
+export const useAsyncPaginate = <
+	OptionType,
+	Group extends GroupBase<OptionType>,
+	Additional,
+>(
+	params: UseAsyncPaginateParams<OptionType, Group, Additional>,
+	deps: ReadonlyArray<unknown> = [],
 ): UseAsyncPaginateResult<OptionType, Group> => {
-  const {
-    inputValue: inputValueParam,
-    menuIsOpen: menuIsOpenParam,
-    defaultInputValue: defaultInputValueParam,
-    defaultMenuIsOpen: defaultMenuIsOpenParam,
-    onInputChange: onInputChangeParam,
-    onMenuClose: onMenuCloseParam,
-    onMenuOpen: onMenuOpenParam,
-  } = params;
+	const {
+		inputValue: inputValueParam,
+		menuIsOpen: menuIsOpenParam,
+		defaultInputValue: defaultInputValueParam,
+		defaultMenuIsOpen: defaultMenuIsOpenParam,
+		onInputChange: onInputChangeParam,
+		onMenuClose: onMenuCloseParam,
+		onMenuOpen: onMenuOpenParam,
+	} = params;
 
-  const [inputValueState, setInputValue] = useState(
-    defaultInputValueParam || '',
-  );
-  const [menuIsOpenState, setMenuIsOpen] = useState(
-    !!defaultMenuIsOpenParam,
-  );
+	const [inputValueState, setInputValue] = useState(
+		defaultInputValueParam || "",
+	);
+	const [menuIsOpenState, setMenuIsOpen] = useState(!!defaultMenuIsOpenParam);
 
-  const inputValue: string = typeof inputValueParam === 'string'
-    ? inputValueParam
-    : inputValueState;
+	const inputValue: string =
+		typeof inputValueParam === "string" ? inputValueParam : inputValueState;
 
-  const menuIsOpen: boolean = typeof menuIsOpenParam === 'boolean'
-    ? menuIsOpenParam
-    : menuIsOpenState;
+	const menuIsOpen: boolean =
+		typeof menuIsOpenParam === "boolean" ? menuIsOpenParam : menuIsOpenState;
 
-  const onInputChange = useCallback((
-    nextInputValue: string,
-    actionMeta: InputActionMeta,
-  ): void => {
-    if (onInputChangeParam) {
-      onInputChangeParam(nextInputValue, actionMeta);
-    }
+	const onInputChange = useCallback(
+		(nextInputValue: string, actionMeta: InputActionMeta): void => {
+			if (onInputChangeParam) {
+				onInputChangeParam(nextInputValue, actionMeta);
+			}
 
-    setInputValue(nextInputValue);
-  }, [onInputChangeParam]);
+			setInputValue(nextInputValue);
+		},
+		[onInputChangeParam],
+	);
 
-  const onMenuClose = useCallback((): void => {
-    if (onMenuCloseParam) {
-      onMenuCloseParam();
-    }
+	const onMenuClose = useCallback((): void => {
+		if (onMenuCloseParam) {
+			onMenuCloseParam();
+		}
 
-    setMenuIsOpen(false);
-  }, [onMenuCloseParam]);
+		setMenuIsOpen(false);
+	}, [onMenuCloseParam]);
 
-  const onMenuOpen = useCallback((): void => {
-    if (onMenuOpenParam) {
-      onMenuOpenParam();
-    }
+	const onMenuOpen = useCallback((): void => {
+		if (onMenuOpenParam) {
+			onMenuOpenParam();
+		}
 
-    setMenuIsOpen(true);
-  }, [onMenuOpenParam]);
+		setMenuIsOpen(true);
+	}, [onMenuOpenParam]);
 
-  const baseResult: UseAsyncPaginateBaseResult<OptionType, Group> = useAsyncPaginateBase(
-    {
-      ...params,
-      inputValue,
-      menuIsOpen,
-    },
-    deps,
-  );
+	const baseResult: UseAsyncPaginateBaseResult<OptionType, Group> =
+		useAsyncPaginateBase(
+			{
+				...params,
+				inputValue,
+				menuIsOpen,
+			},
+			deps,
+		);
 
-  return {
-    ...baseResult,
-    inputValue,
-    menuIsOpen,
-    onInputChange,
-    onMenuClose,
-    onMenuOpen,
-  };
+	return {
+		...baseResult,
+		inputValue,
+		menuIsOpen,
+		onInputChange,
+		onMenuClose,
+		onMenuOpen,
+	};
 };

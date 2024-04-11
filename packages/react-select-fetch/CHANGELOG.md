@@ -1,3 +1,20 @@
+## 0.5.2 (11 apr 2024)
+
+### Internal changes
+
+- Migrate `eslint` -> `@biomejs/biome`
+- Migrate `jest` -> `vitest`
+
+## 0.5.1 (23 jun 2023)
+
+### Bugfix
+
+- Fixed types import in modern environments [#150](https://github.com/vtaits/react-select-async-paginate/issues/150)
+
+### Improvement
+
+- Migrate `defaultProps` to default arguments [#147](https://github.com/vtaits/react-select-async-paginate/issues/147)
+
 ## 0.5.0 (06 oct 2022)
 
 - Improved typing
