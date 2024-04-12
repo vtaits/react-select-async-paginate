@@ -10,10 +10,11 @@
   "exports": {
     ".": {
       "import": "./dist/esm/index.js",
-      "require": "./dist/index.js"
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
     }
   },
-  "typings": "dist/index.d.ts",
+  "typings": "./dist/index.d.ts",
   "keywords": [
     "react",
     "react-select",
