@@ -9,7 +9,7 @@ import { defaultShouldLoadMore } from "./defaultShouldLoadMore";
 import { getInitialOptionsCache } from "./getInitialOptionsCache";
 import { requestOptions } from "./requestOptions";
 import type { OptionsCacheItem, UseAsyncPaginateBaseParams } from "./types";
-import { increaseStateId, useAsyncPaginateBase } from "./useAsyncPaginateBase";
+import { useAsyncPaginateBase } from "./useAsyncPaginateBase";
 
 vi.mock("react", async () => {
 	const actual = await vi.importActual("react");
@@ -118,12 +118,6 @@ beforeEach(() => {
 
 afterEach(() => {
 	vi.clearAllMocks();
-});
-
-describe("increaseStateId", () => {
-	test("should increase value", () => {
-		expect(increaseStateId(1)).toBe(2);
-	});
 });
 
 describe("useAsyncPaginateBase", () => {

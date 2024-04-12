@@ -68,9 +68,7 @@ export type LoadOptions<
 	inputValue: string,
 	options: OptionsOrGroups<OptionType, Group>,
 	additional?: Additional,
-) =>
-	| Response<OptionType, Group, Additional>
-	| Promise<Response<OptionType, Group, Additional>>;
+) => Promise<Response<OptionType, Group, Additional>>;
 
 export type FilterOption<OptionType> =
 	| ((option: FilterOptionOption<OptionType>, rawInput: string) => boolean)

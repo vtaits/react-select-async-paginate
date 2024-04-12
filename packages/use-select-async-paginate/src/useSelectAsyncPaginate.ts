@@ -12,10 +12,10 @@ const defaultDeps: unknown[] = [];
  * @returns the cache for current value of the search input
  * and the instance of `select-async-paginate-model`
  */
-export const useSelectAsyncPaginate = <OptionType, Additional>(
+export function useSelectAsyncPaginate<OptionType, Additional>(
 	params: Params<OptionType, Additional>,
-	deps: unknown[] = defaultDeps,
-) => {
+	deps: readonly unknown[] = defaultDeps,
+) {
 	const [model] = useState(() => createAsyncPaginateModel(params));
 
 	const currentCache = useSyncExternalStore(
@@ -35,4 +35,4 @@ export const useSelectAsyncPaginate = <OptionType, Additional>(
 	}, deps);
 
 	return [currentCache, model] as const;
-};
+}

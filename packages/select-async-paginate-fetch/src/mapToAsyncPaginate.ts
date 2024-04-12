@@ -41,7 +41,7 @@ export const mapToAsyncPaginate = <OptionType>(
 		page: initialPage,
 	};
 
-	const defaultAdditional: Additional = {
+	const initialAdditional: Additional = {
 		page: defaultInitialPage,
 	};
 
@@ -99,6 +99,6 @@ export const mapToAsyncPaginate = <OptionType>(
 	return {
 		loadOptions,
 		additional,
-		defaultAdditional,
+		initialAdditional,
 	};
 };
