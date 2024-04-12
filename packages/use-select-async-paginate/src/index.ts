@@ -1,1 +1,1 @@
-export { useSelectAsyncPaginate } from './useSelectAsyncPaginate';
+export { useSelectAsyncPaginate } from "./useSelectAsyncPaginate";
