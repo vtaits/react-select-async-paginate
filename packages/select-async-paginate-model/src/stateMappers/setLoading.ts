@@ -1,34 +1,30 @@
-import { getInitialCache } from '../getInitialCache';
+import { getInitialCache } from "../getInitialCache";
 
-import type {
-  State,
-} from '../types/internal';
-import type {
-  Params,
-} from '../types/public';
+import type { State } from "../types/internal";
+import type { Params } from "../types/public";
 
 export const setLoading = <OptionType, Additional>(
-  prevState: State<OptionType, Additional>,
-  params: Params<OptionType, Additional>,
-  {
-    inputValue,
-  }: {
-    inputValue: string;
-  },
+	prevState: State<OptionType, Additional>,
+	params: Params<OptionType, Additional>,
+	{
+		inputValue,
+	}: {
+		inputValue: string;
+	},
 ): State<OptionType, Additional> => {
-  const prevCache = prevState.cache[inputValue];
+	const prevCache = prevState.cache[inputValue];
 
-  const currentOptions = prevCache || getInitialCache(params);
+	const currentOptions = prevCache || getInitialCache(params);
 
-  return {
-    ...prevState,
+	return {
+		...prevState,
 
-    cache: {
-      ...prevState.cache,
-      [inputValue]: {
-        ...currentOptions,
-        isLoading: true,
-      },
-    },
-  };
+		cache: {
+			...prevState.cache,
+			[inputValue]: {
+				...currentOptions,
+				isLoading: true,
+			},
+		},
+	};
 };

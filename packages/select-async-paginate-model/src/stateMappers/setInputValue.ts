@@ -1,15 +1,13 @@
-import type {
-  State,
-} from '../types/internal';
+import type { State } from "../types/internal";
 
 export const setInputValue = <OptionType, Additional>(
-  prevState: State<OptionType, Additional>,
-  {
-    inputValue,
-  }: {
-    inputValue: string;
-  },
+	prevState: State<OptionType, Additional>,
+	{
+		inputValue,
+	}: {
+		inputValue: string;
+	},
 ): State<OptionType, Additional> => ({
-    ...prevState,
-    inputValue,
-  });
+	...prevState,
+	inputValue,
+});

@@ -1,28 +1,21 @@
-import { requestOptions } from './requestOptions';
+import { requestOptions } from "./requestOptions";
 
-import type {
-  Dispatch,
-} from '../types/thunkHelpers';
+import type { Dispatch } from "../types/thunkHelpers";
 
-import {
-  RequestOptionsCaller,
-} from '../types/internal';
-import type {
-  State,
-} from '../types/internal';
+import { RequestOptionsCaller } from "../types/internal";
+import type { State } from "../types/internal";
 
-export const loadMore = <OptionType, Additional>() => (
-  dispatch: Dispatch<OptionType, Additional>,
-  getState: () => State<OptionType, Additional>,
-) => {
-  const {
-    cache,
-    inputValue,
-  } = getState();
+export const loadMore =
+	<OptionType, Additional>() =>
+	(
+		dispatch: Dispatch<OptionType, Additional>,
+		getState: () => State<OptionType, Additional>,
+	) => {
+		const { cache, inputValue } = getState();
 
-  const currentCache = cache[inputValue];
+		const currentCache = cache[inputValue];
 
-  if (currentCache) {
-    dispatch(requestOptions(RequestOptionsCaller.MenuScroll));
-  }
-};
+		if (currentCache) {
+			dispatch(requestOptions(RequestOptionsCaller.MenuScroll));
+		}
+	};

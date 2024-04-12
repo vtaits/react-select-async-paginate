@@ -1,90 +1,62 @@
-import { sleep } from '../utils/sleep';
+import { getResult } from "krustykrab";
+import { onLoadSuccess, setLoading, unsetLoading } from "../actions";
+import { getInitialCache } from "../getInitialCache";
+import { RequestOptionsCaller } from "../types/internal";
+import type { State } from "../types/internal";
+import type { Params } from "../types/public";
+import type { Dispatch } from "../types/thunkHelpers";
+import { sleep } from "../utils/sleep";
+import { validateResponse } from "../validateResponse";
 
-import {
-  onLoadSuccess,
-  setLoading,
-  unsetLoading,
-} from '../actions';
+export const requestOptions =
+	<OptionType, Additional>(caller: RequestOptionsCaller) =>
+	async (
+		dispatch: Dispatch<OptionType, Additional>,
+		getState: () => State<OptionType, Additional>,
+		getParams: () => Params<OptionType, Additional>,
+	) => {
+		const params = getParams();
 
-import { getInitialCache } from '../getInitialCache';
-import { validateResponse } from '../validateResponse';
+		const { debounceTimeout = 0, loadOptions } = params;
 
-import type {
-  Dispatch,
-} from '../types/thunkHelpers';
+		const { cache, inputValue } = getState();
 
-import {
-  RequestOptionsCaller,
-} from '../types/internal';
-import type {
-  State,
-} from '../types/internal';
-import type {
-  Params,
-} from '../types/public';
+		const isCacheEmpty = !cache[inputValue];
 
-export const requestOptions = <OptionType, Additional>(
-  caller: RequestOptionsCaller,
-) => async (
-    dispatch: Dispatch<OptionType, Additional>,
-    getState: () => State<OptionType, Additional>,
-    getParams: () => Params<OptionType, Additional>,
-  ) => {
-    const params = getParams();
+		const currentCache = cache[inputValue] || getInitialCache(params);
 
-    const {
-      debounceTimeout = 0,
-      loadOptions,
-    } = params;
+		if (currentCache.isLoading || !currentCache.hasMore) {
+			return;
+		}
 
-    const {
-      cache,
-      inputValue,
-    } = getState();
+		dispatch(setLoading(inputValue));
 
-    const isCacheEmpty = !cache[inputValue];
+		if (debounceTimeout > 0 && caller === RequestOptionsCaller.InputChange) {
+			await sleep(debounceTimeout);
 
-    const currentCache = cache[inputValue] || getInitialCache(params);
+			const newInputValue = getState().inputValue;
 
-    if (currentCache.isLoading || !currentCache.hasMore) {
-      return;
-    }
+			if (inputValue !== newInputValue) {
+				dispatch(unsetLoading(inputValue, isCacheEmpty));
+				return;
+			}
+		}
 
-    dispatch(setLoading(inputValue));
+		const result = await getResult(
+			loadOptions(inputValue, currentCache.options, currentCache.additional),
+		);
 
-    if (debounceTimeout > 0 && caller === RequestOptionsCaller.InputChange) {
-      await sleep(debounceTimeout);
+		if (result.isErr()) {
+			dispatch(unsetLoading(inputValue, false));
+			return;
+		}
 
-      const newInputValue = getState().inputValue;
+		const response = result.unwrap();
 
-      if (inputValue !== newInputValue) {
-        dispatch(unsetLoading(inputValue, isCacheEmpty));
-        return;
-      }
-    }
+		if (!validateResponse(response)) {
+			dispatch(unsetLoading(inputValue, false));
+			return;
+		}
 
-    let response;
-    let hasError = false;
-
-    try {
-      response = await loadOptions(
-        inputValue,
-        currentCache.options,
-        currentCache.additional,
-      );
-    } catch (e) {
-      hasError = true;
-    }
-
-    if (hasError) {
-      dispatch(unsetLoading(inputValue, false));
-      return;
-    }
-
-    if (!validateResponse(response)) {
-      dispatch(unsetLoading(inputValue, false));
-      return;
-    }
-
-    dispatch(onLoadSuccess(inputValue, response));
-  };
+		dispatch(onLoadSuccess(inputValue, response));
+	};

@@ -5,6 +5,6 @@
  * @returns Concatenated array of options
  */
 export const defaultReduceOptions = <OptionType>(
-  prevOptions: readonly OptionType[],
-  loadedOptions: readonly OptionType[],
+	prevOptions: readonly OptionType[],
+	loadedOptions: readonly OptionType[],
 ) => [...prevOptions, ...loadedOptions];
