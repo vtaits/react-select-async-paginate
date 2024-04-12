@@ -1,0 +1,54 @@
+{
+  "name": "select-async-paginate-fetch",
+  "version": "1.0.0",
+  "description": "Model for asynchronous selects for support pagination on menu scroll",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/esm/index.js",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "typings": "./dist/index.d.ts",
+  "keywords": [
+    "react",
+    "react-select",
+    "async",
+    "pagination",
+    "fetch"
+  ],
+  "repository": "git@github.com:vtaits/react-select-async-paginate.git",
+  "homepage": "https://github.com/vtaits/react-select-async-paginate/tree/master/packages/select-async-paginate-model",
+  "author": "Vadim Taits",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsup src/index.ts --sourcemap --format esm,cjs --dts --legacy-output",
+    "lint": "biome check src",
+    "lint:fix": "biome check src --apply-unsafe",
+    "format": "biome format src --write",
+    "prepare": "yarn build",
+    "test:ts": "tsc --noEmit",
+    "test:unit": "vitest run --coverage.enabled --coverage.all --coverage.include=src",
+    "test:unit:watch": "vitest",
+    "codecov": "codecov -F select_async_paginate_fetch"
+  },
+  "dependencies": {
+    "krustykrab": "^1.0.0",
+    "qs": "^6.11.2",
+    "select-async-paginate-model": "^1.0.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.6.4",
+    "@types/qs": "^6.9.9",
+    "@vitest/coverage-v8": "^1.5.0",
+    "tsup": "^6.7.0",
+    "typescript": "^4.9.5",
+    "vitest": "^1.5.0",
+    "vitest-fetch-mock": "^0.2.2"
+  }
+}
