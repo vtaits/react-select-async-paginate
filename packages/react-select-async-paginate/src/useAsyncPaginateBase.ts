@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect } from "react";
 import type { GroupBase, OptionsOrGroups } from "react-select";
 import { useSelectAsyncPaginate } from "use-select-async-paginate";
 import { defaultShouldLoadMore } from "./defaultShouldLoadMore";
@@ -7,14 +7,14 @@ import type {
 	UseAsyncPaginateBaseResult,
 } from "./types";
 
-export const useAsyncPaginateBase = <
+export function useAsyncPaginateBase<
 	OptionType,
 	Group extends GroupBase<OptionType>,
 	Additional,
 >(
 	params: UseAsyncPaginateBaseParams<OptionType, Group, Additional>,
 	deps: readonly unknown[] = [],
-): UseAsyncPaginateBaseResult<OptionType, Group> => {
+): UseAsyncPaginateBaseResult<OptionType, Group> {
 	const {
 		additional,
 		defaultOptions,
@@ -71,4 +71,4 @@ export const useAsyncPaginateBase = <
 		isFirstLoad: currentCache.isFirstLoad,
 		options: currentCache.options,
 	};
-};
+}

@@ -8,8 +8,10 @@ import { defaultReduceOptions } from "./defaultReduceOptions";
 import { defaultShouldLoadMore } from "./defaultShouldLoadMore";
 import { getInitialOptionsCache } from "./getInitialOptionsCache";
 import { requestOptions } from "./requestOptions";
-import type { OptionsCacheItem, UseAsyncPaginateBaseParams } from "./types";
+import type { UseAsyncPaginateBaseParams } from "./types";
 import { useAsyncPaginateBase } from "./useAsyncPaginateBase";
+import { useSelectAsyncPaginate } from "use-select-async-paginate";
+import type { OptionsCacheItem } from 'select-async-paginate-model';
 
 vi.mock("react", async () => {
 	const actual = await vi.importActual("react");
@@ -41,9 +43,29 @@ const mockedRequestOptions = vi.mocked(requestOptions);
 const mockedUseIsMountedRef = vi.mocked(useIsMountedRef);
 const mockedUseLazyRef = vi.mocked(useLazyRef);
 
+vi.mock("use-select-async-paginate")
+
+const currentCache = {
+	isFirstLoad: false,
+	isLoading: false,
+	hasMore: true,
+	options: [],
+} satisfies OptionsCacheItem<unknown, unknown>;
+
+const model = {
+	getCurrentCache: vi.fn(),
+	handleLoadMore: vi.fn(),
+	handleReset: vi.fn(),
+	onChangeInputValue: vi.fn(),
+	onToggleMenu: vi.fn(),
+	subscribe: vi.fn(),
+	updateParams: vi.fn()
+};
+
+vi.mocked(useSelectAsyncPaginate).mockReturnValue([currentCache, model]);
+
 const defaultCacheItem: OptionsCacheItem<
 	unknown,
-	GroupBase<unknown>,
 	unknown
 > = {
 	options: [],
@@ -58,7 +80,7 @@ const defaultParams: UseAsyncPaginateBaseParams<
 	GroupBase<unknown>,
 	unknown
 > = {
-	loadOptions: () => ({
+	loadOptions: () => Promise.resolve({
 		options: [],
 	}),
 	inputValue: "",

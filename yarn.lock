@@ -8608,7 +8608,10 @@ __metadata:
     krustykrab: "npm:^1.0.0"
     react: "npm:^18.2.0"
     react-select: "npm:^5.8.0"
+    react-test-engine: "npm:^1.1.3"
+    react-test-engine-vitest: "npm:^1.0.3"
     react-test-renderer: "npm:^18.2.0"
+    select-async-paginate-model: "npm:^1.0.0"
     sleep-promise: "npm:^9.1.0"
     tsup: "npm:^8.0.2"
     typescript: "npm:5.4.5"
@@ -8679,6 +8682,43 @@ __metadata:
   peerDependencies:
     react: ^16.0.0 || ^17.0.0 || ^18.0.0
   checksum: 10/06457fe5bcaa44aeca998905b6849304742ea1cc2d3841e4a0964c745ff392bc4dec07f8c779f317faacce3a0bf6f84e15020ac0fa81adb931067dbb0baf707b
+  languageName: node
+  linkType: hard
+
+"react-shallow-search@npm:^2.2.0":
+  version: 2.2.0
+  resolution: "react-shallow-search@npm:2.2.0"
+  peerDependencies:
+    react: ^17.0.0 || ^18.0.0
+    react-is: ^17.0.0 || ^18.0.0
+  checksum: 10/0f463e9c18974b61deb4071993481d86939fa63232ef82fc5058d97052b661b1ea24ed95ca7c1e06777e5eeb2fb2073d013668a3bdecc56380d2b3779601365e
+  languageName: node
+  linkType: hard
+
+"react-test-engine-vitest@npm:^1.0.3":
+  version: 1.0.3
+  resolution: "react-test-engine-vitest@npm:1.0.3"
+  peerDependencies:
+    react: ^17.0.0 || ^18.0.0
+    react-is: ^17.0.0 || ^18.0.0
+    react-test-engine: ^1.0.0
+    react-test-renderer: ^17.0.0 || ^18.0.0
+    vitest: ^0.34.0 || ^1.0.0 || ^2.0.0
+  checksum: 10/3581b7bcd26cfd2e1a35bde5a7c4077f5e3e6f9d708182fe0df24a9cb469e2bf5d7d09675879bcee202e14ba26bf3c47549dcac97bfd3bc5530d4db52cdb6070
+  languageName: node
+  linkType: hard
+
+"react-test-engine@npm:^1.1.3":
+  version: 1.1.3
+  resolution: "react-test-engine@npm:1.1.3"
+  dependencies:
+    lodash: "npm:^4.17.21"
+    react-shallow-search: "npm:^2.2.0"
+  peerDependencies:
+    react: ^17.0.0 || ^18.0.0
+    react-is: ^17.0.0 || ^18.0.0
+    react-test-renderer: ^17.0.0 || ^18.0.0
+  checksum: 10/233d5b483fdc655d8ed21ef11e4b556c2c737e1bbb6320acaf7d5f583915d3c668182a56854a08006fb2b6e7bf4ee718a05d21ee1a40c960bc7727a4c243bf7c
   languageName: node
   linkType: hard
 
@@ -10385,6 +10425,7 @@ __metadata:
     vitest: "npm:^1.5.0"
   peerDependencies:
     react: ^18.0.0
+    select-async-paginate-model: ^1.0.0
   languageName: unknown
   linkType: soft
 
