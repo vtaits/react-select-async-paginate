@@ -8296,7 +8296,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-select-async-paginate@npm:^0.7.4, react-select-async-paginate@workspace:packages/react-select-async-paginate":
+"react-select-async-paginate@npm:^0.7.5, react-select-async-paginate@workspace:packages/react-select-async-paginate":
   version: 0.0.0-use.local
   resolution: "react-select-async-paginate@workspace:packages/react-select-async-paginate"
   dependencies:
@@ -8338,7 +8338,7 @@ __metadata:
     qs: "npm:^6.12.0"
     react: "npm:^18.2.0"
     react-select: "npm:^5.8.0"
-    react-select-async-paginate: "npm:^0.7.4"
+    react-select-async-paginate: "npm:^0.7.5"
     react-test-renderer: "npm:^18.2.0"
     sleep-promise: "npm:^9.1.0"
     tsup: "npm:^8.0.2"
@@ -9387,7 +9387,7 @@ __metadata:
     minizlib: "npm:^2.1.1"
     mkdirp: "npm:^1.0.3"
     yallist: "npm:^4.0.0"
-  checksum: 8/f1322768c9741a25356c11373bce918483f40fa9a25c69c59410c8a1247632487edef5fe76c5f12ac51a6356d2f1829e96d2bc34098668a2fc34d76050ac2b6c
+  checksum: 10/bfbfbb2861888077fc1130b84029cdc2721efb93d1d1fb80f22a7ac3a98ec6f8972f29e564103bbebf5e97be67ebc356d37fa48dbc4960600a1eb7230fbd1ea0
   languageName: node
   linkType: hard
 
