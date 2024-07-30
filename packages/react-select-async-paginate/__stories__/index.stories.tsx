@@ -1,49 +1,50 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from "@storybook/react";
+import { fn } from "@storybook/test";
 
-import { AsyncPaginate } from '../src';
+import { AsyncPaginate } from "../src";
 
-import { Autoload } from './Autoload';
-import { Creatable } from './Creatable';
-import { CreatableWithNewOptions } from './CreatableWithNewOptions';
-import { CustomScrollCheck } from './CustomScrollCheck';
-import { Debounce } from './Debounce';
-import { GroupedOptions } from './GroupedOptions';
-import { InitialOptions } from './InitialOptions';
-import { Manual } from './Manual';
-import { RequestByPageNumber } from './RequestByPageNumber';
-import { Simple } from './Simple';
+import { Autoload } from "./Autoload";
+import { Creatable } from "./Creatable";
+import { CreatableWithNewOptions } from "./CreatableWithNewOptions";
+import { CustomScrollCheck } from "./CustomScrollCheck";
+import { Debounce } from "./Debounce";
+import { GroupedOptions } from "./GroupedOptions";
+import { InitialOptions } from "./InitialOptions";
+import { Manual } from "./Manual";
+import { RequestByPageNumber } from "./RequestByPageNumber";
+import { Simple, playSimple } from "./Simple";
 
 const meta: Meta<typeof AsyncPaginate> = {
-  title: 'react-select-async-paginate',
+  title: "react-select-async-paginate",
   component: AsyncPaginate,
-  tags: ['autoload']
+  tags: ["autoload"],
 };
 
 export default meta;
 type Story = StoryObj<typeof AsyncPaginate>;
 
 export const AutoloadStory: Story = {
-  name: 'Autoload',
+  name: "Autoload",
   render: (props) => <Autoload {...props} />,
 };
 
 export const CreatableStory: Story = {
-  name: 'Creatable',
+  name: "Creatable",
   render: (props) => <Creatable {...props} />,
 };
 
 export const CreatableWithNewOptionsStory: Story = {
-  name: 'Creatable with new options',
+  name: "Creatable with new options",
   render: (props) => <CreatableWithNewOptions {...props} />,
 };
 
 export const CustomScrollCheckStory: Story = {
-  name: 'Customization check of the need of load options',
+  name: "Customization check of the need of load options",
   render: (props) => <CustomScrollCheck {...props} />,
 };
 
 export const DebounceStory: Story = {
-  name: 'Debounce',
+  name: "Debounce",
   args: {
     debounceTimeout: 300,
   },
@@ -51,26 +52,27 @@ export const DebounceStory: Story = {
 };
 
 export const GroupedOptionsStory: Story = {
-  name: 'Grouped options',
+  name: "Grouped options",
   render: (props) => <GroupedOptions {...props} />,
 };
 
 export const InitialOptionsStory: Story = {
-  name: 'Initial options',
+  name: "Initial options",
   render: (props) => <InitialOptions {...props} />,
 };
 
 export const ManualStory: Story = {
-  name: 'Manual control of input value and menu opening',
+  name: "Manual control of input value and menu opening",
   render: (props) => <Manual {...props} />,
 };
 
 export const RequestByPageNumberStory: Story = {
-  name: 'Request by page number',
+  name: "Request by page number",
   render: (props) => <RequestByPageNumber {...props} />,
 };
 
 export const SimpleStory: Story = {
-  name: 'Simple',
+  name: "Simple",
+  play: playSimple,
   render: (props) => <Simple {...props} />,
 };

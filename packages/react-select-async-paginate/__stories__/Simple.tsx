@@ -1,23 +1,17 @@
-import { useState } from 'react';
-import type {
-  ReactElement,
-} from 'react';
+import React, { useState } from "react";
+import type { ReactElement } from "react";
 
-import type {
-  GroupBase,
-  MultiValue,
-} from 'react-select';
+import type { GroupBase, MultiValue } from "react-select";
 
-import sleep from 'sleep-promise';
+import type { Meta, StoryObj } from "@storybook/react";
+import { within, userEvent, expect, waitFor, fireEvent } from "@storybook/test";
 
-import { AsyncPaginate } from '../src';
-import type {
-  LoadOptions,
-} from '../src';
+import sleep from "sleep-promise";
 
-import type {
-  StoryProps,
-} from './types';
+import { AsyncPaginate } from "../src";
+import type { LoadOptions } from "../src";
+
+import type { StoryProps } from "./types";
 
 type OptionType = {
   value: number;
@@ -33,9 +27,9 @@ for (let i = 0; i < 50; ++i) {
 }
 
 const loadOptions: LoadOptions<
-OptionType,
-GroupBase<OptionType>,
-unknown
+  OptionType,
+  GroupBase<OptionType>,
+  unknown
 > = async (search, prevOptions) => {
   await sleep(1000);
 
@@ -45,15 +39,15 @@ unknown
   } else {
     const searchLower = search.toLowerCase();
 
-    filteredOptions = options.filter(
-      ({ label }) => label.toLowerCase().includes(searchLower),
+    filteredOptions = options.filter(({ label }) =>
+      label.toLowerCase().includes(searchLower)
     );
   }
 
   const hasMore = filteredOptions.length > prevOptions.length + 10;
   const slicedOptions = filteredOptions.slice(
     prevOptions.length,
-    prevOptions.length + 10,
+    prevOptions.length + 10
   );
 
   return {
@@ -63,7 +57,9 @@ unknown
 };
 
 export function Simple(props: StoryProps): ReactElement {
-  const [value, onChange] = useState<OptionType | MultiValue<OptionType> | null>(null);
+  const [value, onChange] = useState<
+    OptionType | MultiValue<OptionType> | null
+  >(null);
 
   return (
     <div
@@ -80,3 +76,26 @@ export function Simple(props: StoryProps): ReactElement {
     </div>
   );
 }
+
+export const playSimple = async ({ args, canvasElement }) => {
+  const canvas = within(canvasElement);
+
+  const select = canvas.getByRole("combobox");
+  select.focus();
+
+  await userEvent.click(select);
+
+  await waitFor(() => {
+    const listbox = canvas.getByRole("listbox");
+    expect(canvas.getByRole("listbox")).toBeVisible();
+  });
+
+  const listbox = canvas.getByRole("listbox");
+  await fireEvent.scroll(listbox, { target: { scrollTop: -1000 } });
+
+  await waitFor(() => {
+    expect(canvas.getByText("Option 11")).toBeInTheDocument();
+  });
+
+  // expect(canvas.queryByText('Option 30')).not.toBeVisible();
+};
