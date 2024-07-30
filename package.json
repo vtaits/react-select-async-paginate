@@ -20,6 +20,7 @@
     "validate": "yarn build && yarn lint && yarn test:ts && yarn test:unit:cov",
     "codecov": "yarn workspaces foreach --all run codecov"
   },
+  "packageManager": "yarn@4.3.1",
   "devDependencies": {
     "@storybook/addon-essentials": "^8.0.6",
     "@storybook/addon-interactions": "^8.0.6",
