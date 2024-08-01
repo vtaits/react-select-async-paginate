@@ -77,25 +77,69 @@ export function Simple(props: StoryProps): ReactElement {
   );
 }
 
-export const playSimple = async ({ args, canvasElement }) => {
+const waitForMutation = async (element: HTMLElement, callback: () => void) => {
+  return new Promise<void>((resolve) => {
+    const observer = new MutationObserver((mutationsList) => {
+      for (const mutation of mutationsList) {
+        if (mutation.type === "childList") {
+          callback();
+          observer.disconnect();
+          resolve();
+        }
+      }
+    });
+
+    observer.observe(element, { childList: true, subtree: true });
+  });
+};
+
+export const playSimple = async ({
+  canvasElement,
+  step,
+}: {
+  canvasElement: HTMLElement;
+  step: any;
+}) => {
   const canvas = within(canvasElement);
 
-  const select = canvas.getByRole("combobox");
-  select.focus();
+  await step("Click on the Select to display the options list", async () => {
+    const select = canvas.getByRole("combobox");
+    await userEvent.click(select, {
+      delay: 400,
+    });
 
-  await userEvent.click(select);
-
-  await waitFor(() => {
-    const listbox = canvas.getByRole("listbox");
-    expect(canvas.getByRole("listbox")).toBeVisible();
+    await waitFor(() => {
+      expect(canvas.getByRole("listbox")).toBeVisible();
+    });
   });
 
-  const listbox = canvas.getByRole("listbox");
-  await fireEvent.scroll(listbox, { target: { scrollTop: -1000 } });
+  await step(
+    "Scroll the options list to the end of first pagination page",
+    async () => {
+      await waitFor(() => {
+        const listbox = canvas.getByRole("listbox");
+        fireEvent.scroll(listbox, { target: { scrollTop: 500 } });
 
-  await waitFor(() => {
-    expect(canvas.getByText("Option 11")).toBeInTheDocument();
-  });
+        expect(canvas.getByText("Option 10")).toBeVisible();
+      });
+    }
+  );
 
-  // expect(canvas.queryByText('Option 30')).not.toBeVisible();
+  await step(
+    "Scroll the options list to the end of second pagination page",
+    async () => {
+      await waitFor(
+        () => {
+          const listbox = canvas.getByRole("listbox");
+          fireEvent.scroll(listbox, { target: { scrollTop: 500 } });
+
+          expect(canvas.getByText("Option 20")).toBeVisible();
+        },
+        {
+          // interval: 100,
+          timeout: 4000,
+        }
+      );
+    }
+  );
 };
