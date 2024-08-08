@@ -16,6 +16,7 @@
     "test:ts": "yarn workspaces foreach --all run test:ts",
     "test:unit": "yarn workspaces foreach --all run test:unit",
     "test:unit:cov": "yarn workspaces foreach --all run test:unit:cov",
+    "test:storybook": "yarn test-storybook --watch",
     "test": "yarn lint && yarn test:ts && yarn test:unit",
     "validate": "yarn build && yarn lint && yarn test:ts && yarn test:unit:cov",
     "codecov": "yarn workspaces foreach --all run codecov"
@@ -29,7 +30,8 @@
     "@storybook/builder-vite": "^8.0.6",
     "@storybook/react": "^8.0.6",
     "@storybook/react-vite": "^8.0.6",
-    "@storybook/testing-library": "^0.2.2",
+    "@storybook/test": "8.0.6",
+    "@storybook/test-runner": "^0.19.1",
     "@types/react-test-renderer": "^18.0.7",
     "@vitejs/plugin-react": "^4.2.1",
     "codecov": "^3.8.3",
