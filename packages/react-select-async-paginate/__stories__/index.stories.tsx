@@ -12,7 +12,8 @@ import { GroupedOptions } from "./GroupedOptions";
 import { InitialOptions } from "./InitialOptions";
 import { Manual } from "./Manual";
 import { RequestByPageNumber } from "./RequestByPageNumber";
-import { Simple, playSimple } from "./Simple";
+import { Simple } from "./Simple";
+import { playSimple } from "./SimpleTestStory";
 
 const meta: Meta<typeof AsyncPaginate> = {
   title: "react-select-async-paginate",
@@ -73,6 +74,11 @@ export const RequestByPageNumberStory: Story = {
 
 export const SimpleStory: Story = {
   name: "Simple",
+  render: (props) => <Simple {...props} />,
+};
+
+export const SimpleTestStory: Story = {
+  name: "Simple (test)",
   play: playSimple,
   render: (props) => <Simple {...props} />,
 };
