@@ -16,8 +16,8 @@
     "test:ts": "yarn workspaces foreach --all run test:ts",
     "test:unit": "yarn workspaces foreach --all run test:unit",
     "test:unit:cov": "yarn workspaces foreach --all run test:unit:cov",
-    "test:storybook": "yarn test-storybook --watch",
-    "test": "yarn lint && yarn test:ts && yarn test:unit",
+    "test": "yarn lint && yarn test:ts && yarn test:unit && yarn test-storybook",
+    "test:storybook:dev": "yarn test-storybook --watch",
     "validate": "yarn build && yarn lint && yarn test:ts && yarn test:unit:cov",
     "codecov": "yarn workspaces foreach --all run codecov"
   },
