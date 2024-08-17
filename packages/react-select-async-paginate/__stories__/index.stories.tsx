@@ -1,3 +1,5 @@
+import React from "react";
+
 import type { Meta, StoryObj } from "@storybook/react";
 import { fn } from "@storybook/test";
 
@@ -12,7 +14,7 @@ import { GroupedOptions } from "./GroupedOptions";
 import { InitialOptions } from "./InitialOptions";
 import { Manual } from "./Manual";
 import { RequestByPageNumber } from "./RequestByPageNumber";
-import { Simple } from "./Simple";
+import { Simple, loadOptions } from "./Simple";
 import { playSimple } from "./SimpleTestStory";
 
 const meta: Meta<typeof AsyncPaginate> = {
@@ -80,5 +82,8 @@ export const SimpleStory: Story = {
 export const SimpleTestStory: Story = {
   name: "Simple (test)",
   play: playSimple,
+  args: {
+    loadOptions: fn(loadOptions),
+  },
   render: (props) => <Simple {...props} />,
 };

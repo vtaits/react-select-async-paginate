@@ -1,22 +1,12 @@
-import React, { useState } from "react";
-import type { ReactElement } from "react";
-
-import type { GroupBase, MultiValue } from "react-select";
-
-import type { Meta, StoryObj } from "@storybook/react";
 import { within, userEvent, expect, waitFor, fireEvent } from "@storybook/test";
 
-export const playSimple = async ({
-  canvasElement,
-  step,
-}: {
-  canvasElement: HTMLElement;
-  step: any;
-}) => {
+export const playSimple = async ({ canvasElement, step, args }) => {
   const canvas = within(canvasElement);
+  const mockLoadOptions = args.loadOptions;
 
   await step("Click on the Select to display the options list", async () => {
     const select = canvas.getByRole("combobox");
+
     await userEvent.click(select, {
       delay: 400,
     });
@@ -25,6 +15,20 @@ export const playSimple = async ({
       expect(canvas.getByRole("listbox")).toBeVisible();
     });
   });
+
+  await step(
+    "Verify successful loading and rendering of the Options page",
+    async () => {
+      await waitFor(() => {
+        expect(mockLoadOptions).toHaveBeenCalledTimes(1);
+      });
+
+      await waitFor(() => {
+        expect(canvas.getByText("Option 1")).toBeInTheDocument();
+        expect(canvas.getByText("Option 10")).toBeInTheDocument();
+      });
+    }
+  );
 
   await step(
     "Scroll the options list to the end of first pagination page",
