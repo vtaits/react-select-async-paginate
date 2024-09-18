@@ -10,6 +10,7 @@ import { Debounce } from './Debounce';
 import { GroupedOptions } from './GroupedOptions';
 import { InitialOptions } from './InitialOptions';
 import { Manual } from './Manual';
+import { ReloadOnError } from './ReloadOnError';
 import { RequestByPageNumber } from './RequestByPageNumber';
 import { Simple } from './Simple';
 
@@ -68,6 +69,11 @@ export const ManualStory: Story = {
 export const RequestByPageNumberStory: Story = {
   name: 'Request by page number',
   render: (props) => <RequestByPageNumber {...props} />,
+};
+
+export const ReloadOnErrorStory: Story = {
+  name: 'Reload on error',
+  render: (props) => <ReloadOnError {...props} />,
 };
 
 export const SimpleStory: Story = {

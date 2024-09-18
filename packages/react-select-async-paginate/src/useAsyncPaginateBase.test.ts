@@ -49,6 +49,7 @@ const defaultCacheItem: OptionsCacheItem<
 	options: [],
 	isLoading: false,
 	isFirstLoad: false,
+	lockedUntil: 0,
 	hasMore: true,
 	additional: null,
 };

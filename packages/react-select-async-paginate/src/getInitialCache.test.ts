@@ -30,6 +30,7 @@ test("should return initial cache", () => {
 		isFirstLoad: true,
 		options: [],
 		hasMore: true,
+		lockedUntil: 0,
 		isLoading: false,
 		additional,
 	});

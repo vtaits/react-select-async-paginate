@@ -41,6 +41,9 @@ export const requestOptions = async <
 	debounceTimeout: number,
 	setOptionsCache: SetOptionsCache<OptionType, Group, Additional>,
 	reduceOptions: ReduceOptions<OptionType, Group, Additional>,
+	isMountedRef: {
+		current: boolean;
+	},
 ): Promise<void> => {
 	const currentInputValue = paramsRef.current.inputValue;
 
@@ -51,7 +54,11 @@ export const requestOptions = async <
 			? getInitialCache(paramsRef.current)
 			: optionsCacheRef.current[currentInputValue];
 
-	if (currentOptions.isLoading || !currentOptions.hasMore) {
+	if (
+		currentOptions.isLoading ||
+		!currentOptions.hasMore ||
+		currentOptions.lockedUntil > Date.now()
+	) {
 		return;
 	}
 
@@ -94,7 +101,7 @@ export const requestOptions = async <
 		}
 	}
 
-	const { loadOptions } = paramsRef.current;
+	const { loadOptions, reloadOnErrorTimeout = 0 } = paramsRef.current;
 
 	const result = await getResult(
 		Promise.resolve().then(() =>
@@ -106,12 +113,17 @@ export const requestOptions = async <
 		),
 	);
 
+	if (!isMountedRef.current) {
+		return;
+	}
+
 	if (result.isErr()) {
 		setOptionsCache((prevOptionsCache) => ({
 			...prevOptionsCache,
 			[currentInputValue]: {
 				...currentOptions,
 				isLoading: false,
+				lockedUntil: Date.now() + reloadOnErrorTimeout,
 			},
 		}));
 

@@ -1,6 +1,6 @@
 import type { GroupBase } from "react-select";
 import sleep from "sleep-promise";
-import { afterEach, beforeEach, expect, test, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 import { defaultReduceOptions } from "./defaultReduceOptions";
 import { requestOptions } from "./requestOptions";
 import type { UseAsyncPaginateBaseParams } from "./types";
@@ -11,6 +11,9 @@ vi.mock("./validateResponse");
 
 const mockedValidateResponse = vi.mocked(validateResponse);
 const mockedSleep = vi.mocked(sleep);
+
+vi.spyOn(global, "setTimeout");
+const mockedSetTimeout = vi.mocked(setTimeout);
 
 beforeEach(() => {
 	mockedValidateResponse.mockReturnValue(true);
@@ -35,6 +38,10 @@ const defaultParams: UseAsyncPaginateBaseParams<
 
 const defaultParamsRef = {
 	current: defaultParams,
+};
+
+const defaultIsMountedRef = {
+	current: true,
 };
 
 const defaultSetOptionsCache = (): void => {};
@@ -77,6 +84,7 @@ test("should request if options not cached", async () => {
 		0,
 		setOptionsCache,
 		defaultReduceOptions,
+		defaultIsMountedRef,
 	);
 
 	expect(loadOptions).toHaveBeenCalledTimes(1);
@@ -94,6 +102,7 @@ test("should request if options not cached", async () => {
 			options: [],
 			hasMore: true,
 			isLoading: true,
+			lockedUntil: 0,
 			additional,
 		},
 	});
@@ -106,6 +115,7 @@ test("should request if options not cached", async () => {
 			options: newOptions,
 			hasMore: true,
 			isLoading: false,
+			lockedUntil: 0,
 			additional,
 		},
 	});
@@ -150,6 +160,7 @@ test("should request if options cached", async () => {
 			hasMore: true,
 			isLoading: false,
 			isFirstLoad: false,
+			lockedUntil: 0,
 			additional,
 		},
 	};
@@ -170,6 +181,7 @@ test("should request if options cached", async () => {
 		0,
 		setOptionsCache,
 		defaultReduceOptions,
+		defaultIsMountedRef,
 	);
 
 	expect(loadOptions).toHaveBeenCalledTimes(1);
@@ -188,6 +200,7 @@ test("should request if options cached", async () => {
 			options: prevOptions,
 			hasMore: true,
 			isLoading: true,
+			lockedUntil: 0,
 			additional,
 		},
 	});
@@ -200,6 +213,7 @@ test("should request if options cached", async () => {
 			options: [...prevOptions, ...newOptions],
 			hasMore: true,
 			isLoading: false,
+			lockedUntil: 0,
 			additional,
 		},
 	});
@@ -231,6 +245,7 @@ test("should not request if options are loading for current search", async () =>
 					options: [],
 					hasMore: true,
 					isLoading: true,
+					lockedUntil: 0,
 					isFirstLoad: false,
 				},
 			},
@@ -238,6 +253,7 @@ test("should not request if options are loading for current search", async () =>
 		0,
 		setOptionsCache,
 		defaultReduceOptions,
+		defaultIsMountedRef,
 	);
 
 	expect(loadOptions).toHaveBeenCalledTimes(0);
@@ -271,12 +287,14 @@ test("should not request if hasMore is false for current search", async () => {
 					hasMore: false,
 					isLoading: false,
 					isFirstLoad: false,
+					lockedUntil: 0,
 				},
 			},
 		},
 		0,
 		setOptionsCache,
 		defaultReduceOptions,
+		defaultIsMountedRef,
 	);
 
 	expect(loadOptions).toHaveBeenCalledTimes(0);
@@ -306,6 +324,7 @@ test("should request with error", async () => {
 		0,
 		setOptionsCache,
 		defaultReduceOptions,
+		defaultIsMountedRef,
 	);
 
 	expect(loadOptions).toHaveBeenCalledTimes(1);
@@ -321,6 +340,7 @@ test("should request with error", async () => {
 			options: [],
 			hasMore: true,
 			isLoading: true,
+			lockedUntil: 0,
 			additional,
 		},
 	});
@@ -334,6 +354,66 @@ test("should request with error", async () => {
 			hasMore: true,
 			isLoading: false,
 			additional,
+			lockedUntil: Date.now(),
+		},
+	});
+});
+
+test("should request with error and set locked timeout", async () => {
+	const setOptionsCache = vi.fn();
+	const loadOptions = vi.fn().mockRejectedValue(new Error());
+
+	const additional = Symbol("additional");
+
+	await requestOptions(
+		"autoload",
+		{
+			...defaultParamsRef,
+			current: {
+				...defaultParams,
+				loadOptions,
+				inputValue: "test",
+				additional,
+				reloadOnErrorTimeout: 400,
+			},
+		},
+		{
+			current: {},
+		},
+		0,
+		setOptionsCache,
+		defaultReduceOptions,
+		defaultIsMountedRef,
+	);
+
+	expect(loadOptions).toHaveBeenCalledTimes(1);
+	expect(loadOptions).toHaveBeenCalledWith("test", [], additional);
+
+	expect(setOptionsCache).toHaveBeenCalledTimes(2);
+
+	const intermediateCache = setOptionsCache.mock.calls[0][0]({});
+
+	expect(intermediateCache).toEqual({
+		test: {
+			isFirstLoad: true,
+			options: [],
+			hasMore: true,
+			isLoading: true,
+			lockedUntil: 0,
+			additional,
+		},
+	});
+
+	const lastCache = setOptionsCache.mock.calls[1][0](intermediateCache);
+
+	expect(lastCache).toEqual({
+		test: {
+			isFirstLoad: true,
+			options: [],
+			hasMore: true,
+			isLoading: false,
+			additional,
+			lockedUntil: Date.now() + 400,
 		},
 	});
 });
@@ -386,6 +466,7 @@ test("should redefine reduceOptions", async () => {
 			hasMore: true,
 			isLoading: false,
 			isFirstLoad: false,
+			lockedUntil: 0,
 			additional,
 		},
 	};
@@ -406,6 +487,7 @@ test("should redefine reduceOptions", async () => {
 		0,
 		setOptionsCache,
 		reduceOptions,
+		defaultIsMountedRef,
 	);
 
 	expect(loadOptions).toHaveBeenCalledTimes(1);
@@ -424,6 +506,7 @@ test("should redefine reduceOptions", async () => {
 			options: prevOptions,
 			hasMore: true,
 			isLoading: true,
+			lockedUntil: 0,
 			additional,
 		},
 	});
@@ -436,6 +519,7 @@ test("should redefine reduceOptions", async () => {
 			options: reducedOptions,
 			hasMore: true,
 			isLoading: false,
+			lockedUntil: 0,
 			additional,
 		},
 	});
@@ -487,6 +571,7 @@ test("should validate response", async () => {
 			0,
 			defaultSetOptionsCache,
 			defaultReduceOptions,
+			defaultIsMountedRef,
 		);
 	} catch (e) {
 		hasError = true;
@@ -513,6 +598,7 @@ test("should not sleep if debounceTimeout is 0", async () => {
 		0,
 		defaultSetOptionsCache,
 		defaultReduceOptions,
+		defaultIsMountedRef,
 	);
 
 	expect(mockedSleep).toHaveBeenCalledTimes(0);
@@ -533,6 +619,7 @@ test('should not sleep if debounceTimeout bigger than 0 and caller is not "input
 		0,
 		defaultSetOptionsCache,
 		defaultReduceOptions,
+		defaultIsMountedRef,
 	);
 
 	expect(mockedSleep).toHaveBeenCalledTimes(0);
@@ -576,6 +663,7 @@ test('should sleep if debounceTimeout bigger than 0 and caller is "input-change"
 		1234,
 		setOptionsCache,
 		defaultReduceOptions,
+		defaultIsMountedRef,
 	);
 
 	expect(mockedSleep).toHaveBeenCalledTimes(1);
@@ -594,6 +682,7 @@ test('should sleep if debounceTimeout bigger than 0 and caller is "input-change"
 			options: [],
 			hasMore: true,
 			isLoading: true,
+			lockedUntil: 0,
 			additional,
 		},
 	});
@@ -606,6 +695,7 @@ test('should sleep if debounceTimeout bigger than 0 and caller is "input-change"
 			options: newOptions,
 			hasMore: true,
 			isLoading: false,
+			lockedUntil: 0,
 			additional,
 		},
 	});
@@ -657,6 +747,7 @@ test("should cancel loading if inputValue has changed during sleep for empty cac
 		1234,
 		setOptionsCache,
 		defaultReduceOptions,
+		defaultIsMountedRef,
 	);
 
 	expect(loadOptions).toHaveBeenCalledTimes(0);
@@ -671,6 +762,7 @@ test("should cancel loading if inputValue has changed during sleep for empty cac
 			options: [],
 			hasMore: true,
 			isLoading: true,
+			lockedUntil: 0,
 			additional,
 		},
 	});
@@ -727,6 +819,7 @@ test("should cancel loading if inputValue has changed during sleep for filled ca
 					options: [],
 					hasMore: true,
 					isLoading: false,
+					lockedUntil: 0,
 					additional,
 				},
 			},
@@ -734,6 +827,7 @@ test("should cancel loading if inputValue has changed during sleep for filled ca
 		1234,
 		setOptionsCache,
 		defaultReduceOptions,
+		defaultIsMountedRef,
 	);
 
 	expect(loadOptions).toHaveBeenCalledTimes(0);
@@ -748,6 +842,7 @@ test("should cancel loading if inputValue has changed during sleep for filled ca
 			options: [],
 			hasMore: true,
 			isLoading: true,
+			lockedUntil: 0,
 			additional,
 		},
 	});
@@ -760,6 +855,7 @@ test("should cancel loading if inputValue has changed during sleep for filled ca
 			options: [],
 			hasMore: true,
 			isLoading: false,
+			lockedUntil: 0,
 			additional,
 		},
 	});
@@ -793,6 +889,7 @@ test("should redefine additional with response", async () => {
 		0,
 		setOptionsCache,
 		defaultReduceOptions,
+		defaultIsMountedRef,
 	);
 
 	expect(setOptionsCache).toHaveBeenCalledTimes(2);
@@ -830,6 +927,7 @@ test("should not redefine additional with response", async () => {
 		0,
 		setOptionsCache,
 		defaultReduceOptions,
+		defaultIsMountedRef,
 	);
 
 	expect(setOptionsCache).toHaveBeenCalledTimes(2);
@@ -864,6 +962,7 @@ test("should set truthy hasMore with response", async () => {
 		0,
 		setOptionsCache,
 		defaultReduceOptions,
+		defaultIsMountedRef,
 	);
 
 	expect(setOptionsCache).toHaveBeenCalledTimes(2);
@@ -897,6 +996,7 @@ test("should set falsy hasMore with response", async () => {
 		0,
 		setOptionsCache,
 		defaultReduceOptions,
+		defaultIsMountedRef,
 	);
 
 	expect(setOptionsCache).toHaveBeenCalledTimes(2);
@@ -906,4 +1006,68 @@ test("should set falsy hasMore with response", async () => {
 	);
 
 	expect(lastCache.test.hasMore).toBe(false);
+});
+
+test("should not set cached after loading if the component is unmounted ", async () => {
+	const newOptions = [
+		{
+			value: 1,
+			label: "1",
+		},
+
+		{
+			value: 2,
+			label: "2",
+		},
+	];
+
+	const setOptionsCache = vi.fn();
+	const loadOptions = vi.fn().mockReturnValue({
+		options: newOptions,
+		hasMore: true,
+	});
+
+	const additional = Symbol("additional");
+
+	await requestOptions(
+		"autoload",
+		{
+			...defaultParamsRef,
+			current: {
+				...defaultParams,
+				loadOptions,
+				inputValue: "test",
+				additional,
+			},
+		},
+		{
+			current: {},
+		},
+		0,
+		setOptionsCache,
+		defaultReduceOptions,
+		{
+			current: false,
+		},
+	);
+
+	expect(loadOptions).toHaveBeenCalledTimes(1);
+	expect(loadOptions.mock.calls[0][0]).toBe("test");
+	expect(loadOptions.mock.calls[0][1]).toEqual([]);
+	expect(loadOptions.mock.calls[0][2]).toEqual(additional);
+
+	expect(setOptionsCache).toHaveBeenCalledTimes(1);
+
+	const intermediateCache = setOptionsCache.mock.calls[0][0]({});
+
+	expect(intermediateCache).toEqual({
+		test: {
+			isFirstLoad: true,
+			options: [],
+			hasMore: true,
+			isLoading: true,
+			lockedUntil: 0,
+			additional,
+		},
+	});
 });

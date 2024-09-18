@@ -65,6 +65,7 @@ export const useAsyncPaginateBase = <
 					}
 				},
 				reduceOptionsRef.current,
+				isMountedRef,
 			);
 		},
 	);
@@ -120,7 +121,8 @@ export const useAsyncPaginateBase = <
 		handleScrolledToBottom,
 		shouldLoadMore,
 		filterOption,
-		isLoading: currentOptions.isLoading,
+		isLoading:
+			currentOptions.isLoading || currentOptions.lockedUntil > Date.now(),
 		isFirstLoad: currentOptions.isFirstLoad,
 		options: currentOptions.options,
 	};

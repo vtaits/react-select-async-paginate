@@ -1,3 +1,9 @@
+## 0.5.5 (19 sep 2024)
+
+### New features
+
+- Added `reloadOnErrorTimeout` prop [#173](https://github.com/vtaits/react-select-async-paginate/issues/173)
+
 ## 0.5.2 (11 apr 2024)
 
 ### Internal changes

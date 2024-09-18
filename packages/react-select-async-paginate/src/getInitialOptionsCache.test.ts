@@ -45,6 +45,7 @@ test('should return options cache with "options" prop', () => {
 			hasMore: true,
 			options,
 			additional: undefined,
+			lockedUntil: 0,
 		},
 	});
 });
@@ -80,6 +81,7 @@ test('should return options cache with "defaultOptions" prop', () => {
 			isLoading: false,
 			hasMore: true,
 			options: defaultOptions,
+			lockedUntil: 0,
 			additional: undefined,
 		},
 	});
@@ -119,6 +121,7 @@ test('should set "additional" with "additional" param in initialOptionsCache', (
 			isLoading: false,
 			hasMore: true,
 			options: defaultOptions,
+			lockedUntil: 0,
 			additional: {
 				page: 1,
 			},
@@ -163,6 +166,7 @@ test('should set "additional" with "defaultAdditional" param in initialOptionsCa
 			isLoading: false,
 			hasMore: true,
 			options: defaultOptions,
+			lockedUntil: 0,
 			additional: {
 				page: 2,
 			},

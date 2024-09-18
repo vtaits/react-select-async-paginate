@@ -28,7 +28,7 @@
   "scripts": {
     "build": "tsup src/index.ts --sourcemap --format esm,cjs --dts --legacy-output",
     "lint": "biome check src",
-    "lint:fix": "biome check src --apply-unsafe",
+    "lint:fix": "biome check src --write --unsafe",
     "format": "biome format src --write",
     "prepare": "yarn build",
     "test:ts": "tsc --noEmit",

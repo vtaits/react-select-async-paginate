@@ -5,6 +5,7 @@ import { SelectFetch } from '../src';
 import { CreatableWithNewOptions } from './CreatableWithNewOptions';
 import { InitialOptions } from './InitialOptions';
 import { Manual } from './Manual';
+import { ReloadOnError } from './ReloadOnError';
 import { Simple } from './Simple';
 
 const meta: Meta<typeof SelectFetch> = {
@@ -28,6 +29,11 @@ export const InitialOptionsStory: Story = {
 export const ManualStory: Story = {
   name: 'Manual control of input value and menu opening',
   render: () => <Manual />,
+};
+
+export const ReloadOnErrorStory: Story = {
+  name: 'Reload on error',
+  render: (props) => <ReloadOnError {...props} />,
 };
 
 export const SimpleStory: Story = {
