@@ -43,24 +43,24 @@
     "react-select-async-paginate": "^0.7.0"
   },
   "dependencies": {
-    "krustykrab": "^1.0.0",
-    "qs": "^6.12.0"
+    "krustykrab": "^1.1.0",
+    "qs": "^6.13.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.6.4",
-    "@storybook/react": "^8.0.6",
-    "@types/qs": "^6.9.14",
-    "@types/react": "^18.2.75",
-    "@types/react-test-renderer": "^18.0.7",
-    "@vitest/coverage-v8": "^1.4.0",
-    "react": "^18.2.0",
+    "@biomejs/biome": "^1.9.1",
+    "@storybook/react": "^8.3.1",
+    "@types/qs": "^6.9.16",
+    "@types/react": "^18.3.7",
+    "@types/react-test-renderer": "^18.3.0",
+    "@vitest/coverage-v8": "^2.1.1",
+    "react": "^18.3.1",
     "react-select": "^5.8.0",
     "react-select-async-paginate": "^0.7.5",
-    "react-test-renderer": "^18.2.0",
+    "react-test-renderer": "^18.3.1",
     "sleep-promise": "^9.1.0",
-    "tsup": "^8.0.2",
+    "tsup": "^8.3.0",
     "typescript": "5.4.5",
-    "vitest": "^1.4.0",
-    "vitest-fetch-mock": "^0.2.2"
+    "vitest": "^2.1.1",
+    "vitest-fetch-mock": "^0.3.0"
   }
 }
