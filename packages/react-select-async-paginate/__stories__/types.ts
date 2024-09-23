@@ -3,4 +3,5 @@ export type StoryProps = {
   debounceTimeout?: number;
   isLoading?: boolean;
   isMulti?: boolean;
+  loadOptions?: any; // TOFIX
 };

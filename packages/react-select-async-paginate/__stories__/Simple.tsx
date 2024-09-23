@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import type { ReactElement } from "react";
 
 import type { GroupBase, MultiValue } from "react-select";
@@ -23,15 +23,11 @@ for (let i = 0; i < 50; ++i) {
   });
 }
 
-let i = 0;
 export const loadOptions: LoadOptions<
   OptionType,
   GroupBase<OptionType>,
   unknown
 > = async (search, prevOptions) => {
-  
-  console.log("Mock loadOptions called ", ++i);
-
   await sleep(1000);
 
   let filteredOptions: OptionType[];
@@ -62,6 +58,8 @@ export function Simple(props: StoryProps): ReactElement {
     OptionType | MultiValue<OptionType> | null
   >(null);
 
+  const loadOptionsHandler = props?.loadOptions || loadOptions;
+
   return (
     <div
       style={{
@@ -71,7 +69,7 @@ export function Simple(props: StoryProps): ReactElement {
       <AsyncPaginate
         {...props}
         value={value}
-        loadOptions={props.loadOptions}
+        loadOptions={loadOptionsHandler}
         onChange={onChange}
       />
     </div>

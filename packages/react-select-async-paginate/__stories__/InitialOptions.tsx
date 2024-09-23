@@ -1,23 +1,15 @@
-import { useState } from 'react';
-import type {
-  ReactElement,
-} from 'react';
+import React from "react";
+import { useState } from "react";
+import type { ReactElement } from "react";
 
-import type {
-  GroupBase,
-  MultiValue,
-} from 'react-select';
+import type { GroupBase, MultiValue } from "react-select";
 
-import sleep from 'sleep-promise';
+import sleep from "sleep-promise";
 
-import { AsyncPaginate } from '../src';
-import type {
-  LoadOptions,
-} from '../src';
+import { AsyncPaginate } from "../src";
+import type { LoadOptions } from "../src";
 
-import type {
-  StoryProps,
-} from './types';
+import type { StoryProps } from "./types";
 
 type OptionType = {
   value: number;
@@ -32,10 +24,10 @@ for (let i = 0; i < 50; ++i) {
   });
 }
 
-const loadOptions: LoadOptions<
-OptionType,
-GroupBase<OptionType>,
-null
+export const loadOptions: LoadOptions<
+  OptionType,
+  GroupBase<OptionType>,
+  null
 > = async (search, prevOptions) => {
   await sleep(1000);
 
@@ -45,15 +37,15 @@ null
   } else {
     const searchLower = search.toLowerCase();
 
-    filteredOptions = options.filter(
-      ({ label }) => label.toLowerCase().includes(searchLower),
+    filteredOptions = options.filter(({ label }) =>
+      label.toLowerCase().includes(searchLower)
     );
   }
 
   const hasMore = filteredOptions.length > prevOptions.length + 10;
   const slicedOptions = filteredOptions.slice(
     prevOptions.length,
-    prevOptions.length + 10,
+    prevOptions.length + 10
   );
 
   return {
@@ -65,7 +57,11 @@ null
 const initialOptions = options.slice(0, 10);
 
 export function InitialOptions(props: StoryProps): ReactElement {
-  const [value, onChange] = useState<OptionType | MultiValue<OptionType> | null>(null);
+  const [value, onChange] = useState<
+    OptionType | MultiValue<OptionType> | null
+  >(null);
+
+  const loadOptionsHandler = props?.loadOptions || loadOptions;
 
   return (
     <div
@@ -77,7 +73,7 @@ export function InitialOptions(props: StoryProps): ReactElement {
         {...props}
         options={initialOptions}
         value={value}
-        loadOptions={loadOptions}
+        loadOptions={loadOptionsHandler}
         onChange={onChange}
       />
     </div>

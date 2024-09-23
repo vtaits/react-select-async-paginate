@@ -1,51 +1,42 @@
-import {
-  useState,
-  useCallback,
-} from 'react';
-import type {
-  ReactElement,
-} from 'react';
+import React, { useState, useCallback } from "react";
+import type { ReactElement } from "react";
 
-import sleep from 'sleep-promise';
+import sleep from "sleep-promise";
 
-import Creatable from 'react-select/creatable';
-import type {
-  CreatableProps,
-} from 'react-select/creatable';
-import type {
-  GroupBase,
-  MultiValue,
-} from 'react-select';
+import Creatable from "react-select/creatable";
+import type { CreatableProps } from "react-select/creatable";
+import type { GroupBase, MultiValue } from "react-select";
 
-import { withAsyncPaginate } from '../src';
+import { withAsyncPaginate } from "../src";
 import type {
   LoadOptions,
   UseAsyncPaginateParams,
   ComponentProps,
-} from '../src';
+} from "../src";
 
-import type {
-  StoryProps,
-} from './types';
+import type { StoryProps } from "./types";
 
 type AsyncPaginateCreatableProps<
-OptionType,
-Group extends GroupBase<OptionType>,
-Additional,
-IsMulti extends boolean,
-> =
-  & CreatableProps<OptionType, IsMulti, Group>
-  & UseAsyncPaginateParams<OptionType, Group, Additional>
-  & ComponentProps<OptionType, Group, IsMulti>;
+  OptionType,
+  Group extends GroupBase<OptionType>,
+  Additional,
+  IsMulti extends boolean
+> = CreatableProps<OptionType, IsMulti, Group> &
+  UseAsyncPaginateParams<OptionType, Group, Additional> &
+  ComponentProps<OptionType, Group, IsMulti>;
 
 type AsyncPaginateCreatableType = <
-OptionType,
-Group extends GroupBase<OptionType>,
-Additional,
-IsMulti extends boolean = false,
->(props: AsyncPaginateCreatableProps<OptionType, Group, Additional, IsMulti>) => ReactElement;
+  OptionType,
+  Group extends GroupBase<OptionType>,
+  Additional,
+  IsMulti extends boolean = false
+>(
+  props: AsyncPaginateCreatableProps<OptionType, Group, Additional, IsMulti>
+) => ReactElement;
 
-const AsyncPaginateCreatable = withAsyncPaginate(Creatable) as AsyncPaginateCreatableType;
+const AsyncPaginateCreatable = withAsyncPaginate(
+  Creatable
+) as AsyncPaginateCreatableType;
 
 type OptionType = {
   value: number | string;
@@ -60,10 +51,10 @@ for (let i = 0; i < 50; ++i) {
   });
 }
 
-const loadOptions: LoadOptions<
-OptionType,
-GroupBase<OptionType>,
-null
+export const loadOptions: LoadOptions<
+  OptionType,
+  GroupBase<OptionType>,
+  null
 > = async (search, prevOptions) => {
   await sleep(1000);
 
@@ -73,15 +64,15 @@ null
   } else {
     const searchLower = search.toLowerCase();
 
-    filteredOptions = options.filter(
-      ({ label }) => label.toLowerCase().includes(searchLower),
+    filteredOptions = options.filter(({ label }) =>
+      label.toLowerCase().includes(searchLower)
     );
   }
 
   const hasMore = filteredOptions.length > prevOptions.length + 10;
   const slicedOptions = filteredOptions.slice(
     prevOptions.length,
-    prevOptions.length + 10,
+    prevOptions.length + 10
   );
 
   return {
@@ -108,7 +99,9 @@ const increaseUniq = (uniq: number): number => uniq + 1;
 export function CreatableWithNewOptions(props: StoryProps): ReactElement {
   const [cacheUniq, setCacheUniq] = useState(0);
   const [isAddingInProgress, setIsAddingInProgress] = useState(false);
-  const [value, onChange] = useState<OptionType | MultiValue<OptionType> | null>(null);
+  const [value, onChange] = useState<
+    OptionType | MultiValue<OptionType> | null
+  >(null);
 
   const onCreateOption = useCallback(async (inputValue: string) => {
     setIsAddingInProgress(true);
@@ -119,6 +112,8 @@ export function CreatableWithNewOptions(props: StoryProps): ReactElement {
     setCacheUniq(increaseUniq);
     onChange(newOption);
   }, []);
+
+  const loadOptionsHandler = props?.loadOptions || loadOptions;
 
   return (
     <>
@@ -131,18 +126,14 @@ export function CreatableWithNewOptions(props: StoryProps): ReactElement {
           {...props}
           isDisabled={isAddingInProgress}
           value={value}
-          loadOptions={loadOptions}
+          loadOptions={loadOptionsHandler}
           onCreateOption={onCreateOption}
           onChange={onChange}
           cacheUniqs={[cacheUniq]}
         />
       </div>
 
-      <p>
-        Current value is
-        {' '}
-        {JSON.stringify(value)}
-      </p>
+      <p>Current value is {JSON.stringify(value)}</p>
     </>
   );
 }

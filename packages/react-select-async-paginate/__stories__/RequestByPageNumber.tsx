@@ -1,23 +1,14 @@
-import { useState } from 'react';
-import type {
-  ReactElement,
-} from 'react';
+import React, { useState } from "react";
+import type { ReactElement } from "react";
 
-import type {
-  GroupBase,
-  MultiValue,
-} from 'react-select';
+import type { GroupBase, MultiValue } from "react-select";
 
-import sleep from 'sleep-promise';
+import sleep from "sleep-promise";
 
-import { AsyncPaginate } from '../src';
-import type {
-  LoadOptions,
-} from '../src';
+import { AsyncPaginate } from "../src";
+import type { LoadOptions } from "../src";
 
-import type {
-  StoryProps,
-} from './types';
+import type { StoryProps } from "./types";
 
 type OptionType = {
   value: number;
@@ -38,7 +29,10 @@ type Additional = {
 
 const optionsPerPage = 10;
 
-const loadOptions = async (search: string, page: number): Promise<{
+export const loadOptions = async (
+  search: string,
+  page: number
+): Promise<{
   options: OptionType[];
   hasMore: boolean;
 }> => {
@@ -50,15 +44,15 @@ const loadOptions = async (search: string, page: number): Promise<{
   } else {
     const searchLower = search.toLowerCase();
 
-    filteredOptions = options.filter(
-      ({ label }) => label.toLowerCase().includes(searchLower),
+    filteredOptions = options.filter(({ label }) =>
+      label.toLowerCase().includes(searchLower)
     );
   }
 
   const hasMore = Math.ceil(filteredOptions.length / optionsPerPage) > page;
   const slicedOptions = filteredOptions.slice(
     (page - 1) * optionsPerPage,
-    page * optionsPerPage,
+    page * optionsPerPage
   );
 
   return {
@@ -71,23 +65,18 @@ const defaultAdditional = {
   page: 1,
 };
 
-const loadPageOptions: LoadOptions<
-OptionType,
-GroupBase<OptionType>,
-Additional
+export const loadPageOptions: LoadOptions<
+  OptionType,
+  GroupBase<OptionType>,
+  Additional
 > = async (q, prevOptions, additional) => {
   if (!additional) {
-    throw new Error('additional should be defined');
+    throw new Error("additional should be defined");
   }
 
-  const {
-    page,
-  } = additional;
+  const { page } = additional;
 
-  const {
-    options: responseOptions,
-    hasMore,
-  } = await loadOptions(q, page);
+  const { options: responseOptions, hasMore } = await loadOptions(q, page);
 
   return {
     options: responseOptions,
@@ -100,7 +89,11 @@ Additional
 };
 
 export function RequestByPageNumber(props: StoryProps): ReactElement {
-  const [value, onChange] = useState<OptionType | MultiValue<OptionType> | null>(null);
+  const [value, onChange] = useState<
+    OptionType | MultiValue<OptionType> | null
+  >(null);
+
+  const loadOptionsHandler = props?.loadOptions || loadPageOptions;
 
   return (
     <div
@@ -112,7 +105,7 @@ export function RequestByPageNumber(props: StoryProps): ReactElement {
         {...props}
         additional={defaultAdditional}
         value={value}
-        loadOptions={loadPageOptions}
+        loadOptions={loadOptionsHandler}
         onChange={onChange}
       />
     </div>

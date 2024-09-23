@@ -1,27 +1,22 @@
 /* eslint-disable react/no-array-index-key */
 
-import { useState, useCallback } from 'react';
-import type {
-  ReactElement,
-} from 'react';
+import React from "react";
+import { useState, useCallback } from "react";
+import type { ReactElement } from "react";
 
 import type {
   GroupBase,
   InputActionMeta,
   InputAction,
   MultiValue,
-} from 'react-select';
+} from "react-select";
 
-import sleep from 'sleep-promise';
+import sleep from "sleep-promise";
 
-import { AsyncPaginate } from '../src';
-import type {
-  LoadOptions,
-} from '../src';
+import { AsyncPaginate } from "../src";
+import type { LoadOptions } from "../src";
 
-import type {
-  StoryProps,
-} from './types';
+import type { StoryProps } from "./types";
 
 type OptionType = {
   value: number;
@@ -36,10 +31,10 @@ for (let i = 0; i < 50; ++i) {
   });
 }
 
-const loadOptions: LoadOptions<
-OptionType,
-GroupBase<OptionType>,
-null
+export const loadOptions: LoadOptions<
+  OptionType,
+  GroupBase<OptionType>,
+  null
 > = async (search, prevOptions) => {
   await sleep(1000);
 
@@ -49,15 +44,15 @@ null
   } else {
     const searchLower = search.toLowerCase();
 
-    filteredOptions = options.filter(
-      ({ label }) => label.toLowerCase().includes(searchLower),
+    filteredOptions = options.filter(({ label }) =>
+      label.toLowerCase().includes(searchLower)
     );
   }
 
   const hasMore = filteredOptions.length > prevOptions.length + 10;
   const slicedOptions = filteredOptions.slice(
     prevOptions.length,
-    prevOptions.length + 10,
+    prevOptions.length + 10
   );
 
   return {
@@ -72,27 +67,27 @@ type HistoryItemType = {
 };
 
 export function Manual(props: StoryProps): ReactElement {
-  const [value, onChange] = useState<OptionType | MultiValue<OptionType> | null>(null);
-  const [inputValue, onInputChangeRaw] = useState('');
+  const [value, onChange] = useState<
+    OptionType | MultiValue<OptionType> | null
+  >(null);
+  const [inputValue, onInputChangeRaw] = useState("");
   const [menuIsOpen, setMenuIsOpen] = useState(false);
   const [inputHistory, setInputHistory] = useState<HistoryItemType[]>([]);
 
-  const onInputChange = useCallback((
-    newInputValue: string,
-    {
-      action,
-    }: InputActionMeta,
-  ): void => {
-    setInputHistory((prevInputHistory) => [
-      ...prevInputHistory,
-      {
-        inputValue: newInputValue,
-        action,
-      },
-    ]);
+  const onInputChange = useCallback(
+    (newInputValue: string, { action }: InputActionMeta): void => {
+      setInputHistory((prevInputHistory) => [
+        ...prevInputHistory,
+        {
+          inputValue: newInputValue,
+          action,
+        },
+      ]);
 
-    onInputChangeRaw(newInputValue);
-  }, []);
+      onInputChangeRaw(newInputValue);
+    },
+    []
+  );
 
   const onMenuOpen = useCallback((): void => {
     setMenuIsOpen(true);
@@ -101,6 +96,8 @@ export function Manual(props: StoryProps): ReactElement {
   const onMenuClose = useCallback((): void => {
     setMenuIsOpen(false);
   }, []);
+
+  const loadOptionsHandler = props?.loadOptions || loadOptions;
 
   return (
     <div
@@ -123,7 +120,7 @@ export function Manual(props: StoryProps): ReactElement {
         value={value}
         inputValue={inputValue}
         onInputChange={onInputChange}
-        loadOptions={loadOptions}
+        loadOptions={loadOptionsHandler}
         onChange={onChange}
         menuIsOpen={menuIsOpen}
         onMenuOpen={onMenuOpen}
