@@ -55,17 +55,12 @@ export const InitialOptionsTest: Story = {
     await step(
       "Scroll the options list to the end of first pagination page",
       async () => {
-        await waitFor(
-          () => {
-            const listbox = canvas.getByRole("listbox");
-            fireEvent.scroll(listbox, { target: { scrollTop: 500 } });
+        await waitFor(() => {
+          const listbox = canvas.getByRole("listbox");
+          fireEvent.scroll(listbox, { target: { scrollTop: 500 } });
 
-            expect(canvas.getByText("Option 10")).toBeVisible();
-          },
-          {
-            timeout: 5000,
-          }
-        );
+          expect(canvas.getByText("Option 10")).toBeVisible();
+        });
       }
     );
 
@@ -74,10 +69,15 @@ export const InitialOptionsTest: Story = {
         expect(mockLoadOptions).toHaveBeenCalledTimes(1);
       });
 
-      await waitFor(() => {
-        expect(canvas.getByText("Option 10")).toBeInTheDocument();
-        expect(canvas.getByText("Option 20")).toBeInTheDocument();
-      });
+      await waitFor(
+        () => {
+          expect(canvas.getByText("Option 10")).toBeInTheDocument();
+          expect(canvas.getByText("Option 20")).toBeInTheDocument();
+        },
+        {
+          timeout: 5000,
+        }
+      );
     });
 
     await step(
