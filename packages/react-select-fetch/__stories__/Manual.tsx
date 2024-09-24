@@ -1,27 +1,16 @@
 /* eslint-disable react/no-array-index-key */
 
-import {
-  useState,
-  useCallback,
-} from 'react';
-import type {
-  ReactElement,
-} from 'react';
+import React, { useState, useCallback } from "react";
+import type { ReactElement } from "react";
 
-import sleep from 'sleep-promise';
+import sleep from "sleep-promise";
 
-import type {
-  InputAction,
-  InputActionMeta,
-  MultiValue,
-} from 'react-select';
+import type { InputAction, InputActionMeta, MultiValue } from "react-select";
 
-import { SelectFetch } from '../src';
-import type { Get } from '../src';
+import { SelectFetch } from "../src";
+import type { Get } from "../src";
 
-import type {
-  StoryProps,
-} from './types';
+import type { StoryProps } from "./types";
 
 type OptionType = {
   value: number;
@@ -41,11 +30,7 @@ type HistoryItemType = {
   inputValue: string;
 };
 
-const get: Get = async (url, {
-  search,
-  offset,
-  limit,
-}) => {
+export const get: Get = async (url, { search, offset, limit }) => {
   await sleep(1000);
 
   let filteredOptions;
@@ -54,16 +39,13 @@ const get: Get = async (url, {
   } else {
     const searchLower = search.toLowerCase();
 
-    filteredOptions = options.filter(
-      ({ label }) => label.toLowerCase().includes(searchLower),
+    filteredOptions = options.filter(({ label }) =>
+      label.toLowerCase().includes(searchLower)
     );
   }
 
   const hasMore = filteredOptions.length > offset + limit;
-  const slicedOptions = filteredOptions.slice(
-    offset,
-    offset + 10,
-  );
+  const slicedOptions = filteredOptions.slice(offset, offset + 10);
 
   return {
     options: slicedOptions,
@@ -72,27 +54,27 @@ const get: Get = async (url, {
 };
 
 export function Manual(props: StoryProps): ReactElement {
-  const [value, onChange] = useState<OptionType | MultiValue<OptionType> | null>(null);
-  const [inputValue, onInputChangeRaw] = useState<string>('');
+  const [value, onChange] = useState<
+    OptionType | MultiValue<OptionType> | null
+  >(null);
+  const [inputValue, onInputChangeRaw] = useState<string>("");
   const [menuIsOpen, setMenuIsOpen] = useState<boolean>(false);
   const [inputHistory, setInputHistory] = useState<HistoryItemType[]>([]);
 
-  const onInputChange = useCallback((
-    newInputValue: string,
-    {
-      action,
-    }: InputActionMeta,
-  ): void => {
-    setInputHistory((prevInputHistory) => [
-      ...prevInputHistory,
-      {
-        inputValue: newInputValue,
-        action,
-      },
-    ]);
+  const onInputChange = useCallback(
+    (newInputValue: string, { action }: InputActionMeta): void => {
+      setInputHistory((prevInputHistory) => [
+        ...prevInputHistory,
+        {
+          inputValue: newInputValue,
+          action,
+        },
+      ]);
 
-    onInputChangeRaw(newInputValue);
-  }, []);
+      onInputChangeRaw(newInputValue);
+    },
+    []
+  );
 
   const onMenuOpen = useCallback((): void => {
     setMenuIsOpen(true);
@@ -101,6 +83,8 @@ export function Manual(props: StoryProps): ReactElement {
   const onMenuClose = useCallback((): void => {
     setMenuIsOpen(false);
   }, []);
+
+  const getHandler = props?.get || get;
 
   return (
     <div
@@ -131,7 +115,7 @@ export function Manual(props: StoryProps): ReactElement {
         menuIsOpen={menuIsOpen}
         onMenuOpen={onMenuOpen}
         onMenuClose={onMenuClose}
-        get={get}
+        get={getHandler}
       />
 
       <h2>Input value history</h2>

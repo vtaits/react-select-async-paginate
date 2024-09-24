@@ -1,22 +1,14 @@
-import {
-  useState,
-} from 'react';
-import type {
-  ReactElement,
-} from 'react';
+import React, { useState } from "react";
+import type { ReactElement } from "react";
 
-import sleep from 'sleep-promise';
+import sleep from "sleep-promise";
 
-import type {
-  MultiValue,
-} from 'react-select';
+import type { MultiValue } from "react-select";
 
-import { SelectFetch } from '../src';
-import type { Get } from '../src';
+import { SelectFetch } from "../src";
+import type { Get } from "../src";
 
-import type {
-  StoryProps,
-} from './types';
+import type { StoryProps } from "./types";
 
 type OptionType = {
   value: number;
@@ -31,11 +23,7 @@ for (let i = 0; i < 50; ++i) {
   });
 }
 
-const get: Get = async (url, {
-  search,
-  offset,
-  limit,
-}) => {
+export const get: Get = async (url, { search, offset, limit }) => {
   await sleep(1000);
 
   let filteredOptions: OptionType[];
@@ -44,16 +32,13 @@ const get: Get = async (url, {
   } else {
     const searchLower = search.toLowerCase();
 
-    filteredOptions = options.filter(
-      ({ label }) => label.toLowerCase().includes(searchLower),
+    filteredOptions = options.filter(({ label }) =>
+      label.toLowerCase().includes(searchLower)
     );
   }
 
   const hasMore = filteredOptions.length > offset + limit;
-  const slicedOptions = filteredOptions.slice(
-    offset,
-    offset + 10,
-  );
+  const slicedOptions = filteredOptions.slice(offset, offset + 10);
 
   return {
     options: slicedOptions,
@@ -64,7 +49,11 @@ const get: Get = async (url, {
 const defaultOptions = options.slice(0, 10);
 
 export function InitialOptions(props: StoryProps): ReactElement {
-  const [value, onChange] = useState<OptionType | MultiValue<OptionType> | null>(null);
+  const [value, onChange] = useState<
+    OptionType | MultiValue<OptionType> | null
+  >(null);
+
+  const getHandler = props?.get || get;
 
   return (
     <div
@@ -81,7 +70,7 @@ export function InitialOptions(props: StoryProps): ReactElement {
         }}
         value={value}
         onChange={onChange}
-        get={get}
+        get={getHandler}
       />
     </div>
   );

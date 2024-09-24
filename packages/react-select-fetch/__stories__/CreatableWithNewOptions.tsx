@@ -1,52 +1,38 @@
-import {
-  useState,
-  useCallback,
-} from 'react';
-import type {
-  ReactElement,
-} from 'react';
+import { useState, useCallback } from "react";
+import type { ReactElement } from "react";
 
-import sleep from 'sleep-promise';
+import sleep from "sleep-promise";
 
-import Creatable from 'react-select/creatable';
-import type {
-  CreatableProps,
-} from 'react-select/creatable';
-import type {
-  GroupBase,
-  MultiValue,
-} from 'react-select';
+import Creatable from "react-select/creatable";
+import type { CreatableProps } from "react-select/creatable";
+import type { GroupBase, MultiValue } from "react-select";
 
-import type {
-  ComponentProps,
-} from 'react-select-async-paginate';
+import type { ComponentProps } from "react-select-async-paginate";
 
-import { withSelectFetch } from '../src';
-import type {
-  Get,
-  UseSelectFetchParams,
-} from '../src';
+import { withSelectFetch } from "../src";
+import type { Get, UseSelectFetchParams } from "../src";
 
-import type {
-  StoryProps,
-} from './types';
+import type { StoryProps } from "./types";
 
 type SelectFetchCreatableProps<
-OptionType,
-Group extends GroupBase<OptionType>,
-IsMulti extends boolean,
-> =
-  & CreatableProps<OptionType, IsMulti, Group>
-  & UseSelectFetchParams<OptionType, Group>
-  & ComponentProps<OptionType, Group, IsMulti>;
+  OptionType,
+  Group extends GroupBase<OptionType>,
+  IsMulti extends boolean
+> = CreatableProps<OptionType, IsMulti, Group> &
+  UseSelectFetchParams<OptionType, Group> &
+  ComponentProps<OptionType, Group, IsMulti>;
 
 type SelectFetchCreatableType = <
-OptionType,
-Group extends GroupBase<OptionType>,
-IsMulti extends boolean = false,
->(props: SelectFetchCreatableProps<OptionType, Group, IsMulti>) => ReactElement;
+  OptionType,
+  Group extends GroupBase<OptionType>,
+  IsMulti extends boolean = false
+>(
+  props: SelectFetchCreatableProps<OptionType, Group, IsMulti>
+) => ReactElement;
 
-const SelectFetchCreatable = withSelectFetch(Creatable) as SelectFetchCreatableType;
+const SelectFetchCreatable = withSelectFetch(
+  Creatable
+) as SelectFetchCreatableType;
 
 type OptionType = {
   value: number | string;
@@ -61,11 +47,7 @@ for (let i = 0; i < 50; ++i) {
   });
 }
 
-const get: Get = async (url, {
-  search,
-  offset,
-  limit,
-}) => {
+export const get: Get = async (url, { search, offset, limit }) => {
   await sleep(1000);
 
   let filteredOptions: OptionType[];
@@ -74,16 +56,13 @@ const get: Get = async (url, {
   } else {
     const searchLower = search.toLowerCase();
 
-    filteredOptions = options.filter(
-      ({ label }) => label.toLowerCase().includes(searchLower),
+    filteredOptions = options.filter(({ label }) =>
+      label.toLowerCase().includes(searchLower)
     );
   }
 
   const hasMore = filteredOptions.length > offset + limit;
-  const slicedOptions = filteredOptions.slice(
-    offset,
-    offset + 10,
-  );
+  const slicedOptions = filteredOptions.slice(offset, offset + 10);
 
   return {
     options: slicedOptions,
@@ -109,7 +88,9 @@ const increaseUniq = (uniq: number): number => uniq + 1;
 export function CreatableWithNewOptions(props: StoryProps): ReactElement {
   const [cacheUniq, setCacheUniq] = useState(0);
   const [isAddingInProgress, setIsAddingInProgress] = useState(false);
-  const [value, onChange] = useState<OptionType | MultiValue<OptionType> | null>(null);
+  const [value, onChange] = useState<
+    OptionType | MultiValue<OptionType> | null
+  >(null);
 
   const onCreateOption = useCallback(async (inputValue: string) => {
     setIsAddingInProgress(true);
@@ -120,6 +101,8 @@ export function CreatableWithNewOptions(props: StoryProps): ReactElement {
     setCacheUniq(increaseUniq);
     onChange(newOption);
   }, []);
+
+  const getHandler = props?.get || get;
 
   return (
     <div
@@ -138,14 +121,10 @@ export function CreatableWithNewOptions(props: StoryProps): ReactElement {
         value={value}
         onChange={onChange}
         cacheUniqs={[cacheUniq]}
-        get={get}
+        get={getHandler}
       />
 
-      <p>
-        Current value is
-        {' '}
-        {JSON.stringify(value)}
-      </p>
+      <p>Current value is {JSON.stringify(value)}</p>
     </div>
   );
 }
