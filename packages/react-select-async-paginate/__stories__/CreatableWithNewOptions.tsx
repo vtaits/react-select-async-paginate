@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import { useState, useCallback } from "react";
 import type { ReactElement } from "react";
 
 import sleep from "sleep-promise";

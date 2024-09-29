@@ -1,4 +1,3 @@
-"use strict";
 import { within, userEvent, expect, waitFor, fireEvent } from "@storybook/test";
 import type { Meta, StoryObj } from "@storybook/react";
 import type { GroupBase } from "react-select";
