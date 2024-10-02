@@ -7,14 +7,14 @@ import Creatable from "react-select/creatable";
 import type { CreatableProps } from "react-select/creatable";
 import type { GroupBase, MultiValue } from "react-select";
 
-import { withAsyncPaginate } from "../src";
+import { withAsyncPaginate } from "../../src";
 import type {
   LoadOptions,
   UseAsyncPaginateParams,
   ComponentProps,
-} from "../src";
+} from "../../src";
 
-import type { StoryProps } from "./types";
+import type { StoryProps } from "../types";
 
 type AsyncPaginateCreatableProps<
   OptionType,
@@ -33,6 +33,10 @@ type AsyncPaginateCreatableType = <
 >(
   props: AsyncPaginateCreatableProps<OptionType, Group, Additional, IsMulti>
 ) => ReactElement;
+
+type CreatableWithNewOptionsProps = StoryProps & {
+  loadOptions?: LoadOptions<OptionType, GroupBase<OptionType>, null>;
+};
 
 const AsyncPaginateCreatable = withAsyncPaginate(
   Creatable
@@ -96,7 +100,9 @@ const addNewOption = async (inputValue: string): Promise<OptionType> => {
 
 const increaseUniq = (uniq: number): number => uniq + 1;
 
-export function CreatableWithNewOptions(props: StoryProps): ReactElement {
+export function CreatableWithNewOptions(
+  props: CreatableWithNewOptionsProps
+): ReactElement {
   const [cacheUniq, setCacheUniq] = useState(0);
   const [isAddingInProgress, setIsAddingInProgress] = useState(false);
   const [value, onChange] = useState<

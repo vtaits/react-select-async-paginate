@@ -5,17 +5,17 @@ import type { GroupBase, MultiValue } from "react-select";
 
 import sleep from "sleep-promise";
 
-import CreatableSelect from "react-select/creatable";
+import { AsyncPaginate } from "../../src";
+import type { LoadOptions } from "../../src";
 
-import { withAsyncPaginate } from "../src";
-import type { LoadOptions } from "../src";
+import type { StoryProps } from "../types";
 
-import type { StoryProps } from "./types";
+type SimpleStoryProps = StoryProps & {
+  loadOptions?: LoadOptions<OptionType, GroupBase<OptionType>, unknown>;
+};
 
-const AsyncPaginateCreatable = withAsyncPaginate(CreatableSelect);
-
-export type OptionType = {
-  value: number | string;
+type OptionType = {
+  value: number;
   label: string;
 };
 
@@ -30,7 +30,7 @@ for (let i = 0; i < 50; ++i) {
 export const loadOptions: LoadOptions<
   OptionType,
   GroupBase<OptionType>,
-  null
+  unknown
 > = async (search, prevOptions) => {
   await sleep(1000);
 
@@ -57,7 +57,7 @@ export const loadOptions: LoadOptions<
   };
 };
 
-export function Creatable(props: StoryProps): ReactElement {
+export function Simple(props: SimpleStoryProps): ReactElement {
   const [value, onChange] = useState<
     OptionType | MultiValue<OptionType> | null
   >(null);
@@ -70,7 +70,7 @@ export function Creatable(props: StoryProps): ReactElement {
         maxWidth: 300,
       }}
     >
-      <AsyncPaginateCreatable
+      <AsyncPaginate
         {...props}
         value={value}
         loadOptions={loadOptionsHandler}

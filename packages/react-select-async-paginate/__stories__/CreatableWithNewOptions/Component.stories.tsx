@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react";
-
 import { CreatableWithNewOptions } from "./CreatableWithNewOptions";
 
 const meta: Meta<typeof CreatableWithNewOptions> = {
@@ -9,7 +8,7 @@ const meta: Meta<typeof CreatableWithNewOptions> = {
 export default meta;
 type Story = StoryObj<typeof CreatableWithNewOptions>;
 
-export const CreatableStory: Story = {
+export const CreatableWithNewOptionsStory: Story = {
   name: "Component",
   render: (props) => <CreatableWithNewOptions {...props} />,
 };

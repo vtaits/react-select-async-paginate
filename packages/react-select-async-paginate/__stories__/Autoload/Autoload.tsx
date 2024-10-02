@@ -2,13 +2,16 @@ import { useState } from "react";
 import type { ReactElement } from "react";
 
 import type { GroupBase, MultiValue } from "react-select";
-
 import sleep from "sleep-promise";
 
-import { AsyncPaginate } from "../src";
-import type { LoadOptions } from "../src";
+import { AsyncPaginate } from "../../src";
+import type { LoadOptions } from "../../src";
 
-import type { StoryProps } from "./types";
+import type { StoryProps } from "../types";
+
+type AutoloadStoryProps = StoryProps & {
+  loadOptions?: LoadOptions<OptionType, GroupBase<OptionType>, unknown>;
+};
 
 type OptionType = {
   value: number;
@@ -26,7 +29,7 @@ for (let i = 0; i < 50; ++i) {
 export const loadOptions: LoadOptions<
   OptionType,
   GroupBase<OptionType>,
-  unknown
+  null | unknown
 > = async (search, prevOptions) => {
   await sleep(1000);
 
@@ -53,7 +56,7 @@ export const loadOptions: LoadOptions<
   };
 };
 
-export function Simple(props: StoryProps): ReactElement {
+export function Autoload(props: AutoloadStoryProps): ReactElement {
   const [value, onChange] = useState<
     OptionType | MultiValue<OptionType> | null
   >(null);
@@ -68,6 +71,7 @@ export function Simple(props: StoryProps): ReactElement {
     >
       <AsyncPaginate
         {...props}
+        defaultOptions
         value={value}
         loadOptions={loadOptionsHandler}
         onChange={onChange}
