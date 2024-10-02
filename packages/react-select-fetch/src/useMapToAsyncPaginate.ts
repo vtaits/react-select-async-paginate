@@ -81,16 +81,9 @@ export const useMapToAsyncPaginate = <
 				params[offsetParamName] = prevOptions.length;
 			}
 
-			const result = await getResult(get(url, params));
+			const result = await get(url, params);
 
-			if (result.isErr()) {
-				return {
-					options: [],
-					hasMore: false,
-				};
-			}
-
-			const response = mapResponse(result.unwrap(), {
+			const response = mapResponse(result, {
 				search,
 				prevPage: page,
 				prevOptions,

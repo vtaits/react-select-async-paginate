@@ -105,6 +105,10 @@ Not required. Function. By default new loaded options are concat with previous. 
 
 Should return new options.
 
+### reloadOnErrorTimeout
+
+Not required. Number. Time in milliseconds to retry a request after an error
+
 ### cacheUniqs
 
 Not required. Array. Works as 2nd argument of `useEffect` hook. When one of items changed, `AsyncPaginate` cleans all cached options.

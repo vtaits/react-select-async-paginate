@@ -31,6 +31,7 @@ export type OptionsCacheItem<
 > = {
 	isFirstLoad: boolean;
 	isLoading: boolean;
+	lockedUntil: number;
 	options: OptionsOrGroups<OptionType, Group>;
 	hasMore: boolean;
 	additional?: Additional;
@@ -121,6 +122,7 @@ export type UseAsyncPaginateParams<
 	onInputChange?: (newValue: string, actionMeta: InputActionMeta) => void;
 	onMenuClose?: () => void;
 	onMenuOpen?: () => void;
+	reloadOnErrorTimeout?: number;
 };
 
 export type UseAsyncPaginateBaseParams<
