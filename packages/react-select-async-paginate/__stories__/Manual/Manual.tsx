@@ -12,10 +12,14 @@ import type {
 
 import sleep from "sleep-promise";
 
-import { AsyncPaginate } from "../src";
-import type { LoadOptions } from "../src";
+import { AsyncPaginate } from "../../src";
+import type { LoadOptions } from "../../src";
 
-import type { StoryProps } from "./types";
+import type { StoryProps } from "../types";
+
+type ManualProps = StoryProps & {
+  loadOptions?: LoadOptions<OptionType, GroupBase<OptionType>, null>;
+};
 
 type OptionType = {
   value: number;
@@ -65,7 +69,7 @@ type HistoryItemType = {
   inputValue: string;
 };
 
-export function Manual(props: StoryProps): ReactElement {
+export function Manual(props: ManualProps): ReactElement {
   const [value, onChange] = useState<
     OptionType | MultiValue<OptionType> | null
   >(null);

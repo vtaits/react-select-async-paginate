@@ -5,10 +5,14 @@ import type { GroupBase, MultiValue } from "react-select";
 
 import sleep from "sleep-promise";
 
-import { AsyncPaginate } from "../src";
-import type { LoadOptions } from "../src";
+import { AsyncPaginate } from "../../src";
+import type { LoadOptions, ShouldLoadMore } from "../../src";
 
-import type { StoryProps } from "./types";
+import type { StoryProps } from "../types";
+
+type CustomScrollCheckProps = StoryProps & {
+  loadOptions?: LoadOptions<OptionType, GroupBase<OptionType>, null>;
+};
 
 type OptionType = {
   value: number;
@@ -23,22 +27,12 @@ for (let i = 0; i < 50; ++i) {
   });
 }
 
-let requestNumber = 0;
-
 export const loadOptions: LoadOptions<
   OptionType,
   GroupBase<OptionType>,
-  unknown
+  null
 > = async (search, prevOptions) => {
   await sleep(1000);
-
-  ++requestNumber;
-  if (requestNumber % 2 !== 0) {
-    throw new Error("Try again");
-  }
-
-  console.log("Запрос", requestNumber);
-  
 
   let filteredOptions: OptionType[];
   if (!search) {
@@ -63,13 +57,22 @@ export const loadOptions: LoadOptions<
   };
 };
 
-export function ReloadOnError(props: StoryProps): ReactElement {
+const shouldLoadMore: ShouldLoadMore = (
+  scrollHeight,
+  clientHeight,
+  scrollTop
+) => {
+  const bottomBorder = (scrollHeight - clientHeight) / 2;
+
+  return bottomBorder < scrollTop;
+};
+
+export function CustomScrollCheck(props: CustomScrollCheckProps): ReactElement {
   const [value, onChange] = useState<
     OptionType | MultiValue<OptionType> | null
   >(null);
 
   const loadOptionsHandler = props?.loadOptions || loadOptions;
-  const reloadOnErrorTimeout = props?.reloadOnErrorTimeout ?? 5000;
 
   return (
     <div
@@ -77,12 +80,14 @@ export function ReloadOnError(props: StoryProps): ReactElement {
         maxWidth: 300,
       }}
     >
+      <p>New options will load when scrolling to half</p>
+
       <AsyncPaginate
         {...props}
         value={value}
         loadOptions={loadOptionsHandler}
         onChange={onChange}
-        reloadOnErrorTimeout={reloadOnErrorTimeout}
+        shouldLoadMore={shouldLoadMore}
       />
     </div>
   );

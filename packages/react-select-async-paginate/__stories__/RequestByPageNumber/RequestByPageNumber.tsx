@@ -5,10 +5,14 @@ import type { GroupBase, MultiValue } from "react-select";
 
 import sleep from "sleep-promise";
 
-import { AsyncPaginate } from "../src";
-import type { LoadOptions } from "../src";
+import { AsyncPaginate } from "../../src";
+import type { LoadOptions } from "../../src";
 
-import type { StoryProps } from "./types";
+import type { StoryProps } from "../types";
+
+type RequestByPageNumberProps = StoryProps & {
+  loadOptions?: LoadOptions<OptionType, GroupBase<OptionType>, Additional>;
+};
 
 type OptionType = {
   value: number;
@@ -88,7 +92,9 @@ export const loadPageOptions: LoadOptions<
   };
 };
 
-export function RequestByPageNumber(props: StoryProps): ReactElement {
+export function RequestByPageNumber(
+  props: RequestByPageNumberProps
+): ReactElement {
   const [value, onChange] = useState<
     OptionType | MultiValue<OptionType> | null
   >(null);

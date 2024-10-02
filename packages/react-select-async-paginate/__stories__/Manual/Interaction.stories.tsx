@@ -1,10 +1,11 @@
-import { within, userEvent, expect, waitFor, fireEvent } from "@storybook/test";
+import { fn, within, expect, waitFor } from "@storybook/test";
 import type { Meta, StoryObj } from "@storybook/react";
 import type { GroupBase } from "react-select";
-import { fn } from "@storybook/test";
 
-import { AsyncPaginate } from "../src";
-import type { LoadOptions } from "../src";
+import { scroll, type, click } from "../utils";
+
+import { AsyncPaginate } from "../../src";
+import type { LoadOptions } from "../../src";
 
 import { Manual, loadOptions } from "./Manual";
 
@@ -14,33 +15,32 @@ const meta: Meta<typeof Manual> = {
 };
 export default meta;
 type Story = StoryObj<typeof AsyncPaginate>;
+type MockLoadOptions = LoadOptions<unknown, GroupBase<unknown>, unknown>;
 
-export const ManualTest: Story = {
+export const ManualInteraction: Story = {
   name: "Interaction",
   args: {
-    loadOptions: fn(
-      loadOptions as LoadOptions<unknown, GroupBase<unknown>, unknown>
-    ),
+    loadOptions: fn(loadOptions as MockLoadOptions),
   },
   play: async ({ canvasElement, step, args }) => {
     const canvas = within(canvasElement);
     const mockLoadOptions = args.loadOptions;
 
-    await step("Manual Click to Show Options list", async () => {
+    await step("Manual click to show options list", async () => {
       const button = canvas.getByRole("button", { name: /Open menu/i });
 
-      await userEvent.click(button);
+      await click(button);
 
       await waitFor(() => {
         expect(canvas.getByRole("listbox")).toBeVisible();
       });
     });
 
-    await step("Manual Click to Close Options list", async () => {
+    await step("Manual click to close options list", async () => {
       const listbox = canvas.getByRole("listbox");
       const button = canvas.getByRole("button", { name: /Close menu/i });
 
-      await userEvent.click(button, {
+      await click(button, {
         delay: 500,
       });
 
@@ -49,25 +49,10 @@ export const ManualTest: Story = {
       });
     });
 
-    await step(
-      "Manual click on the Button to display the options list",
-      async () => {
-        const button = canvas.getByRole("button", { name: /Open menu/i });
-
-        await userEvent.click(button);
-
-        await waitFor(() => {
-          expect(canvas.getByRole("listbox")).toBeVisible();
-        });
-      }
-    );
-
     await step("Click on the Select to display the options list", async () => {
       const select = canvas.getByRole("combobox");
 
-      await userEvent.click(select, {
-        delay: 400,
-      });
+      await click(select, { delay: 400 });
 
       await waitFor(() => {
         expect(canvas.getByRole("listbox")).toBeVisible();
@@ -75,7 +60,7 @@ export const ManualTest: Story = {
     });
 
     await step(
-      "Verify successful loading and rendering of the Options page",
+      "Successful loading and rendering of the Options page",
       async () => {
         await waitFor(() => {
           expect(mockLoadOptions).toHaveBeenCalledTimes(1);
@@ -83,6 +68,9 @@ export const ManualTest: Story = {
 
         await waitFor(() => {
           expect(canvas.getByText("Option 1")).toBeInTheDocument();
+        });
+
+        await waitFor(() => {
           expect(canvas.getByText("Option 10")).toBeInTheDocument();
         });
       }
@@ -91,11 +79,13 @@ export const ManualTest: Story = {
     await step(
       "Scroll the options list to the end of first pagination page",
       async () => {
-        await waitFor(() => {
-          const listbox = canvas.getByRole("listbox");
-          fireEvent.scroll(listbox, { target: { scrollTop: 500 } });
+        const targetText = "Option 10";
+        const listbox = canvas.getByRole("listbox");
 
-          expect(canvas.getByText("Option 10")).toBeVisible();
+        await scroll(listbox, 500);
+
+        await waitFor(() => {
+          expect(canvas.getByText(targetText)).toBeVisible();
         });
       }
     );
@@ -103,12 +93,14 @@ export const ManualTest: Story = {
     await step(
       "Scroll the options list to the end of second pagination page",
       async () => {
+        const targetText = "Option 20";
+        const listbox = canvas.getByRole("listbox");
+
+        await scroll(listbox, 500);
+
         await waitFor(
           () => {
-            const listbox = canvas.getByRole("listbox");
-            fireEvent.scroll(listbox, { target: { scrollTop: 500 } });
-
-            expect(canvas.getByText("Option 20")).toBeVisible();
+            expect(canvas.getByText(targetText)).toBeVisible();
           },
           {
             timeout: 4000,
@@ -118,40 +110,39 @@ export const ManualTest: Story = {
     );
 
     await step("Type into the Select", async () => {
+      const targetText = "Option 40";
       const select = canvas.getByRole("combobox");
       const listbox = canvas.getByRole("listbox");
 
-      await waitFor(
-        async () => {
-          await userEvent.type(select, "Option 40", { delay: 100 });
+      await type(select, targetText, 100);
 
-          expect(listbox).toBeVisible();
-          expect(select).toHaveValue("Option 40");
-        },
-        { timeout: 5000 }
-      );
+      await waitFor(() => {
+        expect(listbox).toBeVisible();
+      });
+      
+      await waitFor(() => {
+        expect(select).toHaveValue(targetText);
+      });
     });
 
-    await step("Select Option from the list", async () => {
-      const target = "Option 40";
+    await step("Select option from the list", async () => {
+      const targetText = "Option 40";
+      const listbox = canvas.getByRole("listbox");
 
       await waitFor(async () => {
-        const listbox = canvas.getByRole("listbox");
         const option = within(listbox).getByRole("option");
+        await click(option);
+      });
 
-        await userEvent.click(option);
-
+      await waitFor(async () => {
         expect(listbox).not.toBeVisible();
       });
 
       await waitFor(async () => {
-        const elements = canvas.getAllByText(target);
-
-        const inputEl = elements.find((el) =>
-          el.className.match(/.*singleValue.*/)
-        );
-
-        expect(inputEl).toHaveTextContent(target);
+        const option = canvas.getByText((content, el) => {
+          return el !== null && /css-.*-singleValue/.test(el.className);
+        });
+        expect(option).toHaveTextContent(targetText);
       });
     });
   },

@@ -5,10 +5,14 @@ import type { GroupBase, MultiValue } from "react-select";
 
 import sleep from "sleep-promise";
 
-import { AsyncPaginate } from "../src";
-import type { LoadOptions, ShouldLoadMore } from "../src";
+import { AsyncPaginate } from "../../src";
+import type { LoadOptions } from "../../src";
 
-import type { StoryProps } from "./types";
+import type { StoryProps } from "../types";
+
+type ReloadOnErrorProps = StoryProps & {
+  loadOptions?: LoadOptions<OptionType, GroupBase<OptionType>, unknown>;
+};
 
 type OptionType = {
   value: number;
@@ -23,12 +27,21 @@ for (let i = 0; i < 50; ++i) {
   });
 }
 
+let requestNumber = 0;
+
 export const loadOptions: LoadOptions<
   OptionType,
   GroupBase<OptionType>,
-  null
+  unknown
 > = async (search, prevOptions) => {
   await sleep(1000);
+
+  ++requestNumber;
+  if (requestNumber % 2 !== 0) {
+    throw new Error("Try again");
+  }
+
+  console.log("Запрос", requestNumber);
 
   let filteredOptions: OptionType[];
   if (!search) {
@@ -53,17 +66,7 @@ export const loadOptions: LoadOptions<
   };
 };
 
-const shouldLoadMore: ShouldLoadMore = (
-  scrollHeight,
-  clientHeight,
-  scrollTop
-) => {
-  const bottomBorder = (scrollHeight - clientHeight) / 2;
-
-  return bottomBorder < scrollTop;
-};
-
-export function CustomScrollCheck(props: StoryProps): ReactElement {
+export function ReloadOnError(props: ReloadOnErrorProps): ReactElement {
   const [value, onChange] = useState<
     OptionType | MultiValue<OptionType> | null
   >(null);
@@ -76,14 +79,12 @@ export function CustomScrollCheck(props: StoryProps): ReactElement {
         maxWidth: 300,
       }}
     >
-      <p>New options will load when scrolling to half</p>
-
       <AsyncPaginate
         {...props}
         value={value}
         loadOptions={loadOptionsHandler}
         onChange={onChange}
-        shouldLoadMore={shouldLoadMore}
+        reloadOnErrorTimeout={5000}
       />
     </div>
   );

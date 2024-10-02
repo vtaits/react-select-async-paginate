@@ -5,10 +5,14 @@ import type { GroupBase, MultiValue } from "react-select";
 
 import sleep from "sleep-promise";
 
-import { AsyncPaginate } from "../src";
-import type { LoadOptions } from "../src";
+import { AsyncPaginate } from "../../src";
+import type { LoadOptions } from "../../src";
 
-import type { StoryProps } from "./types";
+import type { StoryProps } from "../types";
+
+type InitialOptionsProps = StoryProps & {
+  loadOptions?: LoadOptions<OptionType, GroupBase<OptionType>, null>;
+};
 
 type OptionType = {
   value: number;
@@ -55,7 +59,7 @@ export const loadOptions: LoadOptions<
 
 const initialOptions = options.slice(0, 10);
 
-export function InitialOptions(props: StoryProps): ReactElement {
+export function InitialOptions(props: InitialOptionsProps): ReactElement {
   const [value, onChange] = useState<
     OptionType | MultiValue<OptionType> | null
   >(null);
