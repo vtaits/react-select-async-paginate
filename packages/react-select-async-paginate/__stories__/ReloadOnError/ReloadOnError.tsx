@@ -12,6 +12,7 @@ import type { StoryProps } from "../types";
 
 type ReloadOnErrorProps = StoryProps & {
   loadOptions?: LoadOptions<OptionType, GroupBase<OptionType>, unknown>;
+  reloadOnErrorTimeout?: number;
 };
 
 type OptionType = {
@@ -37,11 +38,9 @@ export const loadOptions: LoadOptions<
   await sleep(1000);
 
   ++requestNumber;
-  if (requestNumber % 2 !== 0) {
+  if (requestNumber % 2 === 0) {
     throw new Error("Try again");
   }
-
-  console.log("Запрос", requestNumber);
 
   let filteredOptions: OptionType[];
   if (!search) {
@@ -72,6 +71,7 @@ export function ReloadOnError(props: ReloadOnErrorProps): ReactElement {
   >(null);
 
   const loadOptionsHandler = props?.loadOptions || loadOptions;
+  const reloadOnErrorTimeout = props?.reloadOnErrorTimeout || 5000;
 
   return (
     <div
@@ -84,7 +84,7 @@ export function ReloadOnError(props: ReloadOnErrorProps): ReactElement {
         value={value}
         loadOptions={loadOptionsHandler}
         onChange={onChange}
-        reloadOnErrorTimeout={5000}
+        reloadOnErrorTimeout={reloadOnErrorTimeout}
       />
     </div>
   );

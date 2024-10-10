@@ -7,24 +7,27 @@ import { scroll, type, click } from "../utils";
 import { AsyncPaginate } from "../../src";
 import type { LoadOptions } from "../../src";
 
-import { Autoload, loadOptions } from "./Autoload";
+import {
+  GroupedOptions,
+  wrapperdLoadOptions as loadOptions,
+} from "./GroupedOptions";
 
-const meta: Meta<typeof Autoload> = {
-  title: "react-select-async-paginate/Autoload",
-  component: Autoload,
+const meta: Meta<typeof GroupedOptions> = {
+  title: "react-select-async-paginate/Grouped Options",
+  component: GroupedOptions,
 };
 export default meta;
 type Story = StoryObj<typeof AsyncPaginate>;
 type MockLoadOptions = LoadOptions<unknown, GroupBase<unknown>, unknown>;
 
-export const AutoloadInteraction: Story = {
+export const GroupedOptionsInteraction: Story = {
   name: "Interaction",
   args: {
     loadOptions: fn(loadOptions as MockLoadOptions),
   },
   play: async ({ canvasElement, step, args }) => {
     const canvas = within(canvasElement);
-    const mockLoadOptions = args.loadOptions;
+    const { loadOptions: mockLoadOptions } = args;
 
     const delay = {
       type: 200,
@@ -34,12 +37,6 @@ export const AutoloadInteraction: Story = {
       timeout: 3000,
     };
 
-    await step("Autoload the 1 page of options", async () => {
-      await waitFor(() => {
-        expect(mockLoadOptions).toHaveBeenCalledTimes(1);
-      });
-    });
-
     await step("Display drop-down options list", async () => {
       const select = canvas.getByRole("combobox");
 
@@ -47,6 +44,22 @@ export const AutoloadInteraction: Story = {
 
       await waitFor(() => {
         expect(canvas.getByRole("listbox")).toBeVisible();
+      });
+    });
+
+    await step("Load the 1 page of options", async () => {
+      await waitFor(() => {
+        expect(mockLoadOptions).toHaveBeenCalledTimes(1);
+      });
+
+      await waitFor(() => {
+        const groups = canvas.getAllByText(/^Type/i);
+        expect(groups.length).toBe(1);
+      });
+
+      await waitFor(() => {
+        const optionPage = canvas.getAllByText(/^Option/i);
+        expect(optionPage.length).toBe(10);
       });
     });
 

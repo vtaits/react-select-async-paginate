@@ -26,84 +26,81 @@ export const CustomScrollCheckInteraction: Story = {
     const canvas = within(canvasElement);
     const mockLoadOptions = args.loadOptions;
 
-    await step("Click on the Select to display the options list", async () => {
+    const delay = {
+      type: 200,
+      click: 400,
+    };
+    const waitOptions = {
+      timeout: 3000,
+    };
+
+    await step("Display drop-down options list", async () => {
       const select = canvas.getByRole("combobox");
 
-      await click(select, { delay: 400 });
+      await click(select, { delay: delay.click });
 
       await waitFor(() => {
         expect(canvas.getByRole("listbox")).toBeVisible();
       });
     });
 
+    await step("Load the 1 page of options", async () => {
+      await waitFor(() => {
+        expect(mockLoadOptions).toHaveBeenCalledTimes(1);
+      });
+
+      await waitFor(() => {
+        expect(canvas.getByText("Option 1")).toBeInTheDocument();
+      }, waitOptions);
+
+      await waitFor(() => {
+        expect(canvas.getByText("Option 10")).toBeInTheDocument();
+      }, waitOptions);
+    });
+
+    await step("Scroll and load the 2 page of options", async () => {
+      const listbox = canvas.getByRole("listbox");
+
+      await scroll(listbox, 500);
+
+      await waitFor(() => {
+        const optionPage = canvas.getAllByText(/^Option/i);
+        expect(optionPage.length).toBe(20);
+      }, waitOptions);
+    });
+
     await step(
-      "Successful loading and rendering of the Options page",
+      "Scroll to the half and load the 3 page of options",
       async () => {
-        await waitFor(() => {
-          expect(mockLoadOptions).toHaveBeenCalledTimes(1);
-        });
-
-        await waitFor(() => {
-          expect(canvas.getByText("Option 1")).toBeInTheDocument();
-        });
-
-        await waitFor(() => {
-          expect(canvas.getByText("Option 10")).toBeInTheDocument();
-        });
-      }
-    );
-
-    await step(
-      "Scroll the options list to the end of first pagination page",
-      async () => {
-        const targetText = "Option 10";
         const listbox = canvas.getByRole("listbox");
 
-        await scroll(listbox, 500);
+        await scroll(listbox, 250);
 
         await waitFor(() => {
-          expect(canvas.getByText(targetText)).toBeVisible();
-        });
+          const optionPage = canvas.getAllByText(/^Option/i);
+          expect(optionPage.length).toBe(30);
+        }, waitOptions);
       }
     );
 
-    await step(
-      "Scroll the options list to the half of the second pagination page with the third page loading",
-      async () => {
-        const targetText = "Option 30";
-        const listbox = canvas.getByRole("listbox");
-
-        await waitFor(
-          () => {
-            scroll(listbox, 250);
-            expect(canvas.getByText(targetText)).toBeVisible();
-          },
-          {
-            timeout: 4000,
-            interval: 1000,
-          }
-        );
-      }
-    );
-
-    await step("Type into the Select", async () => {
-      const targetText = "Option 40";
+    await step("Type option label into the select", async () => {
+      const label = "Option 40";
       const select = canvas.getByRole("combobox");
       const listbox = canvas.getByRole("listbox");
 
-      await type(select, targetText, 100);
+      await type(select, label, delay.type);
 
       await waitFor(() => {
         expect(listbox).toBeVisible();
       });
 
       await waitFor(() => {
-        expect(select).toHaveValue(targetText);
+        expect(select).toHaveValue(label);
       });
     });
 
-    await step("Select option from the list", async () => {
-      const targetText = "Option 40";
+    await step("Select the specified option from the list", async () => {
+      const label = "Option 40";
       const listbox = canvas.getByRole("listbox");
 
       await waitFor(async () => {
@@ -119,7 +116,7 @@ export const CustomScrollCheckInteraction: Story = {
         const option = canvas.getByText((content, el) => {
           return el !== null && /css-.*-singleValue/.test(el.className);
         });
-        expect(option).toHaveTextContent(targetText);
+        expect(option).toHaveTextContent(label);
       });
     });
   },

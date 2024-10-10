@@ -1,14 +1,19 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import type { ReactElement } from "react";
 
 import type { GroupBase, MultiValue } from "react-select";
 
 import sleep from "sleep-promise";
 
-import { AsyncPaginate } from "../src";
-import type { LoadOptions } from "../src";
+import { AsyncPaginate } from "../../src";
+import type { LoadOptions } from "../../src";
 
-import type { StoryProps } from "./types";
+import type { StoryProps } from "../types";
+
+type DebounceProps = StoryProps & {
+  loadOptions?: LoadOptions<OptionType, GroupBase<OptionType>, null>;
+  debounceTimeout?: number;
+};
 
 type OptionType = {
   value: number;
@@ -55,25 +60,22 @@ export const loadOptions: LoadOptions<
 
 const increase = (numberOfRequests: number): number => numberOfRequests + 1;
 
-export function Debounce(props: StoryProps): ReactElement {
+export function Debounce(props: DebounceProps): ReactElement {
   const [value, onChange] = useState<
     OptionType | MultiValue<OptionType> | null
   >(null);
   const [numberOfRequests, setNumberOfRequests] = useState(0);
 
-  const wrappedLoadOptions: LoadOptions<
-    OptionType,
-    GroupBase<OptionType>,
-    null
-  > = (inputValue, prevOptions) => {
+  const debounceTimeout = props?.debounceTimeout || 500;
+  const wrappedLoadOptions = useCallback<typeof loadOptions>((...args) => {
     setNumberOfRequests(increase);
 
     if (props?.loadOptions) {
-      return props.loadOptions(inputValue, prevOptions);
+      return props.loadOptions(...args);
     }
 
-    return loadOptions(inputValue, prevOptions);
-  };
+    return loadOptions(...args);
+  }, []);
 
   return (
     <div
@@ -82,11 +84,11 @@ export function Debounce(props: StoryProps): ReactElement {
       }}
     >
       <p>Number of requests: {numberOfRequests}</p>
-
       <AsyncPaginate
         {...props}
         value={value}
         loadOptions={wrappedLoadOptions}
+        debounceTimeout={debounceTimeout}
         onChange={onChange}
       />
     </div>

@@ -5,10 +5,14 @@ import type { MultiValue } from "react-select";
 
 import sleep from "sleep-promise";
 
-import { AsyncPaginate, reduceGroupedOptions } from "../src";
-import type { LoadOptions } from "../src";
+import { AsyncPaginate, reduceGroupedOptions } from "../../src";
+import type { LoadOptions } from "../../src";
 
-import type { StoryProps } from "./types";
+import type { StoryProps } from "../types";
+
+type GroupedOptionsProps = StoryProps & {
+  loadOptions?: LoadOptions<OptionType, GroupType, Additional>;
+};
 
 type OptionType = {
   value: number | string;
@@ -59,15 +63,18 @@ const loadOptions = async (
     );
   }
 
-  const hasMore = Math.ceil(filteredOptions.length / optionsPerPage) > page;
-  const slicedOptions = filteredOptions.slice(
+  const sortedOptions = filteredOptions.sort((a, b) => a.type - b.type);
+
+  const slicedOptions = sortedOptions.slice(
     (page - 1) * optionsPerPage,
     page * optionsPerPage
   );
 
-  const mapTypeToIndex = new Map<number, number>();
+  const hasMore = Math.ceil(filteredOptions.length / optionsPerPage) > page;
 
   const result: GroupType[] = [];
+
+  const mapTypeToIndex = new Map<number, number>();
 
   slicedOptions.forEach((option) => {
     const { type } = option;
@@ -121,7 +128,7 @@ const defaultAdditional = {
   page: 1,
 };
 
-export function GroupedOptions(props: StoryProps): ReactElement {
+export function GroupedOptions(props: GroupedOptionsProps): ReactElement {
   const [value, onChange] = useState<
     OptionType | MultiValue<OptionType> | null
   >(null);

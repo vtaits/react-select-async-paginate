@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { RequestByPageNumber } from "./RequestByPageNumber";
 
 const meta: Meta<typeof RequestByPageNumber> = {
-  title: "react-select-async-paginate/Request By Page Number",
+  title: "react-select-async-paginate/Request by Page Number",
   component: RequestByPageNumber,
 };
 export default meta;
