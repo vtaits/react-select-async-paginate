@@ -1,6 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react";
-
-import { SelectFetch } from "../src";
 import { Simple } from "./Simple";
 
 const meta: Meta<typeof Simple> = {

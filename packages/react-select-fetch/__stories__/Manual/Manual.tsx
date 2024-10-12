@@ -7,10 +7,14 @@ import sleep from "sleep-promise";
 
 import type { InputAction, InputActionMeta, MultiValue } from "react-select";
 
-import { SelectFetch } from "../src";
-import type { Get } from "../src";
+import { SelectFetch } from "../../src";
+import type { Get } from "../../src";
 
-import type { StoryProps } from "./types";
+import type { StoryProps } from "../types";
+
+type ManualStoryProps = StoryProps & {
+  get?: Get;
+};
 
 type OptionType = {
   value: number;
@@ -30,30 +34,37 @@ type HistoryItemType = {
   inputValue: string;
 };
 
-export const get: Get = async (url, { search, offset, limit }) => {
+export async function get<Response>(
+  url: string,
+  params: { [key: string]: unknown }
+): Promise<Response> {
   await sleep(1000);
 
-  let filteredOptions;
-  if (!search) {
+  const search = typeof params?.search === "string" ? params.search : "";
+  const offset = typeof params?.offset === "number" ? params.offset : 0;
+  const limit = typeof params?.limit === "number" ? params.limit : 10;
+
+  let filteredOptions: OptionType[];
+
+  if (search.length === 0) {
     filteredOptions = options;
   } else {
     const searchLower = search.toLowerCase();
-
     filteredOptions = options.filter(({ label }) =>
       label.toLowerCase().includes(searchLower)
     );
   }
 
   const hasMore = filteredOptions.length > offset + limit;
-  const slicedOptions = filteredOptions.slice(offset, offset + 10);
+  const slicedOptions = filteredOptions.slice(offset, offset + limit);
 
   return {
     options: slicedOptions,
     hasMore,
-  };
-};
+  } as Response;
+}
 
-export function Manual(props: StoryProps): ReactElement {
+export function Manual(props: ManualStoryProps): ReactElement {
   const [value, onChange] = useState<
     OptionType | MultiValue<OptionType> | null
   >(null);

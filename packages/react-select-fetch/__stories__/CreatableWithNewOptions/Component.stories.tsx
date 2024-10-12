@@ -1,6 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react";
-
-import { SelectFetch } from "../src";
 import { CreatableWithNewOptions } from "./CreatableWithNewOptions";
 
 const meta: Meta<typeof CreatableWithNewOptions> = {

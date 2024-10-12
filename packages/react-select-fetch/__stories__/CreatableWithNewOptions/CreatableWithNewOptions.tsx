@@ -9,10 +9,14 @@ import type { GroupBase, MultiValue } from "react-select";
 
 import type { ComponentProps } from "react-select-async-paginate";
 
-import { withSelectFetch } from "../src";
-import type { Get, UseSelectFetchParams } from "../src";
+import { withSelectFetch } from "../../src";
+import type { Get, UseSelectFetchParams } from "../../src";
 
-import type { StoryProps } from "./types";
+import type { StoryProps } from "../types";
+
+type CreatableWithNewOptionsStoryProps = StoryProps & {
+  get?: Get;
+};
 
 type SelectFetchCreatableProps<
   OptionType,
@@ -47,28 +51,35 @@ for (let i = 0; i < 50; ++i) {
   });
 }
 
-export const get: Get = async (url, { search, offset, limit }) => {
+export async function get<Response>(
+  url: string,
+  params: { [key: string]: unknown }
+): Promise<Response> {
   await sleep(1000);
 
+  const search = typeof params?.search === "string" ? params.search : "";
+  const offset = typeof params?.offset === "number" ? params.offset : 0;
+  const limit = typeof params?.limit === "number" ? params.limit : 10;
+
   let filteredOptions: OptionType[];
-  if (!search) {
+
+  if (search.length === 0) {
     filteredOptions = options;
   } else {
     const searchLower = search.toLowerCase();
-
     filteredOptions = options.filter(({ label }) =>
       label.toLowerCase().includes(searchLower)
     );
   }
 
   const hasMore = filteredOptions.length > offset + limit;
-  const slicedOptions = filteredOptions.slice(offset, offset + 10);
+  const slicedOptions = filteredOptions.slice(offset, offset + limit);
 
   return {
     options: slicedOptions,
     hasMore,
-  };
-};
+  } as Response;
+}
 
 const addNewOption = async (inputValue: string): Promise<OptionType> => {
   await sleep(1000);
@@ -85,7 +96,9 @@ const addNewOption = async (inputValue: string): Promise<OptionType> => {
 
 const increaseUniq = (uniq: number): number => uniq + 1;
 
-export function CreatableWithNewOptions(props: StoryProps): ReactElement {
+export function CreatableWithNewOptions(
+  props: CreatableWithNewOptionsStoryProps
+): ReactElement {
   const [cacheUniq, setCacheUniq] = useState(0);
   const [isAddingInProgress, setIsAddingInProgress] = useState(false);
   const [value, onChange] = useState<

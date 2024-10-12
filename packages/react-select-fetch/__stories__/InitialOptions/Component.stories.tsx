@@ -1,6 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react";
-
-import { SelectFetch } from "../src";
 import { InitialOptions } from "./InitialOptions";
 
 const meta: Meta<typeof InitialOptions> = {
@@ -8,7 +6,7 @@ const meta: Meta<typeof InitialOptions> = {
   component: InitialOptions,
 };
 export default meta;
-type Story = StoryObj<typeof SelectFetch>;
+type Story = StoryObj<typeof InitialOptions>;
 
 export const InitialOptionsStory: Story = {
   name: "Component",
