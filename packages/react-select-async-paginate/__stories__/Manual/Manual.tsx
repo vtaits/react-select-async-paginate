@@ -1,13 +1,13 @@
 /* eslint-disable react/no-array-index-key */
 
-import { useState, useCallback } from "react";
+import { useCallback, useState } from "react";
 import type { ReactElement } from "react";
 
 import type {
-  GroupBase,
-  InputActionMeta,
-  InputAction,
-  MultiValue,
+	GroupBase,
+	InputAction,
+	InputActionMeta,
+	MultiValue,
 } from "react-select";
 
 import sleep from "sleep-promise";
@@ -18,139 +18,139 @@ import type { LoadOptions } from "../../src";
 import type { StoryProps } from "../types";
 
 type ManualProps = StoryProps & {
-  loadOptions?: LoadOptions<OptionType, GroupBase<OptionType>, null>;
+	loadOptions?: LoadOptions<OptionType, GroupBase<OptionType>, null>;
 };
 
 type OptionType = {
-  value: number;
-  label: string;
+	value: number;
+	label: string;
 };
 
 const options: OptionType[] = [];
 for (let i = 0; i < 50; ++i) {
-  options.push({
-    value: i + 1,
-    label: `Option ${i + 1}`,
-  });
+	options.push({
+		value: i + 1,
+		label: `Option ${i + 1}`,
+	});
 }
 
 export const loadOptions: LoadOptions<
-  OptionType,
-  GroupBase<OptionType>,
-  null
+	OptionType,
+	GroupBase<OptionType>,
+	null
 > = async (search, prevOptions) => {
-  await sleep(1000);
+	await sleep(1000);
 
-  let filteredOptions;
-  if (!search) {
-    filteredOptions = options;
-  } else {
-    const searchLower = search.toLowerCase();
+	let filteredOptions;
+	if (!search) {
+		filteredOptions = options;
+	} else {
+		const searchLower = search.toLowerCase();
 
-    filteredOptions = options.filter(({ label }) =>
-      label.toLowerCase().includes(searchLower)
-    );
-  }
+		filteredOptions = options.filter(({ label }) =>
+			label.toLowerCase().includes(searchLower),
+		);
+	}
 
-  const hasMore = filteredOptions.length > prevOptions.length + 10;
-  const slicedOptions = filteredOptions.slice(
-    prevOptions.length,
-    prevOptions.length + 10
-  );
+	const hasMore = filteredOptions.length > prevOptions.length + 10;
+	const slicedOptions = filteredOptions.slice(
+		prevOptions.length,
+		prevOptions.length + 10,
+	);
 
-  return {
-    options: slicedOptions,
-    hasMore,
-  };
+	return {
+		options: slicedOptions,
+		hasMore,
+	};
 };
 
 type HistoryItemType = {
-  action: InputAction;
-  inputValue: string;
+	action: InputAction;
+	inputValue: string;
 };
 
 export function Manual(props: ManualProps): ReactElement {
-  const [value, onChange] = useState<
-    OptionType | MultiValue<OptionType> | null
-  >(null);
-  const [inputValue, onInputChangeRaw] = useState("");
-  const [menuIsOpen, setMenuIsOpen] = useState(false);
-  const [inputHistory, setInputHistory] = useState<HistoryItemType[]>([]);
+	const [value, onChange] = useState<
+		OptionType | MultiValue<OptionType> | null
+	>(null);
+	const [inputValue, onInputChangeRaw] = useState("");
+	const [menuIsOpen, setMenuIsOpen] = useState(false);
+	const [inputHistory, setInputHistory] = useState<HistoryItemType[]>([]);
 
-  const onInputChange = useCallback(
-    (newInputValue: string, { action }: InputActionMeta): void => {
-      setInputHistory((prevInputHistory) => [
-        ...prevInputHistory,
-        {
-          inputValue: newInputValue,
-          action,
-        },
-      ]);
+	const onInputChange = useCallback(
+		(newInputValue: string, { action }: InputActionMeta): void => {
+			setInputHistory((prevInputHistory) => [
+				...prevInputHistory,
+				{
+					inputValue: newInputValue,
+					action,
+				},
+			]);
 
-      onInputChangeRaw(newInputValue);
-    },
-    []
-  );
+			onInputChangeRaw(newInputValue);
+		},
+		[],
+	);
 
-  const onMenuOpen = useCallback((): void => {
-    setMenuIsOpen(true);
-  }, []);
+	const onMenuOpen = useCallback((): void => {
+		setMenuIsOpen(true);
+	}, []);
 
-  const onMenuClose = useCallback((): void => {
-    setMenuIsOpen(false);
-  }, []);
+	const onMenuClose = useCallback((): void => {
+		setMenuIsOpen(false);
+	}, []);
 
-  const loadOptionsHandler = props?.loadOptions || loadOptions;
+	const loadOptionsHandler = props?.loadOptions || loadOptions;
 
-  return (
-    <div
-      style={{
-        maxWidth: 300,
-      }}
-    >
-      <div>
-        <button type="button" onClick={onMenuOpen}>
-          Open menu
-        </button>
+	return (
+		<div
+			style={{
+				maxWidth: 300,
+			}}
+		>
+			<div>
+				<button type="button" onClick={onMenuOpen}>
+					Open menu
+				</button>
 
-        <button type="button" onClick={onMenuClose}>
-          Close menu
-        </button>
-      </div>
+				<button type="button" onClick={onMenuClose}>
+					Close menu
+				</button>
+			</div>
 
-      <AsyncPaginate
-        {...props}
-        value={value}
-        inputValue={inputValue}
-        onInputChange={onInputChange}
-        loadOptions={loadOptionsHandler}
-        onChange={onChange}
-        menuIsOpen={menuIsOpen}
-        onMenuOpen={onMenuOpen}
-        onMenuClose={onMenuClose}
-      />
+			<AsyncPaginate
+				{...props}
+				value={value}
+				inputValue={inputValue}
+				onInputChange={onInputChange}
+				loadOptions={loadOptionsHandler}
+				onChange={onChange}
+				menuIsOpen={menuIsOpen}
+				onMenuOpen={onMenuOpen}
+				onMenuClose={onMenuClose}
+			/>
 
-      <h2>Input value history</h2>
+			<h2>Input value history</h2>
 
-      <table>
-        <thead>
-          <tr>
-            <th>Action</th>
+			<table>
+				<thead>
+					<tr>
+						<th>Action</th>
 
-            <th>Value</th>
-          </tr>
-        </thead>
+						<th>Value</th>
+					</tr>
+				</thead>
 
-        <tbody>
-          {inputHistory.map((historyItem, index) => (
-            <tr key={index}>
-              <td>{historyItem.action}</td>
+				<tbody>
+					{inputHistory.map((historyItem, index) => (
+						<tr key={index}>
+							<td>{historyItem.action}</td>
 
-              <td>{historyItem.inputValue}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
+							<td>{historyItem.inputValue}</td>
+						</tr>
+					))}
+				</tbody>
+			</table>
+		</div>
+	);
 }
