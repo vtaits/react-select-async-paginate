@@ -28,8 +28,8 @@
   "license": "MIT",
   "scripts": {
     "build": "tsup src/index.ts --sourcemap --format esm,cjs --dts --legacy-output",
-    "lint": "biome check src",
-    "lint:fix": "biome check src --write --unsafe",
+    "lint": "biome check src __stories__",
+    "lint:fix": "biome check src __stories__ --write --unsafe",
     "format": "biome format src --write",
     "prepare": "yarn build",
     "test:ts": "tsc --noEmit",
