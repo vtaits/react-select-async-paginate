@@ -76,7 +76,7 @@ const loadOptions = async (
 
 	const mapTypeToIndex = new Map<number, number>();
 
-	slicedOptions.forEach((option) => {
+	for (const option of slicedOptions) {
 		const { type } = option;
 
 		const mappedIndex = mapTypeToIndex.get(type);
@@ -93,7 +93,7 @@ const loadOptions = async (
 				options: [option],
 			});
 		}
-	});
+	}
 
 	return {
 		options: result,

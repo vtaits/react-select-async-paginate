@@ -67,15 +67,18 @@ export function Debounce(props: DebounceProps): ReactElement {
 	const [numberOfRequests, setNumberOfRequests] = useState(0);
 
 	const debounceTimeout = props?.debounceTimeout || 500;
-	const wrappedLoadOptions = useCallback<typeof loadOptions>((...args) => {
-		setNumberOfRequests(increase);
+	const wrappedLoadOptions = useCallback<typeof loadOptions>(
+		(...args) => {
+			setNumberOfRequests(increase);
 
-		if (props?.loadOptions) {
-			return props.loadOptions(...args);
-		}
+			if (props?.loadOptions) {
+				return props.loadOptions(...args);
+			}
 
-		return loadOptions(...args);
-	}, []);
+			return loadOptions(...args);
+		},
+		[props?.loadOptions],
+	);
 
 	return (
 		<div

@@ -41,7 +41,7 @@ export const loadOptions: LoadOptions<
 > = async (search, prevOptions) => {
 	await sleep(1000);
 
-	let filteredOptions;
+	let filteredOptions: OptionType[];
 	if (!search) {
 		filteredOptions = options;
 	} else {
@@ -143,7 +143,7 @@ export function Manual(props: ManualProps): ReactElement {
 
 				<tbody>
 					{inputHistory.map((historyItem, index) => (
-						<tr key={index}>
+						<tr key={String(index)}>
 							<td>{historyItem.action}</td>
 
 							<td>{historyItem.inputValue}</td>
