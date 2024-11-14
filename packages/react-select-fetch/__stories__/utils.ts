@@ -1,24 +1,38 @@
-import { fireEvent, userEvent } from "@storybook/test";
+import { fireEvent } from "@storybook/test";
 
-export const scroll = async (element: HTMLElement, position: number) => {
-	await fireEvent.scroll(element, { target: { scrollTop: position } });
+type Canvas = {
+	getByRole: (role: string, options?: { name: RegExp }) => HTMLElement;
+	getByText: (
+		text: string | ((content: string, element: Element | null) => boolean),
+		options?: { [key: string]: unknown },
+	) => HTMLElement;
+	getAllByText: (text: RegExp) => HTMLElement[];
 };
 
-export const type = async (
-	element: HTMLElement,
-	text: string,
-	delay: number,
-) => {
-	await userEvent.type(element, text, { delay });
-};
+export async function scroll(canvas: Canvas, position: number) {
+	await fireEvent.scroll(canvas.getByRole("listbox"), {
+		target: { scrollTop: position },
+	});
+}
 
-export const click = async (
-	element: HTMLElement,
-	options?: Record<string, unknown>,
-) => {
-	if (options) {
-		await userEvent.click(element, { ...options });
-	} else {
-		await userEvent.click(element);
-	}
-};
+export function getAllOptions(canvas: Canvas) {
+	return canvas.getAllByText(/^Option/i);
+}
+
+export function getAllGroups(canvas: Canvas) {
+	return canvas.getAllByText(/^Type/i);
+}
+
+export function getCloseResultOption(canvas: Canvas) {
+	return canvas.getByText((_, el) => {
+		return el !== null && /css-.*-singleValue/.test(el.className);
+	});
+}
+
+export function getCloseOpenMenuButton(canvas: Canvas) {
+	return canvas.getByRole("button", { name: /Open menu/i });
+}
+
+export function getCloseCloseMenuButton(canvas: Canvas) {
+	return canvas.getByRole("button", { name: /Close menu/i });
+}

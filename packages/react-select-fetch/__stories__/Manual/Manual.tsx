@@ -142,7 +142,7 @@ export function Manual(props: ManualStoryProps): ReactElement {
 
 				<tbody>
 					{inputHistory.map((historyItem, index) => (
-						<tr key={index}>
+						<tr key={String(index)}>
 							<td>{historyItem.action}</td>
 
 							<td>{historyItem.inputValue}</td>
