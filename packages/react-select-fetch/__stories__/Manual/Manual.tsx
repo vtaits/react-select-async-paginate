@@ -1,5 +1,3 @@
-/* eslint-disable react/no-array-index-key */
-
 import { useCallback, useState } from "react";
 import type { ReactElement } from "react";
 
@@ -142,7 +140,8 @@ export function Manual(props: ManualStoryProps): ReactElement {
 
 				<tbody>
 					{inputHistory.map((historyItem, index) => (
-						<tr key={String(index)}>
+						/* biome-ignore lint/suspicious/noArrayIndexKey: Item has no id */
+						<tr key={index}>
 							<td>{historyItem.action}</td>
 
 							<td>{historyItem.inputValue}</td>
