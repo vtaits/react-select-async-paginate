@@ -4549,7 +4549,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-select-async-paginate@npm:^0.7.6, react-select-async-paginate@workspace:packages/react-select-async-paginate":
+"react-select-async-paginate@npm:^0.7.7, react-select-async-paginate@workspace:packages/react-select-async-paginate":
   version: 0.0.0-use.local
   resolution: "react-select-async-paginate@workspace:packages/react-select-async-paginate"
   dependencies:
@@ -4570,7 +4570,7 @@ __metadata:
     use-latest: "npm:^1.2.1"
     vitest: "npm:^2.1.8"
   peerDependencies:
-    react: ^16.14.0 || ^17.0.0 || ^18.0.0
+    react: ^16.14.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
     react-select: ^5.0.0
   languageName: unknown
   linkType: soft
@@ -4588,14 +4588,14 @@ __metadata:
     qs: "npm:^6.13.1"
     react: "npm:^19.0.0"
     react-select: "npm:^5.8.3"
-    react-select-async-paginate: "npm:^0.7.6"
+    react-select-async-paginate: "npm:^0.7.7"
     sleep-promise: "npm:^9.1.0"
     tsup: "npm:^8.3.5"
     typescript: "npm:5.6.2"
     vitest: "npm:^2.1.8"
     vitest-fetch-mock: "npm:^0.4.2"
   peerDependencies:
-    react: ^16.14.0 || ^17.0.0 || ^18.0.0
+    react: ^16.14.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
     react-select: ^5.0.0
     react-select-async-paginate: ^0.7.0
   languageName: unknown

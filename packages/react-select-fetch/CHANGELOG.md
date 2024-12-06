@@ -1,3 +1,9 @@
+## 0.5.6 (06 dec 2024)
+
+### Improvement
+
+- Support `react` 19
+
 ## 0.5.5 (19 sep 2024)
 
 ### New features
