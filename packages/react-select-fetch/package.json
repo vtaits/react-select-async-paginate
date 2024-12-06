@@ -38,29 +38,27 @@
     "codecov": "codecov -F react_select_fetch"
   },
   "peerDependencies": {
-    "react": "^16.14.0 || ^17.0.0 || ^18.0.0",
+    "react": "^16.14.0 || ^17.0.0 || ^18.0.0 || ^19.0.0",
     "react-select": "^5.0.0",
     "react-select-async-paginate": "^0.7.0"
   },
   "dependencies": {
     "krustykrab": "^1.1.0",
-    "qs": "^6.13.0"
+    "qs": "^6.13.1"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.9.1",
-    "@storybook/react": "^8.3.1",
-    "@types/qs": "^6.9.16",
-    "@types/react": "^18.3.7",
-    "@types/react-test-renderer": "^18.3.0",
-    "@vitest/coverage-v8": "^2.1.1",
-    "react": "^18.3.1",
-    "react-select": "^5.8.0",
+    "@biomejs/biome": "^1.9.4",
+    "@storybook/react": "^8.4.7",
+    "@types/qs": "^6.9.17",
+    "@types/react": "^19.0.0",
+    "@vitest/coverage-v8": "^2.1.8",
+    "react": "^19.0.0",
+    "react-select": "^5.8.3",
     "react-select-async-paginate": "^0.7.6",
-    "react-test-renderer": "^18.3.1",
     "sleep-promise": "^9.1.0",
-    "tsup": "^8.3.0",
+    "tsup": "^8.3.5",
     "typescript": "5.6.2",
-    "vitest": "^2.1.1",
-    "vitest-fetch-mock": "^0.3.0"
+    "vitest": "^2.1.8",
+    "vitest-fetch-mock": "^0.4.2"
   }
 }
