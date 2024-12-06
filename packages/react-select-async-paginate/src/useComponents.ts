@@ -1,15 +1,16 @@
-import { useMemo } from "react";
-import type { GroupBase, Props as SelectProps } from "react-select";
+import { type ComponentType, useMemo } from "react";
+import type {
+	GroupBase,
+	MenuListProps,
+	SelectComponentsConfig,
+} from "react-select";
 import { components as defaultComponents } from "react-select";
 import { wrapMenuList } from "./wrapMenuList";
 
-export const MenuList = wrapMenuList(defaultComponents.MenuList);
-
-export type SelectComponentsConfig<
-	OptionType,
-	IsMulti extends boolean,
-	Group extends GroupBase<OptionType>,
-> = Partial<SelectProps<OptionType, IsMulti, Group>["components"]>;
+export const MenuList = wrapMenuList(
+	// biome-ignore lint/suspicious/noExplicitAny: fix types
+	defaultComponents.MenuList as ComponentType<MenuListProps<any, any, any>>,
+);
 
 export const useComponents = <
 	OptionType,
@@ -20,7 +21,11 @@ export const useComponents = <
 ): SelectComponentsConfig<OptionType, IsMulti, Group> =>
 	useMemo(
 		() => ({
-			MenuList,
+			MenuList: MenuList as unknown as SelectComponentsConfig<
+				OptionType,
+				IsMulti,
+				Group
+			>["MenuList"],
 			...components,
 		}),
 		[components],

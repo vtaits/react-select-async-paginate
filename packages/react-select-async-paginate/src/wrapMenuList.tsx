@@ -1,6 +1,6 @@
 import composeRefs from "@seznam/compose-react-refs";
 import { useCallback, useEffect, useMemo, useRef } from "react";
-import type { ReactElement } from "react";
+import type { ComponentType, ReactElement } from "react";
 import type { GroupBase, MenuListProps } from "react-select";
 import type { ShouldLoadMore } from "./types";
 
@@ -15,20 +15,22 @@ type MenuListType<
 	Option = unknown,
 	IsMulti extends boolean = boolean,
 	Group extends GroupBase<Option> = GroupBase<Option>,
-> = (props: MenuListProps<Option, IsMulti, Group>) => ReactElement;
+> = ComponentType<MenuListProps<Option, IsMulti, Group>>;
 
 export function wrapMenuList<
 	Option = unknown,
 	IsMulti extends boolean = boolean,
 	Group extends GroupBase<Option> = GroupBase<Option>,
 >(MenuList: MenuListType<Option, IsMulti, Group>) {
-	function WrappedMenuList(props: MenuListProps<Option, IsMulti, Group>) {
+	function WrappedMenuList(
+		props: MenuListProps<Option, IsMulti, Group>,
+	): ReactElement {
 		const { selectProps, innerRef } = props;
 
 		const { handleScrolledToBottom, shouldLoadMore } =
 			selectProps as unknown as BaseSelectProps;
 
-		const checkTimeoutRef = useRef<NodeJS.Timeout>();
+		const checkTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 		const menuListRef = useRef<HTMLElement>(null);
 
 		const shouldHandle = useCallback(() => {
