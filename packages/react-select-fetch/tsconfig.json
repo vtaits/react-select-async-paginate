@@ -19,6 +19,7 @@
     "isolatedModules": true
   },
   "include": [
-    "src/**/*"
+    "src/**/*",
+    "__stories__/**/*"
   ]
 }
