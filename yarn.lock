@@ -7015,7 +7015,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-select-async-paginate@npm:^0.7.7, react-select-async-paginate@workspace:packages/react-select-async-paginate":
+"react-select-async-paginate@npm:^0.7.8, react-select-async-paginate@workspace:packages/react-select-async-paginate":
   version: 0.0.0-use.local
   resolution: "react-select-async-paginate@workspace:packages/react-select-async-paginate"
   dependencies:
@@ -7056,7 +7056,7 @@ __metadata:
     qs: "npm:^6.13.1"
     react: "npm:^19.0.0"
     react-select: "npm:^5.9.0"
-    react-select-async-paginate: "npm:^0.7.7"
+    react-select-async-paginate: "npm:^0.7.8"
     sleep-promise: "npm:^9.1.0"
     tsup: "npm:^8.3.5"
     typescript: "npm:5.6.2"

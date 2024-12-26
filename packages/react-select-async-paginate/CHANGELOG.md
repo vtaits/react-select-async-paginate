@@ -1,3 +1,9 @@
+## 0.7.8 (26 dec 2024)
+
+### Bugfix
+
+- Fixed `loadOptionsOnMenuOpen` [#183](https://github.com/vtaits/react-select-async-paginate/issues/183)
+
 ## 0.7.7 (06 dec 2024)
 
 ### Improvement
