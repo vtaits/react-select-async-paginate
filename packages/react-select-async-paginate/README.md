@@ -20,6 +20,7 @@ Wrapper above `react-select` that supports pagination on menu scroll.
 - [Grouped options](https://codesandbox.io/s/oxv62x8j4y)
 - [Custom select base](https://codesandbox.io/s/l2pjrv0ryl)
 - [Manual control of input value and menu opening](https://codesandbox.io/s/6y34j51k1n)
+- [Show selected items on top of the menu](https://codesandbox.io/p/sandbox/gpdkwk)
 - [react-hook-form integration](https://codesandbox.io/s/x7vw8c)
 
 ## Versions
@@ -116,6 +117,10 @@ Not required. Array. Works as 2nd argument of `useEffect` hook. When one of item
 ### loadOptionsOnMenuOpen
 
 Not required. Boolean. If `false` options will not load on menu opening.
+
+### mapOptionsForMenu
+
+Not required. Function. Post-mapping of loaded options to display them in the menu. Can be used to put selected options to top of the list.
 
 ### selectRef
 

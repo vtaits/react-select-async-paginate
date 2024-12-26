@@ -1,5 +1,5 @@
 import { useLazyRef } from "@vtaits/use-lazy-ref";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { GroupBase } from "react-select";
 import useIsMountedRef from "use-is-mounted-ref";
 import useLatest from "use-latest";
@@ -34,6 +34,7 @@ export const useAsyncPaginateBase = <
 		filterOption = null,
 		reduceOptions = defaultReduceOptions,
 		shouldLoadMore = defaultShouldLoadMore,
+		mapOptionsForMenu = undefined,
 	} = params;
 
 	const menuIsOpenRef = useLatest(menuIsOpen);
@@ -118,6 +119,14 @@ export const useAsyncPaginateBase = <
 	const currentOptions: OptionsCacheItem<OptionType, Group, Additional> =
 		optionsCacheRef.current[inputValue] || getInitialCache(params);
 
+	const options = useMemo(() => {
+		if (!mapOptionsForMenu) {
+			return currentOptions.options;
+		}
+
+		return mapOptionsForMenu(currentOptions.options);
+	}, [currentOptions.options, mapOptionsForMenu]);
+
 	return {
 		handleScrolledToBottom,
 		shouldLoadMore,
@@ -125,6 +134,6 @@ export const useAsyncPaginateBase = <
 		isLoading:
 			currentOptions.isLoading || currentOptions.lockedUntil > Date.now(),
 		isFirstLoad: currentOptions.isFirstLoad,
-		options: currentOptions.options,
+		options,
 	};
 };

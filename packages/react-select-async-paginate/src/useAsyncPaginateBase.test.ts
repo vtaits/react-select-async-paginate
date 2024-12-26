@@ -24,6 +24,7 @@ vi.mock("react", async () => {
 
 		// biome-ignore lint/complexity/noBannedTypes: supports any function
 		useCallback: vi.fn(<T extends Function>(callback: T) => callback),
+		useMemo: vi.fn(<T>(callback: () => T) => callback()),
 	};
 });
 
