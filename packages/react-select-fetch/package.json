@@ -51,15 +51,15 @@
     "@storybook/react": "^8.4.7",
     "@storybook/test": "^8.4.7",
     "@types/qs": "^6.9.17",
-    "@types/react": "^19.0.0",
+    "@types/react": "^19.0.2",
     "@vitest/coverage-v8": "^2.1.8",
     "react": "^19.0.0",
-    "react-select": "^5.8.3",
+    "react-select": "^5.9.0",
     "react-select-async-paginate": "^0.7.7",
     "sleep-promise": "^9.1.0",
     "tsup": "^8.3.5",
     "typescript": "5.6.2",
     "vitest": "^2.1.8",
-    "vitest-fetch-mock": "^0.4.2"
+    "vitest-fetch-mock": "^0.4.3"
   }
 }
