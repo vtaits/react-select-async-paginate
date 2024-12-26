@@ -16,11 +16,12 @@ export default meta;
 type Story = StoryObj<typeof AsyncPaginate>;
 type TestLoadOptions = LoadOptions<unknown, GroupBase<unknown>, unknown>;
 
-export const SimpleInteraction: Story = {
+export const PreventLoadOnMenuOpenInteraction: Story = {
 	name: "Interaction",
 	args: {
 		loadOptions: fn(loadOptions as TestLoadOptions),
 		loadOptionsOnMenuOpen: false,
+		debounceTimeout: 300,
 	},
 	play: async ({ canvasElement, step, args }) => {
 		const canvas = within(canvasElement);
@@ -42,32 +43,10 @@ export const SimpleInteraction: Story = {
 			await expect(canvas.getByRole("listbox")).toBeVisible();
 		});
 
-		await step("Load the 1 page of options", async () => {
-			await expect(loadOptions).toHaveBeenCalledTimes(1);
+		await step("The list of options is empty", async () => {
+			await expect(loadOptions).toHaveBeenCalledTimes(0);
 
-			const [firstOption, lastOption] = await waitFor(
-				() => [canvas.getByText("Option 1"), canvas.getByText("Option 10")],
-				waitOptions,
-			);
-
-			await expect(firstOption).toBeInTheDocument();
-			await expect(lastOption).toBeInTheDocument();
-		});
-
-		await step("Scroll and load the 2 page of options", async () => {
-			await scroll(canvas, 500);
-
-			await waitFor(() => {
-				expect(getAllOptions(canvas)).toHaveLength(20);
-			}, waitOptions);
-		});
-
-		await step("Scroll and load the 3 page of options", async () => {
-			await scroll(canvas, 500);
-
-			await waitFor(() => {
-				expect(getAllOptions(canvas)).toHaveLength(30);
-			}, waitOptions);
+			await expect(within(canvas.getByRole("listbox")).getByText('No options')).toBeVisible();
 		});
 
 		await step("Type option label into the select", async () => {
@@ -75,13 +54,17 @@ export const SimpleInteraction: Story = {
 			const select = canvas.getByRole("combobox");
 			const listbox = canvas.getByRole("listbox");
 
-			await userEvent.type(select, label, { delay: delay.type });
+			await userEvent.type(select, label);
 
 			await expect(listbox).toBeVisible();
 			await expect(select).toHaveValue(label);
 		});
 
 		await step("Select the specified option from the list", async () => {
+			await waitFor(() => {
+				expect(loadOptions).toHaveBeenCalledTimes(1);
+			});
+
 			const listbox = canvas.getByRole("listbox");
 			const option = await waitFor(() => {
 				return within(listbox).getByRole("option");

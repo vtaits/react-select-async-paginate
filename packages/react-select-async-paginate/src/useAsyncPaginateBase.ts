@@ -36,6 +36,7 @@ export const useAsyncPaginateBase = <
 		shouldLoadMore = defaultShouldLoadMore,
 	} = params;
 
+	const menuIsOpenRef = useLatest(menuIsOpen);
 	const isMountedRef = useIsMountedRef();
 	const reduceOptionsRef = useLatest(reduceOptions);
 	const loadOptionsOnMenuOpenRef = useLatest(loadOptionsOnMenuOpen);
@@ -94,10 +95,10 @@ export const useAsyncPaginateBase = <
 	}, deps);
 
 	useEffect(() => {
-		if (menuIsOpen && !optionsCacheRef.current[inputValue]) {
+		if (menuIsOpenRef.current && !optionsCacheRef.current[inputValue]) {
 			callRequestOptionsRef.current("input-change");
 		}
-	}, [callRequestOptionsRef, inputValue, menuIsOpen, optionsCacheRef]);
+	}, [callRequestOptionsRef, inputValue, menuIsOpenRef, optionsCacheRef]);
 
 	useEffect(() => {
 		if (
