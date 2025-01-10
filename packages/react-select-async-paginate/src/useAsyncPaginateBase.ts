@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import type { GroupBase, OptionsOrGroups } from "react-select";
 import { useSelectAsyncPaginate } from "use-select-async-paginate";
 import { defaultShouldLoadMore } from "./defaultShouldLoadMore";
@@ -25,9 +25,10 @@ export function useAsyncPaginateBase<
 		loadOptions,
 		loadOptionsOnMenuOpen = true,
 		menuIsOpen,
-		options,
+		options: optionsParam,
 		reduceOptions = undefined,
 		shouldLoadMore = defaultShouldLoadMore,
+		mapOptionsForMenu = undefined,
 	} = params;
 
 	const [currentCache, model] = useSelectAsyncPaginate(
@@ -43,7 +44,7 @@ export function useAsyncPaginateBase<
 					? undefined
 					: Array.isArray(defaultOptions)
 						? (defaultOptions as OptionsOrGroups<OptionType, Group>)
-						: options,
+						: optionsParam,
 			loadOptionsOnMenuOpen,
 			reduceOptions,
 			loadOptions,
@@ -63,12 +64,20 @@ export function useAsyncPaginateBase<
 		model.onToggleMenu(menuIsOpen);
 	}, [model, menuIsOpen]);
 
+	const options = useMemo(() => {
+		if (!mapOptionsForMenu) {
+			return currentCache.options;
+		}
+
+		return mapOptionsForMenu(currentCache.options);
+	}, [currentCache.options, mapOptionsForMenu]);
+
 	return {
 		handleScrolledToBottom,
 		shouldLoadMore,
 		filterOption,
-		isLoading: currentCache.isLoading,
+		isLoading: currentCache.isLoading || currentCache.lockedUntil > Date.now(),
 		isFirstLoad: currentCache.isFirstLoad,
-		options: currentCache.options,
+		options,
 	};
 }

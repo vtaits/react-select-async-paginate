@@ -13,6 +13,7 @@ test("should set input value", () => {
 						isFirstLoad: false,
 						isLoading: false,
 						options: [1, 2, 3],
+						lockedUntil: 0,
 					},
 				},
 			},
@@ -29,6 +30,7 @@ test("should set input value", () => {
 				isFirstLoad: false,
 				isLoading: false,
 				options: [1, 2, 3],
+				lockedUntil: 0,
 			},
 		},
 	});

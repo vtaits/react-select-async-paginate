@@ -195,8 +195,6 @@ test("should return existed cache item for current value of input", () => {
 	const model = createAsyncPaginateModel(params);
 
 	expect(model.getCurrentCache()).toBe(state.cache.test);
-
-	expect(mockedGetInitialCache).toHaveBeenCalledTimes(0);
 });
 
 test("should compute cache item if cache for current value of input is not defined", () => {
@@ -222,6 +220,7 @@ test("should compute cache item if cache for current value of input is not defin
 		hasMore: false,
 		options: [1, 2, 3],
 		additional: 456,
+		lockedUntil: 0,
 	};
 
 	mockedGetInitialCache.mockReturnValue(expectedCacheItem);

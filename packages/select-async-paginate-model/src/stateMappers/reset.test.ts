@@ -12,6 +12,7 @@ test("should reset cache", () => {
 					isFirstLoad: false,
 					isLoading: false,
 					options: [1, 2, 3],
+					lockedUntil: 0,
 				},
 			},
 		}),

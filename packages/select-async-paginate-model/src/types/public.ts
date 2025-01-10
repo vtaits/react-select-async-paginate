@@ -105,6 +105,10 @@ export type Params<OptionType, Additional> = {
 	 * Loader of the next page of options
 	 */
 	loadOptions: LoadOptions<OptionType, Additional>;
+	/**
+	 * Time in milliseconds to retry a request after an error
+	 */
+	reloadOnErrorTimeout?: number;
 };
 
 /**
@@ -119,6 +123,10 @@ export type OptionsCacheItem<OptionType, Additional> = {
 	 * Is options loading
 	 */
 	isLoading: boolean;
+	/**
+	 * Timestamp until which loading of options is blocked
+	 */
+	lockedUntil: number;
 	/**
 	 * List of cached options
 	 */

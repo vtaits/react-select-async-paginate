@@ -31,17 +31,20 @@ export type UnsetLoadingAction = Action<typeof UNSET_LOADING> & {
 		 * Should remove current item of cache
 		 */
 		isClean: boolean;
+		lockedUntil: number;
 	};
 };
 
 export const unsetLoading = (
 	inputValue: string,
 	isClean: boolean,
+	lockedUntil: number,
 ): UnsetLoadingAction => ({
 	type: UNSET_LOADING,
 	payload: {
 		inputValue,
 		isClean,
+		lockedUntil,
 	},
 });
 

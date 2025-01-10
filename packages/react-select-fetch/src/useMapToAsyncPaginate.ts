@@ -1,24 +1,18 @@
-import { getResult } from "krustykrab";
 import { useCallback, useMemo } from "react";
 import type { GroupBase } from "react-select";
-import { checkIsResponse } from "react-select-async-paginate";
 import type {
 	LoadOptions,
 	UseAsyncPaginateParams,
 } from "react-select-async-paginate";
+import { checkIsResponse } from "select-async-paginate-model";
 import { get as defaultGet } from "./get";
 import type { Additional, UseSelectFetchMapParams } from "./types";
 
 export const errorText =
 	'[react-select-fetch] response should be an object with "options" prop, which contains array of options. Also you can use `mapResponse` param';
 
-export const defaultResponseMapper = <
-	OptionType,
-	Group extends GroupBase<OptionType>,
->(
-	response: unknown,
-) => {
-	if (checkIsResponse<OptionType, Group, Additional>(response)) {
+export const defaultResponseMapper = <OptionType>(response: unknown) => {
+	if (checkIsResponse<OptionType, Additional>(response)) {
 		return response;
 	}
 
@@ -81,16 +75,9 @@ export const useMapToAsyncPaginate = <
 				params[offsetParamName] = prevOptions.length;
 			}
 
-			const result = await getResult(get(url, params));
+			const result = await get(url, params);
 
-			if (result.isErr()) {
-				return {
-					options: [],
-					hasMore: false,
-				};
-			}
-
-			const response = mapResponse(result.unwrap(), {
+			const response = mapResponse(result, {
 				search,
 				prevPage: page,
 				prevOptions,

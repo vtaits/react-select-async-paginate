@@ -26,10 +26,13 @@ export const createAsyncPaginateModel = <OptionType, Additional>(
 ): Model<OptionType, Additional> => {
 	let params = initialParams;
 
+	let initialCache = getInitialCache(params);
+
 	const getParams = () => params;
 
 	const updateParams = (nextParams: Params<OptionType, Additional>) => {
 		params = nextParams;
+		initialCache = getInitialCache(params);
 	};
 
 	const initalState = getInitialState(params);
@@ -62,7 +65,7 @@ export const createAsyncPaginateModel = <OptionType, Additional>(
 	const getCurrentCache = () => {
 		const { cache, inputValue } = store.getState();
 
-		return cache[inputValue] || getInitialCache(params);
+		return cache[inputValue] || initialCache;
 	};
 
 	if (params.autoload) {

@@ -1,6 +1,6 @@
 import composeRefs from "@seznam/compose-react-refs";
 import { useCallback, useEffect, useMemo, useRef } from "react";
-import type { ReactElement } from "react";
+import type { ComponentType, ReactElement } from "react";
 import type { GroupBase, MenuListProps } from "react-select";
 import type { ShouldLoadMore } from "./types";
 
@@ -15,21 +15,23 @@ type MenuListType<
 	Option = unknown,
 	IsMulti extends boolean = boolean,
 	Group extends GroupBase<Option> = GroupBase<Option>,
-> = (props: MenuListProps<Option, IsMulti, Group>) => ReactElement;
+> = ComponentType<MenuListProps<Option, IsMulti, Group>>;
 
 export function wrapMenuList<
 	Option = unknown,
 	IsMulti extends boolean = boolean,
 	Group extends GroupBase<Option> = GroupBase<Option>,
 >(MenuList: MenuListType<Option, IsMulti, Group>) {
-	function WrappedMenuList(props: MenuListProps<Option, IsMulti, Group>) {
+	function WrappedMenuList(
+		props: MenuListProps<Option, IsMulti, Group>,
+	): ReactElement {
 		const { selectProps, innerRef } = props;
 
 		const { handleScrolledToBottom, shouldLoadMore } =
 			selectProps as unknown as BaseSelectProps;
 
-		const checkTimeoutRef = useRef<NodeJS.Timeout>();
-		const menuListRef = useRef<HTMLElement>(null);
+		const checkTimeoutRef = useRef<number | null>(null);
+		const menuListRef = useRef<HTMLDivElement>(null);
 
 		const shouldHandle = useCallback(() => {
 			const el = menuListRef.current;
@@ -56,7 +58,10 @@ export function wrapMenuList<
 			const res = () => {
 				checkAndHandle();
 
-				checkTimeoutRef.current = setTimeout(res, CHECK_TIMEOUT);
+				checkTimeoutRef.current = setTimeout(
+					res,
+					CHECK_TIMEOUT,
+				) as unknown as number;
 			};
 
 			return res;
@@ -76,7 +81,7 @@ export function wrapMenuList<
 		return (
 			<MenuList
 				{...props}
-				innerRef={composeRefs<HTMLElement>(innerRef, menuListRef)}
+				innerRef={composeRefs<HTMLDivElement>(innerRef, menuListRef)}
 			/>
 		);
 	}

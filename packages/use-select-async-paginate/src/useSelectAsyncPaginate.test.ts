@@ -39,6 +39,7 @@ const testCacheItem: OptionsCacheItem<unknown, unknown> = {
 	isLoading: true,
 	options: [1, 2, 3],
 	additional: null,
+	lockedUntil: 0,
 };
 
 beforeEach(() => {

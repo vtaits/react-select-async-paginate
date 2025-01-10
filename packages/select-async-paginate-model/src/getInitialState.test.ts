@@ -17,6 +17,7 @@ const mockedGetInitialOptionsCache = vi
 			isFirstLoad: true,
 			options: [],
 			additional: null,
+			lockedUntil: 0,
 		},
 	});
 
@@ -36,6 +37,7 @@ test("should set initial params", () => {
 				isFirstLoad: true,
 				options: [],
 				additional: null,
+				lockedUntil: 0,
 			},
 		},
 		inputValue: "",
@@ -57,6 +59,7 @@ test("should set redefined params", () => {
 				isLoading: false,
 				isFirstLoad: true,
 				options: [],
+				lockedUntil: 0,
 				additional: null,
 			},
 		},

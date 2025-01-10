@@ -12,6 +12,7 @@ test("should unset loading state for existed cache item", () => {
 					isFirstLoad: false,
 					isLoading: true,
 					options: [1, 2, 3],
+					lockedUntil: 0,
 				},
 
 				test2: {
@@ -19,12 +20,14 @@ test("should unset loading state for existed cache item", () => {
 					isFirstLoad: false,
 					isLoading: true,
 					options: [1, 2, 3],
+					lockedUntil: 0,
 				},
 			},
 		},
 		{
 			inputValue: "test1",
 			isClean: false,
+			lockedUntil: 0,
 		},
 	);
 
@@ -37,6 +40,7 @@ test("should unset loading state for existed cache item", () => {
 				isFirstLoad: false,
 				isLoading: false,
 				options: [1, 2, 3],
+				lockedUntil: 0,
 			},
 
 			test2: {
@@ -44,6 +48,7 @@ test("should unset loading state for existed cache item", () => {
 				isFirstLoad: false,
 				isLoading: true,
 				options: [1, 2, 3],
+				lockedUntil: 0,
 			},
 		},
 	});
@@ -60,6 +65,7 @@ test("should remove cache item", () => {
 					isFirstLoad: false,
 					isLoading: true,
 					options: [1, 2, 3],
+					lockedUntil: 0,
 				},
 
 				test2: {
@@ -67,12 +73,14 @@ test("should remove cache item", () => {
 					isFirstLoad: false,
 					isLoading: true,
 					options: [1, 2, 3],
+					lockedUntil: 0,
 				},
 			},
 		},
 		{
 			inputValue: "test1",
 			isClean: true,
+			lockedUntil: 0,
 		},
 	);
 
@@ -85,6 +93,7 @@ test("should remove cache item", () => {
 				isFirstLoad: false,
 				isLoading: true,
 				options: [1, 2, 3],
+				lockedUntil: 0,
 			},
 		},
 	});
@@ -101,12 +110,14 @@ test("should do nothing if cache item not defined for `inputValue`", () => {
 					isFirstLoad: false,
 					isLoading: false,
 					options: [1, 2, 3],
+					lockedUntil: 0,
 				},
 			},
 		},
 		{
 			inputValue: "test1",
 			isClean: false,
+			lockedUntil: 0,
 		},
 	);
 
@@ -119,6 +130,7 @@ test("should do nothing if cache item not defined for `inputValue`", () => {
 				isFirstLoad: false,
 				isLoading: false,
 				options: [1, 2, 3],
+				lockedUntil: 0,
 			},
 		},
 	});

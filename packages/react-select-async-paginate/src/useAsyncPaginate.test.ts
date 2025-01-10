@@ -47,7 +47,7 @@ afterEach(() => {
 
 // biome-ignore lint/suspicious/noExplicitAny: suitable for any component
 const defaultParams: UseAsyncPaginateParams<any, any, any> = {
-	loadOptions: () => ({
+	loadOptions: async () => ({
 		options: [],
 	}),
 };

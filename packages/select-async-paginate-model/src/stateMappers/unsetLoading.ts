@@ -5,9 +5,11 @@ export const unsetLoading = <OptionType, Additional>(
 	{
 		inputValue,
 		isClean,
+		lockedUntil,
 	}: {
 		inputValue: string;
 		isClean: boolean;
+		lockedUntil: number;
 	},
 ): State<OptionType, Additional> => {
 	const prevCache = prevState.cache[inputValue];
@@ -33,6 +35,7 @@ export const unsetLoading = <OptionType, Additional>(
 			[inputValue]: {
 				...prevCache,
 				isLoading: false,
+				lockedUntil,
 			},
 		},
 	};

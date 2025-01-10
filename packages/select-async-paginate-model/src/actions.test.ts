@@ -66,11 +66,12 @@ test("setMenuIsOpen", () => {
 });
 
 test("unsetLoading", () => {
-	expect(unsetLoading("test", true)).toEqual({
+	expect(unsetLoading("test", true, 5)).toEqual({
 		type: UNSET_LOADING,
 		payload: {
 			inputValue: "test",
 			isClean: true,
+			lockedUntil: 5,
 		},
 	});
 });

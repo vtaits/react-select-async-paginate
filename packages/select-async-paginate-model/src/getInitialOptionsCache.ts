@@ -12,6 +12,7 @@ export const getInitialOptionsCache = <OptionType, Additional>({
 				isLoading: false,
 				options: initialOptions,
 				hasMore: true,
+				lockedUntil: 0,
 				additional: initialAdditional,
 			},
 		};

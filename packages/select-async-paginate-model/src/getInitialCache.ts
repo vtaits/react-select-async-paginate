@@ -7,5 +7,6 @@ export const getInitialCache = <OptionType, Additional>(
 	options: [],
 	hasMore: true,
 	isLoading: false,
+	lockedUntil: 0,
 	additional: params.additional,
 });

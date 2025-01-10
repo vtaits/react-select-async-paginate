@@ -46,6 +46,7 @@ const unsetLoadingAction: UnsetLoadingAction = {
 	payload: {
 		inputValue: "actionInputValue",
 		isClean: false,
+		lockedUntil: 0,
 	},
 };
 
@@ -73,6 +74,7 @@ const defaultCacheItem: OptionsCacheItem<unknown, unknown> = {
 	isLoading: false,
 	options: [],
 	additional: "defaultAdditional",
+	lockedUntil: 0,
 };
 
 const defaultParams = {
@@ -242,7 +244,11 @@ test("should request with error", async () => {
 	expect(mockedSetLoading).toHaveBeenCalledWith("test");
 
 	expect(mockedUnsetLoading).toHaveBeenCalledTimes(1);
-	expect(mockedUnsetLoading).toHaveBeenCalledWith("test", false);
+	expect(mockedUnsetLoading).toHaveBeenCalledWith(
+		"test",
+		false,
+		expect.any(Number),
+	);
 });
 
 test("should validate response", async () => {
@@ -274,7 +280,7 @@ test("should validate response", async () => {
 	expect(mockedSetLoading).toHaveBeenCalledWith("test");
 
 	expect(mockedUnsetLoading).toHaveBeenCalledTimes(1);
-	expect(mockedUnsetLoading).toHaveBeenCalledWith("test", false);
+	expect(mockedUnsetLoading).toHaveBeenCalledWith("test", false, 0);
 });
 
 test("should not sleep if `debounceTimeout` is 0", async () => {
@@ -346,7 +352,7 @@ test("should cancel loading if `inputValue` has changed during sleep for empty c
 	expect(mockedSetLoading).toHaveBeenCalledWith("test1");
 
 	expect(mockedUnsetLoading).toHaveBeenCalledTimes(1);
-	expect(mockedUnsetLoading).toHaveBeenCalledWith("test1", true);
+	expect(mockedUnsetLoading).toHaveBeenCalledWith("test1", true, 0);
 });
 
 test("should cancel loading if `inputValue` has changed during sleep for filled cache", async () => {
@@ -379,5 +385,5 @@ test("should cancel loading if `inputValue` has changed during sleep for filled 
 	expect(mockedSetLoading).toHaveBeenCalledWith("test1");
 
 	expect(mockedUnsetLoading).toHaveBeenCalledTimes(1);
-	expect(mockedUnsetLoading).toHaveBeenCalledWith("test1", false);
+	expect(mockedUnsetLoading).toHaveBeenCalledWith("test1", false, 0);
 });

@@ -17,7 +17,11 @@ export const requestOptions =
 	) => {
 		const params = getParams();
 
-		const { debounceTimeout = 0, loadOptions } = params;
+		const {
+			debounceTimeout = 0,
+			loadOptions,
+			reloadOnErrorTimeout = 0,
+		} = params;
 
 		const { cache, inputValue } = getState();
 
@@ -25,7 +29,11 @@ export const requestOptions =
 
 		const currentCache = cache[inputValue] || getInitialCache(params);
 
-		if (currentCache.isLoading || !currentCache.hasMore) {
+		if (
+			currentCache.isLoading ||
+			!currentCache.hasMore ||
+			currentCache.lockedUntil > Date.now()
+		) {
 			return;
 		}
 
@@ -37,7 +45,7 @@ export const requestOptions =
 			const newInputValue = getState().inputValue;
 
 			if (inputValue !== newInputValue) {
-				dispatch(unsetLoading(inputValue, isCacheEmpty));
+				dispatch(unsetLoading(inputValue, isCacheEmpty, 0));
 				return;
 			}
 		}
@@ -47,14 +55,16 @@ export const requestOptions =
 		);
 
 		if (result.isErr()) {
-			dispatch(unsetLoading(inputValue, false));
+			dispatch(
+				unsetLoading(inputValue, false, Date.now() + reloadOnErrorTimeout),
+			);
 			return;
 		}
 
 		const response = result.unwrap();
 
 		if (!validateResponse(response)) {
-			dispatch(unsetLoading(inputValue, false));
+			dispatch(unsetLoading(inputValue, false, 0));
 			return;
 		}
 

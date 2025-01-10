@@ -39,6 +39,7 @@ test('should return options cache with "initialOptions" param', () => {
 			hasMore: true,
 			options,
 			additional: undefined,
+			lockedUntil: 0,
 		},
 	});
 });
@@ -68,6 +69,7 @@ test('should set "additional" with "initialAdditional" param in initialOptionsCa
 			additional: {
 				page: 2,
 			},
+			lockedUntil: 0,
 		},
 	});
 });

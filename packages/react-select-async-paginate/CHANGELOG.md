@@ -1,3 +1,27 @@
+## 0.7.9 (26 dec 2024)
+
+### New features
+
+- Added `mapOptionsForMenu` prop [#180](https://github.com/vtaits/react-select-async-paginate/issues/180)
+
+## 0.7.8 (26 dec 2024)
+
+### Bugfix
+
+- Fixed `loadOptionsOnMenuOpen` [#183](https://github.com/vtaits/react-select-async-paginate/issues/183)
+
+## 0.7.7 (06 dec 2024)
+
+### Improvement
+
+- Support `react` 19
+
+## 0.7.6 (19 sep 2024)
+
+### New features
+
+- Added `reloadOnErrorTimeout` prop [#173](https://github.com/vtaits/react-select-async-paginate/issues/173)
+
 ## 0.7.4 (11 apr 2024)
 
 ### Internal changes

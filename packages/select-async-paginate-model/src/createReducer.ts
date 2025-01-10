@@ -46,7 +46,7 @@ export function createReducer<OptionType, Additional>(
 				return unsetLoading(state, action.payload);
 
 			default:
-				throw new Error("Unknown action");
+				return state;
 		}
 	};
 }

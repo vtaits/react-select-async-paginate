@@ -40,6 +40,7 @@ const initialState: State<unknown, unknown> = {
 			isLoading: false,
 			options: [],
 			additional: null,
+			lockedUntil: 0,
 		},
 	},
 	inputValue: "initial",
@@ -54,6 +55,7 @@ const currentState: State<unknown, unknown> = {
 			isLoading: false,
 			options: [1, 2, 3],
 			additional: "not_null",
+			lockedUntil: 0,
 		},
 	},
 	inputValue: "current",
@@ -68,6 +70,7 @@ const nextState: State<unknown, unknown> = {
 			isLoading: false,
 			options: [1, 2, 3],
 			additional: "not_null",
+			lockedUntil: 0,
 		},
 	},
 	inputValue: "next",
@@ -200,6 +203,7 @@ describe.each([
 			payload: {
 				inputValue: "test",
 				isClean: true,
+				lockedUntil: 0,
 			},
 		});
 
@@ -207,16 +211,17 @@ describe.each([
 		expect(mockedUnsetLoading).toHaveBeenCalledWith(providedPrevState, {
 			inputValue: "test",
 			isClean: true,
+			lockedUntil: 0,
 		});
 
 		expect(result).toBe(nextState);
 	});
 
-	test("should throw error on unknown action", () => {
-		expect(() => {
+	test("should proxy unknown action", () => {
+		expect(
 			reducer(prevState, {
 				type: "unknown",
-			} as unknown as ActionType<unknown, unknown>);
-		}).toThrow();
+			} as unknown as ActionType<unknown, unknown>),
+		).toBe(prevState || initialState);
 	});
 });

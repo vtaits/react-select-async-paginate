@@ -21,6 +21,7 @@ test("should set loading state for existed cache item", () => {
 					isFirstLoad: false,
 					isLoading: false,
 					options: [1, 2, 3],
+					lockedUntil: 0,
 				},
 
 				test2: {
@@ -28,6 +29,7 @@ test("should set loading state for existed cache item", () => {
 					isFirstLoad: false,
 					isLoading: false,
 					options: [1, 2, 3],
+					lockedUntil: 0,
 				},
 			},
 		},
@@ -48,6 +50,7 @@ test("should set loading state for existed cache item", () => {
 				isFirstLoad: false,
 				isLoading: true,
 				options: [1, 2, 3],
+				lockedUntil: 0,
 			},
 
 			test2: {
@@ -55,6 +58,7 @@ test("should set loading state for existed cache item", () => {
 				isFirstLoad: false,
 				isLoading: false,
 				options: [1, 2, 3],
+				lockedUntil: 0,
 			},
 		},
 	});
@@ -66,6 +70,7 @@ test("should create new cache item and set loading state", () => {
 		isFirstLoad: true,
 		isLoading: false,
 		options: [],
+		lockedUntil: 0,
 	});
 
 	const result = setLoading(
@@ -78,6 +83,7 @@ test("should create new cache item and set loading state", () => {
 					isFirstLoad: false,
 					isLoading: false,
 					options: [1, 2, 3],
+					lockedUntil: 0,
 				},
 			},
 		},
@@ -99,6 +105,7 @@ test("should create new cache item and set loading state", () => {
 				isFirstLoad: true,
 				isLoading: true,
 				options: [],
+				lockedUntil: 0,
 			},
 
 			test2: {
@@ -106,6 +113,7 @@ test("should create new cache item and set loading state", () => {
 				isFirstLoad: false,
 				isLoading: false,
 				options: [1, 2, 3],
+				lockedUntil: 0,
 			},
 		},
 	});
