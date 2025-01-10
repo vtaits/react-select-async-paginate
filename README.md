@@ -10,16 +10,12 @@ A set of components that make working with asynchronous selects based on `react-
 
 ## Local development
 
-Repository is using stable version of [yarn](https://yarnpkg.com/getting-started).
-
-There is an [installation guide](https://yarnpkg.com/getting-started/install).
+Repository is using [bun](https://bun.sh/).
 
 ### Commands
 
-- `yarn build` - build all packages;
+- `bun run build` - build all packages;
 
-- `yarn clean` - clean all prebuilded files;
+- `bun run test` - run code validators and unit tests;
 
-- `yarn test` - run code validators and unit tests;
-
-- `yarn start` - start [storybook](https://storybook.js.org/) with examples.
+- `bun run start` - start [storybook](https://storybook.js.org/) with examples.

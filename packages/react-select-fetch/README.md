@@ -24,6 +24,12 @@ or
 yarn add react-select react-select-async-paginate react-select-fetch
 ```
 
+or
+
+```
+bun add react-select react-select-async-paginate react-select-fetch
+```
+
 ## Motivation
 
 Abstractions are wonderful but the most common task for async select is load list of options by specified url and query params. E.g.

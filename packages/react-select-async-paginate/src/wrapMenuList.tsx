@@ -30,8 +30,8 @@ export function wrapMenuList<
 		const { handleScrolledToBottom, shouldLoadMore } =
 			selectProps as unknown as BaseSelectProps;
 
-		const checkTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-		const menuListRef = useRef<HTMLElement>(null);
+		const checkTimeoutRef = useRef<number | null>(null);
+		const menuListRef = useRef<HTMLDivElement>(null);
 
 		const shouldHandle = useCallback(() => {
 			const el = menuListRef.current;
@@ -58,7 +58,10 @@ export function wrapMenuList<
 			const res = () => {
 				checkAndHandle();
 
-				checkTimeoutRef.current = setTimeout(res, CHECK_TIMEOUT);
+				checkTimeoutRef.current = setTimeout(
+					res,
+					CHECK_TIMEOUT,
+				) as unknown as number;
 			};
 
 			return res;
@@ -78,7 +81,7 @@ export function wrapMenuList<
 		return (
 			<MenuList
 				{...props}
-				innerRef={composeRefs<HTMLElement>(innerRef, menuListRef)}
+				innerRef={composeRefs<HTMLDivElement>(innerRef, menuListRef)}
 			/>
 		);
 	}

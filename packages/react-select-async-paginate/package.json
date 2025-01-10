@@ -30,7 +30,7 @@
     "lint": "biome check src",
     "lint:fix": "biome check src --write --unsafe",
     "format": "biome format src --write",
-    "prepare": "yarn build",
+    "prepare": "bun run build",
     "test:ts": "tsc --noEmit",
     "test:unit": "vitest run --coverage.enabled --coverage.all --coverage.include=src",
     "test:unit:watch": "vitest",
@@ -42,7 +42,7 @@
   },
   "dependencies": {
     "@seznam/compose-react-refs": "^1.0.6",
-    "@vtaits/use-lazy-ref": "^0.1.3",
+    "@vtaits/use-lazy-ref": "^0.1.4",
     "krustykrab": "^1.1.0",
     "sleep-promise": "^9.1.0",
     "use-is-mounted-ref": "^1.5.0",
@@ -52,13 +52,13 @@
     "@biomejs/biome": "^1.9.4",
     "@storybook/react": "^8.4.7",
     "@storybook/test": "^8.4.7",
-    "@types/node": "^22.10.2",
-    "@types/react": "^19.0.2",
+    "@types/node": "^22.10.5",
+    "@types/react": "^19.0.4",
     "@vitest/coverage-v8": "^2.1.8",
     "react": "^19.0.0",
     "react-select": "^5.9.0",
     "tsup": "^8.3.5",
-    "typescript": "5.6.2",
+    "typescript": "5.7.3",
     "vitest": "^2.1.8"
   }
 }
