@@ -1,10 +1,10 @@
 import { useAsyncPaginateBase } from "react-select-async-paginate";
+import { useMapToAsyncPaginate } from "use-select-async-paginate-fetch";
 import { afterEach, beforeEach, expect, test, vi } from "vitest";
-import { useMapToAsyncPaginate } from "./useMapToAsyncPaginate";
 import { useSelectFetchBase } from "./useSelectFetchBase";
 
 vi.mock("react-select-async-paginate");
-vi.mock("./useMapToAsyncPaginate");
+vi.mock("use-select-async-paginate-fetch");
 
 const mockedUseAsyncPaginateBase = vi.mocked(useAsyncPaginateBase);
 const mockedUseMapToAsyncPaginate = vi.mocked(useMapToAsyncPaginate);

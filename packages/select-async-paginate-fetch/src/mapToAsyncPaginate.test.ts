@@ -283,7 +283,7 @@ test("should return mapped response with increased page in additional", async ()
 	});
 });
 
-test("should return empty response on error", async () => {
+test("should throw an error up", async () => {
 	const get = vi.fn().mockRejectedValue(new Error("Test error"));
 
 	const result = mapToAsyncPaginate({
@@ -291,14 +291,17 @@ test("should return empty response on error", async () => {
 		get,
 	});
 
-	const response = await result.loadOptions("testSearch", [1, 2, 3], {
-		page: 10,
-	});
+	let hasError = false;
 
-	expect(response).toEqual({
-		options: [],
-		hasMore: false,
-	});
+	try {
+		await result.loadOptions("testSearch", [1, 2, 3], {
+			page: 10,
+		});
+	} catch (e) {
+		hasError = true;
+	}
+
+	expect(hasError).toBe(true);
 });
 
 test("should throw an error if additional is not defined", async () => {

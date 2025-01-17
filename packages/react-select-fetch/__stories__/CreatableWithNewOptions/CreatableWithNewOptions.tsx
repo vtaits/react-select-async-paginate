@@ -8,9 +8,10 @@ import Creatable from "react-select/creatable";
 import type { CreatableProps } from "react-select/creatable";
 
 import type { ComponentProps } from "react-select-async-paginate";
+import type { Get } from "select-async-paginate-fetch";
 
 import { withSelectFetch } from "../../src";
-import type { Get, UseSelectFetchParams } from "../../src";
+import type { UseSelectFetchParams } from "../../src";
 
 import type { StoryProps } from "../types";
 

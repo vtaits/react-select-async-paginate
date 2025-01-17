@@ -1,9 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { expect, fn, userEvent, waitFor, within } from "@storybook/test";
+import type { Get } from "select-async-paginate-fetch";
 
 import { getAllOptions, getCloseResultOption, scroll } from "../utils";
-
-import type { Get } from "../../src";
 
 import { CreatableWithNewOptions, get } from "./CreatableWithNewOptions";
 

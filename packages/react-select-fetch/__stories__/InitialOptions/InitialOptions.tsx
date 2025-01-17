@@ -4,9 +4,9 @@ import type { ReactElement } from "react";
 import sleep from "sleep-promise";
 
 import type { MultiValue } from "react-select";
+import type { Get } from "select-async-paginate-fetch";
 
 import { SelectFetch } from "../../src";
-import type { Get } from "../../src";
 
 import type { StoryProps } from "../types";
 
@@ -31,6 +31,7 @@ export async function get<Response>(
 	url: string,
 	params: { [key: string]: unknown },
 ): Promise<Response> {
+
 	await sleep(1000);
 
 	const search = typeof params?.search === "string" ? params.search : "";
@@ -65,6 +66,8 @@ export function InitialOptions(props: InitialOptionsStoryProps): ReactElement {
 	>(null);
 
 	const getHandler = props?.get || get;
+
+	console.log(props.get, get)
 
 	return (
 		<div

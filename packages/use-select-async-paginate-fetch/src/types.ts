@@ -10,7 +10,6 @@ import type {
 	UseAsyncPaginateBaseParams,
 	UseAsyncPaginateParams,
 } from "react-select-async-paginate";
-import type { Get } from "select-async-paginate-fetch";
 
 export type Additional = {
 	page: number;
@@ -29,6 +28,13 @@ export type MapResponse<OptionType, Group extends GroupBase<OptionType>> = (
 	responseRaw: unknown,
 	payload: MapResponsePayload<OptionType, Group>,
 ) => Response<OptionType, Group, Additional>;
+
+export type Get = <Response>(
+	url: string,
+	params: {
+		[key: string]: unknown;
+	},
+) => Promise<Response>;
 
 export type UseSelectFetchMapParams<
 	OptionType,

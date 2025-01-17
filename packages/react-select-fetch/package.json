@@ -44,7 +44,9 @@
   },
   "dependencies": {
     "krustykrab": "^1.1.0",
+    "use-select-async-paginate-fetch": "^1.0.0",
     "select-async-paginate-model": "^1.0.0",
+    "select-async-paginate-fetch": "^1.0.0",
     "qs": "^6.13.1"
   },
   "devDependencies": {

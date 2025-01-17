@@ -4,9 +4,9 @@ import type { ReactElement } from "react";
 import sleep from "sleep-promise";
 
 import type { MultiValue } from "react-select";
+import type { Get } from "select-async-paginate-fetch";
 
 import { SelectFetch } from "../../src";
-import type { Get } from "../../src";
 
 import type { StoryProps } from "../types";
 

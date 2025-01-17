@@ -5,11 +5,7 @@ import {
 	checkIsResponse,
 } from "select-async-paginate-model";
 import { get as defaultGet } from "./get";
-import type {
-	Additional,
-	SelectFetchMapParams,
-	SelectFetchParams,
-} from "./types";
+import type { Additional, SelectFetchMapParams } from "./types";
 
 export const errorText =
 	'[react-select-fetch] response should be an object with "options" prop, which contains array of options. Also you can use `mapResponse` param';
@@ -75,10 +71,7 @@ export const mapToAsyncPaginate = <OptionType>(
 		const result = await getResult(get(url, params));
 
 		if (result.isErr()) {
-			return {
-				options: [],
-				hasMore: false,
-			};
+			throw result.unwrapErr();
 		}
 
 		const response = mapResponse(result.unwrap(), {

@@ -1,8 +1,5 @@
 import { afterEach, expect, test, vi } from "vitest";
-import {
-	defaultResponseMapper,
-	useMapToAsyncPaginate,
-} from "./useMapToAsyncPaginate";
+import { useMapToAsyncPaginate } from "./useMapToAsyncPaginate";
 
 vi.mock("react", async () => {
 	const actual = await vi.importActual("react");
@@ -24,22 +21,6 @@ afterEach(() => {
 const defaultParams = {
 	url: "/test/",
 };
-
-test("should return response if valid", () => {
-	const response = {
-		options: [1, 2, 3],
-	};
-
-	expect(defaultResponseMapper(response)).toBe(response);
-});
-
-test("should throw error if response is invalid", () => {
-	const response = {};
-
-	expect(() => {
-		defaultResponseMapper(response);
-	}).toThrow();
-});
 
 test("should provide default additional", () => {
 	const result = useMapToAsyncPaginate(defaultParams);
@@ -304,7 +285,7 @@ test("should throw an error up", async () => {
 		get,
 	});
 
-	const response = await Promise.resolve()
+	await Promise.resolve()
 		.then(() =>
 			result.loadOptions("testSearch", [1, 2, 3], {
 				page: 10,
