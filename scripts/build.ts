@@ -10,3 +10,6 @@ await Promise.all([
   await $`bun --filter='react-select-async-paginate' run build`,
 ]);
 await $`bun --filter='react-select-fetch' run build`;
+await Promise.all([
+  await $`bun --filter='select-async-paginate-vkui' run build`,
+]);

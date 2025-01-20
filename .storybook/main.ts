@@ -28,6 +28,7 @@ const config: StorybookConfig = {
         alias: {
           'select-async-paginate-model': path.join(__dirname, '../packages/select-async-paginate-model/src'),
           'select-async-paginate-fetch': path.join(__dirname, '../packages/select-async-paginate-fetch/src'),
+          "select-async-paginate-vkui": path.join(__dirname, '../packages/select-async-paginate-vkui/src'),
           'use-select-async-paginate': path.join(__dirname, '../packages/use-select-async-paginate/src'),
           'use-select-async-paginate-fetch': path.join(__dirname, '../packages/use-select-async-paginate-fetch/src'),
           'react-select-async-paginate': path.join(__dirname, '../packages/react-select-async-paginate/src'),
