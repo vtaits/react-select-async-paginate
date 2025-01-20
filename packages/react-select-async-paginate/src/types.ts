@@ -107,7 +107,7 @@ export type UseAsyncPaginateParams<
 	options?: OptionsOrGroups<OptionType, Group>;
 	defaultOptions?: boolean | OptionsOrGroups<OptionType, Group>;
 	additional?: Additional;
-	defaultAdditional?: Additional;
+	initialAdditional?: Additional;
 	loadOptionsOnMenuOpen?: boolean;
 	debounceTimeout?: number;
 	reduceOptions?: ReduceOptions<OptionType, Group, Additional>;

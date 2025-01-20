@@ -88,7 +88,7 @@ Not required. Number. Debounce timeout for `loadOptions` calls. `0` by default.
 
 Not required. Default `additional` for first request for every search.
 
-### defaultAdditional
+### initialAdditional
 
 Not required. Default `additional` for empty search if `options` or `defaultOptions` defined.
 

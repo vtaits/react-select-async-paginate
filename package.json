@@ -21,7 +21,7 @@
     "test:storybook:dev": "bun run test-storybook --watch",
     "validate": "bun run build && bun run lint && bun run test:ts && bun run test:unit:cov",
     "codecov": "bun --filter='*' run codecov",
-    "postinstall": "bunx ---bun playwright install chromium"
+    "postinstall": "bunx --bun playwright install chromium"
   },
   "devDependencies": {
     "@storybook/addon-coverage": "1.0.5",

@@ -1,3 +1,9 @@
+## 1.0.0
+
+### Breaking changes
+
+- `defaultAdditional` -> `initialAdditional`
+
 ## 0.7.9 (26 dec 2024)
 
 ### New features

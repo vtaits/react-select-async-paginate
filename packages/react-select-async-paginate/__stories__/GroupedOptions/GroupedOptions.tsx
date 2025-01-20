@@ -124,7 +124,7 @@ export const wrapperdLoadOptions: LoadOptions<
 	};
 };
 
-const defaultAdditional = {
+const initialAdditional = {
 	page: 1,
 };
 
@@ -143,7 +143,7 @@ export function GroupedOptions(props: GroupedOptionsProps): ReactElement {
 		>
 			<AsyncPaginate
 				{...props}
-				additional={defaultAdditional}
+				additional={initialAdditional}
 				value={value}
 				loadOptions={loadOptionsHandler}
 				onChange={onChange}

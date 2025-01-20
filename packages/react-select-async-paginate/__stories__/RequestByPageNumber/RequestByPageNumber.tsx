@@ -65,7 +65,7 @@ export const loadOptions = async (
 	};
 };
 
-const defaultAdditional = {
+const initialAdditional = {
 	page: 1,
 };
 
@@ -109,7 +109,7 @@ export function RequestByPageNumber(
 		>
 			<AsyncPaginate
 				{...props}
-				additional={defaultAdditional}
+				additional={initialAdditional}
 				value={value}
 				loadOptions={loadOptionsHandler}
 				onChange={onChange}

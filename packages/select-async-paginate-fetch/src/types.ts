@@ -40,6 +40,6 @@ export type SelectFetchParams<OptionType> = SelectFetchMapParams<OptionType> &
 	Partial<
 		Omit<
 			Params<OptionType, Additional>,
-			"loadOptions" | "additional" | "defaultAdditional"
+			"loadOptions" | "additional" | "initialAdditional"
 		>
 	>;

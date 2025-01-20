@@ -18,7 +18,7 @@ export function useAsyncPaginateBase<
 	const {
 		additional,
 		defaultOptions,
-		defaultAdditional,
+		initialAdditional,
 		debounceTimeout = 0,
 		filterOption = null,
 		inputValue,
@@ -36,7 +36,7 @@ export function useAsyncPaginateBase<
 			additional,
 			autoload: defaultOptions === true,
 			debounceTimeout,
-			initialAdditional: defaultAdditional,
+			initialAdditional: initialAdditional,
 			initialInputValue: inputValue,
 			initialMenuIsOpen: menuIsOpen,
 			initialOptions:
