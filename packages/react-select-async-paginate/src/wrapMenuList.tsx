@@ -1,10 +1,9 @@
 import composeRefs from "@seznam/compose-react-refs";
-import { useCallback, useEffect, useMemo, useRef } from "react";
+import { useRef } from "react";
 import type { ComponentType, ReactElement } from "react";
 import type { GroupBase, MenuListProps } from "react-select";
+import { useWatchMenu } from "use-select-async-paginate";
 import type { ShouldLoadMore } from "./types";
-
-export const CHECK_TIMEOUT = 300;
 
 export type BaseSelectProps = {
 	handleScrolledToBottom?: () => void;
@@ -30,58 +29,18 @@ export function wrapMenuList<
 		const { handleScrolledToBottom, shouldLoadMore } =
 			selectProps as unknown as BaseSelectProps;
 
-		const checkTimeoutRef = useRef<number | null>(null);
-		const menuListRef = useRef<HTMLDivElement>(null);
+		const menuRef = useRef<HTMLDivElement>(null);
 
-		const shouldHandle = useCallback(() => {
-			const el = menuListRef.current;
-
-			// menu is not rendered
-			if (!el) {
-				return false;
-			}
-
-			const { scrollTop, scrollHeight, clientHeight } = el;
-
-			return shouldLoadMore(scrollHeight, clientHeight, scrollTop);
-		}, [shouldLoadMore]);
-
-		const checkAndHandle = useCallback(() => {
-			if (shouldHandle()) {
-				if (handleScrolledToBottom) {
-					handleScrolledToBottom();
-				}
-			}
-		}, [shouldHandle, handleScrolledToBottom]);
-
-		const setCheckAndHandleTimeout = useMemo(() => {
-			const res = () => {
-				checkAndHandle();
-
-				checkTimeoutRef.current = setTimeout(
-					res,
-					CHECK_TIMEOUT,
-				) as unknown as number;
-			};
-
-			return res;
-		}, [checkAndHandle]);
-
-		// biome-ignore lint/correctness/useExhaustiveDependencies: call only on init
-		useEffect(() => {
-			setCheckAndHandleTimeout();
-
-			return () => {
-				if (checkTimeoutRef.current) {
-					clearTimeout(checkTimeoutRef.current);
-				}
-			};
-		}, []);
+		useWatchMenu({
+			menuRef,
+			shouldLoadMore,
+			handleScrolledToBottom,
+		});
 
 		return (
 			<MenuList
 				{...props}
-				innerRef={composeRefs<HTMLDivElement>(innerRef, menuListRef)}
+				innerRef={composeRefs<HTMLDivElement>(innerRef, menuRef)}
 			/>
 		);
 	}

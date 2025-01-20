@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useMemo } from "react";
 import type { GroupBase, OptionsOrGroups } from "react-select";
 import { useSelectAsyncPaginate } from "use-select-async-paginate";
-import { defaultShouldLoadMore } from "./defaultShouldLoadMore";
 import type {
 	UseAsyncPaginateBaseParams,
 	UseAsyncPaginateBaseResult,
@@ -27,7 +26,7 @@ export function useAsyncPaginateBase<
 		menuIsOpen,
 		options: optionsParam,
 		reduceOptions = undefined,
-		shouldLoadMore = defaultShouldLoadMore,
+		shouldLoadMore = undefined,
 		mapOptionsForMenu = undefined,
 	} = params;
 

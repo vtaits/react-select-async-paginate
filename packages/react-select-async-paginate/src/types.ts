@@ -80,7 +80,7 @@ export type UseAsyncPaginateBaseResult<
 	Group extends GroupBase<OptionType>,
 > = {
 	handleScrolledToBottom: () => void;
-	shouldLoadMore: ShouldLoadMore;
+	shouldLoadMore?: ShouldLoadMore;
 	isLoading: boolean;
 	isFirstLoad: boolean;
 	options: OptionsOrGroups<OptionType, Group>;

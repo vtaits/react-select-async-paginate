@@ -21,5 +21,5 @@
   "include": [
     "src/**/*",
     "__stories__/**/*"
-  ]
+, "../use-select-async-paginate/src/defaultShouldLoadMore.test.ts", "../use-select-async-paginate/src/defaultShouldLoadMore.ts"  ]
 }

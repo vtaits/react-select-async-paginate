@@ -1,10 +1,16 @@
+import composeRefs from "@seznam/compose-react-refs";
 import {
 	CustomSelect,
 	type CustomSelectOptionInterface,
 	type SelectProps,
 } from "@vkontakte/vkui";
+import { useCallback, useRef } from "react";
 import type { Params } from "select-async-paginate-model";
-import { useSelectAsyncPaginate } from "use-select-async-paginate";
+import {
+	type ShouldLoadMore,
+	useSelectAsyncPaginate,
+	useWatchMenu,
+} from "use-select-async-paginate";
 
 const defaultCacheUniqs: unknown[] = [];
 
@@ -14,6 +20,7 @@ type CustomAsyncPaginateProps<
 > = Omit<SelectProps<Option>, "options"> &
 	Params<Option, Additional> & {
 		cacheUniqs?: readonly unknown[];
+		shouldLoadMore?: ShouldLoadMore;
 	};
 
 export function CustomAsyncPaginate<
@@ -32,6 +39,7 @@ export function CustomAsyncPaginate<
 	loadOptions,
 	reloadOnErrorTimeout,
 	cacheUniqs = defaultCacheUniqs,
+	shouldLoadMore,
 	...rest
 }: CustomAsyncPaginateProps<Option, Additional>) {
 	const [currentCache, model] = useSelectAsyncPaginate(
@@ -50,14 +58,27 @@ export function CustomAsyncPaginate<
 		cacheUniqs,
 	);
 
+	const getRootRef = useRef<HTMLDivElement>(null);
+
+	const handleScrolledToBottom = useCallback(() => {
+		model.handleLoadMore();
+	}, [model]);
+
+	useWatchMenu({
+		menuRef: getRootRef,
+		shouldLoadMore,
+		handleScrolledToBottom,
+	});
+
 	const { isLoading, options } = currentCache;
 
 	return (
 		<CustomSelect
 			searchable
 			{...rest}
+			getRootRef={composeRefs(getRootRef, rest.getRootRef)}
 			options={options as Option[]}
-			fetching={isLoading || rest.fetching}
+			fetching={(isLoading && options.length === 0) || rest.fetching}
 			onInputChange={(e) => {
 				model.onChangeInputValue(e.target.value);
 			}}
