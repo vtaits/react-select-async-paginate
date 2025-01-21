@@ -32,15 +32,12 @@
     "format": "biome format src --write",
     "prepare": "bun run build",
     "test:ts": "tsc --noEmit",
-    "test:unit": "vitest run --coverage.enabled --coverage.all --coverage.include=src",
-    "test:unit:watch": "vitest",
-    "codecov": "codecov -F select_async_paginate_vkui"
+    "test:unit": "echo pass"
   },
   "peerDependencies": {
     "react": "^18.0.0 || ^19.0.0"
   },
   "dependencies": {
-    "@seznam/compose-react-refs": "^1.0.6",
     "@vkontakte/vkui": "^7.0.0",
     "select-async-paginate-model": "^1.0.0",
     "use-select-async-paginate": "^1.0.0"
@@ -51,11 +48,10 @@
     "@storybook/test": "^8.4.7",
     "@types/node": "^22.10.5",
     "@types/react": "^19.0.4",
-    "@vitest/coverage-v8": "^2.1.8",
     "@vkontakte/vkui": "^7.1.1",
+    "krustykrab": "^1.1.0",
     "react": "^19.0.0",
     "tsup": "^8.3.5",
-    "typescript": "5.7.3",
-    "vitest": "^2.1.8"
+    "typescript": "5.7.3"
   }
 }

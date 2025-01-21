@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { expect, fn, userEvent, waitFor, within } from "@storybook/test";
-import { getAllOptions, getCloseResultOption, scroll } from "../utils";
+import { getAllOptions, getCloseResultOption, getScrollView, scroll } from "../utils";
 import type { CustomAsyncPaginate } from "../../src";
 import { LoadOptions } from "select-async-paginate-model";
 import { Simple, loadOptions } from "./Simple";
@@ -36,14 +36,16 @@ export const SimpleInteraction: Story = {
 
 			await userEvent.click(select, { delay: delay.click });
 
-			await expect(canvas.getByRole("listbox")).toBeVisible();
+			await expect(getScrollView(canvasElement)).toBeVisible();
 		});
 
 		await step("Load the 1 page of options", async () => {
 			await expect(loadOptions).toHaveBeenCalledTimes(1);
 
 			const [firstOption, lastOption] = await waitFor(
-				() => [canvas.getByText("Option 1"), canvas.getByText("Option 10")],
+				() => [canvas.getByText("Option 1", {
+					exact: true,
+				}), canvas.getByText("Option 10")],
 				waitOptions,
 			);
 
@@ -52,7 +54,7 @@ export const SimpleInteraction: Story = {
 		});
 
 		await step("Scroll and load the 2 page of options", async () => {
-			await scroll(canvas, 500);
+			await scroll(canvasElement, 500);
 
 			await waitFor(() => {
 				expect(getAllOptions(canvas)).toHaveLength(20);
@@ -60,7 +62,7 @@ export const SimpleInteraction: Story = {
 		});
 
 		await step("Scroll and load the 3 page of options", async () => {
-			await scroll(canvas, 500);
+			await scroll(canvasElement, 500);
 
 			await waitFor(() => {
 				expect(getAllOptions(canvas)).toHaveLength(30);
@@ -70,7 +72,7 @@ export const SimpleInteraction: Story = {
 		await step("Type option label into the select", async () => {
 			const label = "Option 40";
 			const select = canvas.getByRole("combobox");
-			const listbox = canvas.getByRole("listbox");
+			const listbox = getScrollView(canvasElement);
 
 			await userEvent.type(select, label, { delay: delay.type });
 
@@ -79,7 +81,7 @@ export const SimpleInteraction: Story = {
 		});
 
 		await step("Select the specified option from the list", async () => {
-			const listbox = canvas.getByRole("listbox");
+			const listbox = getScrollView(canvasElement);
 			const option = await waitFor(() => {
 				return within(listbox).getByRole("option");
 			}, waitOptions);

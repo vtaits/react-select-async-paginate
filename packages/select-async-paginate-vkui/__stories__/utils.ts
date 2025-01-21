@@ -1,4 +1,5 @@
 import { fireEvent } from "@storybook/test";
+import { unwrap} from 'krustykrab'
 
 type Canvas = {
 	getByRole: (role: string, options?: { name: RegExp }) => HTMLElement;
@@ -9,8 +10,16 @@ type Canvas = {
 	getAllByText: (text: RegExp) => HTMLElement[];
 };
 
-export async function scroll(canvas: Canvas, position: number) {
-	await fireEvent.scroll(canvas.getByRole("listbox"), {
+export function getScrollView(_canvasElement: HTMLElement) {
+	const scrollView = unwrap(document.querySelector('.vkuiCustomScrollView__host'));
+
+	return scrollView as HTMLElement;
+}
+
+export async function scroll(canvasElement: HTMLElement, position: number) {
+	const scrollView = getScrollView(canvasElement);
+
+	await fireEvent.scroll(scrollView, {
 		target: { scrollTop: position },
 	});
 }

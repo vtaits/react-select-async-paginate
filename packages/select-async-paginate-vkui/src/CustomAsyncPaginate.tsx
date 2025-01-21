@@ -1,10 +1,9 @@
-import composeRefs from "@seznam/compose-react-refs";
 import {
 	CustomSelect,
 	type CustomSelectOptionInterface,
 	type SelectProps,
 } from "@vkontakte/vkui";
-import { useCallback, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import type { Params } from "select-async-paginate-model";
 import {
 	type ShouldLoadMore,
@@ -58,14 +57,32 @@ export function CustomAsyncPaginate<
 		cacheUniqs,
 	);
 
-	const getRootRef = useRef<HTMLDivElement>(null);
+	const menuRef = useRef<HTMLDivElement>(null);
+
+	useEffect(() => {
+		let timeout: number | null = null;
+
+		const handle = () => {
+			menuRef.current = document.querySelector(".vkuiCustomScrollView__host");
+
+			timeout = setTimeout(handle, 100) as unknown as number;
+		};
+
+		timeout = setTimeout(handle, 100) as unknown as number;
+
+		return () => {
+			if (timeout !== null) {
+				clearTimeout(timeout);
+			}
+		};
+	}, []);
 
 	const handleScrolledToBottom = useCallback(() => {
 		model.handleLoadMore();
 	}, [model]);
 
 	useWatchMenu({
-		menuRef: getRootRef,
+		menuRef,
 		shouldLoadMore,
 		handleScrolledToBottom,
 	});
@@ -76,7 +93,6 @@ export function CustomAsyncPaginate<
 		<CustomSelect
 			searchable
 			{...rest}
-			getRootRef={composeRefs(getRootRef, rest.getRootRef)}
 			options={options as Option[]}
 			fetching={(isLoading && options.length === 0) || rest.fetching}
 			onInputChange={(e) => {
