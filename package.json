@@ -20,18 +20,18 @@
     "test:storybook:dev": "bun run test-storybook --watch",
     "validate": "bun run build && bun run lint && bun run test:ts && bun run test:unit:cov",
     "codecov": "bun --filter='*' run codecov",
-    "postinstall": "bunx ---bun playwright install chromium"
+    "postinstall": "bunx --bun playwright install chromium"
   },
   "devDependencies": {
     "@storybook/addon-coverage": "1.0.5",
-    "@storybook/addon-essentials": "^8.4.7",
-    "@storybook/addon-interactions": "^8.4.7",
-    "@storybook/addon-links": "^8.4.7",
-    "@storybook/blocks": "^8.4.7",
-    "@storybook/builder-vite": "^8.4.7",
-    "@storybook/react": "^8.4.7",
-    "@storybook/react-vite": "^8.4.7",
-    "@storybook/test": "^8.4.7",
+    "@storybook/addon-essentials": "^8.5.1",
+    "@storybook/addon-interactions": "^8.5.1",
+    "@storybook/addon-links": "^8.5.1",
+    "@storybook/blocks": "^8.5.1",
+    "@storybook/builder-vite": "^8.5.1",
+    "@storybook/react": "^8.5.1",
+    "@storybook/react-vite": "^8.5.1",
+    "@storybook/test": "^8.5.1",
     "@storybook/test-runner": "^0.21.0",
     "@storybook/testing-library": "^0.2.2",
     "@types/react-test-renderer": "^19.0.0",
@@ -40,15 +40,17 @@
     "cross-env": "^7.0.3",
     "jest-playwright-preset": "^4.0.0",
     "path": "^0.12.7",
-    "playwright": "^1.49.1",
+    "playwright": "^1.50.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-refresh": "^0.16.0",
     "react-test-renderer": "^19.0.0",
     "rimraf": "^6.0.1",
-    "storybook": "^8.4.7",
+    "storybook": "^8.5.1",
     "typescript": "5.7.3",
-    "vite": "^6.0.7",
+    "vite": "^6.0.11",
     "@types/bun": "latest"
-  }
+  },
+  "packageManager": "pnpm@9.15.4+sha512.b2dc20e2fc72b3e18848459b37359a32064663e5627a51e4c74b2c29dd8e8e0491483c3abb40789cfd578bf362fb6ba8261b05f0387d76792ed6e23ea3b1b6a0"
 }
+
