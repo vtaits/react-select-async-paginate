@@ -15,6 +15,7 @@ import {
 	getAllOptions,
 	getInput,
 	getMenu,
+	getMenuOption,
 	getSingleValue,
 	openMenu,
 	scroll,
@@ -37,7 +38,6 @@ export const DebounceInteraction: Story = {
 		debounceTimeout: 600,
 	},
 	play: async ({ canvasElement, step, args }) => {
-		const canvas = within(canvasElement);
 		const { loadOptions, debounceTimeout = 500 } = args;
 		const mockLoadOptions = mocked(loadOptions);
 		let preDebounceCalls = 0;
@@ -61,7 +61,10 @@ export const DebounceInteraction: Story = {
 			});
 
 			const [firstOption, lastOption] = await waitFor(
-				() => [canvas.getByText("Option 1"), canvas.getByText("Option 10")],
+				() => [
+					getMenuOption(canvasElement, "Option 1"),
+					getMenuOption(canvasElement, "Option 10"),
+				],
 				waitOptions,
 			);
 
@@ -70,7 +73,7 @@ export const DebounceInteraction: Story = {
 		});
 
 		await step("Scroll and load the 2 page of options", async () => {
-			await scroll(canvasElement, 500);
+			await scroll(canvasElement, 600);
 
 			await waitFor(() => {
 				expect(getAllOptions(canvasElement)).toHaveLength(20);
@@ -78,7 +81,7 @@ export const DebounceInteraction: Story = {
 		});
 
 		await step("Scroll and load the 3 page of options", async () => {
-			await scroll(canvasElement, 500);
+			await scroll(canvasElement, 600);
 
 			await waitFor(() => {
 				expect(getAllOptions(canvasElement)).toHaveLength(30);

@@ -93,6 +93,7 @@ export function CustomAsyncPaginate<
 		<CustomSelect
 			searchable
 			{...rest}
+			filterFn={rest.filterFn || false}
 			options={options as Option[]}
 			fetching={(isLoading && options.length === 0) || rest.fetching}
 			onInputChange={(e) => {

@@ -28,7 +28,6 @@ export const AutoloadInteraction: Story = {
 		loadOptions: fn(loadOptions as TestLoadOptions),
 	},
 	play: async ({ canvasElement, step, args }) => {
-		const canvas = within(canvasElement);
 		const { loadOptions } = args;
 
 		const waitOptions = {
@@ -46,7 +45,7 @@ export const AutoloadInteraction: Story = {
 		});
 
 		await step("Scroll and load the 2 page of options", async () => {
-			await scroll(canvasElement, 500);
+			await scroll(canvasElement, 600);
 
 			await waitFor(() => {
 				expect(getAllOptions(canvasElement)).toHaveLength(20);
@@ -54,7 +53,7 @@ export const AutoloadInteraction: Story = {
 		});
 
 		await step("Scroll and load the 3 page of options", async () => {
-			await scroll(canvasElement, 500);
+			await scroll(canvasElement, 600);
 
 			await waitFor(() => {
 				expect(getAllOptions(canvasElement)).toHaveLength(30);

@@ -46,6 +46,10 @@ export function getSingleValue(root: HTMLElement) {
 	});
 }
 
+export function getMenuOption(root: HTMLElement, optionLabel: string) {
+	return within(getMenu(root)).getByText(optionLabel);
+}
+
 export function calcDebounceCalls(
 	debounceTime: number,
 	inputLength: number,

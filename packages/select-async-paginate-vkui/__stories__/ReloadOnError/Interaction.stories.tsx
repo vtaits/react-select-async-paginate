@@ -7,6 +7,7 @@ import {
 	getAllOptions,
 	getInput,
 	getMenu,
+	getMenuOption,
 	getSingleValue,
 	openMenu,
 	scroll,
@@ -29,7 +30,6 @@ export const ReloadOnErrorInteraction: Story = {
 		reloadOnErrorTimeout: 1000,
 	},
 	play: async ({ canvasElement, step, args }) => {
-		const canvas = within(canvasElement);
 		const { loadOptions, reloadOnErrorTimeout = 2000 } = args;
 
 		const baseTimeout = 3000;
@@ -46,7 +46,10 @@ export const ReloadOnErrorInteraction: Story = {
 			await expect(loadOptions).toHaveBeenCalledTimes(1);
 
 			const [firstOption, lastOption] = await waitFor(
-				() => [canvas.getByText("Option 1"), canvas.getByText("Option 10")],
+				() => [
+					getMenuOption(canvasElement, "Option 1"),
+					getMenuOption(canvasElement, "Option 10"),
+				],
 				waitOptions,
 			);
 
@@ -55,7 +58,7 @@ export const ReloadOnErrorInteraction: Story = {
 		});
 
 		await step("Scroll and load the 2 page of options", async () => {
-			await scroll(canvasElement, 500);
+			await scroll(canvasElement, 600);
 
 			await waitFor(() => {
 				expect(getAllOptions(canvasElement)).toHaveLength(20);
@@ -63,7 +66,7 @@ export const ReloadOnErrorInteraction: Story = {
 		});
 
 		await step("Scroll and load the 3 page of options", async () => {
-			await scroll(canvasElement, 500);
+			await scroll(canvasElement, 600);
 
 			await waitFor(() => {
 				expect(getAllOptions(canvasElement)).toHaveLength(30);
