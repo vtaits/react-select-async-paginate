@@ -1,15 +1,15 @@
 import { useState } from "react";
 import type { ReactElement } from "react";
-import type { LoadOptions } from "select-async-paginate-model";
 import sleep from "sleep-promise";
-
-import type { SelectValue } from "@vkontakte/vkui/dist/components/NativeSelect/NativeSelect";
 import { CustomAsyncPaginate } from "../../src";
 import type { StoryProps } from "../types";
+import "@vkontakte/vkui/dist/vkui.css";
+import type { SelectValue } from "@vkontakte/vkui/dist/components/NativeSelect/NativeSelect";
+import type { LoadOptions } from "select-async-paginate-model";
+import type { ShouldLoadMore } from "use-select-async-paginate";
 
-type ReloadOnErrorProps = StoryProps & {
-	loadOptions?: LoadOptions<OptionType, unknown>;
-	reloadOnErrorTimeout?: number;
+type CustomScrollCheckProps = StoryProps & {
+	loadOptions?: LoadOptions<OptionType, null>;
 };
 
 type OptionType = {
@@ -25,18 +25,11 @@ for (let i = 0; i < 50; ++i) {
 	});
 }
 
-let requestNumber = 0;
-
-export const loadOptions: LoadOptions<OptionType, unknown> = async (
+export const loadOptions: LoadOptions<OptionType, null> = async (
 	search,
 	prevOptions,
 ) => {
 	await sleep(1000);
-
-	++requestNumber;
-	if (requestNumber % 2 === 0) {
-		throw new Error("Try again");
-	}
 
 	let filteredOptions: OptionType[];
 	if (!search) {
@@ -61,11 +54,20 @@ export const loadOptions: LoadOptions<OptionType, unknown> = async (
 	};
 };
 
-export function ReloadOnError(props: ReloadOnErrorProps): ReactElement {
-	const [value, onChange] = useState<SelectValue | undefined>(undefined);
+const shouldLoadMore: ShouldLoadMore = (
+	scrollHeight,
+	clientHeight,
+	scrollTop,
+) => {
+	const bottomBorder = (scrollHeight - clientHeight) / 2;
+
+	return bottomBorder < scrollTop;
+};
+
+export function CustomScrollCheck(props: CustomScrollCheckProps): ReactElement {
+	const [value, onChange] = useState<SelectValue | undefined>(null);
 
 	const loadOptionsHandler = props?.loadOptions || loadOptions;
-	const reloadOnErrorTimeout = props?.reloadOnErrorTimeout || 5000;
 
 	return (
 		<div
@@ -73,6 +75,8 @@ export function ReloadOnError(props: ReloadOnErrorProps): ReactElement {
 				maxWidth: 300,
 			}}
 		>
+			<p>New options will load when scrolling to half</p>
+
 			<CustomAsyncPaginate
 				{...props}
 				value={value}
@@ -80,7 +84,7 @@ export function ReloadOnError(props: ReloadOnErrorProps): ReactElement {
 				onChange={(_, nextValue) => {
 					onChange(nextValue);
 				}}
-				reloadOnErrorTimeout={reloadOnErrorTimeout}
+				shouldLoadMore={shouldLoadMore}
 			/>
 		</div>
 	);

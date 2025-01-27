@@ -12,17 +12,17 @@ import {
 	scroll,
 	type,
 } from "../utils";
-import { Simple, loadOptions } from "./Simple";
+import { CustomScrollCheck, loadOptions } from "./CustomScrollCheck";
 
-const meta: Meta<typeof Simple> = {
-	title: "select-async-paginage-vkui/Simple",
-	component: Simple,
+const meta: Meta<typeof CustomScrollCheck> = {
+	title: "select-async-paginage-vkui/Custom Scroll Check",
+	component: CustomScrollCheck,
 };
 export default meta;
 type Story = StoryObj<typeof CustomAsyncPaginate>;
 type TestLoadOptions = LoadOptions<CustomSelectOptionInterface, unknown>;
 
-export const SimpleInteraction: Story = {
+export const CustomScrollCheckInteraction: Story = {
 	name: "Interaction",
 	args: {
 		loadOptions: fn(loadOptions as TestLoadOptions),
@@ -59,13 +59,16 @@ export const SimpleInteraction: Story = {
 			}, waitOptions);
 		});
 
-		await step("Scroll and load the 3 page of options", async () => {
-			await scroll(canvasElement, 500);
+		await step(
+			"Scroll to the half and load the 3 page of options",
+			async () => {
+				await scroll(canvasElement, 250);
 
-			await waitFor(() => {
-				expect(getAllOptions(canvasElement)).toHaveLength(30);
-			}, waitOptions);
-		});
+				await waitFor(() => {
+					expect(getAllOptions(canvasElement)).toHaveLength(30);
+				}, waitOptions);
+			},
+		);
 
 		await step("Type option label into the select", async () => {
 			const label = "Option 40";

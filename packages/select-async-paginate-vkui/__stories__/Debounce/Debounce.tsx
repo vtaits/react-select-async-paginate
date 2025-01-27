@@ -1,11 +1,11 @@
+import type { SelectValue } from "@vkontakte/vkui/dist/components/NativeSelect/NativeSelect";
 import { useCallback, useState } from "react";
 import type { ReactElement } from "react";
 import type { MultiValue } from "react-select";
+import type { LoadOptions } from "select-async-paginate-model";
 import sleep from "sleep-promise";
-import { LoadOptions } from "select-async-paginate-model";
-import type { StoryProps } from "../types";
 import { CustomAsyncPaginate } from "../../src";
-import { SelectValue } from "@vkontakte/vkui/dist/components/NativeSelect/NativeSelect";
+import type { StoryProps } from "../types";
 
 type DebounceProps = StoryProps & {
 	loadOptions?: LoadOptions<OptionType, null>;
@@ -25,10 +25,10 @@ for (let i = 0; i < 50; ++i) {
 	});
 }
 
-export const loadOptions: LoadOptions<
-	OptionType,
-	null
-> = async (search, prevOptions) => {
+export const loadOptions: LoadOptions<OptionType, null> = async (
+	search,
+	prevOptions,
+) => {
 	await sleep(1000);
 
 	let filteredOptions: OptionType[];
@@ -57,9 +57,7 @@ export const loadOptions: LoadOptions<
 const increase = (numberOfRequests: number): number => numberOfRequests + 1;
 
 export function Debounce(props: DebounceProps): ReactElement {
-	const [value, onChange] = useState<
-		SelectValue | undefined
-	>(undefined);
+	const [value, onChange] = useState<SelectValue | undefined>(undefined);
 	const [numberOfRequests, setNumberOfRequests] = useState(0);
 
 	const debounceTimeout = props?.debounceTimeout || 500;

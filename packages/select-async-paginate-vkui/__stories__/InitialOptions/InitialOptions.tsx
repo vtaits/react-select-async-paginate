@@ -1,10 +1,10 @@
+import type { SelectValue } from "@vkontakte/vkui/dist/components/NativeSelect/NativeSelect";
 import { useState } from "react";
 import type { ReactElement } from "react";
+import type { LoadOptions } from "select-async-paginate-model";
 import sleep from "sleep-promise";
-import { LoadOptions } from "select-async-paginate-model";
-import type { StoryProps } from "../types";
 import { CustomAsyncPaginate } from "../../src";
-import { SelectValue } from "@vkontakte/vkui/dist/components/NativeSelect/NativeSelect";
+import type { StoryProps } from "../types";
 
 type InitialOptionsProps = StoryProps & {
 	loadOptions?: LoadOptions<OptionType, null>;
@@ -23,10 +23,10 @@ for (let i = 0; i < 50; ++i) {
 	});
 }
 
-export const loadOptions: LoadOptions<
-	OptionType,
-	null
-> = async (search, prevOptions) => {
+export const loadOptions: LoadOptions<OptionType, null> = async (
+	search,
+	prevOptions,
+) => {
 	await sleep(1000);
 
 	let filteredOptions: OptionType[];
@@ -55,9 +55,7 @@ export const loadOptions: LoadOptions<
 const initialOptions = options.slice(0, 10);
 
 export function InitialOptions(props: InitialOptionsProps): ReactElement {
-	const [value, onChange] = useState<
-		SelectValue | undefined
-	>(undefined);
+	const [value, onChange] = useState<SelectValue | undefined>(undefined);
 
 	const loadOptionsHandler = props?.loadOptions || loadOptions;
 

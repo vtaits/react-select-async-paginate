@@ -1,10 +1,10 @@
+import type { SelectValue } from "@vkontakte/vkui/dist/components/NativeSelect/NativeSelect";
 import { useState } from "react";
 import type { ReactElement } from "react";
+import type { LoadOptions } from "select-async-paginate-model";
 import sleep from "sleep-promise";
-import { LoadOptions } from "select-async-paginate-model";
-import type { StoryProps } from "../types";
-import { SelectValue } from "@vkontakte/vkui/dist/components/NativeSelect/NativeSelect";
 import { CustomAsyncPaginate } from "../../src";
+import type { StoryProps } from "../types";
 
 type RequestByPageNumberProps = StoryProps & {
 	loadOptions?: LoadOptions<OptionType, Additional>;
@@ -65,10 +65,11 @@ const initialAdditional = {
 	page: 1,
 };
 
-export const loadPageOptions: LoadOptions<
-	OptionType,
-	Additional
-> = async (q, _prevOptions, additional) => {
+export const loadPageOptions: LoadOptions<OptionType, Additional> = async (
+	q,
+	_prevOptions,
+	additional,
+) => {
 	if (!additional) {
 		throw new Error("additional should be defined");
 	}
@@ -90,9 +91,7 @@ export const loadPageOptions: LoadOptions<
 export function RequestByPageNumber(
 	props: RequestByPageNumberProps,
 ): ReactElement {
-	const [value, onChange] = useState<
-		SelectValue | undefined
-	>(undefined);
+	const [value, onChange] = useState<SelectValue | undefined>(undefined);
 
 	const loadOptionsHandler = props?.loadOptions || loadPageOptions;
 

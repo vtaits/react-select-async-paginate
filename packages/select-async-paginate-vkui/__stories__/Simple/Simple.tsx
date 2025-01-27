@@ -1,10 +1,10 @@
+import type { SelectValue } from "@vkontakte/vkui/dist/components/NativeSelect/NativeSelect";
 import { useState } from "react";
 import type { ReactElement } from "react";
+import type { LoadOptions } from "select-async-paginate-model";
 import sleep from "sleep-promise";
-import { LoadOptions } from "select-async-paginate-model";
-import type { StoryProps } from "../types";
-import { SelectValue } from "@vkontakte/vkui/dist/components/NativeSelect/NativeSelect";
 import { CustomAsyncPaginate } from "../../src";
+import type { StoryProps } from "../types";
 
 type SimpleStoryProps = StoryProps & {
 	loadOptions?: LoadOptions<OptionType, unknown>;
@@ -23,10 +23,10 @@ for (let i = 0; i < 50; ++i) {
 	});
 }
 
-export const loadOptions: LoadOptions<
-	OptionType,
-	unknown
-> = async (search, prevOptions) => {
+export const loadOptions: LoadOptions<OptionType, unknown> = async (
+	search,
+	prevOptions,
+) => {
 	await sleep(1000);
 
 	let filteredOptions: OptionType[];
@@ -53,9 +53,7 @@ export const loadOptions: LoadOptions<
 };
 
 export function Simple(props: SimpleStoryProps): ReactElement {
-	const [value, onChange] = useState<
-		SelectValue | undefined
-	>(undefined);
+	const [value, onChange] = useState<SelectValue | undefined>(undefined);
 
 	const loadOptionsHandler = props?.loadOptions || loadOptions;
 
