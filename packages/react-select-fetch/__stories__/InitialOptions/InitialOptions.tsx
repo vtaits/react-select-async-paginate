@@ -31,7 +31,6 @@ export async function get<Response>(
 	url: string,
 	params: { [key: string]: unknown },
 ): Promise<Response> {
-
 	await sleep(1000);
 
 	const search = typeof params?.search === "string" ? params.search : "";
@@ -67,7 +66,7 @@ export function InitialOptions(props: InitialOptionsStoryProps): ReactElement {
 
 	const getHandler = props?.get || get;
 
-	console.log(props.get, get)
+	console.log(props.get, get);
 
 	return (
 		<div

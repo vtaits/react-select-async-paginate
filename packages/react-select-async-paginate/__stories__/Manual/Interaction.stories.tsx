@@ -1,18 +1,24 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { expect, fn, userEvent, waitFor, within } from "@storybook/test";
 import type { GroupBase } from "react-select";
-
+import type { AsyncPaginate, LoadOptions } from "../../src";
 import {
 	getAllOptions,
-	getCloseCloseMenuButton,
-	getCloseOpenMenuButton,
-	getCloseResultOption,
+	getInput,
+	getMenu,
+	getSingleValue,
 	scroll,
+	type,
 } from "../utils";
-
-import type { AsyncPaginate, LoadOptions } from "../../src";
-
 import { Manual, loadOptions } from "./Manual";
+
+function getCloseOpenMenuButton(root: HTMLElement) {
+	return within(root).getByRole("button", { name: /Open menu/i });
+}
+
+function getCloseCloseMenuButton(root: HTMLElement) {
+	return within(root).getByRole("button", { name: /Close menu/i });
+}
 
 const meta: Meta<typeof Manual> = {
 	title: "react-select-async-paginate/Manual",
@@ -40,16 +46,16 @@ export const ManualInteraction: Story = {
 		};
 
 		await step("Manual display drop-down options list", async () => {
-			const button = getCloseOpenMenuButton(canvas);
+			const button = getCloseOpenMenuButton(canvasElement);
 
 			await userEvent.click(button, { delay: delay.click });
 
-			await expect(canvas.getByRole("listbox")).toBeVisible();
+			await expect(getMenu(canvasElement)).toBeVisible();
 		});
 
 		await step("Manual close drop-down options list", async () => {
-			const listbox = canvas.getByRole("listbox");
-			const button = getCloseCloseMenuButton(canvas);
+			const listbox = getMenu(canvasElement);
+			const button = getCloseCloseMenuButton(canvasElement);
 
 			await userEvent.click(button, { delay: delay.click });
 
@@ -57,11 +63,11 @@ export const ManualInteraction: Story = {
 		});
 
 		await step("Display drop-down options list", async () => {
-			const select = canvas.getByRole("combobox");
+			const select = getInput(canvasElement);
 
 			await userEvent.click(select, { delay: delay.click });
 
-			await expect(canvas.getByRole("listbox")).toBeVisible();
+			await expect(getMenu(canvasElement)).toBeVisible();
 		});
 
 		await step("Load the 1 page of options", async () => {
@@ -77,34 +83,34 @@ export const ManualInteraction: Story = {
 		});
 
 		await step("Scroll and load the 2 page of options", async () => {
-			await scroll(canvas, 500);
+			await scroll(canvasElement, 500);
 
 			await waitFor(() => {
-				expect(getAllOptions(canvas)).toHaveLength(20);
+				expect(getAllOptions(canvasElement)).toHaveLength(20);
 			}, waitOptions);
 		});
 
 		await step("Scroll and load the 3 page of options", async () => {
-			await scroll(canvas, 500);
+			await scroll(canvasElement, 500);
 
 			await waitFor(() => {
-				expect(getAllOptions(canvas)).toHaveLength(30);
+				expect(getAllOptions(canvasElement)).toHaveLength(30);
 			}, waitOptions);
 		});
 
 		await step("Type option label into the select", async () => {
 			const label = "Option 40";
-			const select = canvas.getByRole("combobox");
-			const listbox = canvas.getByRole("listbox");
+			const select = getInput(canvasElement);
+			const listbox = getMenu(canvasElement);
 
-			await userEvent.type(select, label, { delay: delay.type });
+			await type(canvasElement, label);
 
 			await expect(listbox).toBeVisible();
 			await expect(select).toHaveValue(label);
 		});
 
 		await step("Select the specified option from the list", async () => {
-			const listbox = canvas.getByRole("listbox");
+			const listbox = getMenu(canvasElement);
 			const option = await waitFor(() => {
 				return within(listbox).getByRole("option");
 			}, waitOptions);
@@ -112,7 +118,7 @@ export const ManualInteraction: Story = {
 			await userEvent.click(option);
 			await expect(listbox).not.toBeVisible();
 
-			const resultOption = getCloseResultOption(canvas);
+			const resultOption = getSingleValue(canvasElement);
 			await expect(resultOption).toHaveTextContent("Option 40");
 		});
 	},

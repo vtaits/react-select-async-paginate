@@ -57,36 +57,46 @@ export const loadOptions: LoadOptions<
 	};
 };
 
-export function ShowSelectedOnTop(props: ShowSelectedOnTopStoryProps): ReactElement {
+export function ShowSelectedOnTop(
+	props: ShowSelectedOnTopStoryProps,
+): ReactElement {
 	const [value, onChange] = useState<
 		OptionType | MultiValue<OptionType> | null
 	>(null);
 
 	const loadOptionsHandler = props?.loadOptions || loadOptions;
 
-	const mapOptionsForMenu = useCallback((options: OptionsOrGroups<OptionType, GroupBase<OptionType>>) => { 
-		if (!value) {
-			return options;
-		}
-
-		if (Array.isArray(value)) {
-			if (value.length === 0) {
+	const mapOptionsForMenu = useCallback(
+		(options: OptionsOrGroups<OptionType, GroupBase<OptionType>>) => {
+			if (!value) {
 				return options;
 			}
 
-			const valueSet = new Set(value.map((option) => option.value));
+			if (Array.isArray(value)) {
+				if (value.length === 0) {
+					return options;
+				}
+
+				const valueSet = new Set(value.map((option) => option.value));
+
+				return [
+					...value,
+					...options.filter(
+						(option) => !valueSet.has((option as OptionType).value),
+					),
+				];
+			}
 
 			return [
-				...value,
-				...options.filter((option) => !valueSet.has((option as OptionType).value)),
+				value,
+				...options.filter(
+					(option) =>
+						(option as OptionType).value !== (value as OptionType).value,
+				),
 			];
-		}
-
-		return [
-			value,
-			...options.filter((option) => (option as OptionType).value !== (value as OptionType).value),
-		];
-	}, [value]);
+		},
+		[value],
+	);
 
 	return (
 		<div

@@ -2,11 +2,16 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { expect, userEvent, waitFor, within } from "@storybook/test";
 import { fn } from "@storybook/test";
 import type { GroupBase } from "react-select";
-
-import { getAllOptions, getCloseResultOption, scroll } from "../utils";
-
 import type { AsyncPaginate, LoadOptions } from "../../src";
-
+import {
+	getAllOptions,
+	getInput,
+	getMenu,
+	getSingleValue,
+	openMenu,
+	scroll,
+	type,
+} from "../utils";
 import { Creatable, loadOptions } from "./Creatable";
 
 const meta: Meta<typeof Creatable> = {
@@ -36,17 +41,17 @@ export const CreatableInteraction: Story = {
 		const label = "New Option";
 
 		await step("Type custom option label into the select", async () => {
-			const select = canvas.getByRole("combobox");
+			const select = getInput(canvasElement);
 
-			await userEvent.type(select, label, { delay: delay.type });
+			await type(canvasElement, label);
 
 			await expect(select).toHaveValue(label);
-			await expect(canvas.getByRole("listbox")).toBeVisible();
+			await expect(getMenu(canvasElement)).toBeVisible();
 			await expect(loadOptions).toHaveBeenCalledTimes(label.length + 1);
 		});
 
 		await step("Create new custom option", async () => {
-			const listbox = canvas.getByRole("listbox");
+			const listbox = getMenu(canvasElement);
 
 			const createOption = await waitFor(async () => {
 				return canvas.getByText(`Create "${label}"`);
@@ -54,16 +59,12 @@ export const CreatableInteraction: Story = {
 
 			await userEvent.click(createOption, { delay: delay.click });
 
-			await expect(canvas.getByText(label)).toHaveTextContent(label);
+			await expect(getSingleValue(canvasElement)).toHaveTextContent(label);
 			await expect(listbox).not.toBeVisible();
 		});
 
 		await step("Display drop-down options list", async () => {
-			const select = canvas.getByRole("combobox");
-
-			await userEvent.click(select, { delay: delay.click });
-
-			await expect(canvas.getByRole("listbox")).toBeVisible();
+			await openMenu(canvasElement);
 		});
 
 		await step("Load the 1 page of options", async () => {
@@ -77,34 +78,36 @@ export const CreatableInteraction: Story = {
 		});
 
 		await step("Scroll and load the 2 page of options", async () => {
-			await scroll(canvas, 500);
+			await scroll(canvasElement, 500);
 
+			await expect(getSingleValue(canvasElement)).toHaveTextContent(label);
 			await waitFor(() => {
-				expect(getAllOptions(canvas)).toHaveLength(21); // +1 Custom
+				expect(getAllOptions(canvasElement)).toHaveLength(20);
 			}, waitOptions);
 		});
 
 		await step("Scroll and load the 3 page of options", async () => {
-			await scroll(canvas, 500);
+			await scroll(canvasElement, 500);
 
+			await expect(getSingleValue(canvasElement)).toHaveTextContent(label);
 			await waitFor(() => {
-				expect(getAllOptions(canvas)).toHaveLength(31); // +1 Custom
+				expect(getAllOptions(canvasElement)).toHaveLength(30);
 			}, waitOptions);
 		});
 
 		await step("Type option label into the select", async () => {
 			const label = "Option 40";
-			const select = canvas.getByRole("combobox");
-			const listbox = canvas.getByRole("listbox");
+			const select = getInput(canvasElement);
+			const listbox = getMenu(canvasElement);
 
-			await userEvent.type(select, label, { delay: delay.type });
+			await type(canvasElement, label);
 
 			await expect(listbox).toBeVisible();
 			await expect(select).toHaveValue(label);
 		});
 
 		await step("Select the specified option from the list", async () => {
-			const listbox = canvas.getByRole("listbox");
+			const listbox = getMenu(canvasElement);
 			const option = await waitFor(() => {
 				return within(listbox).getByRole("option");
 			}, waitOptions);
@@ -112,7 +115,7 @@ export const CreatableInteraction: Story = {
 			await userEvent.click(option);
 			await expect(listbox).not.toBeVisible();
 
-			const resultOption = getCloseResultOption(canvas);
+			const resultOption = getSingleValue(canvasElement);
 			await expect(resultOption).toHaveTextContent("Option 40");
 		});
 	},

@@ -1,11 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { expect, fn, userEvent, waitFor, within } from "@storybook/test";
 import type { GroupBase } from "react-select";
-
-import { getAllOptions, getCloseResultOption, scroll } from "../utils";
-
 import type { AsyncPaginate, LoadOptions } from "../../src";
-
+import { getInput, getMenu, getSingleValue, openMenu, type } from "../utils";
 import { PreventLoadOnMenuOpen, loadOptions } from "./PreventLoadOnMenuOpen";
 
 const meta: Meta<typeof PreventLoadOnMenuOpen> = {
@@ -27,34 +24,28 @@ export const PreventLoadOnMenuOpenInteraction: Story = {
 		const canvas = within(canvasElement);
 		const { loadOptions } = args;
 
-		const delay = {
-			type: 200,
-			click: 400,
-		};
 		const waitOptions = {
 			timeout: 3000,
 		};
 
 		await step("Display drop-down options list", async () => {
-			const select = canvas.getByRole("combobox");
-
-			await userEvent.click(select, { delay: delay.click });
-
-			await expect(canvas.getByRole("listbox")).toBeVisible();
+			await openMenu(canvasElement);
 		});
 
 		await step("The list of options is empty", async () => {
 			await expect(loadOptions).toHaveBeenCalledTimes(0);
 
-			await expect(within(canvas.getByRole("listbox")).getByText('No options')).toBeVisible();
+			await expect(
+				within(getMenu(canvasElement)).getByText("No options"),
+			).toBeVisible();
 		});
 
 		await step("Type option label into the select", async () => {
 			const label = "Option 40";
-			const select = canvas.getByRole("combobox");
-			const listbox = canvas.getByRole("listbox");
+			const select = getInput(canvasElement);
+			const listbox = getMenu(canvasElement);
 
-			await userEvent.type(select, label);
+			await type(canvasElement, label, 1);
 
 			await expect(listbox).toBeVisible();
 			await expect(select).toHaveValue(label);
@@ -65,7 +56,7 @@ export const PreventLoadOnMenuOpenInteraction: Story = {
 				expect(loadOptions).toHaveBeenCalledTimes(1);
 			});
 
-			const listbox = canvas.getByRole("listbox");
+			const listbox = getMenu(canvasElement);
 			const option = await waitFor(() => {
 				return within(listbox).getByRole("option");
 			}, waitOptions);
@@ -73,7 +64,7 @@ export const PreventLoadOnMenuOpenInteraction: Story = {
 			await userEvent.click(option);
 			await expect(listbox).not.toBeVisible();
 
-			const resultOption = getCloseResultOption(canvas);
+			const resultOption = getSingleValue(canvasElement);
 			await expect(resultOption).toHaveTextContent("Option 40");
 		});
 	},
