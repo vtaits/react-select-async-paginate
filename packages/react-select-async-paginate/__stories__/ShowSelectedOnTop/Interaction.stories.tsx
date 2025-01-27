@@ -1,11 +1,15 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { expect, fn, userEvent, waitFor, within } from "@storybook/test";
 import type { GroupBase } from "react-select";
-
-import { getAllOptions, getCloseResultOption, scroll } from "../utils";
-
 import type { AsyncPaginate, LoadOptions } from "../../src";
-
+import {
+	getAllOptions,
+	getInput,
+	getMenu,
+	getSingleValue,
+	openMenu,
+	scroll,
+} from "../utils";
 import { ShowSelectedOnTop, loadOptions } from "./ShowSelectedOnTop";
 
 const meta: Meta<typeof ShowSelectedOnTop> = {
@@ -37,11 +41,7 @@ export const ShowSingleSelectedOnTopInteraction: Story = {
 		};
 
 		await step("Display drop-down options list", async () => {
-			const select = canvas.getByRole("combobox");
-
-			await userEvent.click(select, { delay: delay.click });
-
-			await expect(canvas.getByRole("listbox")).toBeVisible();
+			await openMenu(canvasElement);
 		});
 
 		await step("Load the 1 page of options", async () => {
@@ -57,25 +57,25 @@ export const ShowSingleSelectedOnTopInteraction: Story = {
 		});
 
 		await step("Scroll and load the 2 page of options", async () => {
-			await scroll(canvas, 500);
+			await scroll(canvasElement, 500);
 
 			await waitFor(() => {
-				expect(getAllOptions(canvas)).toHaveLength(20);
+				expect(getAllOptions(canvasElement)).toHaveLength(20);
 			}, waitOptions);
 		});
 
 		await step("Select `Option 15` from the list", async () => {
-			const listbox = canvas.getByRole("listbox");
+			const listbox = getMenu(canvasElement);
 
 			await userEvent.click(within(listbox).getByText("Option 15"));
 			await expect(listbox).not.toBeVisible();
 
-			const resultOption = getCloseResultOption(canvas);
+			const resultOption = getSingleValue(canvasElement);
 			await expect(resultOption).toHaveTextContent("Option 15");
 		});
 
 		await step("Check if `Option 15` is on top of the list", async () => {
-			const select = canvas.getByRole("combobox");
+			const select = getInput(canvasElement);
 
 			await userEvent.click(select, { delay: delay.click });
 
@@ -83,7 +83,7 @@ export const ShowSingleSelectedOnTopInteraction: Story = {
 
 			const options = within(listbox).getAllByRole("option");
 
-			expect(options[0]).toHaveTextContent('Option 15');
+			expect(options[0]).toHaveTextContent("Option 15");
 		});
 	},
 };
@@ -108,11 +108,11 @@ export const ShowMultipleSelectedOnTopInteraction: Story = {
 		};
 
 		await step("Display drop-down options list", async () => {
-			const select = canvas.getByRole("combobox");
+			const select = getInput(canvasElement);
 
 			await userEvent.click(select, { delay: delay.click });
 
-			await expect(canvas.getByRole("listbox")).toBeVisible();
+			await expect(getMenu(canvasElement)).toBeVisible();
 		});
 
 		await step("Load the 1 page of options", async () => {
@@ -128,27 +128,30 @@ export const ShowMultipleSelectedOnTopInteraction: Story = {
 		});
 
 		await step("Scroll and load the 2 page of options", async () => {
-			await scroll(canvas, 500);
+			await scroll(canvasElement, 500);
 
 			await waitFor(() => {
-				expect(getAllOptions(canvas)).toHaveLength(20);
+				expect(getAllOptions(canvasElement)).toHaveLength(20);
 			}, waitOptions);
 		});
 
 		await step("Select `Option 7` and `Option 15` from the list", async () => {
-			const listbox = canvas.getByRole("listbox");
+			const listbox = getMenu(canvasElement);
 
 			await userEvent.click(within(listbox).getByText("Option 7"));
 			await userEvent.click(within(listbox).getByText("Option 15"));
 		});
 
-		await step("Check if `Option 7` and `Option 15` are on top of the list", async () => {
-			const listbox = canvas.getByRole("listbox");
+		await step(
+			"Check if `Option 7` and `Option 15` are on top of the list",
+			async () => {
+				const listbox = getMenu(canvasElement);
 
-			const options = within(listbox).getAllByRole("option");
+				const options = within(listbox).getAllByRole("option");
 
-			expect(options[0]).toHaveTextContent('Option 7');
-			expect(options[1]).toHaveTextContent('Option 15');
-		});
+				expect(options[0]).toHaveTextContent("Option 7");
+				expect(options[1]).toHaveTextContent("Option 15");
+			},
+		);
 	},
 };

@@ -28,9 +28,9 @@
   "license": "MIT",
   "scripts": {
     "build": "tsup src/index.ts --sourcemap --format esm,cjs --dts --legacy-output",
-    "lint": "biome check src",
-    "lint:fix": "biome check src --write --unsafe",
-    "format": "biome format src --write",
+    "lint": "biome check src __stories__",
+    "lint:fix": "biome check src __stories__ --write --unsafe",
+    "format": "biome format src __stories__ --write",
     "prepare": "bun run build",
     "test:ts": "tsc --noEmit",
     "test:unit": "vitest run --coverage.enabled --coverage.all --coverage.include=src",

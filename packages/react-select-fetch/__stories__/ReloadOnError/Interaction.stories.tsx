@@ -1,10 +1,15 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { expect, fn, userEvent, waitFor, within } from "@storybook/test";
-
-import { getAllOptions, getCloseResultOption, scroll } from "../utils";
-
 import type { Get } from "../../src";
-
+import {
+	getAllOptions,
+	getInput,
+	getMenu,
+	getSingleValue,
+	openMenu,
+	scroll,
+	type,
+} from "../utils";
 import { ReloadOnError, get } from "./ReloadOnError";
 
 const meta: Meta<typeof ReloadOnError> = {
@@ -24,10 +29,6 @@ export const ReloadOnErrorInteraction: Story = {
 		const canvas = within(canvasElement);
 		const { get, reloadOnErrorTimeout = 2000 } = args;
 
-		const delay = {
-			type: 200,
-			click: 400,
-		};
 		const baseTimeout = 3000;
 		const waitOptions = {
 			timeout: baseTimeout + reloadOnErrorTimeout,
@@ -35,11 +36,7 @@ export const ReloadOnErrorInteraction: Story = {
 		};
 
 		await step("Display drop-down options list", async () => {
-			const select = canvas.getByRole("combobox");
-
-			await userEvent.click(select, { delay: delay.click });
-
-			await expect(canvas.getByRole("listbox")).toBeVisible();
+			await openMenu(canvasElement);
 		});
 
 		await step("Load the 1 page of options", async () => {
@@ -55,34 +52,34 @@ export const ReloadOnErrorInteraction: Story = {
 		});
 
 		await step("Scroll and load the 2 page of options", async () => {
-			await scroll(canvas, 500);
+			await scroll(canvasElement, 500);
 
 			await waitFor(() => {
-				expect(getAllOptions(canvas)).toHaveLength(20);
+				expect(getAllOptions(canvasElement)).toHaveLength(20);
 			}, waitOptions);
 		});
 
 		await step("Scroll and load the 3 page of options", async () => {
-			await scroll(canvas, 500);
+			await scroll(canvasElement, 500);
 
 			await waitFor(() => {
-				expect(getAllOptions(canvas)).toHaveLength(30);
+				expect(getAllOptions(canvasElement)).toHaveLength(30);
 			}, waitOptions);
 		});
 
 		await step("Type option label into the select", async () => {
 			const label = "Option 40";
-			const select = canvas.getByRole("combobox");
-			const listbox = canvas.getByRole("listbox");
+			const select = getInput(canvasElement);
+			const listbox = getMenu(canvasElement);
 
-			await userEvent.type(select, label, { delay: delay.type });
+			await type(canvasElement, label);
 
 			await expect(listbox).toBeVisible();
 			await expect(select).toHaveValue(label);
 		});
 
 		await step("Select the specified option from the list", async () => {
-			const listbox = canvas.getByRole("listbox");
+			const listbox = getMenu(canvasElement);
 			const option = await waitFor(() => {
 				return within(listbox).getByRole("option");
 			}, waitOptions);
@@ -90,7 +87,7 @@ export const ReloadOnErrorInteraction: Story = {
 			await userEvent.click(option);
 			await expect(listbox).not.toBeVisible();
 
-			const resultOption = getCloseResultOption(canvas);
+			const resultOption = getSingleValue(canvasElement);
 			await expect(resultOption).toHaveTextContent("Option 40");
 		});
 	},
