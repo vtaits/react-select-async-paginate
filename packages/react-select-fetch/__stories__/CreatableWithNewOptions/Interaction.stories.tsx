@@ -5,6 +5,7 @@ import {
 	getAllOptions,
 	getInput,
 	getMenu,
+	getMenuOption,
 	getSingleValue,
 	openMenu,
 	scroll,
@@ -70,7 +71,10 @@ export const CreatableWithNewOptionsTest: Story = {
 
 		await step("Load the 1 page of options", async () => {
 			const [firstOption, lastOption] = await waitFor(
-				() => [canvas.getByText("Option 1"), canvas.getByText("Option 10")],
+				() => [
+					getMenuOption(canvasElement, "Option 1"),
+					getMenuOption(canvasElement, "Option 10"),
+				],
 				waitOptions,
 			);
 

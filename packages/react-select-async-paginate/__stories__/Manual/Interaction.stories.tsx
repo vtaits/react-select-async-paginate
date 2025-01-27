@@ -6,6 +6,7 @@ import {
 	getAllOptions,
 	getInput,
 	getMenu,
+	getMenuOption,
 	getSingleValue,
 	scroll,
 	type,
@@ -74,7 +75,10 @@ export const ManualInteraction: Story = {
 			await expect(loadOptions).toHaveBeenCalledTimes(1);
 
 			const [firstOption, lastOption] = await waitFor(
-				() => [canvas.getByText("Option 1"), canvas.getByText("Option 10")],
+				() => [
+					getMenuOption(canvasElement, "Option 1"),
+					getMenuOption(canvasElement, "Option 10"),
+				],
 				waitOptions,
 			);
 

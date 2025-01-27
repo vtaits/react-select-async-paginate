@@ -1,20 +1,4 @@
-import {
-	expect,
-	fireEvent,
-	fn,
-	userEvent,
-	waitFor,
-	within,
-} from "@storybook/test";
-
-type Canvas = {
-	getByRole: (role: string, options?: { name: RegExp }) => HTMLElement;
-	getByText: (
-		text: string | ((content: string, element: Element | null) => boolean),
-		options?: { [key: string]: unknown },
-	) => HTMLElement;
-	getAllByText: (text: RegExp) => HTMLElement[];
-};
+import { expect, fireEvent, userEvent, within } from "@storybook/test";
 
 export function getInput(root: HTMLElement) {
 	return within(root).getByRole("combobox");
@@ -49,6 +33,10 @@ export function getAllOptions(root: HTMLElement) {
 
 export function getAllGroups(root: HTMLElement) {
 	return within(getMenu(root)).getAllByText(/^Type/i);
+}
+
+export function getMenuOption(root: HTMLElement, optionLabel: string) {
+	return within(getMenu(root)).getByText(optionLabel);
 }
 
 export function getSingleValue(root: HTMLElement) {

@@ -5,6 +5,7 @@ import {
 	getAllOptions,
 	getInput,
 	getMenu,
+	getMenuOption,
 	getSingleValue,
 	openMenu,
 	scroll,
@@ -38,8 +39,12 @@ export const InitialOptionsInteraction: Story = {
 
 		await step("Page 1 is displayed without loading", async () => {
 			await expect(get).toHaveBeenCalledTimes(0);
-			await expect(canvas.getByText("Option 1")).toBeInTheDocument();
-			await expect(canvas.getByText("Option 10")).toBeInTheDocument();
+			await expect(
+				getMenuOption(canvasElement, "Option 1"),
+			).toBeInTheDocument();
+			await expect(
+				getMenuOption(canvasElement, "Option 10"),
+			).toBeInTheDocument();
 		});
 
 		await step("Scroll and load the 2 page of options", async () => {

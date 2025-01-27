@@ -27,7 +27,6 @@ export const AutoloadInteraction: Story = {
 		loadOptions: fn(loadOptions as TestLoadOptions),
 	},
 	play: async ({ canvasElement, step, args }) => {
-		const canvas = within(canvasElement);
 		const { loadOptions } = args;
 
 		const waitOptions = {
