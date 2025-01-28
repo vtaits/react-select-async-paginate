@@ -65,7 +65,7 @@ export const CustomScrollCheckInteraction: Story = {
 		await step(
 			"Scroll to the half and load the 3 page of options",
 			async () => {
-				await scroll(canvasElement, 250);
+				await scroll(canvasElement, 300);
 
 				await waitFor(() => {
 					expect(getAllOptions(canvasElement)).toHaveLength(30);
@@ -76,11 +76,10 @@ export const CustomScrollCheckInteraction: Story = {
 		await step("Type option label into the select", async () => {
 			const label = "Option 40";
 			const select = getInput(canvasElement);
-			const listbox = getMenu(canvasElement);
 
 			await type(canvasElement, label);
 
-			await expect(listbox).toBeVisible();
+			await expect(getMenu(canvasElement)).toBeVisible();
 			await expect(select).toHaveValue(label);
 		});
 

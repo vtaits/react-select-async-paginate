@@ -66,8 +66,6 @@ export function InitialOptions(props: InitialOptionsStoryProps): ReactElement {
 
 	const getHandler = props?.get || get;
 
-	console.log(props.get, get);
-
 	return (
 		<div
 			style={{

@@ -1,4 +1,5 @@
 import type { Preview } from '@storybook/react';
+import "@vkontakte/vkui/dist/vkui.css";
 
 const preview: Preview = {
   parameters: {

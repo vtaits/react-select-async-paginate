@@ -64,8 +64,6 @@ export function Simple(props: SimpleStoryProps): ReactElement {
 
 	const getHandler = props?.get || get;
 
-	console.log(props.get, get);
-
 	return (
 		<div
 			style={{

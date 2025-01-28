@@ -91,7 +91,7 @@ export const loadPageOptions: LoadOptions<OptionType, Additional> = async (
 export function RequestByPageNumber(
 	props: RequestByPageNumberProps,
 ): ReactElement {
-	const [value, onChange] = useState<SelectValue | undefined>(undefined);
+	const [value, onChange] = useState<SelectValue>(null);
 
 	const loadOptionsHandler = props?.loadOptions || loadPageOptions;
 

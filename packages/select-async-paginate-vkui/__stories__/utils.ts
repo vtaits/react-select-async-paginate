@@ -22,8 +22,9 @@ export async function openMenu(root: HTMLElement) {
 }
 
 export async function type(root: HTMLElement, text: string, delay = 200) {
-	const select = getInput(root);
-	await userEvent.type(select, text, { delay });
+	const input = getInput(root);
+	await userEvent.click(input);
+	await userEvent.type(input, text, { delay });
 }
 
 export async function scroll(root: HTMLElement, position: number) {
@@ -41,9 +42,9 @@ export function getAllGroups(root: HTMLElement) {
 }
 
 export function getSingleValue(root: HTMLElement) {
-	return within(root).getByText((_, el) => {
-		return el !== null && /css-.*-singleValue/.test(el.className);
-	});
+	return unwrap(
+		root.querySelector(".vkuiCustomSelectInput__title") as HTMLElement | null,
+	);
 }
 
 export function getMenuOption(root: HTMLElement, optionLabel: string) {

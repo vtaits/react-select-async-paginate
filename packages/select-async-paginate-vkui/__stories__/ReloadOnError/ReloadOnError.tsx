@@ -62,7 +62,7 @@ export const loadOptions: LoadOptions<OptionType, unknown> = async (
 };
 
 export function ReloadOnError(props: ReloadOnErrorProps): ReactElement {
-	const [value, onChange] = useState<SelectValue | undefined>(undefined);
+	const [value, onChange] = useState<SelectValue>(null);
 
 	const loadOptionsHandler = props?.loadOptions || loadOptions;
 	const reloadOnErrorTimeout = props?.reloadOnErrorTimeout || 5000;

@@ -55,7 +55,7 @@ export const loadOptions: LoadOptions<OptionType, null> = async (
 const initialOptions = options.slice(0, 10);
 
 export function InitialOptions(props: InitialOptionsProps): ReactElement {
-	const [value, onChange] = useState<SelectValue | undefined>(undefined);
+	const [value, onChange] = useState<SelectValue>(null);
 
 	const loadOptionsHandler = props?.loadOptions || loadOptions;
 

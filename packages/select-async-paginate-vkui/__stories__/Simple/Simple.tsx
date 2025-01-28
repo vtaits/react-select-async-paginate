@@ -53,7 +53,7 @@ export const loadOptions: LoadOptions<OptionType, unknown> = async (
 };
 
 export function Simple(props: SimpleStoryProps): ReactElement {
-	const [value, onChange] = useState<SelectValue | undefined>(undefined);
+	const [value, onChange] = useState<SelectValue>(null);
 
 	const loadOptionsHandler = props?.loadOptions || loadOptions;
 

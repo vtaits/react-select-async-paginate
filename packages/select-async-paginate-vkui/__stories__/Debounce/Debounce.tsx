@@ -1,7 +1,6 @@
 import type { SelectValue } from "@vkontakte/vkui/dist/components/NativeSelect/NativeSelect";
 import { useCallback, useState } from "react";
 import type { ReactElement } from "react";
-import type { MultiValue } from "react-select";
 import type { LoadOptions } from "select-async-paginate-model";
 import sleep from "sleep-promise";
 import { CustomAsyncPaginate } from "../../src";
@@ -57,7 +56,7 @@ export const loadOptions: LoadOptions<OptionType, null> = async (
 const increase = (numberOfRequests: number): number => numberOfRequests + 1;
 
 export function Debounce(props: DebounceProps): ReactElement {
-	const [value, onChange] = useState<SelectValue | undefined>(undefined);
+	const [value, onChange] = useState<SelectValue>(null);
 	const [numberOfRequests, setNumberOfRequests] = useState(0);
 
 	const debounceTimeout = props?.debounceTimeout || 500;

@@ -39,8 +39,6 @@ export const DebounceInteraction: Story = {
 	},
 	play: async ({ canvasElement, step, args }) => {
 		const { loadOptions, debounceTimeout = 500 } = args;
-		const mockLoadOptions = mocked(loadOptions);
-		let preDebounceCalls = 0;
 
 		const delay = {
 			type: 300,
@@ -87,17 +85,16 @@ export const DebounceInteraction: Story = {
 				expect(getAllOptions(canvasElement)).toHaveLength(30);
 			}, waitOptions);
 
-			preDebounceCalls = mockLoadOptions.mock.calls.length;
+			mocked(loadOptions).mockClear();
 		});
 
 		await step("Type option label into the select", async () => {
 			const label = "Option 40";
 			const select = getInput(canvasElement);
-			const listbox = getMenu(canvasElement);
 
 			await type(canvasElement, label, delay.type);
 
-			await expect(listbox).toBeVisible();
+			await expect(getMenu(canvasElement)).toBeVisible();
 			await expect(select).toHaveValue(label);
 		});
 
@@ -125,9 +122,8 @@ export const DebounceInteraction: Story = {
 					inputLength,
 					inputDelay,
 				);
-				const resultCalls = expectedCalls + preDebounceCalls;
 
-				await expect(mockLoadOptions).toHaveBeenCalledTimes(resultCalls);
+				await expect(loadOptions).toHaveBeenCalledTimes(expectedCalls);
 			},
 		);
 	},

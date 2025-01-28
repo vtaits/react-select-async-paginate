@@ -76,11 +76,10 @@ export const ReloadOnErrorInteraction: Story = {
 		await step("Type option label into the select", async () => {
 			const label = "Option 40";
 			const select = getInput(canvasElement);
-			const listbox = getMenu(canvasElement);
 
 			await type(canvasElement, label);
 
-			await expect(listbox).toBeVisible();
+			await expect(getMenu(canvasElement)).toBeVisible();
 			await expect(select).toHaveValue(label);
 		});
 

@@ -1,12 +1,11 @@
+import type { SelectValue } from "@vkontakte/vkui/dist/components/NativeSelect/NativeSelect";
 import { useState } from "react";
 import type { ReactElement } from "react";
+import type { LoadOptions } from "select-async-paginate-model";
 import sleep from "sleep-promise";
+import type { ShouldLoadMore } from "use-select-async-paginate";
 import { CustomAsyncPaginate } from "../../src";
 import type { StoryProps } from "../types";
-import "@vkontakte/vkui/dist/vkui.css";
-import type { SelectValue } from "@vkontakte/vkui/dist/components/NativeSelect/NativeSelect";
-import type { LoadOptions } from "select-async-paginate-model";
-import type { ShouldLoadMore } from "use-select-async-paginate";
 
 type CustomScrollCheckProps = StoryProps & {
 	loadOptions?: LoadOptions<OptionType, null>;
