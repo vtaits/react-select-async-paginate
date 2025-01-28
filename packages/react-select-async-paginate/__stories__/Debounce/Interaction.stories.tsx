@@ -37,10 +37,7 @@ export const DebounceInteraction: Story = {
 		debounceTimeout: 600,
 	},
 	play: async ({ canvasElement, step, args }) => {
-		const canvas = within(canvasElement);
 		const { loadOptions, debounceTimeout = 500 } = args;
-		const mockLoadOptions = mocked(loadOptions);
-		let preDebounceCalls = 0;
 
 		const delay = {
 			type: 300,
@@ -87,7 +84,7 @@ export const DebounceInteraction: Story = {
 				expect(getAllOptions(canvasElement)).toHaveLength(30);
 			}, waitOptions);
 
-			preDebounceCalls = mockLoadOptions.mock.calls.length;
+			mocked(loadOptions).mockClear();
 		});
 
 		await step("Type option label into the select", async () => {
@@ -125,9 +122,8 @@ export const DebounceInteraction: Story = {
 					inputLength,
 					inputDelay,
 				);
-				const resultCalls = expectedCalls + preDebounceCalls;
 
-				await expect(mockLoadOptions).toHaveBeenCalledTimes(resultCalls);
+				await expect(loadOptions).toHaveBeenCalledTimes(expectedCalls);
 			},
 		);
 	},
