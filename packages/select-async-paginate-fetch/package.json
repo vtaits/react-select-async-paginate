@@ -1,6 +1,6 @@
 {
   "name": "select-async-paginate-fetch",
-  "version": "1.0.0",
+  "version": "1.0.0-alpha.0",
   "description": "Wrapper above select-async-paginate-model that loads options by specified url",
   "files": [
     "dist"
@@ -40,7 +40,7 @@
   "dependencies": {
     "krustykrab": "^1.0.0",
     "qs": "^6.11.2",
-    "select-async-paginate-model": "^1.0.0"
+    "select-async-paginate-model": "^1.0.0-alpha.0"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.6.4",
