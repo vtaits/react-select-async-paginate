@@ -1,4 +1,5 @@
 import { expect, fireEvent, userEvent, within } from "@storybook/test";
+import { unwrap } from "krustykrab";
 
 export function getInput(root: HTMLElement) {
 	return within(root).getByRole("combobox");
@@ -36,9 +37,15 @@ export function getAllGroups(root: HTMLElement) {
 }
 
 export function getSingleValue(root: HTMLElement) {
-	return within(root).getByText((_, el) => {
-		return el !== null && /css-.*-singleValue/.test(el.className);
-	});
+	return unwrap(
+		root.querySelector('[class*="-singleValue"]') as HTMLElement | null,
+	);
+}
+
+export function getMultipleValue(root: HTMLElement) {
+	return [...root.querySelectorAll('[class*="-multiValue"]')].map(
+		(el) => el.childNodes[0].textContent,
+	);
 }
 
 export function getMenuOption(root: HTMLElement, optionLabel: string) {
