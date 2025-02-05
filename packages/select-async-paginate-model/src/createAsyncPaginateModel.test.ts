@@ -1,5 +1,5 @@
 import { applyMiddleware, legacy_createStore } from "redux";
-import thunk from "redux-thunk";
+import { withExtraArgument } from "redux-thunk";
 import { beforeEach, expect, test, vi } from "vitest";
 import { createAsyncPaginateModel } from "./createAsyncPaginateModel";
 import { createReducer } from "./createReducer";
@@ -17,7 +17,8 @@ vi.mock("redux");
 const mockedCreateStore = vi.mocked(legacy_createStore);
 const mockedApplyMiddleWare = vi.mocked(applyMiddleware);
 
-const mockedWithExtraArgument = vi.spyOn(thunk, "withExtraArgument");
+vi.mock("redux-thunk");
+const mockedWithExtraArgument = vi.mocked(withExtraArgument);
 
 vi.mock("./createReducer");
 const mockedCreateReducer = vi.mocked(createReducer);

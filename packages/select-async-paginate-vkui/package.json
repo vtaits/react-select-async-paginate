@@ -38,20 +38,20 @@
     "react": "^18.0.0 || ^19.0.0"
   },
   "dependencies": {
-    "@vkontakte/vkui": "^7.0.0",
+    "@vkontakte/vkui": "^7.1.2",
     "select-async-paginate-model": "^1.0.0-alpha.0",
     "use-select-async-paginate": "^1.0.0-alpha.0"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
-    "@storybook/react": "^8.4.7",
-    "@storybook/test": "^8.4.7",
-    "@types/node": "^22.10.5",
-    "@types/react": "^19.0.4",
-    "@vkontakte/vkui": "^7.1.1",
+    "@storybook/react": "^8.5.3",
+    "@storybook/test": "^8.5.3",
+    "@types/node": "^22.13.1",
+    "@types/react": "^19.0.8",
+    "@vkontakte/vkui": "^7.1.2",
     "krustykrab": "^1.1.0",
     "react": "^19.0.0",
-    "tsup": "^8.3.5",
+    "tsup": "^8.3.6",
     "typescript": "5.7.3"
   }
 }

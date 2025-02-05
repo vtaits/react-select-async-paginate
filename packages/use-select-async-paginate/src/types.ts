@@ -9,5 +9,5 @@ export type ShouldLoadMore = (
 export type UseWatchMenuParams = {
 	handleScrolledToBottom?: VoidFunction;
 	shouldLoadMore?: ShouldLoadMore;
-	menuRef: RefObject<HTMLDivElement>;
+	menuRef: RefObject<HTMLDivElement | null>;
 };

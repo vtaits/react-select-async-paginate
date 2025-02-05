@@ -1,5 +1,5 @@
 import { applyMiddleware, legacy_createStore } from "redux";
-import thunk from "redux-thunk";
+import { withExtraArgument } from "redux-thunk";
 
 import { createReducer } from "./createReducer";
 import { getInitialCache } from "./getInitialCache";
@@ -41,7 +41,7 @@ export const createAsyncPaginateModel = <OptionType, Additional>(
 
 	const store = legacy_createStore(
 		reducer,
-		applyMiddleware(thunk.withExtraArgument(getParams)),
+		applyMiddleware(withExtraArgument(getParams)),
 	);
 
 	const dispatch = store.dispatch as Dispatch<OptionType, Additional>;

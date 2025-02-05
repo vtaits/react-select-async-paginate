@@ -61,12 +61,9 @@ vi.mock("../utils/sleep");
 const mockedSleep = vi.mocked(sleep);
 
 const dispatch = vi.fn();
-const getState = vi.fn<[], State<unknown, unknown>>();
-const getParams = vi.fn<[], Params<unknown, unknown>>();
-const loadOptions = vi.fn<
-	Parameters<LoadOptions<unknown, unknown>>,
-	ReturnType<LoadOptions<unknown, unknown>>
->();
+const getState = vi.fn<() => State<unknown, unknown>>();
+const getParams = vi.fn<() => Params<unknown, unknown>>();
+const loadOptions = vi.fn<LoadOptions<unknown, unknown>>();
 
 const defaultCacheItem: OptionsCacheItem<unknown, unknown> = {
 	hasMore: true,
