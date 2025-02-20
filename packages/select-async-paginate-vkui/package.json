@@ -35,10 +35,10 @@
     "test:unit": "echo pass"
   },
   "peerDependencies": {
-    "react": "^18.0.0 || ^19.0.0"
+    "react": "^18.0.0 || ^19.0.0",
+    "@vkontakte/vkui": "^7.0.0"
   },
   "dependencies": {
-    "@vkontakte/vkui": "^7.1.2",
     "select-async-paginate-model": "^1.0.0-alpha.0",
     "use-select-async-paginate": "^1.0.0-alpha.1"
   },
