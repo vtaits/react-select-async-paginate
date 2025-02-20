@@ -1,6 +1,6 @@
 {
   "name": "use-select-async-paginate",
-  "version": "1.0.0-alpha.0",
+  "version": "1.0.0-alpha.1",
   "description": "React hook for integration with `select-async-paginate-model`",
   "files": [
     "dist"
