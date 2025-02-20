@@ -1,5 +1,5 @@
 {
-  "name": "select-async-paginate-vkui",
+  "name": "select-async-paginate-vkui-v5",
   "version": "1.0.0-alpha.1",
   "description": "Wrapper above react-select that supports pagination on menu scroll",
   "files": [
@@ -36,7 +36,7 @@
   },
   "peerDependencies": {
     "react": "^18.0.0 || ^19.0.0",
-    "@vkontakte/vkui": "^7.0.0"
+    "@vkontakte/vkui": "^5.0.0"
   },
   "dependencies": {
     "select-async-paginate-model": "^1.0.0-alpha.0",
@@ -48,9 +48,10 @@
     "@storybook/test": "^8.5.3",
     "@types/node": "^22.13.1",
     "@types/react": "^19.0.8",
-    "@vkontakte/vkui": "^7.1.2",
+    "@vkontakte/vkui": "^5.10.2",
     "krustykrab": "^1.1.0",
     "react": "^19.0.0",
+    "sleep-promise": "^9.1.0",
     "tsup": "^8.3.6",
     "typescript": "5.7.3"
   }

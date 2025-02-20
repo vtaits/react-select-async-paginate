@@ -1,8 +1,8 @@
 import {
 	type ChipOption,
-	ChipsSelect,
-	type ChipsSelectProps,
+	unstable_ChipsSelect as ChipsSelect,
 } from "@vkontakte/vkui";
+import type { ChipsSelectProps } from "@vkontakte/vkui/dist/components/ChipsSelect/ChipsSelect";
 import { useCallback, useEffect, useRef } from "react";
 import type { Params } from "select-async-paginate-model";
 import {
@@ -60,7 +60,9 @@ export function ChipsAsyncPaginate<Option extends ChipOption, Additional>({
 		let timeout: number | null = null;
 
 		const handle = () => {
-			menuRef.current = document.querySelector(".vkuiCustomScrollView__host");
+			menuRef.current = document.querySelector(".vkuiCustomScrollView__box");
+
+			model.onToggleMenu(Boolean(menuRef.current))
 
 			timeout = setTimeout(handle, 100) as unknown as number;
 		};
@@ -72,7 +74,7 @@ export function ChipsAsyncPaginate<Option extends ChipOption, Additional>({
 				clearTimeout(timeout);
 			}
 		};
-	}, []);
+	}, [model]);
 
 	const handleScrolledToBottom = useCallback(() => {
 		model.handleLoadMore();
@@ -93,13 +95,7 @@ export function ChipsAsyncPaginate<Option extends ChipOption, Additional>({
 			options={options as Option[]}
 			fetching={(isLoading && options.length === 0) || rest.fetching}
 			onInputChange={(e) => {
-				model.onChangeInputValue(e.target.value);
-			}}
-			onClose={() => {
-				model.onToggleMenu(false);
-			}}
-			onOpen={() => {
-				model.onToggleMenu(true);
+				model.onChangeInputValue(e?.target.value || "");
 			}}
 		/>
 	);

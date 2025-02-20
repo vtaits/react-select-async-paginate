@@ -63,7 +63,9 @@ export function CustomAsyncPaginate<
 		let timeout: number | null = null;
 
 		const handle = () => {
-			menuRef.current = document.querySelector(".vkuiCustomScrollView__host");
+			menuRef.current = document.querySelector(".vkuiCustomScrollView__box");
+
+			model.onToggleMenu(Boolean(menuRef.current))
 
 			timeout = setTimeout(handle, 100) as unknown as number;
 		};
@@ -75,7 +77,7 @@ export function CustomAsyncPaginate<
 				clearTimeout(timeout);
 			}
 		};
-	}, []);
+	}, [model]);
 
 	const handleScrolledToBottom = useCallback(() => {
 		model.handleLoadMore();
@@ -97,13 +99,7 @@ export function CustomAsyncPaginate<
 			options={options as Option[]}
 			fetching={(isLoading && options.length === 0) || rest.fetching}
 			onInputChange={(e) => {
-				model.onChangeInputValue(e.target.value);
-			}}
-			onClose={() => {
-				model.onToggleMenu(false);
-			}}
-			onOpen={() => {
-				model.onToggleMenu(true);
+				model.onChangeInputValue((e.target as HTMLInputElement).value);
 			}}
 		/>
 	);
