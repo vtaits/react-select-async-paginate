@@ -1,6 +1,5 @@
-import type { SelectValue } from "@vkontakte/vkui/dist/components/NativeSelect/NativeSelect";
 import { useCallback, useState } from "react";
-import type { ReactElement } from "react";
+import type { ComponentProps, ReactElement } from "react";
 import type { LoadOptions } from "select-async-paginate-model";
 import sleep from "sleep-promise";
 import { CustomAsyncPaginate } from "../../../src";
@@ -56,7 +55,8 @@ export const loadOptions: LoadOptions<OptionType, null> = async (
 const increase = (numberOfRequests: number): number => numberOfRequests + 1;
 
 export function Debounce(props: DebounceProps): ReactElement {
-	const [value, onChange] = useState<SelectValue>(null);
+	const [value, onChange] =
+		useState<ComponentProps<typeof CustomAsyncPaginate>["value"]>(undefined);
 	const [numberOfRequests, setNumberOfRequests] = useState(0);
 
 	const debounceTimeout = props?.debounceTimeout || 500;
@@ -85,8 +85,8 @@ export function Debounce(props: DebounceProps): ReactElement {
 				value={value}
 				loadOptions={wrappedLoadOptions}
 				debounceTimeout={debounceTimeout}
-				onChange={(_, nextValue) => {
-					onChange(nextValue);
+				onChange={(event) => {
+					onChange(event.target.value);
 				}}
 			/>
 		</div>

@@ -65,7 +65,7 @@ export function CustomAsyncPaginate<
 		const handle = () => {
 			menuRef.current = document.querySelector(".vkuiCustomScrollView__box");
 
-			model.onToggleMenu(Boolean(menuRef.current))
+			model.onToggleMenu(Boolean(menuRef.current));
 
 			timeout = setTimeout(handle, 100) as unknown as number;
 		};

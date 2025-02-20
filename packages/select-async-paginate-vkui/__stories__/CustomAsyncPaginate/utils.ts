@@ -7,7 +7,7 @@ export function getInput(root: HTMLElement) {
 
 export function getMenu(_root: HTMLElement) {
 	const scrollView = unwrap(
-		document.querySelector(".vkuiCustomScrollView__host"),
+		document.querySelector(".vkuiCustomScrollView__box"),
 	);
 
 	return scrollView as HTMLElement;

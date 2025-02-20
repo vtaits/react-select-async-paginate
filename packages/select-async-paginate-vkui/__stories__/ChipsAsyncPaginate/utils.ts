@@ -2,12 +2,12 @@ import { expect, fireEvent, userEvent, within } from "@storybook/test";
 import { unwrap } from "krustykrab";
 
 export function getInput(root: HTMLElement) {
-	return within(root).getByRole("combobox");
+	return within(root).getByRole("textbox");
 }
 
 export function getMenu(_root: HTMLElement) {
 	const scrollView = unwrap(
-		document.querySelector(".vkuiCustomScrollView__host"),
+		document.querySelector(".vkuiCustomScrollView__box"),
 	);
 
 	return scrollView as HTMLElement;
@@ -43,7 +43,7 @@ export function getAllGroups(root: HTMLElement) {
 
 export function getMultipleValue(root: HTMLElement) {
 	return [
-		...root.querySelectorAll(".vkuiChipsInputBase__host .vkuiChip__content"),
+		...root.querySelectorAll(".vkuiChipsInputBase .vkuiChip__content"),
 	].map((el) => el.childNodes[0].textContent);
 }
 

@@ -1,6 +1,5 @@
-import type { SelectValue } from "@vkontakte/vkui/dist/components/NativeSelect/NativeSelect";
 import { useState } from "react";
-import type { ReactElement } from "react";
+import type { ComponentProps, ReactElement } from "react";
 import type { LoadOptions } from "select-async-paginate-model";
 import sleep from "sleep-promise";
 import type { ShouldLoadMore } from "use-select-async-paginate";
@@ -64,7 +63,8 @@ const shouldLoadMore: ShouldLoadMore = (
 };
 
 export function CustomScrollCheck(props: CustomScrollCheckProps): ReactElement {
-	const [value, onChange] = useState<SelectValue | undefined>(null);
+	const [value, onChange] =
+		useState<ComponentProps<typeof CustomAsyncPaginate>["value"]>(undefined);
 
 	const loadOptionsHandler = props?.loadOptions || loadOptions;
 
@@ -80,8 +80,8 @@ export function CustomScrollCheck(props: CustomScrollCheckProps): ReactElement {
 				{...props}
 				value={value}
 				loadOptions={loadOptionsHandler}
-				onChange={(_, nextValue) => {
-					onChange(nextValue);
+				onChange={(event) => {
+					onChange(event.target.value);
 				}}
 				shouldLoadMore={shouldLoadMore}
 			/>

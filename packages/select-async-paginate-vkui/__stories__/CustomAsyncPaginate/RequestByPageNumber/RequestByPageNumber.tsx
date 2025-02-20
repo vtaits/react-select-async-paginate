@@ -1,6 +1,5 @@
-import type { SelectValue } from "@vkontakte/vkui/dist/components/NativeSelect/NativeSelect";
 import { useState } from "react";
-import type { ReactElement } from "react";
+import type { ComponentProps, ReactElement } from "react";
 import type { LoadOptions } from "select-async-paginate-model";
 import sleep from "sleep-promise";
 import { CustomAsyncPaginate } from "../../../src";
@@ -91,7 +90,8 @@ export const loadPageOptions: LoadOptions<OptionType, Additional> = async (
 export function RequestByPageNumber(
 	props: RequestByPageNumberProps,
 ): ReactElement {
-	const [value, onChange] = useState<SelectValue>(null);
+	const [value, onChange] =
+		useState<ComponentProps<typeof CustomAsyncPaginate>["value"]>(undefined);
 
 	const loadOptionsHandler = props?.loadOptions || loadPageOptions;
 
@@ -106,8 +106,8 @@ export function RequestByPageNumber(
 				additional={initialAdditional}
 				value={value}
 				loadOptions={loadOptionsHandler}
-				onChange={(_, nextValue) => {
-					onChange(nextValue);
+				onChange={(event) => {
+					onChange(event.target.value);
 				}}
 			/>
 		</div>

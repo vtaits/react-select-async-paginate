@@ -1,9 +1,7 @@
 import { useState } from "react";
-import type { ReactElement } from "react";
+import type { ComponentProps, ReactElement } from "react";
 import type { LoadOptions } from "select-async-paginate-model";
 import sleep from "sleep-promise";
-
-import type { SelectValue } from "@vkontakte/vkui/dist/components/NativeSelect/NativeSelect";
 import { CustomAsyncPaginate } from "../../../src";
 import type { StoryProps } from "../types";
 
@@ -62,7 +60,8 @@ export const loadOptions: LoadOptions<OptionType, unknown> = async (
 };
 
 export function ReloadOnError(props: ReloadOnErrorProps): ReactElement {
-	const [value, onChange] = useState<SelectValue>(null);
+	const [value, onChange] =
+		useState<ComponentProps<typeof CustomAsyncPaginate>["value"]>(undefined);
 
 	const loadOptionsHandler = props?.loadOptions || loadOptions;
 	const reloadOnErrorTimeout = props?.reloadOnErrorTimeout || 5000;
@@ -77,8 +76,8 @@ export function ReloadOnError(props: ReloadOnErrorProps): ReactElement {
 				{...props}
 				value={value}
 				loadOptions={loadOptionsHandler}
-				onChange={(_, nextValue) => {
-					onChange(nextValue);
+				onChange={(event) => {
+					onChange(event.target.value);
 				}}
 				reloadOnErrorTimeout={reloadOnErrorTimeout}
 			/>
