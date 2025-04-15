@@ -1,9 +1,12 @@
 import { stringifyParams } from "./stringifyParams";
 
 export const get = async (
-	url: string,
+	url: string|undefined,
 	params: Record<string, unknown>,
 ): Promise<unknown> => {
+	if (url == null) {
+		throw new Error("The `url` prop is required unless `get` is overridden.")
+	}
 	const paramsStr = stringifyParams(params);
 
 	const response: Response = await fetch(`${url}?${paramsStr}`, {
