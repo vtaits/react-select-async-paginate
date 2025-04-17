@@ -1,4 +1,3 @@
-import { getResult } from "krustykrab";
 import { useCallback, useMemo } from "react";
 import type { GroupBase } from "react-select";
 import { checkIsResponse } from "react-select-async-paginate";
