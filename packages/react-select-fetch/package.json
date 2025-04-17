@@ -48,18 +48,18 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
-    "@storybook/react": "^8.5.1",
-    "@storybook/test": "^8.5.1",
+    "@storybook/react": "^8.6.12",
+    "@storybook/test": "^8.6.12",
     "@types/qs": "^6.9.18",
-    "@types/react": "^19.0.8",
-    "@vitest/coverage-v8": "^3.0.4",
-    "react": "^19.0.0",
-    "react-select": "^5.9.0",
+    "@types/react": "^19.1.2",
+    "@vitest/coverage-v8": "^3.1.1",
+    "react": "^19.1.0",
+    "react-select": "^5.10.1",
     "react-select-async-paginate": "^0.7.9",
     "sleep-promise": "^9.1.0",
-    "tsup": "^8.3.5",
-    "typescript": "5.7.3",
-    "vitest": "^3.0.4",
-    "vitest-fetch-mock": "^0.4.3"
+    "tsup": "^8.4.0",
+    "typescript": "5.8.3",
+    "vitest": "^3.1.1",
+    "vitest-fetch-mock": "^0.4.5"
   }
 }
