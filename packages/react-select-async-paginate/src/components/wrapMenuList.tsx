@@ -2,7 +2,7 @@ import composeRefs from "@seznam/compose-react-refs";
 import { useCallback, useEffect, useMemo, useRef } from "react";
 import type { ComponentType, ReactElement } from "react";
 import type { GroupBase, MenuListProps } from "react-select";
-import type { ShouldLoadMore } from "./types";
+import type { ShouldLoadMore } from "../types";
 
 export const CHECK_TIMEOUT = 300;
 

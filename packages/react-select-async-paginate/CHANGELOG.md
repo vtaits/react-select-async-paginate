@@ -1,3 +1,9 @@
+## 0.7.10 (18 apr 2025)
+
+### Bugfix
+
+- Fixed menu auto positioning [#187](https://github.com/vtaits/react-select-async-paginate/issues/187)
+
 ## 0.7.9 (26 dec 2024)
 
 ### New features
