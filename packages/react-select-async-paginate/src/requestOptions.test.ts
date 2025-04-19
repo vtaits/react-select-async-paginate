@@ -85,6 +85,7 @@ test("should request if options not cached", async () => {
 		setOptionsCache,
 		defaultReduceOptions,
 		defaultIsMountedRef,
+		false,
 	);
 
 	expect(loadOptions).toHaveBeenCalledTimes(1);
@@ -182,6 +183,7 @@ test("should request if options cached", async () => {
 		setOptionsCache,
 		defaultReduceOptions,
 		defaultIsMountedRef,
+		false,
 	);
 
 	expect(loadOptions).toHaveBeenCalledTimes(1);
@@ -254,6 +256,7 @@ test("should not request if options are loading for current search", async () =>
 		setOptionsCache,
 		defaultReduceOptions,
 		defaultIsMountedRef,
+		false,
 	);
 
 	expect(loadOptions).toHaveBeenCalledTimes(0);
@@ -295,6 +298,7 @@ test("should not request if hasMore is false for current search", async () => {
 		setOptionsCache,
 		defaultReduceOptions,
 		defaultIsMountedRef,
+		false,
 	);
 
 	expect(loadOptions).toHaveBeenCalledTimes(0);
@@ -325,6 +329,7 @@ test("should request with error", async () => {
 		setOptionsCache,
 		defaultReduceOptions,
 		defaultIsMountedRef,
+		false,
 	);
 
 	expect(loadOptions).toHaveBeenCalledTimes(1);
@@ -384,6 +389,7 @@ test("should request with error and set locked timeout", async () => {
 		setOptionsCache,
 		defaultReduceOptions,
 		defaultIsMountedRef,
+		false,
 	);
 
 	expect(loadOptions).toHaveBeenCalledTimes(1);
@@ -488,6 +494,7 @@ test("should redefine reduceOptions", async () => {
 		setOptionsCache,
 		reduceOptions,
 		defaultIsMountedRef,
+		false,
 	);
 
 	expect(loadOptions).toHaveBeenCalledTimes(1);
@@ -572,6 +579,7 @@ test("should validate response", async () => {
 			defaultSetOptionsCache,
 			defaultReduceOptions,
 			defaultIsMountedRef,
+			false,
 		);
 	} catch (e) {
 		hasError = true;
@@ -599,6 +607,7 @@ test("should not sleep if debounceTimeout is 0", async () => {
 		defaultSetOptionsCache,
 		defaultReduceOptions,
 		defaultIsMountedRef,
+		false,
 	);
 
 	expect(mockedSleep).toHaveBeenCalledTimes(0);
@@ -620,6 +629,7 @@ test('should not sleep if debounceTimeout bigger than 0 and caller is not "input
 		defaultSetOptionsCache,
 		defaultReduceOptions,
 		defaultIsMountedRef,
+		false,
 	);
 
 	expect(mockedSleep).toHaveBeenCalledTimes(0);
@@ -664,6 +674,7 @@ test('should sleep if debounceTimeout bigger than 0 and caller is "input-change"
 		setOptionsCache,
 		defaultReduceOptions,
 		defaultIsMountedRef,
+		false,
 	);
 
 	expect(mockedSleep).toHaveBeenCalledTimes(1);
@@ -748,6 +759,7 @@ test("should cancel loading if inputValue has changed during sleep for empty cac
 		setOptionsCache,
 		defaultReduceOptions,
 		defaultIsMountedRef,
+		false,
 	);
 
 	expect(loadOptions).toHaveBeenCalledTimes(0);
@@ -828,6 +840,7 @@ test("should cancel loading if inputValue has changed during sleep for filled ca
 		setOptionsCache,
 		defaultReduceOptions,
 		defaultIsMountedRef,
+		false,
 	);
 
 	expect(loadOptions).toHaveBeenCalledTimes(0);
@@ -890,6 +903,7 @@ test("should redefine additional with response", async () => {
 		setOptionsCache,
 		defaultReduceOptions,
 		defaultIsMountedRef,
+		false,
 	);
 
 	expect(setOptionsCache).toHaveBeenCalledTimes(2);
@@ -928,6 +942,7 @@ test("should not redefine additional with response", async () => {
 		setOptionsCache,
 		defaultReduceOptions,
 		defaultIsMountedRef,
+		false,
 	);
 
 	expect(setOptionsCache).toHaveBeenCalledTimes(2);
@@ -963,6 +978,7 @@ test("should set truthy hasMore with response", async () => {
 		setOptionsCache,
 		defaultReduceOptions,
 		defaultIsMountedRef,
+		false,
 	);
 
 	expect(setOptionsCache).toHaveBeenCalledTimes(2);
@@ -997,6 +1013,7 @@ test("should set falsy hasMore with response", async () => {
 		setOptionsCache,
 		defaultReduceOptions,
 		defaultIsMountedRef,
+		false,
 	);
 
 	expect(setOptionsCache).toHaveBeenCalledTimes(2);
@@ -1049,6 +1066,7 @@ test("should not set cached after loading if the component is unmounted ", async
 		{
 			current: false,
 		},
+		false,
 	);
 
 	expect(loadOptions).toHaveBeenCalledTimes(1);

@@ -1,5 +1,5 @@
 import { getResult } from "krustykrab";
-import type { MutableRefObject } from "react";
+import type { RefObject } from "react";
 import type { GroupBase } from "react-select";
 import sleep from "sleep-promise";
 import { getInitialCache } from "./getInitialCache";
@@ -32,18 +32,17 @@ export const requestOptions = async <
 	Additional,
 >(
 	caller: RequestOptionsCallerType,
-	paramsRef: MutableRefObject<
+	paramsRef: RefObject<
 		UseAsyncPaginateBaseParams<OptionType, Group, Additional>
 	>,
-	optionsCacheRef: MutableRefObject<
-		OptionsCache<OptionType, Group, Additional>
-	>,
+	optionsCacheRef: RefObject<OptionsCache<OptionType, Group, Additional>>,
 	debounceTimeout: number,
 	setOptionsCache: SetOptionsCache<OptionType, Group, Additional>,
 	reduceOptions: ReduceOptions<OptionType, Group, Additional>,
 	isMountedRef: {
 		current: boolean;
 	},
+	clearCacheOnSearchChange: boolean,
 ): Promise<void> => {
 	const currentInputValue = paramsRef.current.inputValue;
 
@@ -65,13 +64,24 @@ export const requestOptions = async <
 	setOptionsCache(
 		(
 			prevOptionsCache: OptionsCache<OptionType, Group, Additional>,
-		): OptionsCache<OptionType, Group, Additional> => ({
-			...prevOptionsCache,
-			[currentInputValue]: {
-				...currentOptions,
-				isLoading: true,
-			},
-		}),
+		): OptionsCache<OptionType, Group, Additional> => {
+			if (clearCacheOnSearchChange && caller === "input-change") {
+				return {
+					[currentInputValue]: {
+						...currentOptions,
+						isLoading: true,
+					},
+				};
+			}
+
+			return {
+				...prevOptionsCache,
+				[currentInputValue]: {
+					...currentOptions,
+					isLoading: true,
+				},
+			};
+		},
 	);
 
 	if (debounceTimeout > 0 && caller === "input-change") {

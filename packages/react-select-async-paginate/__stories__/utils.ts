@@ -22,6 +22,11 @@ export async function type(root: HTMLElement, text: string, delay = 200) {
 	await userEvent.type(select, text, { delay });
 }
 
+export async function clearText(root: HTMLElement) {
+	const select = getInput(root);
+	await userEvent.clear(select);
+}
+
 export async function scroll(root: HTMLElement, position: number) {
 	await fireEvent.scroll(getMenu(root), {
 		target: { scrollTop: position },

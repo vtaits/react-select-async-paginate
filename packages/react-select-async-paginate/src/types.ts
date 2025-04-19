@@ -105,6 +105,10 @@ export type UseAsyncPaginateParams<
 	Group extends GroupBase<OptionType>,
 	Additional,
 > = {
+	/**
+	 * Clear all cached options on search change
+	 */
+	clearCacheOnSearchChange?: boolean;
 	loadOptions: LoadOptions<OptionType, Group, Additional>;
 	options?: OptionsOrGroups<OptionType, Group>;
 	defaultOptions?: boolean | OptionsOrGroups<OptionType, Group>;

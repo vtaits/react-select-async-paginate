@@ -26,6 +26,7 @@ export const useAsyncPaginateBase = <
 	deps: ReadonlyArray<unknown> = [],
 ): UseAsyncPaginateBaseResult<OptionType, Group> => {
 	const {
+		clearCacheOnSearchChange = false,
 		defaultOptions,
 		loadOptionsOnMenuOpen = true,
 		debounceTimeout = 0,
@@ -68,6 +69,7 @@ export const useAsyncPaginateBase = <
 				},
 				reduceOptionsRef.current,
 				isMountedRef,
+				clearCacheOnSearchChange,
 			);
 		},
 	);
