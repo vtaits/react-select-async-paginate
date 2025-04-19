@@ -17,6 +17,14 @@ export async function openMenu(root: HTMLElement) {
 	await expect(getMenu(root)).toBeVisible();
 }
 
+export async function closeMenu(root: HTMLElement) {
+	const input = getInput(root);
+
+	await userEvent.click(unwrap(input.parentNode) as Element);
+
+	await expect(within(root).queryByRole("listbox")).toBeFalsy();
+}
+
 export async function type(root: HTMLElement, text: string, delay = 200) {
 	const select = getInput(root);
 	await userEvent.type(select, text, { delay });

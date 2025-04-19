@@ -6,7 +6,7 @@
 
 ### New features
 
-- Added `clearCacheOnSearchChange` prop [#185](https://github.com/vtaits/react-select-async-paginate/issues/185)
+- Added `clearCacheOnSearchChange` and `clearCacheOnMenuClose` props [#185](https://github.com/vtaits/react-select-async-paginate/issues/185)
 
 ## 0.7.9 (26 dec 2024)
 

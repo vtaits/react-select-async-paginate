@@ -27,6 +27,7 @@ export const useAsyncPaginateBase = <
 ): UseAsyncPaginateBaseResult<OptionType, Group> => {
 	const {
 		clearCacheOnSearchChange = false,
+		clearCacheOnMenuClose = false,
 		defaultOptions,
 		loadOptionsOnMenuOpen = true,
 		debounceTimeout = 0,
@@ -104,18 +105,26 @@ export const useAsyncPaginateBase = <
 	}, [callRequestOptionsRef, inputValue, menuIsOpenRef, optionsCacheRef]);
 
 	useEffect(() => {
-		if (
-			menuIsOpen &&
-			!optionsCacheRef.current[""] &&
-			loadOptionsOnMenuOpenRef.current
-		) {
-			callRequestOptionsRef.current("menu-toggle");
+		if (menuIsOpen) {
+			if (!optionsCacheRef.current[""] && loadOptionsOnMenuOpenRef.current) {
+				callRequestOptionsRef.current("menu-toggle");
+				return;
+			}
+
+			return;
+		}
+
+		if (clearCacheOnMenuClose) {
+			optionsCacheRef.current = {};
+
+			setStateId(increaseStateId);
 		}
 	}, [
 		callRequestOptionsRef,
 		loadOptionsOnMenuOpenRef,
 		menuIsOpen,
 		optionsCacheRef,
+		clearCacheOnMenuClose,
 	]);
 
 	const currentOptions: OptionsCacheItem<OptionType, Group, Additional> =

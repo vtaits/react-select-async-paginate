@@ -120,6 +120,10 @@ Not required. Number. Time in milliseconds to retry a request after an error
 
 Not required. Boolean. Clear all cached options on search change
 
+### clearCacheOnMenuClose
+
+Not required. Boolean. Clear all cached options on menu close
+
 ### cacheUniqs
 
 Not required. Array. Works as 2nd argument of `useEffect` hook. When one of items changed, `AsyncPaginate` cleans all cached options.

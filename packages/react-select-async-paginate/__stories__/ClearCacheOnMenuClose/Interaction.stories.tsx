@@ -4,26 +4,24 @@ import type { GroupBase } from "react-select";
 import type { AsyncPaginate, LoadOptions } from "../../src";
 import {
 	clearText,
+	closeMenu,
 	getAllOptions,
 	getMenuOption,
 	openMenu,
 	scroll,
 	type,
 } from "../utils";
-import {
-	ClearCacheOnSearchChange,
-	loadOptions,
-} from "./ClearCacheOnSearchChange";
+import { ClearCacheOnMenuClose, loadOptions } from "./ClearCacheOnMenuClose";
 
-const meta: Meta<typeof ClearCacheOnSearchChange> = {
-	title: "react-select-async-paginate/Clear cache on search change",
-	component: ClearCacheOnSearchChange,
+const meta: Meta<typeof ClearCacheOnMenuClose> = {
+	title: "react-select-async-paginate/Clear cache on menu close",
+	component: ClearCacheOnMenuClose,
 };
 export default meta;
 type Story = StoryObj<typeof AsyncPaginate>;
 type TestLoadOptions = LoadOptions<unknown, GroupBase<unknown>, unknown>;
 
-export const ClearCacheOnSearchChangeInteraction: Story = {
+export const ClearCacheOnMenuCloseInteraction: Story = {
 	name: "Interaction",
 	args: {
 		loadOptions: fn(loadOptions as TestLoadOptions),
@@ -89,8 +87,23 @@ export const ClearCacheOnSearchChangeInteraction: Story = {
 				waitOptions,
 			);
 
-			expect(getAllOptions(canvasElement)).toHaveLength(10);
+			expect(getAllOptions(canvasElement)).toHaveLength(20);
+			expect(loadOptions).toHaveBeenCalledTimes(3);
+		});
 
+		await step("Close and open menu", async () => {
+			await closeMenu(canvasElement);
+			await openMenu(canvasElement);
+
+			await waitFor(
+				() => [
+					getMenuOption(canvasElement, "Option 1"),
+					getMenuOption(canvasElement, "Option 10"),
+				],
+				waitOptions,
+			);
+
+			expect(getAllOptions(canvasElement)).toHaveLength(10);
 			expect(loadOptions).toHaveBeenCalledTimes(4);
 		});
 	},
