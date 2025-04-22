@@ -32,7 +32,7 @@ export const loadOptions: LoadOptions<
 	GroupBase<OptionType>,
 	unknown
 > = async (search, prevOptions) => {
-	await sleep(1000);
+	await sleep(500);
 
 	let filteredOptions: OptionType[];
 	if (!search) {

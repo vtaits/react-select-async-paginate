@@ -60,7 +60,7 @@ export const loadOptions: LoadOptions<
 	GroupBase<OptionType>,
 	null
 > = async (search, prevOptions) => {
-	await sleep(1000);
+	await sleep(500);
 
 	let filteredOptions: OptionType[];
 	if (!search) {
@@ -86,7 +86,7 @@ export const loadOptions: LoadOptions<
 };
 
 const addNewOption = async (inputValue: string): Promise<OptionType> => {
-	await sleep(1000);
+	await sleep(500);
 
 	const newOption = {
 		label: inputValue,

@@ -12,8 +12,7 @@ vi.mock("./validateResponse");
 const mockedValidateResponse = vi.mocked(validateResponse);
 const mockedSleep = vi.mocked(sleep);
 
-vi.spyOn(global, "setTimeout");
-const mockedSetTimeout = vi.mocked(setTimeout);
+vi.spyOn(window, "setTimeout");
 
 beforeEach(() => {
 	mockedValidateResponse.mockReturnValue(true);
