@@ -30,7 +30,7 @@ export type MapResponse<OptionType, Group extends GroupBase<OptionType>> = (
 ) => Response<OptionType, Group, Additional>;
 
 export type Get = <Response>(
-	url: string,
+	url: string|undefined,
 	params: {
 		[key: string]: unknown;
 	},
@@ -40,7 +40,7 @@ export type UseSelectFetchMapParams<
 	OptionType,
 	Group extends GroupBase<OptionType>,
 > = {
-	url: string;
+	url?: string;
 	queryParams?: {
 		[key: string]: unknown;
 	};
