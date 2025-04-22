@@ -16,13 +16,25 @@ export async function openMenu(screen: RenderResult) {
 
 	await input.click();
 
-	await expect(getMenu(screen)).toBeVisible();
+	await expect.element(getMenu(screen)).toBeInTheDocument();
+}
+
+export async function closeMenu(screen: RenderResult) {
+	const input = getInput(screen);
+
+	await userEvent.click(unwrap(input.query()?.parentNode) as Element);
+
+	await expect.element(getMenu(screen)).not.toBeInTheDocument();
 }
 
 export async function type(screen: RenderResult, text: string) {
 	const input = getInput(screen);
 
 	await input.fill(text);
+}
+
+export async function clearText(screen: RenderResult) {
+	type(screen, "");
 }
 
 export async function scroll(screen: RenderResult, position: number) {

@@ -8,6 +8,10 @@ export default defineConfig({
 			provider: "playwright",
 			enabled: true,
 			instances: [{ browser: "chromium" }],
+			viewport: {
+				width: 600,
+				height: 300,
+			}
 		},
 	},
 });
