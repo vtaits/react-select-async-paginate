@@ -36,7 +36,7 @@ export async function get<Response>(
 	url: string,
 	params: { [key: string]: unknown },
 ): Promise<Response> {
-	await sleep(1000);
+	await sleep(500);
 
 	const search = typeof params?.search === "string" ? params.search : "";
 	const offset = typeof params?.offset === "number" ? params.offset : 0;

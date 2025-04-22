@@ -6,6 +6,7 @@
     "lib": [
       "ESNext",
       "DOM",
+      "DOM.Iterable"
     ],
     "allowJs": false,
     "skipLibCheck": true,
@@ -16,7 +17,8 @@
     "module": "ESNext",
     "moduleResolution": "Node",
     "resolveJsonModule": true,
-    "isolatedModules": true
+    "isolatedModules": true,
+    "types": ["@vitest/browser/providers/playwright"]
   },
   "include": [
     "src/**/*",
