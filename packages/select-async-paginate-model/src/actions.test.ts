@@ -8,6 +8,8 @@ import {
 	UNSET_LOADING,
 } from "./actionTypes";
 import {
+	type SetInputValueAction,
+	type SetMenuIsOpenAction,
 	onLoadSuccess,
 	reset,
 	setInputValue,
@@ -39,12 +41,13 @@ test("reset", () => {
 });
 
 test("setInputValue", () => {
-	expect(setInputValue("test")).toEqual({
+	expect(setInputValue("test", false)).toEqual({
 		type: SET_INPUT_VALUE,
 		payload: {
 			inputValue: "test",
+			clearCacheOnSearchChange: false,
 		},
-	});
+	} satisfies SetInputValueAction);
 });
 
 test("setLoading", () => {
@@ -57,12 +60,13 @@ test("setLoading", () => {
 });
 
 test("setMenuIsOpen", () => {
-	expect(setMenuIsOpen(true)).toEqual({
+	expect(setMenuIsOpen(true, false)).toEqual({
 		type: SET_MENU_IS_OPEN,
 		payload: {
 			menuIsOpen: true,
+			clearCacheOnMenuClose: false,
 		},
-	});
+	} satisfies SetMenuIsOpenAction);
 });
 
 test("unsetLoading", () => {

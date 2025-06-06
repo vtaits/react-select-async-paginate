@@ -4,6 +4,16 @@
 
 - `defaultAdditional` -> `initialAdditional`
 
+## 0.7.10
+
+### Bugfix
+
+- Fixed menu auto positioning [#187](https://github.com/vtaits/react-select-async-paginate/issues/187)
+
+### New features
+
+- Added `clearCacheOnSearchChange` and `clearCacheOnMenuClose` props [#185](https://github.com/vtaits/react-select-async-paginate/issues/185)
+
 ## 0.7.9 (26 dec 2024)
 
 ### New features

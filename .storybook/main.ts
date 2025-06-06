@@ -1,24 +1,9 @@
 import type { StorybookConfig } from '@storybook/react-vite';
-import path from 'path';
+import path from 'node:path';
 
 const config: StorybookConfig = {
   stories: ['../packages/**/*.stories.@(js|jsx|ts|tsx)'],
-  addons: [
-    '@storybook/addon-links',
-    '@storybook/addon-essentials',
-    '@storybook/addon-interactions',
-    '@storybook/addon-coverage'
-  ],
-  core: {
-    builder: '@storybook/builder-vite',
-  },
-  framework: {
-    name: '@storybook/react-vite',
-    options: {},
-  },
-  docs: {
-    autodocs: 'tag',
-  },
+  framework: '@storybook/react-vite',
 
   async viteFinal(config) {
     const { mergeConfig } = await import('vite');

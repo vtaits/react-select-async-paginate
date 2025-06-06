@@ -24,10 +24,15 @@ const action: SetInputValueAction = {
 	type: SET_INPUT_VALUE,
 	payload: {
 		inputValue: "testInput",
+		clearCacheOnSearchChange: false,
 	},
 };
 
 mockedSetInputValueAction.mockReturnValue(action);
+
+const getParams = vi.fn().mockReturnValue({
+	clearCacheOnSearchChange: false,
+});
 
 test("should not load options if menu is closed", () => {
 	const dispatch = vi.fn();
@@ -39,10 +44,11 @@ test("should not load options if menu is closed", () => {
 			inputValue: "",
 			menuIsOpen: false,
 		}),
+		getParams,
 	);
 
 	expect(mockedSetInputValueAction).toHaveBeenCalledTimes(1);
-	expect(mockedSetInputValueAction).toHaveBeenCalledWith("testInput");
+	expect(mockedSetInputValueAction).toHaveBeenCalledWith("testInput", false);
 
 	expect(mockedRequestOptions).toHaveBeenCalledTimes(0);
 
@@ -68,10 +74,11 @@ test("should not load options if cache for input value is not empty", () => {
 			inputValue: "",
 			menuIsOpen: true,
 		}),
+		getParams,
 	);
 
 	expect(mockedSetInputValueAction).toHaveBeenCalledTimes(1);
-	expect(mockedSetInputValueAction).toHaveBeenCalledWith("testInput");
+	expect(mockedSetInputValueAction).toHaveBeenCalledWith("testInput", false);
 
 	expect(mockedRequestOptions).toHaveBeenCalledTimes(0);
 
@@ -92,10 +99,11 @@ test("should load options", () => {
 			inputValue: "",
 			menuIsOpen: true,
 		}),
+		getParams,
 	);
 
 	expect(mockedSetInputValueAction).toHaveBeenCalledTimes(1);
-	expect(mockedSetInputValueAction).toHaveBeenCalledWith("testInput");
+	expect(mockedSetInputValueAction).toHaveBeenCalledWith("testInput", false);
 
 	expect(mockedRequestOptions).toHaveBeenCalledTimes(1);
 	expect(mockedRequestOptions).toHaveBeenCalledWith(

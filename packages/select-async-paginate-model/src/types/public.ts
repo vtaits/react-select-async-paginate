@@ -71,6 +71,14 @@ export type Params<OptionType, Additional> = {
 	 */
 	autoload?: boolean;
 	/**
+	 * Clear all cached options on search change
+	 */
+	clearCacheOnSearchChange?: boolean;
+	/**
+	 * Clear all cached options on menu close
+	 */
+	clearCacheOnMenuClose?: boolean;
+	/**
 	 * `Debounce timeout for requests after changing value of the search input`
 	 */
 	debounceTimeout?: number;

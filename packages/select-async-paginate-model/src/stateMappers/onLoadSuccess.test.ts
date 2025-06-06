@@ -5,31 +5,43 @@ const params = {
 	loadOptions: vi.fn(),
 };
 
-test("should throw an error if cache for current `inputValue` is not defined", () => {
-	expect(() => {
-		onLoadSuccess(
-			{
-				inputValue: "",
-				menuIsOpen: false,
-				cache: {
-					test1: {
-						hasMore: false,
-						isFirstLoad: false,
-						isLoading: false,
-						options: [1, 2, 3],
-						lockedUntil: 0,
-					},
+test("should return previous state if cache for current `inputValue` is not defined", () => {
+	const result = onLoadSuccess(
+		{
+			inputValue: "",
+			menuIsOpen: false,
+			cache: {
+				test1: {
+					hasMore: false,
+					isFirstLoad: false,
+					isLoading: false,
+					options: [1, 2, 3],
+					lockedUntil: 0,
 				},
 			},
-			params,
-			{
-				inputValue: "test2",
-				response: {
-					options: [],
-				},
+		},
+		params,
+		{
+			inputValue: "test2",
+			response: {
+				options: [],
 			},
-		);
-	}).toThrow();
+		},
+	);
+
+	expect(result).toEqual({
+		inputValue: "",
+		menuIsOpen: false,
+		cache: {
+			test1: {
+				hasMore: false,
+				isFirstLoad: false,
+				isLoading: false,
+				options: [1, 2, 3],
+				lockedUntil: 0,
+			},
+		},
+	});
 });
 
 test("should set next options by default and `hasMore` = true", () => {

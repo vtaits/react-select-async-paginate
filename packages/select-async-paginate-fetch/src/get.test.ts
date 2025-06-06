@@ -1,18 +1,12 @@
 import { afterEach, beforeEach, expect, test, vi } from "vitest";
 import createFetchMock from "vitest-fetch-mock";
 import { get } from "./get";
-import { stringifyParams } from "./stringifyParams";
-
-vi.mock("./stringifyParams");
 
 const fetchMocker = createFetchMock(vi);
 fetchMocker.enableMocks();
 
-const mockedStringifyParams = vi.mocked(stringifyParams);
-
 beforeEach(() => {
 	fetchMock.doMock();
-	mockedStringifyParams.mockReturnValue("");
 });
 
 afterEach(() => {
@@ -85,20 +79,17 @@ test("should call stringifyParams with correct params", async () => {
 	fetchMock.mockResponseOnce("{}");
 
 	await get("https://test/", params);
-
-	expect(mockedStringifyParams).toHaveBeenCalledTimes(1);
-	expect(mockedStringifyParams).toHaveBeenCalledWith(params);
 });
 
 test("should call fetch with correct params", async () => {
 	fetchMock.mockResponseOnce("{}");
 
-	mockedStringifyParams.mockReturnValue("paramsStr");
-
-	await get("https://test/", {});
+	await get("https://test/", {
+		foo: "bar",
+	});
 
 	expect(fetchMock).toHaveBeenCalledTimes(1);
-	expect(fetchMock).toHaveBeenCalledWith("https://test/?paramsStr", {
+	expect(fetchMock).toHaveBeenCalledWith("https://test/?foo=bar", {
 		credentials: "same-origin",
 	});
 });

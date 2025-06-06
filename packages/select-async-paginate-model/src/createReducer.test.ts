@@ -148,11 +148,13 @@ describe.each([
 			type: SET_INPUT_VALUE,
 			payload: {
 				inputValue: "test",
+				clearCacheOnSearchChange: false,
 			},
 		});
 
 		expect(mockedSetInputValue).toHaveBeenCalledTimes(1);
 		expect(mockedSetInputValue).toHaveBeenCalledWith(providedPrevState, {
+			clearCacheOnSearchChange: false,
 			inputValue: "test",
 		});
 
@@ -184,12 +186,14 @@ describe.each([
 			type: SET_MENU_IS_OPEN,
 			payload: {
 				menuIsOpen: true,
+				clearCacheOnMenuClose: false,
 			},
 		});
 
 		expect(mockedSetMenuIsOpen).toHaveBeenCalledTimes(1);
 		expect(mockedSetMenuIsOpen).toHaveBeenCalledWith(providedPrevState, {
 			menuIsOpen: true,
+			clearCacheOnMenuClose: false,
 		});
 
 		expect(result).toBe(nextState);

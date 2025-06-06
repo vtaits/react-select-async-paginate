@@ -16,6 +16,8 @@ export function useAsyncPaginateBase<
 ): UseAsyncPaginateBaseResult<OptionType, Group> {
 	const {
 		additional,
+		clearCacheOnSearchChange = false,
+		clearCacheOnMenuClose = false,
 		defaultOptions,
 		initialAdditional,
 		debounceTimeout = 0,
@@ -33,6 +35,8 @@ export function useAsyncPaginateBase<
 	const [currentCache, model] = useSelectAsyncPaginate(
 		{
 			additional,
+			clearCacheOnSearchChange,
+			clearCacheOnMenuClose,
 			autoload: defaultOptions === true,
 			debounceTimeout,
 			initialAdditional: initialAdditional,

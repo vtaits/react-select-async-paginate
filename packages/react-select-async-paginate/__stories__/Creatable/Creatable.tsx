@@ -1,15 +1,10 @@
 import { useState } from "react";
 import type { ReactElement } from "react";
-
 import type { GroupBase, MultiValue } from "react-select";
-
-import sleep from "sleep-promise";
-
 import CreatableSelect from "react-select/creatable";
-
+import sleep from "sleep-promise";
 import { withAsyncPaginate } from "../../src";
 import type { LoadOptions } from "../../src";
-
 import type { StoryProps } from "../types";
 
 const AsyncPaginateCreatable = withAsyncPaginate(CreatableSelect);
@@ -36,7 +31,7 @@ export const loadOptions: LoadOptions<
 	GroupBase<OptionType>,
 	null
 > = async (search, prevOptions) => {
-	await sleep(1000);
+	await sleep(500);
 
 	let filteredOptions: OptionType[];
 	if (!search) {

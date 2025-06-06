@@ -36,7 +36,7 @@ export const loadOptions = async (
 	options: OptionType[];
 	hasMore: boolean;
 }> => {
-	await sleep(1000);
+	await sleep(500);
 
 	let filteredOptions: OptionType[];
 	if (!search) {

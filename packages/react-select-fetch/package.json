@@ -33,7 +33,7 @@
     "format": "biome format src __stories__ --write",
     "prepare": "bun run build",
     "test:ts": "tsc --noEmit",
-    "test:unit": "vitest run --coverage.enabled --coverage.all --coverage.include=src",
+    "test:unit": "vitest run --browser.headless --coverage.enabled --coverage.all --coverage.include=src",
     "test:unit:watch": "vitest",
     "codecov": "codecov -F react_select_fetch"
   },
@@ -51,18 +51,21 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
-    "@storybook/react": "^8.5.3",
-    "@storybook/test": "^8.5.3",
-    "@types/qs": "^6.9.18",
-    "@types/react": "^19.0.8",
-    "@vitest/coverage-v8": "^3.0.5",
-    "react": "^19.0.0",
-    "react-select": "^5.10.0",
+    "@storybook/react-vite": "^9.0.0",
+    "@types/qs": "^6.14.0",
+    "@types/react": "^19.1.6",
+    "@vitejs/plugin-react": "^4.5.0",
+    "@vitest/browser": "^3.1.4",
+    "@vitest/coverage-v8": "^3.1.4",
+    "playwright": "^1.52.0",
+    "react": "^19.1.0",
+    "react-select": "^5.10.1",
     "react-select-async-paginate": "^1.0.0-alpha.0",
     "sleep-promise": "^9.1.0",
-    "tsup": "^8.3.6",
-    "typescript": "5.7.3",
-    "vitest": "^3.0.5",
-    "vitest-fetch-mock": "^0.4.3"
+    "tsup": "^8.5.0",
+    "typescript": "5.8.3",
+    "vitest": "^3.1.4",
+    "vitest-browser-react": "^0.1.1",
+    "vitest-fetch-mock": "^0.4.5"
   }
 }

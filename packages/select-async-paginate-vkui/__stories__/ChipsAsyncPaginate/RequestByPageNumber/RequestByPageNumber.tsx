@@ -31,7 +31,7 @@ export const loadOptions = async (
 	options: ChipOption[];
 	hasMore: boolean;
 }> => {
-	await sleep(1000);
+	await sleep(500);
 
 	let filteredOptions: ChipOption[];
 	if (!search) {

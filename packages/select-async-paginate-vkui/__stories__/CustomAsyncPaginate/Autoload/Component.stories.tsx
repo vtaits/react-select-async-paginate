@@ -1,14 +1,14 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Autoload } from "./Autoload";
 
 const meta: Meta<typeof Autoload> = {
-	title: "select-async-paginage-vkui/CustomAsyncPaginate/Autoload",
+	title: "select-async-paginage-vkui/CustomAsyncPaginate",
 	component: Autoload,
 };
 export default meta;
 type Story = StoryObj<typeof Autoload>;
 
 export const AutoloadStory: Story = {
-	name: "Component",
+	name: "Autoload",
 	render: (props) => <Autoload {...props} />,
 };

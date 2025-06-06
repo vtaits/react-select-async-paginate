@@ -4,13 +4,13 @@ import type {
 	SelectInstance,
 	Props as SelectProps,
 } from "react-select";
+import { useComponents } from "./components/useComponents";
 import type {
 	AsyncPaginateProps,
 	UseAsyncPaginateResult,
 	WithAsyncPaginateType,
 } from "./types";
 import { useAsyncPaginate } from "./useAsyncPaginate";
-import { useComponents } from "./useComponents";
 
 const defaultCacheUniqs: unknown[] = [];
 const defaultComponents = {};
@@ -41,6 +41,8 @@ export function withAsyncPaginate(
 			selectRef = undefined,
 			isLoading: isLoadingProp,
 			cacheUniqs = defaultCacheUniqs,
+			menuPlacement,
+			menuShouldScrollIntoView,
 			...rest
 		} = props;
 
@@ -60,6 +62,15 @@ export function withAsyncPaginate(
 			<SelectComponent
 				{...props}
 				{...asyncPaginateProps}
+				menuPlacement={menuPlacement}
+				// Recount menu position on load options
+				menuShouldScrollIntoView={
+					menuPlacement === "auto"
+						? isLoading
+							? false
+							: menuShouldScrollIntoView
+						: menuShouldScrollIntoView
+				}
 				isLoading={isLoading}
 				components={processedComponents}
 				ref={selectRef}

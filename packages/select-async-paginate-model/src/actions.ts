@@ -70,26 +70,36 @@ export const onLoadSuccess = <OptionType, Additional>(
 
 export type SetInputValueAction = Action<typeof SET_INPUT_VALUE> & {
 	payload: {
+		clearCacheOnSearchChange: boolean;
 		inputValue: string;
 	};
 };
 
-export const setInputValue = (inputValue: string): SetInputValueAction => ({
+export const setInputValue = (
+	inputValue: string,
+	clearCacheOnSearchChange: boolean,
+): SetInputValueAction => ({
 	type: SET_INPUT_VALUE,
 	payload: {
+		clearCacheOnSearchChange,
 		inputValue,
 	},
 });
 
 export type SetMenuIsOpenAction = Action<typeof SET_MENU_IS_OPEN> & {
 	payload: {
+		clearCacheOnMenuClose: boolean;
 		menuIsOpen: boolean;
 	};
 };
 
-export const setMenuIsOpen = (menuIsOpen: boolean): SetMenuIsOpenAction => ({
+export const setMenuIsOpen = (
+	menuIsOpen: boolean,
+	clearCacheOnMenuClose: boolean,
+): SetMenuIsOpenAction => ({
 	type: SET_MENU_IS_OPEN,
 	payload: {
+		clearCacheOnMenuClose,
 		menuIsOpen,
 	},
 });

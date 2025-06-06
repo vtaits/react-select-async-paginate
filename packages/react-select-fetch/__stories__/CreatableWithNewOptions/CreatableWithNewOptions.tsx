@@ -1,18 +1,13 @@
 import { useCallback, useState } from "react";
 import type { ReactElement } from "react";
-
-import sleep from "sleep-promise";
-
 import type { GroupBase, MultiValue } from "react-select";
+import type { ComponentProps } from "react-select-async-paginate";
 import Creatable from "react-select/creatable";
 import type { CreatableProps } from "react-select/creatable";
-
-import type { ComponentProps } from "react-select-async-paginate";
 import type { Get } from "select-async-paginate-fetch";
-
+import sleep from "sleep-promise";
 import { withSelectFetch } from "../../src";
 import type { UseSelectFetchParams } from "../../src";
-
 import type { StoryProps } from "../types";
 
 type CreatableWithNewOptionsStoryProps = StoryProps & {
@@ -56,7 +51,7 @@ export async function get<Response>(
 	url: string,
 	params: { [key: string]: unknown },
 ): Promise<Response> {
-	await sleep(1000);
+	await sleep(500);
 
 	const search = typeof params?.search === "string" ? params.search : "";
 	const offset = typeof params?.offset === "number" ? params.offset : 0;
@@ -83,7 +78,7 @@ export async function get<Response>(
 }
 
 const addNewOption = async (inputValue: string): Promise<OptionType> => {
-	await sleep(1000);
+	await sleep(500);
 
 	const newOption = {
 		label: inputValue,

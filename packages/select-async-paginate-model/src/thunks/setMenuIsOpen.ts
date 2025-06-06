@@ -12,9 +12,10 @@ export const setMenuIsOpen =
 		getState: () => State<OptionType, Additional>,
 		getParams: () => Params<OptionType, Additional>,
 	) => {
-		dispatch(setMenuIsOpenAction(menuIsOpen));
+		const { clearCacheOnMenuClose = false, loadOptionsOnMenuOpen = true } =
+			getParams();
 
-		const { loadOptionsOnMenuOpen = true } = getParams();
+		dispatch(setMenuIsOpenAction(menuIsOpen, clearCacheOnMenuClose));
 
 		const { cache, inputValue } = getState();
 

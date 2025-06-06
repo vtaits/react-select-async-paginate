@@ -1,6 +1,7 @@
 import { setInputValue as setInputValueAction } from "../actions";
 import { RequestOptionsCaller } from "../types/internal";
 import type { State } from "../types/internal";
+import type { Params } from "../types/public";
 import type { Dispatch } from "../types/thunkHelpers";
 import { requestOptions } from "./requestOptions";
 
@@ -9,8 +10,11 @@ export const setInputValue =
 	(
 		dispatch: Dispatch<OptionType, Additional>,
 		getState: () => State<OptionType, Additional>,
+		getParams: () => Params<OptionType, Additional>,
 	) => {
-		dispatch(setInputValueAction(inputValue));
+		const { clearCacheOnSearchChange = false } = getParams();
+
+		dispatch(setInputValueAction(inputValue, clearCacheOnSearchChange));
 
 		const { cache, menuIsOpen } = getState();
 

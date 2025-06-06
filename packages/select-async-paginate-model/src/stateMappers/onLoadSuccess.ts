@@ -17,9 +17,8 @@ export const onLoadSuccess = <OptionType, Additional>(
 	const prevCache = prevState.cache[inputValue];
 
 	if (!prevCache) {
-		throw new Error(
-			`[select-async-paginate-model] cache is not found for input value "${inputValue}"`,
-		);
+		// Cache has cleared
+		return prevState;
 	}
 
 	const { reduceOptions = defaultReduceOptions } = params;

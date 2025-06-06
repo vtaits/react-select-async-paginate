@@ -9,7 +9,7 @@ export const reset =
 	<OptionType, Additional>() =>
 	(
 		dispatch: Dispatch<OptionType, Additional>,
-		getState: () => State<OptionType, Additional>,
+		_getState: () => State<OptionType, Additional>,
 		getParams: () => Params<OptionType, Additional>,
 	) => {
 		dispatch(resetAction());

@@ -22,6 +22,7 @@ const action: SetMenuIsOpenAction = {
 	type: SET_MENU_IS_OPEN,
 	payload: {
 		menuIsOpen: true,
+		clearCacheOnMenuClose: false,
 	},
 };
 
@@ -43,7 +44,7 @@ test("should not load options if menu is closed", () => {
 	);
 
 	expect(mockedSetMenuIsOpenAction).toHaveBeenCalledTimes(1);
-	expect(mockedSetMenuIsOpenAction).toHaveBeenCalledWith(false);
+	expect(mockedSetMenuIsOpenAction).toHaveBeenCalledWith(false, false);
 
 	expect(mockedRequestOptions).toHaveBeenCalledTimes(0);
 
@@ -75,7 +76,7 @@ test("should not load options if cache for input value is not empty", () => {
 	);
 
 	expect(mockedSetMenuIsOpenAction).toHaveBeenCalledTimes(1);
-	expect(mockedSetMenuIsOpenAction).toHaveBeenCalledWith(true);
+	expect(mockedSetMenuIsOpenAction).toHaveBeenCalledWith(true, false);
 
 	expect(mockedRequestOptions).toHaveBeenCalledTimes(0);
 
@@ -101,7 +102,7 @@ test("should not load options if `loadOptionsOnMenuOpen` is false", () => {
 	);
 
 	expect(mockedSetMenuIsOpenAction).toHaveBeenCalledTimes(1);
-	expect(mockedSetMenuIsOpenAction).toHaveBeenCalledWith(true);
+	expect(mockedSetMenuIsOpenAction).toHaveBeenCalledWith(true, false);
 
 	expect(mockedRequestOptions).toHaveBeenCalledTimes(0);
 
@@ -128,7 +129,7 @@ test("should load options", () => {
 	);
 
 	expect(mockedSetMenuIsOpenAction).toHaveBeenCalledTimes(1);
-	expect(mockedSetMenuIsOpenAction).toHaveBeenCalledWith(true);
+	expect(mockedSetMenuIsOpenAction).toHaveBeenCalledWith(true, false);
 
 	expect(mockedRequestOptions).toHaveBeenCalledTimes(1);
 	expect(mockedRequestOptions).toHaveBeenCalledWith(

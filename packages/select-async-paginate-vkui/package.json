@@ -32,7 +32,8 @@
     "format": "biome format src __stories__ --write",
     "prepare": "bun run build",
     "test:ts": "tsc --noEmit",
-    "test:unit": "echo pass"
+    "test:unit": "vitest run --browser.headless --coverage.enabled --coverage.all --coverage.include=src",
+    "test:unit:watch": "vitest"
   },
   "peerDependencies": {
     "react": "^18.0.0 || ^19.0.0",
@@ -44,14 +45,19 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
-    "@storybook/react": "^8.5.3",
-    "@storybook/test": "^8.5.3",
+    "@storybook/react-vite": "^9.0.0",
     "@types/node": "^22.13.1",
     "@types/react": "^19.0.8",
+    "@vitejs/plugin-react": "^4.5.0",
+    "@vitest/browser": "^3.1.4",
+    "@vitest/coverage-v8": "^3.1.4",
     "@vkontakte/vkui": "^7.1.2",
     "krustykrab": "^1.1.0",
+    "playwright": "^1.52.0",
     "react": "^19.0.0",
     "tsup": "^8.3.6",
-    "typescript": "5.7.3"
+    "typescript": "5.7.3",
+    "vitest": "^3.1.4",
+    "vitest-browser-react": "^0.1.1"
   }
 }

@@ -1,11 +1,11 @@
 import { expect, test } from "vitest";
+import { useComponents } from "./components/useComponents";
+import { wrapMenuList } from "./components/wrapMenuList";
 import * as lib from "./index";
 import { reduceGroupedOptions } from "./reduceGroupedOptions";
 import { useAsyncPaginate } from "./useAsyncPaginate";
 import { useAsyncPaginateBase } from "./useAsyncPaginateBase";
-import { useComponents } from "./useComponents";
 import { withAsyncPaginate } from "./withAsyncPaginate";
-import { wrapMenuList } from "./wrapMenuList";
 
 test("should export needed modules", () => {
 	expect(lib.AsyncPaginate).toBeTruthy();
