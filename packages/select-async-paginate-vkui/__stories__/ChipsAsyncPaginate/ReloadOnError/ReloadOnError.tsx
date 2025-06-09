@@ -26,7 +26,7 @@ export const loadOptions: LoadOptions<ChipOption, unknown> = async (
 	search,
 	prevOptions,
 ) => {
-	await sleep(1000);
+	await sleep(100);
 
 	++requestNumber;
 	if (requestNumber % 2 === 0) {

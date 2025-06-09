@@ -25,6 +25,8 @@ type ChipsAsyncPaginateProps<Option extends ChipOption, Additional> = Omit<
 export function ChipsAsyncPaginate<Option extends ChipOption, Additional>({
 	additional,
 	autoload,
+	clearCacheOnMenuClose,
+	clearCacheOnSearchChange,
 	debounceTimeout,
 	initialAdditional,
 	initialInputValue,
@@ -42,6 +44,8 @@ export function ChipsAsyncPaginate<Option extends ChipOption, Additional>({
 		{
 			additional,
 			autoload,
+			clearCacheOnMenuClose,
+			clearCacheOnSearchChange,
 			debounceTimeout,
 			initialAdditional,
 			initialInputValue,

@@ -28,6 +28,8 @@ export function CustomAsyncPaginate<
 >({
 	additional,
 	autoload,
+	clearCacheOnMenuClose,
+	clearCacheOnSearchChange,
 	debounceTimeout,
 	initialAdditional,
 	initialInputValue,
@@ -45,6 +47,8 @@ export function CustomAsyncPaginate<
 		{
 			additional,
 			autoload,
+			clearCacheOnMenuClose,
+			clearCacheOnSearchChange,
 			debounceTimeout,
 			initialAdditional,
 			initialInputValue,

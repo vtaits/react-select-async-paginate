@@ -1,14 +1,14 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ReloadOnError } from "./ReloadOnError";
 
 const meta: Meta<typeof ReloadOnError> = {
-	title: "select-async-paginage-vkui/ChipsAsyncPaginate/Reload on Error",
+	title: "select-async-paginage-vkui/ChipsAsyncPaginate",
 	component: ReloadOnError,
 };
 export default meta;
 type Story = StoryObj<typeof ReloadOnError>;
 
 export const ReloadOnErrorStory: Story = {
-	name: "Component",
+	name: "Reload on Error",
 	render: (props) => <ReloadOnError {...props} />,
 };

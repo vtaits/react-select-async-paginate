@@ -1,14 +1,14 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Simple } from "./Simple";
 
 const meta: Meta<typeof Simple> = {
-	title: "select-async-paginage-vkui/CustomAsyncPaginate/Simple",
+	title: "select-async-paginage-vkui/CustomAsyncPaginate",
 	component: Simple,
 };
 export default meta;
 type Story = StoryObj<typeof Simple>;
 
 export const SimpleStory: Story = {
-	name: "Component",
+	name: "Simple",
 	render: (props) => <Simple {...props} />,
 };

@@ -22,7 +22,7 @@ export const loadOptions: LoadOptions<ChipOption, null> = async (
 	search,
 	prevOptions,
 ) => {
-	await sleep(1000);
+	await sleep(500);
 
 	let filteredOptions: ChipOption[];
 	if (!search) {
