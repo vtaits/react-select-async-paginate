@@ -1,6 +1,6 @@
 {
   "name": "select-async-paginate-vkui",
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.0-alpha.2",
   "description": "Wrapper above react-select that supports pagination on menu scroll",
   "files": [
     "dist"
@@ -40,8 +40,8 @@
     "@vkontakte/vkui": "^7.0.0"
   },
   "dependencies": {
-    "select-async-paginate-model": "^1.0.0-alpha.0",
-    "use-select-async-paginate": "^1.0.0-alpha.1"
+    "select-async-paginate-model": "^1.0.0-alpha.1",
+    "use-select-async-paginate": "^1.0.0-alpha.2"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",

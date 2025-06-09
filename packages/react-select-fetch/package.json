@@ -1,6 +1,6 @@
 {
   "name": "react-select-fetch",
-  "version": "1.0.0-alpha.0",
+  "version": "1.0.0-alpha.1",
   "description": "Wrapper above react-select-async-paginate that loads options from specified url",
   "files": [
     "dist"
@@ -40,13 +40,13 @@
   "peerDependencies": {
     "react": "^16.14.0 || ^17.0.0 || ^18.0.0 || ^19.0.0",
     "react-select": "^5.0.0",
-    "react-select-async-paginate": "^1.0.0-alpha.0"
+    "react-select-async-paginate": "^1.0.0-alpha.1"
   },
   "dependencies": {
     "krustykrab": "^1.1.0",
-    "use-select-async-paginate-fetch": "^1.0.0-alpha.0",
-    "select-async-paginate-model": "^1.0.0-alpha.0",
-    "select-async-paginate-fetch": "^1.0.0-alpha.0",
+    "use-select-async-paginate-fetch": "^1.0.0-alpha.1",
+    "select-async-paginate-model": "^1.0.0-alpha.1",
+    "select-async-paginate-fetch": "^1.0.0-alpha.1",
     "qs": "^6.14.0"
   },
   "devDependencies": {
@@ -60,7 +60,7 @@
     "playwright": "^1.52.0",
     "react": "^19.1.0",
     "react-select": "^5.10.1",
-    "react-select-async-paginate": "^1.0.0-alpha.0",
+    "react-select-async-paginate": "^1.0.0-alpha.1",
     "sleep-promise": "^9.1.0",
     "tsup": "^8.5.0",
     "typescript": "5.8.3",
