@@ -1,18 +1,15 @@
-import { useCallback, useState } from "react";
 import type { ReactElement } from "react";
-
-import sleep from "sleep-promise";
-
+import { useCallback, useState } from "react";
 import type { GroupBase, MultiValue } from "react-select";
-import Creatable from "react-select/creatable";
 import type { CreatableProps } from "react-select/creatable";
-
-import { withAsyncPaginate } from "../../src";
+import Creatable from "react-select/creatable";
+import sleep from "sleep-promise";
 import type {
 	ComponentProps,
 	LoadOptions,
 	UseAsyncPaginateParams,
 } from "../../src";
+import { withAsyncPaginate } from "../../src";
 
 import type { StoryProps } from "../types";
 

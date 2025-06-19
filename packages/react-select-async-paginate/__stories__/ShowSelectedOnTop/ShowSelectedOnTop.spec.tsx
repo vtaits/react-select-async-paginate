@@ -9,7 +9,7 @@ import {
 	openMenu,
 	scroll,
 } from "../testUtils";
-import { ShowSelectedOnTop, loadOptions } from "./ShowSelectedOnTop";
+import { loadOptions, ShowSelectedOnTop } from "./ShowSelectedOnTop";
 
 describe("ShowSelectedOnTop", () => {
 	test("Single", async () => {

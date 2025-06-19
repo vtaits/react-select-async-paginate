@@ -4,8 +4,8 @@ import type {
 	SelectInstance,
 	Props as SelectProps,
 } from "react-select";
-import { useComponents } from "react-select-async-paginate";
 import type { UseAsyncPaginateResult } from "react-select-async-paginate";
+import { useComponents } from "react-select-async-paginate";
 import type { SelectFetchProps, SelectFetchType } from "./types";
 import { useSelectFetch } from "./useSelectFetch";
 

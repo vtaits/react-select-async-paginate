@@ -20,6 +20,7 @@
     "codecov": "bun --filter='*' run codecov"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.0.0",
     "@storybook/react-vite": "^9.0.0",
     "@types/bun": "latest",
     "@vitejs/plugin-react": "^4.5.0",

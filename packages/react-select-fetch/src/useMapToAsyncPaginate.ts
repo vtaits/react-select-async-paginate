@@ -1,10 +1,10 @@
 import { useCallback, useMemo } from "react";
 import type { GroupBase } from "react-select";
-import { checkIsResponse } from "react-select-async-paginate";
 import type {
 	LoadOptions,
 	UseAsyncPaginateParams,
 } from "react-select-async-paginate";
+import { checkIsResponse } from "react-select-async-paginate";
 import { get as defaultGet } from "./get";
 import type { Additional, UseSelectFetchMapParams } from "./types";
 

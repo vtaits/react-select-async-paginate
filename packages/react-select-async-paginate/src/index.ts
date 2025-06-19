@@ -6,13 +6,13 @@ export { reduceGroupedOptions } from "./reduceGroupedOptions";
 
 export { withAsyncPaginate };
 
+export { useComponents } from "./components/useComponents";
+export { useAsyncPaginate } from "./useAsyncPaginate";
+export { useAsyncPaginateBase } from "./useAsyncPaginateBase";
 export {
 	checkIsResponse,
 	validateResponse,
 } from "./validateResponse";
-export { useAsyncPaginateBase } from "./useAsyncPaginateBase";
-export { useAsyncPaginate } from "./useAsyncPaginate";
-export { useComponents } from "./components/useComponents";
 
 export const AsyncPaginate = withAsyncPaginate(Select);
 

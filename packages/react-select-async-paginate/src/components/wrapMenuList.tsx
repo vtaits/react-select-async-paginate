@@ -1,6 +1,6 @@
 import composeRefs from "@seznam/compose-react-refs";
-import { useCallback, useEffect, useMemo, useRef } from "react";
 import type { ComponentType, ReactElement } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import type { GroupBase, MenuListProps } from "react-select";
 import type { ShouldLoadMore } from "../types";
 

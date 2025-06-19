@@ -1,12 +1,9 @@
-import { useState } from "react";
 import type { ReactElement } from "react";
-
-import sleep from "sleep-promise";
-
+import { useState } from "react";
 import type { MultiValue } from "react-select";
-
-import { SelectFetch } from "../../src";
+import sleep from "sleep-promise";
 import type { Get } from "../../src";
+import { SelectFetch } from "../../src";
 
 import type { StoryProps } from "../types";
 
@@ -28,7 +25,7 @@ for (let i = 0; i < 50; ++i) {
 }
 
 export async function get<Response>(
-	url: string,
+	_url: string,
 	params: { [key: string]: unknown },
 ): Promise<Response> {
 	await sleep(500);

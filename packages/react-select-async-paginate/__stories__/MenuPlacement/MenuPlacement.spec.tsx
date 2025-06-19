@@ -10,7 +10,7 @@ import {
 	scroll,
 	type,
 } from "../testUtils";
-import { MenuPlacement, loadOptions } from "./MenuPlacement";
+import { loadOptions, MenuPlacement } from "./MenuPlacement";
 
 describe("MenuPlacement", () => {
 	test("MenuPlacement", async () => {

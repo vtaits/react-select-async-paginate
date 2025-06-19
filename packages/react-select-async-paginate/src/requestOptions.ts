@@ -92,7 +92,7 @@ export const requestOptions = async <
 		if (currentInputValue !== newInputValue) {
 			setOptionsCache((prevOptionsCache) => {
 				if (isCacheEmpty) {
-					const { [currentInputValue]: itemForDelete, ...restCache } =
+					const { [currentInputValue]: _itemForDelete, ...restCache } =
 						prevOptionsCache;
 
 					return restCache;

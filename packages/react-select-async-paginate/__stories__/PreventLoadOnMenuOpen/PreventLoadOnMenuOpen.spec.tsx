@@ -7,7 +7,7 @@ import {
 	openMenu,
 	type,
 } from "../testUtils";
-import { PreventLoadOnMenuOpen, loadOptions } from "./PreventLoadOnMenuOpen";
+import { loadOptions, PreventLoadOnMenuOpen } from "./PreventLoadOnMenuOpen";
 
 describe("PreventLoadOnMenuOpen", () => {
 	test("PreventLoadOnMenuOpen", async () => {

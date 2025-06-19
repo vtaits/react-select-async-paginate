@@ -10,7 +10,7 @@ import {
 	scroll,
 	type,
 } from "../testUtils";
-import { ReloadOnError, get } from "./ReloadOnError";
+import { get, ReloadOnError } from "./ReloadOnError";
 
 describe("ReloadOnError", () => {
 	test("ReloadOnError", async () => {

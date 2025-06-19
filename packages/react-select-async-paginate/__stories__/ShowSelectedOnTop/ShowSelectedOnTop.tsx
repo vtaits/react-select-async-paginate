@@ -1,12 +1,11 @@
-import { useCallback, useMemo, useState } from "react";
 import type { ReactElement } from "react";
+import { useCallback, useState } from "react";
 
 import type { GroupBase, MultiValue, OptionsOrGroups } from "react-select";
 
 import sleep from "sleep-promise";
-
-import { AsyncPaginate } from "../../src";
 import type { LoadOptions } from "../../src";
+import { AsyncPaginate } from "../../src";
 
 import type { StoryProps } from "../types";
 

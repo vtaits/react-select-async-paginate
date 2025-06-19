@@ -84,7 +84,6 @@ export const useAsyncPaginateBase = <
 		}
 	}, [callRequestOptionsRef, optionsCacheRef]);
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: `callRequestOptionsRef` is a ref
 	useEffect(() => {
 		if (isInitRef.current) {
 			isInitRef.current = false;
@@ -96,6 +95,7 @@ export const useAsyncPaginateBase = <
 		if (defaultOptions === true) {
 			callRequestOptionsRef.current("autoload");
 		}
+		// biome-ignore lint/correctness/useExhaustiveDependencies: pass deps through
 	}, deps);
 
 	useEffect(() => {

@@ -32,7 +32,7 @@ test("should throw an error if fetch failed", async () => {
 
 	try {
 		await get("https://test/", {});
-	} catch (e) {
+	} catch (_e) {
 		hasError = true;
 	}
 
@@ -48,7 +48,7 @@ test("should throw an error if status of response bigger than 400", async () => 
 
 	try {
 		await get("https://test/", {});
-	} catch (e) {
+	} catch (_e) {
 		hasError = true;
 	}
 
@@ -64,7 +64,7 @@ test("should throw an error if status of response is 400", async () => {
 
 	try {
 		await get("https://test/", {});
-	} catch (e) {
+	} catch (_e) {
 		hasError = true;
 	}
 

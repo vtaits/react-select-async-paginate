@@ -1,12 +1,11 @@
-import { useState } from "react";
 import type { ReactElement } from "react";
+import { useState } from "react";
 
 import type { GroupBase, MultiValue } from "react-select";
 
 import sleep from "sleep-promise";
-
-import { AsyncPaginate } from "../../src";
 import type { LoadOptions } from "../../src";
+import { AsyncPaginate } from "../../src";
 
 import type { StoryProps } from "../types";
 
@@ -73,7 +72,7 @@ export const loadPageOptions: LoadOptions<
 	OptionType,
 	GroupBase<OptionType>,
 	Additional
-> = async (q, prevOptions, additional) => {
+> = async (q, _prevOptions, additional) => {
 	if (!additional) {
 		throw new Error("additional should be defined");
 	}

@@ -10,7 +10,7 @@ import {
 	scroll,
 	type,
 } from "../testUtils";
-import { InitialOptions, get } from "./InitialOptions";
+import { get, InitialOptions } from "./InitialOptions";
 
 describe("InitialOptions", () => {
 	test("InitialOptions", async () => {

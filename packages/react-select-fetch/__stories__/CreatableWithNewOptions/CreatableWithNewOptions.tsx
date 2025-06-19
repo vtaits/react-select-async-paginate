@@ -1,12 +1,12 @@
-import { useCallback, useState } from "react";
 import type { ReactElement } from "react";
+import { useCallback, useState } from "react";
 import type { GroupBase, MultiValue } from "react-select";
-import type { ComponentProps } from "react-select-async-paginate";
-import Creatable from "react-select/creatable";
 import type { CreatableProps } from "react-select/creatable";
+import Creatable from "react-select/creatable";
+import type { ComponentProps } from "react-select-async-paginate";
 import sleep from "sleep-promise";
-import { withSelectFetch } from "../../src";
 import type { Get, UseSelectFetchParams } from "../../src";
+import { withSelectFetch } from "../../src";
 import type { StoryProps } from "../types";
 
 type CreatableWithNewOptionsStoryProps = StoryProps & {
@@ -47,7 +47,7 @@ for (let i = 0; i < 50; ++i) {
 }
 
 export async function get<Response>(
-	url: string,
+	_url: string,
 	params: { [key: string]: unknown },
 ): Promise<Response> {
 	await sleep(500);

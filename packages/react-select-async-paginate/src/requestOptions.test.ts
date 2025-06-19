@@ -1,6 +1,6 @@
 import type { GroupBase } from "react-select";
 import sleep from "sleep-promise";
-import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
+import { afterEach, beforeEach, expect, test, vi } from "vitest";
 import { defaultReduceOptions } from "./defaultReduceOptions";
 import { requestOptions } from "./requestOptions";
 import type { UseAsyncPaginateBaseParams } from "./types";
@@ -580,7 +580,7 @@ test("should validate response", async () => {
 			defaultIsMountedRef,
 			false,
 		);
-	} catch (e) {
+	} catch (_e) {
 		hasError = true;
 	}
 
