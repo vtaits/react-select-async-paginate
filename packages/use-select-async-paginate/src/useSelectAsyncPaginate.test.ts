@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
-import { createAsyncPaginateModel } from "select-async-paginate-model";
 import type {
 	Model,
 	OptionsCacheItem,
 	Params,
 } from "select-async-paginate-model";
+import { createAsyncPaginateModel } from "select-async-paginate-model";
 import { beforeEach, expect, test, vi } from "vitest";
 import { useSelectAsyncPaginate } from "./useSelectAsyncPaginate";
 

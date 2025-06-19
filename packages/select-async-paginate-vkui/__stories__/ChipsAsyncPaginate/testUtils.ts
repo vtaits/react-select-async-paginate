@@ -21,7 +21,7 @@ export async function openMenu(screen: RenderResult) {
 }
 
 export async function closeMenu(screen: RenderResult) {
-	const input = getInput(screen);
+	const _input = getInput(screen);
 
 	await userEvent.click(screen.baseElement);
 

@@ -1,6 +1,6 @@
 import type { GroupBase } from "react-select";
-import { useAsyncPaginate } from "react-select-async-paginate";
 import type { UseAsyncPaginateResult } from "react-select-async-paginate";
+import { useAsyncPaginate } from "react-select-async-paginate";
 import { useMapToAsyncPaginate } from "use-select-async-paginate-fetch";
 import type { UseSelectFetchParams } from "./types";
 

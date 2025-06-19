@@ -1,5 +1,15 @@
 import { expect, test } from "vitest";
 import {
+	onLoadSuccess,
+	reset,
+	type SetInputValueAction,
+	type SetMenuIsOpenAction,
+	setInputValue,
+	setLoading,
+	setMenuIsOpen,
+	unsetLoading,
+} from "./actions";
+import {
 	ON_LOAD_SUCCESS,
 	RESET,
 	SET_INPUT_VALUE,
@@ -7,16 +17,6 @@ import {
 	SET_MENU_IS_OPEN,
 	UNSET_LOADING,
 } from "./actionTypes";
-import {
-	type SetInputValueAction,
-	type SetMenuIsOpenAction,
-	onLoadSuccess,
-	reset,
-	setInputValue,
-	setLoading,
-	setMenuIsOpen,
-	unsetLoading,
-} from "./actions";
 import type { Response } from "./types/public";
 
 test("onLoadSuccess", () => {

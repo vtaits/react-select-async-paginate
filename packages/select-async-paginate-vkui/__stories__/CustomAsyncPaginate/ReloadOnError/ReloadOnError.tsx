@@ -1,9 +1,8 @@
-import { useState } from "react";
+import type { SelectValue } from "@vkontakte/vkui/dist/components/NativeSelect/NativeSelect";
 import type { ReactElement } from "react";
+import { useState } from "react";
 import type { LoadOptions } from "select-async-paginate-model";
 import sleep from "sleep-promise";
-
-import type { SelectValue } from "@vkontakte/vkui/dist/components/NativeSelect/NativeSelect";
 import { CustomAsyncPaginate } from "../../../src";
 import type { StoryProps } from "../types";
 

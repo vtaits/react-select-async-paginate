@@ -297,7 +297,7 @@ test("should throw an error up", async () => {
 		await result.loadOptions("testSearch", [1, 2, 3], {
 			page: 10,
 		});
-	} catch (e) {
+	} catch (_e) {
 		hasError = true;
 	}
 
@@ -318,7 +318,7 @@ test("should throw an error if additional is not defined", async () => {
 
 	try {
 		await result.loadOptions("testSearch", [1, 2, 3], undefined);
-	} catch (e) {
+	} catch (_e) {
 		hasError = true;
 	}
 

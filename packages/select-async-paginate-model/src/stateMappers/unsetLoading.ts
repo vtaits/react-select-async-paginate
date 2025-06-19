@@ -19,7 +19,7 @@ export const unsetLoading = <OptionType, Additional>(
 	}
 
 	if (isClean) {
-		const { [inputValue]: itemForDelete, ...restCache } = prevState.cache;
+		const { [inputValue]: _itemForDelete, ...restCache } = prevState.cache;
 
 		return {
 			...prevState,

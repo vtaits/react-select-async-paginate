@@ -1,9 +1,9 @@
 import { beforeEach, expect, test, vi } from "vitest";
-import { SET_INPUT_VALUE } from "../actionTypes";
 import {
 	type SetInputValueAction,
 	setInputValue as setInputValueAction,
 } from "../actions";
+import { SET_INPUT_VALUE } from "../actionTypes";
 import { RequestOptionsCaller } from "../types/internal";
 import { requestOptions } from "./requestOptions";
 import { setInputValue } from "./setInputValue";

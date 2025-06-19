@@ -1,8 +1,8 @@
 import { getResult } from "krustykrab";
 import {
+	checkIsResponse,
 	type LoadOptions,
 	type Params,
-	checkIsResponse,
 } from "select-async-paginate-model";
 import { get as defaultGet } from "./get";
 import type { Additional, SelectFetchMapParams } from "./types";

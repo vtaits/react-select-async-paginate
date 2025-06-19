@@ -1,3 +1,4 @@
+import type { ActionType } from "./actions";
 import {
 	ON_LOAD_SUCCESS,
 	RESET,
@@ -6,7 +7,6 @@ import {
 	SET_MENU_IS_OPEN,
 	UNSET_LOADING,
 } from "./actionTypes";
-import type { ActionType } from "./actions";
 import { onLoadSuccess } from "./stateMappers/onLoadSuccess";
 import { reset } from "./stateMappers/reset";
 import { setInputValue } from "./stateMappers/setInputValue";

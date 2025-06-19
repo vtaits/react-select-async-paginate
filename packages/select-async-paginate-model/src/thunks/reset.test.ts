@@ -1,6 +1,6 @@
 import { beforeEach, expect, test, vi } from "vitest";
-import { RESET } from "../actionTypes";
 import { type ResetAction, reset as resetAction } from "../actions";
+import { RESET } from "../actionTypes";
 import { RequestOptionsCaller } from "../types/internal";
 import { requestOptions } from "./requestOptions";
 import { reset } from "./reset";

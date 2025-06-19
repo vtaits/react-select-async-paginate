@@ -1,10 +1,10 @@
-import { useState } from "react";
 import type { ReactElement } from "react";
+import { useState } from "react";
 import type { GroupBase, MultiValue } from "react-select";
 import CreatableSelect from "react-select/creatable";
 import sleep from "sleep-promise";
-import { withAsyncPaginate } from "../../src";
 import type { LoadOptions } from "../../src";
+import { withAsyncPaginate } from "../../src";
 import type { StoryProps } from "../types";
 
 const AsyncPaginateCreatable = withAsyncPaginate(CreatableSelect);

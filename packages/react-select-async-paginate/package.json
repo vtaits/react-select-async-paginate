@@ -46,7 +46,7 @@
     "use-select-async-paginate": "^1.0.0-alpha.2"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.9.4",
+    "@biomejs/biome": "^2.0.0",
     "@storybook/react-vite": "^9.0.0",
     "@types/node": "^22.15.24",
     "@types/react": "^19.1.6",
@@ -57,7 +57,7 @@
     "react": "^19.1.0",
     "react-select": "^5.10.1",
     "tsup": "^8.5.0",
-    "typescript": "5.8.3",
+    "typescript": "^5.8.3",
     "vitest": "^3.1.4",
     "vitest-browser-react": "^0.1.1"
   }

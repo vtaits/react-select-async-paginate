@@ -1,14 +1,14 @@
 import { beforeEach, expect, test, vi } from "vitest";
-import { ON_LOAD_SUCCESS, SET_LOADING, UNSET_LOADING } from "../actionTypes";
-import { onLoadSuccess, setLoading, unsetLoading } from "../actions";
 import type {
 	OnLoadSuccessAction,
 	SetLoadingAction,
 	UnsetLoadingAction,
 } from "../actions";
+import { onLoadSuccess, setLoading, unsetLoading } from "../actions";
+import { ON_LOAD_SUCCESS, SET_LOADING, UNSET_LOADING } from "../actionTypes";
 import { getInitialCache } from "../getInitialCache";
-import { RequestOptionsCaller } from "../types/internal";
 import type { State } from "../types/internal";
+import { RequestOptionsCaller } from "../types/internal";
 import type {
 	LoadOptions,
 	OptionsCacheItem,

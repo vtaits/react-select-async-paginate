@@ -1,8 +1,8 @@
 import { useMemo } from "react";
 import {
 	type Additional,
-	type SelectFetchParams,
 	mapToAsyncPaginate,
+	type SelectFetchParams,
 } from "select-async-paginate-fetch";
 import type { Params } from "select-async-paginate-model";
 

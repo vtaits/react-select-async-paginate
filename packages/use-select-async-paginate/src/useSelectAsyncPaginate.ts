@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
-import { createAsyncPaginateModel } from "select-async-paginate-model";
 import type { Params } from "select-async-paginate-model";
+import { createAsyncPaginateModel } from "select-async-paginate-model";
 
 const defaultDeps: unknown[] = [];
 
@@ -25,13 +25,13 @@ export function useSelectAsyncPaginate<OptionType, Additional>(
 
 	const isInitRef = useRef(true);
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: model is permanent
 	useEffect(() => {
 		if (isInitRef.current) {
 			isInitRef.current = false;
 		} else {
 			model.handleReset();
 		}
+		// biome-ignore lint/correctness/useExhaustiveDependencies: pass deps through
 	}, deps);
 
 	return [currentCache, model] as const;

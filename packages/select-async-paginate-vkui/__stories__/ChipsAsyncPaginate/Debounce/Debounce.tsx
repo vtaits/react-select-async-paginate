@@ -1,6 +1,6 @@
 import type { ChipOption } from "@vkontakte/vkui";
-import { useCallback, useState } from "react";
 import type { ReactElement } from "react";
+import { useCallback, useState } from "react";
 import type { LoadOptions } from "select-async-paginate-model";
 import sleep from "sleep-promise";
 import { ChipsAsyncPaginate } from "../../../src";

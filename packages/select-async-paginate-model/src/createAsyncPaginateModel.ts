@@ -10,11 +10,9 @@ import { requestOptions } from "./thunks/requestOptions";
 import { reset } from "./thunks/reset";
 import { setInputValue } from "./thunks/setInputValue";
 import { setMenuIsOpen } from "./thunks/setMenuIsOpen";
-
-import type { Dispatch } from "./types/thunkHelpers";
-
 import { RequestOptionsCaller } from "./types/internal";
 import type { Model, Params } from "./types/public";
+import type { Dispatch } from "./types/thunkHelpers";
 
 /**
  * Creates the model for asyncronous select that supports pagination on menu scroll

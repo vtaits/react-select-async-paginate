@@ -10,7 +10,7 @@ import {
 	scroll,
 	type,
 } from "../testUtils";
-import { RequestByPageNumber, loadPageOptions } from "./RequestByPageNumber";
+import { loadPageOptions, RequestByPageNumber } from "./RequestByPageNumber";
 
 describe("RequestByPageNumber", () => {
 	test("RequestByPageNumber", async () => {

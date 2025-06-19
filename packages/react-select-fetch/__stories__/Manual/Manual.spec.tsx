@@ -9,7 +9,7 @@ import {
 	scroll,
 	type,
 } from "../testUtils";
-import { Manual, get } from "./Manual";
+import { get, Manual } from "./Manual";
 
 function getCloseOpenMenuButton(screen: RenderResult) {
 	return screen.getByRole("button", { name: /Open menu/i });

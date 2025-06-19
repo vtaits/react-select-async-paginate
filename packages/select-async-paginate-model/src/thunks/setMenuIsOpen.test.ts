@@ -1,9 +1,9 @@
 import { beforeEach, expect, test, vi } from "vitest";
-import { SET_MENU_IS_OPEN } from "../actionTypes";
 import {
 	type SetMenuIsOpenAction,
 	setMenuIsOpen as setMenuIsOpenAction,
 } from "../actions";
+import { SET_MENU_IS_OPEN } from "../actionTypes";
 import { RequestOptionsCaller } from "../types/internal";
 import { requestOptions } from "./requestOptions";
 import { setMenuIsOpen } from "./setMenuIsOpen";

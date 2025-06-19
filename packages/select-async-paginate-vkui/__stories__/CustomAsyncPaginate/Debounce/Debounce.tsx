@@ -1,6 +1,6 @@
 import type { SelectValue } from "@vkontakte/vkui/dist/components/NativeSelect/NativeSelect";
-import { useCallback, useState } from "react";
 import type { ReactElement } from "react";
+import { useCallback, useState } from "react";
 import type { LoadOptions } from "select-async-paginate-model";
 import sleep from "sleep-promise";
 import { CustomAsyncPaginate } from "../../../src";

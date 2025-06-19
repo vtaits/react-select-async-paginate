@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, test, vi } from "vitest";
+import type { ActionType } from "./actions";
 import {
 	ON_LOAD_SUCCESS,
 	RESET,
@@ -7,7 +8,6 @@ import {
 	SET_MENU_IS_OPEN,
 	UNSET_LOADING,
 } from "./actionTypes";
-import type { ActionType } from "./actions";
 import { createReducer } from "./createReducer";
 import { onLoadSuccess } from "./stateMappers/onLoadSuccess";
 import { reset } from "./stateMappers/reset";

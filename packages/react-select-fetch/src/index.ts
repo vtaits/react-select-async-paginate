@@ -4,8 +4,8 @@ import { withSelectFetch } from "./withSelectFetch";
 
 export { withSelectFetch };
 
-export { useSelectFetchBase } from "./useSelectFetchBase";
 export { useSelectFetch } from "./useSelectFetch";
+export { useSelectFetchBase } from "./useSelectFetchBase";
 
 export const SelectFetch = withSelectFetch(Select);
 

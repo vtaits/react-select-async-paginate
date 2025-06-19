@@ -10,7 +10,7 @@ import {
 	scroll,
 	type,
 } from "../testUtils";
-import { Simple, get } from "./Simple";
+import { get, Simple } from "./Simple";
 
 describe("Simple", () => {
 	test("Single", async () => {

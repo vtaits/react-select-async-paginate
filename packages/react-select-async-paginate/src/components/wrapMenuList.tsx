@@ -1,6 +1,6 @@
 import composeRefs from "@seznam/compose-react-refs";
-import { useRef } from "react";
 import type { ComponentType, ReactElement } from "react";
+import { useRef } from "react";
 import type { GroupBase, MenuListProps } from "react-select";
 import { useWatchMenu } from "use-select-async-paginate";
 import type { ShouldLoadMore } from "../types";

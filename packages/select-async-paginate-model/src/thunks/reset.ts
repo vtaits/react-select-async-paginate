@@ -1,6 +1,6 @@
 import { reset as resetAction } from "../actions";
-import { RequestOptionsCaller } from "../types/internal";
 import type { State } from "../types/internal";
+import { RequestOptionsCaller } from "../types/internal";
 import type { Params } from "../types/public";
 import type { Dispatch } from "../types/thunkHelpers";
 import { requestOptions } from "./requestOptions";

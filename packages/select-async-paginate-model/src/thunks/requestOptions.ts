@@ -1,8 +1,8 @@
 import { getResult } from "krustykrab";
 import { onLoadSuccess, setLoading, unsetLoading } from "../actions";
 import { getInitialCache } from "../getInitialCache";
-import { RequestOptionsCaller } from "../types/internal";
 import type { State } from "../types/internal";
+import { RequestOptionsCaller } from "../types/internal";
 import type { Params } from "../types/public";
 import type { Dispatch } from "../types/thunkHelpers";
 import { sleep } from "../utils/sleep";

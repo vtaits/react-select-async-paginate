@@ -1,2 +1,2 @@
-export { CustomAsyncPaginate } from "./CustomAsyncPaginate";
 export { ChipsAsyncPaginate } from "./ChipsAsyncPaginate";
+export { CustomAsyncPaginate } from "./CustomAsyncPaginate";
