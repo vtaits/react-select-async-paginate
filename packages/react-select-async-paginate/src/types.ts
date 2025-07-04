@@ -1,7 +1,7 @@
 import type { ReactElement, Ref } from "react";
 import type {
-	GroupBase,
 	FilterOptionOption,
+	GroupBase,
 	InputActionMeta,
 	OptionsOrGroups,
 	SelectInstance,
