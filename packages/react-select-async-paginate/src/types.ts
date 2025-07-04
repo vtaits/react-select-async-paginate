@@ -1,12 +1,12 @@
 import type { ReactElement, Ref } from "react";
 import type {
 	GroupBase,
+	FilterOptionOption,
 	InputActionMeta,
 	OptionsOrGroups,
 	SelectInstance,
 	Props as SelectProps,
 } from "react-select";
-import type { FilterOptionOption } from "react-select/dist/declarations/src/filters";
 
 export type RequestOptionsCallerType =
 	| "autoload"
