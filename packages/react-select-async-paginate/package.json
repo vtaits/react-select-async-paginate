@@ -1,6 +1,6 @@
 {
   "name": "react-select-async-paginate",
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.0-alpha.2",
   "description": "Wrapper above react-select that supports pagination on menu scroll",
   "files": [
     "dist"
@@ -42,8 +42,8 @@
   },
   "dependencies": {
     "@seznam/compose-react-refs": "^1.0.6",
-    "select-async-paginate-model": "^1.0.0-alpha.1",
-    "use-select-async-paginate": "^1.0.0-alpha.2"
+    "select-async-paginate-model": "^1.0.0-alpha.2",
+    "use-select-async-paginate": "^1.0.0-alpha.3"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.1.4",

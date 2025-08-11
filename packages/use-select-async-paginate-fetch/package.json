@@ -1,6 +1,6 @@
 {
   "name": "use-select-async-paginate-fetch",
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.0-alpha.2",
   "description": "React hook for integration with `select-async-paginate-model` and `select-async-paginate-fetch`",
   "files": [
     "dist"
@@ -42,8 +42,8 @@
   },
   "dependencies": {
     "krustykrab": "^1.1.0",
-    "select-async-paginate-model": "^1.0.0-alpha.1",
-    "select-async-paginate-fetch": "^1.0.0-alpha.1",
+    "select-async-paginate-model": "^1.0.0-alpha.2",
+    "select-async-paginate-fetch": "^1.0.0-alpha.2",
     "qs": "^6.14.0"
   },
   "devDependencies": {

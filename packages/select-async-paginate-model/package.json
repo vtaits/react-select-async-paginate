@@ -1,6 +1,6 @@
 {
   "name": "select-async-paginate-model",
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.0-alpha.2",
   "description": "Model for asynchronous selects for support pagination on menu scroll",
   "files": [
     "dist"
