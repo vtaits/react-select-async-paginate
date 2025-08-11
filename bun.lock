@@ -22,7 +22,7 @@
     },
     "packages/select-async-paginate-vkui": {
       "name": "select-async-paginate-vkui-v5",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "dependencies": {
         "select-async-paginate-model": "^1.0.0-alpha.1",
         "use-select-async-paginate": "^1.0.0-alpha.2",
