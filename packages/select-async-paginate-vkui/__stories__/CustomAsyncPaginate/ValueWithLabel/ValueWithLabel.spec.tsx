@@ -5,20 +5,18 @@ import {
 	getInput,
 	getMenu,
 	getMenuOption,
-	getMultipleValue,
+	getSingleValue,
 	openMenu,
 	scroll,
 	type,
 } from "../testUtils";
-import { loadPageOptions, RequestByPageNumber } from "./RequestByPageNumber";
+import { loadOptions, ValueWithLabel } from "./ValueWithLabel";
 
-describe("RequestByPageNumber", () => {
-	test("RequestByPageNumber", async () => {
-		const loadOptionsProp = vi.fn(loadPageOptions);
+describe("ValueWithLabel", () => {
+	test("ValueWithLabel", async () => {
+		const loadOptionsProp = vi.fn(loadOptions);
 
-		const screen = render(
-			<RequestByPageNumber loadOptions={loadOptionsProp} />,
-		);
+		const screen = render(<ValueWithLabel loadOptions={loadOptionsProp} />);
 
 		// Display drop-down options list
 		await openMenu(screen);
@@ -33,13 +31,20 @@ describe("RequestByPageNumber", () => {
 
 		await expect.element(firstOption).toBeInTheDocument();
 		await expect.element(lastOption).toBeInTheDocument();
+		await expect
+			.element(getMenuOption(screen, "Option 23"))
+			.toBeInTheDocument();
 
 		// Scroll and load the 2 page of options
 		await scroll(screen, 600);
 
 		await vi.waitFor(() => {
-			expect(getAllOptions(screen).all()).toHaveLength(20);
+			expect(getAllOptions(screen).all()).toHaveLength(21);
 		});
+
+		await expect
+			.element(getMenuOption(screen, "Option 23"))
+			.toBeInTheDocument();
 
 		// Scroll and load the 3 page of options
 		await scroll(screen, 600);
@@ -50,20 +55,23 @@ describe("RequestByPageNumber", () => {
 
 		// Type option label into the select
 		const label = "Option 40";
-		const input = getInput(screen);
+		const select = getInput(screen);
 		const listbox = getMenu(screen);
 
 		await type(screen, label);
 
 		await expect.element(listbox).toBeInTheDocument();
-		await expect.element(input).toHaveValue(label);
+		await expect.element(select).toHaveValue(label);
 
 		// Select the specified option from the list
-		await screen.getByRole("option").click();
+		const option = await vi.waitFor(() => {
+			return getMenuOption(screen, "Option 40");
+		});
+
+		await option.click();
 		await expect.element(listbox).not.toBeInTheDocument();
 
-		await vi.waitFor(() => {
-			expect(getMultipleValue(screen)).toEqual(["Option 40"]);
-		});
+		const resultOption = getSingleValue(screen);
+		await expect.element(resultOption).toHaveTextContent("Option 40");
 	});
 });

@@ -1,5 +1,4 @@
-import { useState } from "react";
-import type { ComponentProps, ReactElement } from "react";
+import { type ComponentProps, type ReactElement, useState } from "react";
 import type { LoadOptions } from "select-async-paginate-model";
 import sleep from "sleep-promise";
 import { CustomAsyncPaginate } from "../../../src";

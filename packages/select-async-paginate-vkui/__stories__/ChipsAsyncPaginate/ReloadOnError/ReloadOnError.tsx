@@ -1,9 +1,8 @@
-import { useState } from "react";
+import type { ChipOption } from "@vkontakte/vkui";
 import type { ReactElement } from "react";
+import { useState } from "react";
 import type { LoadOptions } from "select-async-paginate-model";
 import sleep from "sleep-promise";
-
-import type { ChipOption } from "@vkontakte/vkui";
 import { ChipsAsyncPaginate } from "../../../src";
 import type { StoryProps } from "../types";
 

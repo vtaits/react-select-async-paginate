@@ -1,16 +1,20 @@
-import type { ChipOption } from "@vkontakte/vkui";
 import type { ReactElement } from "react";
 import { useState } from "react";
 import type { LoadOptions } from "select-async-paginate-model";
 import sleep from "sleep-promise";
-import { ChipsAsyncPaginate } from "../../../src";
+import { CustomAsyncPaginate } from "../../../src";
 import type { StoryProps } from "../types";
 
 type SimpleStoryProps = StoryProps & {
-	loadOptions?: LoadOptions<ChipOption, unknown>;
+	loadOptions?: LoadOptions<OptionType, unknown>;
 };
 
-const options: ChipOption[] = [];
+type OptionType = {
+	value: number;
+	label: string;
+};
+
+const options: OptionType[] = [];
 for (let i = 0; i < 50; ++i) {
 	options.push({
 		value: i + 1,
@@ -18,22 +22,22 @@ for (let i = 0; i < 50; ++i) {
 	});
 }
 
-export const loadOptions: LoadOptions<ChipOption, unknown> = async (
+const optionsDict = Object.groupBy(options, (option) => option.value);
+
+export const loadOptions: LoadOptions<OptionType, unknown> = async (
 	search,
 	prevOptions,
 ) => {
 	await sleep(500);
 
-	let filteredOptions: ChipOption[];
+	let filteredOptions: OptionType[];
 	if (!search) {
 		filteredOptions = options;
 	} else {
 		const searchLower = search.toLowerCase();
 
 		filteredOptions = options.filter(({ label }) =>
-			typeof label === "string"
-				? label.toLowerCase().includes(searchLower)
-				: false,
+			label.toLowerCase().includes(searchLower),
 		);
 	}
 
@@ -49,8 +53,8 @@ export const loadOptions: LoadOptions<ChipOption, unknown> = async (
 	};
 };
 
-export function Simple(props: SimpleStoryProps): ReactElement {
-	const [value, onChange] = useState<ChipOption[]>([]);
+export function ValueWithLabel(props: SimpleStoryProps): ReactElement {
+	const [value, onChange] = useState<OptionType | null>(options[22]);
 
 	const loadOptionsHandler = props?.loadOptions || loadOptions;
 
@@ -60,11 +64,18 @@ export function Simple(props: SimpleStoryProps): ReactElement {
 				maxWidth: 300,
 			}}
 		>
-			<ChipsAsyncPaginate
+			<CustomAsyncPaginate
 				{...props}
-				value={value}
+				valueWithLabel={value}
 				loadOptions={loadOptionsHandler}
-				onChange={onChange}
+				onChange={(event) => {
+					const nextValue = event.target.value;
+
+					const nextOption = nextValue
+						? optionsDict[Number(nextValue)]?.[0]
+						: null;
+					onChange(nextOption ?? null);
+				}}
 			/>
 		</div>
 	);

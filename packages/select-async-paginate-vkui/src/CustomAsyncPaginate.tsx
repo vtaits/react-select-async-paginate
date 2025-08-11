@@ -3,7 +3,7 @@ import {
 	type CustomSelectOptionInterface,
 	type SelectProps,
 } from "@vkontakte/vkui";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import type { Params } from "select-async-paginate-model";
 import {
 	type ShouldLoadMore,
@@ -18,6 +18,7 @@ type CustomAsyncPaginateProps<
 	Additional,
 > = Omit<SelectProps<Option>, "options"> &
 	Params<Option, Additional> & {
+		valueWithLabel?: Option | null;
 		cacheUniqs?: readonly unknown[];
 		shouldLoadMore?: ShouldLoadMore;
 	};
@@ -41,6 +42,8 @@ export function CustomAsyncPaginate<
 	reloadOnErrorTimeout,
 	cacheUniqs = defaultCacheUniqs,
 	shouldLoadMore,
+	value: valueProp,
+	valueWithLabel,
 	...rest
 }: CustomAsyncPaginateProps<Option, Additional>) {
 	const [currentCache, model] = useSelectAsyncPaginate(
@@ -93,14 +96,42 @@ export function CustomAsyncPaginate<
 		handleScrolledToBottom,
 	});
 
+	const value = useMemo(() => {
+		if (typeof valueWithLabel === "undefined") {
+			return valueProp;
+		}
+
+		return valueWithLabel?.value;
+	}, [valueProp, valueWithLabel]);
+
 	const { isLoading, options } = currentCache;
+
+	/**
+	 * Add selected option to option list to show label of selected value
+	 */
+	const allOptions = useMemo(() => {
+		if (valueWithLabel) {
+			const hasSelectedOption = options.some(
+				(option) => option.value === valueWithLabel.value,
+			);
+
+			if (hasSelectedOption) {
+				return options as Option[];
+			}
+
+			return [valueWithLabel, ...options];
+		}
+
+		return options as Option[];
+	}, [options, valueWithLabel]);
 
 	return (
 		<CustomSelect
 			searchable
 			{...rest}
+			value={value}
 			filterFn={rest.filterFn || false}
-			options={options as Option[]}
+			options={allOptions}
 			fetching={(isLoading && options.length === 0) || rest.fetching}
 			onInputChange={(e) => {
 				model.onChangeInputValue((e.target as HTMLInputElement).value);
