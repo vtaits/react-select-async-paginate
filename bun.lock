@@ -121,7 +121,7 @@
     },
     "packages/select-async-paginate-vkui": {
       "name": "select-async-paginate-vkui",
-      "version": "1.0.0-alpha.2",
+      "version": "1.0.0",
       "dependencies": {
         "select-async-paginate-model": "^1.0.0-alpha.1",
         "use-select-async-paginate": "^1.0.0-alpha.2",
