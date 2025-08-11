@@ -40,8 +40,8 @@
     "@vkontakte/vkui": "^5.0.0"
   },
   "dependencies": {
-    "select-async-paginate-model": "^1.0.0-alpha.1",
-    "use-select-async-paginate": "^1.0.0-alpha.2"
+    "select-async-paginate-model": "^1.0.0-alpha.2",
+    "use-select-async-paginate": "^1.0.0-alpha.3"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.1.4",

@@ -16,11 +16,16 @@ const defaultCacheUniqs: unknown[] = [];
 type CustomAsyncPaginateProps<
 	Option extends CustomSelectOptionInterface,
 	Additional,
-> = Omit<SelectProps<Option>, "options"> &
+> = Omit<SelectProps<Option>, "options" | "onChange"> &
 	Params<Option, Additional> & {
 		valueWithLabel?: Option | null;
 		cacheUniqs?: readonly unknown[];
 		shouldLoadMore?: ShouldLoadMore;
+		onChange?: (
+			e: React.ChangeEvent<HTMLSelectElement>,
+			newValue: CustomSelectOptionInterface["value"] | null,
+			newOption: Option | null,
+		) => void;
 	};
 
 export function CustomAsyncPaginate<
@@ -43,10 +48,11 @@ export function CustomAsyncPaginate<
 	cacheUniqs = defaultCacheUniqs,
 	shouldLoadMore,
 	value: valueProp,
-	valueWithLabel,
+	valueWithLabel: valueWithLabelProp,
+	onChange,
 	...rest
 }: CustomAsyncPaginateProps<Option, Additional>) {
-	const [currentCache, model] = useSelectAsyncPaginate(
+	const { currentCache, model, optionsDict } = useSelectAsyncPaginate(
 		{
 			additional,
 			autoload,
@@ -60,6 +66,7 @@ export function CustomAsyncPaginate<
 			loadOptionsOnMenuOpen,
 			reduceOptions,
 			loadOptions,
+			getOptionValue: (option) => String(option.value),
 		},
 		cacheUniqs,
 	);
@@ -95,6 +102,22 @@ export function CustomAsyncPaginate<
 		shouldLoadMore,
 		handleScrolledToBottom,
 	});
+
+	const valueWithLabel = useMemo(() => {
+		if (typeof valueWithLabelProp !== "undefined") {
+			return valueWithLabelProp;
+		}
+
+		if (valueProp) {
+			const valueFromCache = optionsDict[String(valueProp)];
+
+			if (valueFromCache) {
+				return valueFromCache;
+			}
+		}
+
+		return undefined;
+	}, [valueWithLabelProp, optionsDict, valueProp]);
 
 	const value = useMemo(() => {
 		if (typeof valueWithLabel === "undefined") {
@@ -133,6 +156,14 @@ export function CustomAsyncPaginate<
 			filterFn={rest.filterFn || false}
 			options={allOptions}
 			fetching={(isLoading && options.length === 0) || rest.fetching}
+			onChange={(e) => {
+				const newValue = e.target.value;
+
+				const newOption = newValue ? optionsDict[newValue] : null;
+
+				onChange?.(e, newValue, newOption ?? null);
+				model.onChangeInputValue("");
+			}}
 			onInputChange={(e) => {
 				model.onChangeInputValue((e.target as HTMLInputElement).value);
 			}}
