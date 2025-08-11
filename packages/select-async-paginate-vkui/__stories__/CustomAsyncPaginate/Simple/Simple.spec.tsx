@@ -66,5 +66,12 @@ describe("Simple", () => {
 
 		const resultOption = getSingleValue(screen);
 		await expect.element(resultOption).toHaveTextContent("Option 40");
+
+		// check that search is cleared after selecting option
+		await openMenu(screen);
+
+		await vi.waitFor(() => {
+			expect(getAllOptions(screen).all()).toHaveLength(40);
+		});
 	});
 });

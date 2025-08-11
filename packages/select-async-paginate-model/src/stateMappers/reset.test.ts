@@ -15,10 +15,12 @@ test("should reset cache", () => {
 					lockedUntil: 0,
 				},
 			},
+			optionsDict: {},
 		}),
 	).toEqual({
 		inputValue: "input",
 		menuIsOpen: true,
 		cache: {},
+		optionsDict: {},
 	});
 });

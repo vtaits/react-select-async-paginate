@@ -23,6 +23,7 @@ test("should unset loading state for existed cache item", () => {
 					lockedUntil: 0,
 				},
 			},
+			optionsDict: {},
 		},
 		{
 			inputValue: "test1",
@@ -51,6 +52,7 @@ test("should unset loading state for existed cache item", () => {
 				lockedUntil: 0,
 			},
 		},
+		optionsDict: {},
 	});
 });
 
@@ -76,6 +78,7 @@ test("should remove cache item", () => {
 					lockedUntil: 0,
 				},
 			},
+			optionsDict: {},
 		},
 		{
 			inputValue: "test1",
@@ -96,6 +99,7 @@ test("should remove cache item", () => {
 				lockedUntil: 0,
 			},
 		},
+		optionsDict: {},
 	});
 });
 
@@ -113,6 +117,7 @@ test("should do nothing if cache item not defined for `inputValue`", () => {
 					lockedUntil: 0,
 				},
 			},
+			optionsDict: {},
 		},
 		{
 			inputValue: "test1",
@@ -133,5 +138,6 @@ test("should do nothing if cache item not defined for `inputValue`", () => {
 				lockedUntil: 0,
 			},
 		},
+		optionsDict: {},
 	});
 });

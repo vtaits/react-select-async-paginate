@@ -67,6 +67,7 @@ test("should creare store with correct params", () => {
 		cache: {},
 		inputValue: "testInput",
 		menuIsOpen: true,
+		optionsDict: {},
 	};
 
 	mockedGetInitialState.mockReturnValue(initalState);

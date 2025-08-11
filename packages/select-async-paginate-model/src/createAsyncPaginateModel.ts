@@ -66,12 +66,19 @@ export const createAsyncPaginateModel = <OptionType, Additional>(
 		return cache[inputValue] || initialCache;
 	};
 
+	const getOptionsDict = () => {
+		const { optionsDict } = store.getState();
+
+		return optionsDict;
+	};
+
 	if (params.autoload) {
 		dispatch(requestOptions(RequestOptionsCaller.Autoload));
 	}
 
 	return {
 		getCurrentCache,
+		getOptionsDict,
 		handleLoadMore,
 		handleReset,
 		onChangeInputValue,

@@ -54,17 +54,20 @@ export type OnLoadSuccessAction<OptionType, Additional> = Action<
 	payload: {
 		inputValue: string;
 		response: Response<OptionType, Additional>;
+		optionsDict: Record<string, OptionType>;
 	};
 };
 
 export const onLoadSuccess = <OptionType, Additional>(
 	inputValue: string,
 	response: Response<OptionType, Additional>,
+	optionsDict: Record<string, OptionType>,
 ): OnLoadSuccessAction<OptionType, Additional> => ({
 	type: ON_LOAD_SUCCESS,
 	payload: {
 		inputValue,
 		response,
+		optionsDict,
 	},
 });
 

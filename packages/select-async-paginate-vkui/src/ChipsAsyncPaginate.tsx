@@ -40,7 +40,7 @@ export function ChipsAsyncPaginate<Option extends ChipOption, Additional>({
 	shouldLoadMore,
 	...rest
 }: ChipsAsyncPaginateProps<Option, Additional>) {
-	const [currentCache, model] = useSelectAsyncPaginate(
+	const { currentCache, model } = useSelectAsyncPaginate(
 		{
 			additional,
 			autoload,

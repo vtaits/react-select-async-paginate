@@ -29,6 +29,7 @@ const onLoadSuccessAction: OnLoadSuccessAction<unknown, unknown> = {
 		response: {
 			options: [],
 		},
+		optionsDict: {},
 	},
 };
 
@@ -93,6 +94,7 @@ beforeEach(() => {
 		cache: {},
 		inputValue: "",
 		menuIsOpen: false,
+		optionsDict: {},
 	});
 
 	getParams.mockReturnValue(defaultParams);
@@ -120,6 +122,7 @@ test("should not request options if options are loading", async () => {
 		},
 		inputValue: "test",
 		menuIsOpen: false,
+		optionsDict: {},
 	});
 
 	await setup(RequestOptionsCaller.Autoload);
@@ -138,6 +141,7 @@ test("should not request options if there are not more options", async () => {
 		},
 		inputValue: "test",
 		menuIsOpen: false,
+		optionsDict: {},
 	});
 
 	await setup(RequestOptionsCaller.Autoload);
@@ -150,6 +154,7 @@ test("should make request if options are not cached", async () => {
 		cache: {},
 		inputValue: "test",
 		menuIsOpen: false,
+		optionsDict: {},
 	});
 
 	await setup(RequestOptionsCaller.Autoload);
@@ -176,6 +181,7 @@ test("should make request if options are cached", async () => {
 		},
 		inputValue: "test",
 		menuIsOpen: false,
+		optionsDict: {},
 	});
 
 	await setup(RequestOptionsCaller.Autoload);
@@ -200,6 +206,7 @@ test("should request successfully", async () => {
 		cache: {},
 		inputValue: "test",
 		menuIsOpen: false,
+		optionsDict: {},
 	});
 
 	loadOptions.mockResolvedValue(response);
@@ -217,7 +224,7 @@ test("should request successfully", async () => {
 	expect(mockedSetLoading).toHaveBeenCalledWith("test");
 
 	expect(mockedOnLoadSuccess).toHaveBeenCalledTimes(1);
-	expect(mockedOnLoadSuccess).toHaveBeenCalledWith("test", response);
+	expect(mockedOnLoadSuccess).toHaveBeenCalledWith("test", response, {});
 });
 
 test("should request with error", async () => {
@@ -225,6 +232,7 @@ test("should request with error", async () => {
 		cache: {},
 		inputValue: "test",
 		menuIsOpen: false,
+		optionsDict: {},
 	});
 
 	loadOptions.mockRejectedValue(null);
@@ -258,6 +266,7 @@ test("should validate response", async () => {
 		cache: {},
 		inputValue: "test",
 		menuIsOpen: false,
+		optionsDict: {},
 	});
 
 	loadOptions.mockResolvedValue(response);
@@ -327,11 +336,13 @@ test("should cancel loading if `inputValue` has changed during sleep for empty c
 			cache: {},
 			inputValue: "test1",
 			menuIsOpen: false,
+			optionsDict: {},
 		})
 		.mockReturnValueOnce({
 			cache: {},
 			inputValue: "test2",
 			menuIsOpen: false,
+			optionsDict: {},
 		});
 
 	getParams.mockReturnValue({
@@ -360,11 +371,13 @@ test("should cancel loading if `inputValue` has changed during sleep for filled 
 			},
 			inputValue: "test1",
 			menuIsOpen: false,
+			optionsDict: {},
 		})
 		.mockReturnValueOnce({
 			cache: {},
 			inputValue: "test2",
 			menuIsOpen: false,
+			optionsDict: {},
 		});
 
 	getParams.mockReturnValue({

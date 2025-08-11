@@ -23,6 +23,11 @@ export function useSelectAsyncPaginate<OptionType, Additional>(
 		model.getCurrentCache,
 	);
 
+	const optionsDict = useSyncExternalStore(
+		model.subscribe,
+		model.getOptionsDict,
+	);
+
 	const isInitRef = useRef(true);
 
 	useEffect(() => {
@@ -34,5 +39,9 @@ export function useSelectAsyncPaginate<OptionType, Additional>(
 		// biome-ignore lint/correctness/useExhaustiveDependencies: pass deps through
 	}, deps);
 
-	return [currentCache, model] as const;
+	return {
+		currentCache,
+		optionsDict,
+		model,
+	};
 }

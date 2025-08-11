@@ -32,7 +32,7 @@ export function useAsyncPaginateBase<
 		mapOptionsForMenu = undefined,
 	} = params;
 
-	const [currentCache, model] = useSelectAsyncPaginate(
+	const { currentCache, model } = useSelectAsyncPaginate(
 		{
 			additional,
 			clearCacheOnSearchChange,

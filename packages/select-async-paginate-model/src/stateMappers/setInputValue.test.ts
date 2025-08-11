@@ -16,6 +16,7 @@ test("should set input value", () => {
 						lockedUntil: 0,
 					},
 				},
+				optionsDict: {},
 			},
 			{
 				inputValue: "test2",
@@ -34,6 +35,7 @@ test("should set input value", () => {
 				lockedUntil: 0,
 			},
 		},
+		optionsDict: {},
 	});
 });
 
@@ -52,6 +54,7 @@ test("should set input value and clear cache", () => {
 						lockedUntil: 0,
 					},
 				},
+				optionsDict: {},
 			},
 			{
 				inputValue: "test2",
@@ -62,5 +65,6 @@ test("should set input value and clear cache", () => {
 		inputValue: "test2",
 		menuIsOpen: true,
 		cache: {},
+		optionsDict: {},
 	});
 });

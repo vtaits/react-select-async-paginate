@@ -12,7 +12,10 @@ const defaultParams: Params<unknown, unknown> = {
 test("should return empty options cache", () => {
 	const initialOptionsCache = getInitialOptionsCache(defaultParams);
 
-	expect(initialOptionsCache).toEqual({});
+	expect(initialOptionsCache).toEqual({
+		cache: {},
+		optionsDict: {},
+	});
 });
 
 test('should return options cache with "initialOptions" param', () => {
@@ -33,14 +36,17 @@ test('should return options cache with "initialOptions" param', () => {
 	});
 
 	expect(initialOptionsCache).toEqual({
-		"": {
-			isFirstLoad: false,
-			isLoading: false,
-			hasMore: true,
-			options,
-			additional: undefined,
-			lockedUntil: 0,
+		cache: {
+			"": {
+				isFirstLoad: false,
+				isLoading: false,
+				hasMore: true,
+				options,
+				additional: undefined,
+				lockedUntil: 0,
+			},
 		},
+		optionsDict: {},
 	});
 });
 
@@ -61,15 +67,18 @@ test('should set "additional" with "initialAdditional" param in initialOptionsCa
 	});
 
 	expect(initialOptionsCache).toEqual({
-		"": {
-			isFirstLoad: false,
-			isLoading: false,
-			hasMore: true,
-			options,
-			additional: {
-				page: 2,
+		cache: {
+			"": {
+				isFirstLoad: false,
+				isLoading: false,
+				hasMore: true,
+				options,
+				additional: {
+					page: 2,
+				},
+				lockedUntil: 0,
 			},
-			lockedUntil: 0,
 		},
+		optionsDict: {},
 	});
 });

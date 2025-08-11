@@ -32,6 +32,7 @@ test("should set loading state for existed cache item", () => {
 					lockedUntil: 0,
 				},
 			},
+			optionsDict: {},
 		},
 		params,
 		{
@@ -61,6 +62,7 @@ test("should set loading state for existed cache item", () => {
 				lockedUntil: 0,
 			},
 		},
+		optionsDict: {},
 	});
 });
 
@@ -86,6 +88,7 @@ test("should create new cache item and set loading state", () => {
 					lockedUntil: 0,
 				},
 			},
+			optionsDict: {},
 		},
 		params,
 		{
@@ -116,5 +119,6 @@ test("should create new cache item and set loading state", () => {
 				lockedUntil: 0,
 			},
 		},
+		optionsDict: {},
 	});
 });

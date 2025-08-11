@@ -16,6 +16,7 @@ test("should set `menuIsOpen`", () => {
 						lockedUntil: 0,
 					},
 				},
+				optionsDict: {},
 			},
 			{
 				menuIsOpen: false,
@@ -34,6 +35,7 @@ test("should set `menuIsOpen`", () => {
 				lockedUntil: 0,
 			},
 		},
+		optionsDict: {},
 	});
 });
 
@@ -52,6 +54,7 @@ test("should clean cache on close menu", () => {
 						lockedUntil: 0,
 					},
 				},
+				optionsDict: {},
 			},
 			{
 				menuIsOpen: false,
@@ -62,5 +65,6 @@ test("should clean cache on close menu", () => {
 		inputValue: "test1",
 		menuIsOpen: false,
 		cache: {},
+		optionsDict: {},
 	});
 });

@@ -11,14 +11,17 @@ const params = {
 const mockedGetInitialOptionsCache = vi
 	.mocked(getInitialOptionsCache)
 	.mockReturnValue({
-		test: {
-			hasMore: false,
-			isLoading: false,
-			isFirstLoad: true,
-			options: [],
-			additional: null,
-			lockedUntil: 0,
+		cache: {
+			test: {
+				hasMore: false,
+				isLoading: false,
+				isFirstLoad: true,
+				options: [],
+				additional: null,
+				lockedUntil: 0,
+			},
 		},
+		optionsDict: {},
 	});
 
 test("should call `getInitialOptionsCache` with correct arguments", () => {
@@ -42,6 +45,7 @@ test("should set initial params", () => {
 		},
 		inputValue: "",
 		menuIsOpen: false,
+		optionsDict: {},
 	});
 });
 
@@ -65,5 +69,6 @@ test("should set redefined params", () => {
 		},
 		inputValue: "test",
 		menuIsOpen: true,
+		optionsDict: {},
 	});
 });

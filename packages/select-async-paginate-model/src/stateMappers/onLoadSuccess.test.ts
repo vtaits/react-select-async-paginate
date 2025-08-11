@@ -19,6 +19,7 @@ test("should return previous state if cache for current `inputValue` is not defi
 					lockedUntil: 0,
 				},
 			},
+			optionsDict: {},
 		},
 		params,
 		{
@@ -26,6 +27,7 @@ test("should return previous state if cache for current `inputValue` is not defi
 			response: {
 				options: [],
 			},
+			optionsDict: {},
 		},
 	);
 
@@ -41,6 +43,7 @@ test("should return previous state if cache for current `inputValue` is not defi
 				lockedUntil: 0,
 			},
 		},
+		optionsDict: {},
 	});
 });
 
@@ -59,6 +62,7 @@ test("should set next options by default and `hasMore` = true", () => {
 					lockedUntil: 0,
 				},
 			},
+			optionsDict: {},
 		},
 		params,
 		{
@@ -67,6 +71,7 @@ test("should set next options by default and `hasMore` = true", () => {
 				options: [4, 5, 6],
 				hasMore: true,
 			},
+			optionsDict: {},
 		},
 	);
 
@@ -83,6 +88,7 @@ test("should set next options by default and `hasMore` = true", () => {
 				lockedUntil: 0,
 			},
 		},
+		optionsDict: {},
 	});
 });
 
@@ -101,6 +107,7 @@ test("should set next options by default and `hasMore` = false", () => {
 					lockedUntil: 0,
 				},
 			},
+			optionsDict: {},
 		},
 		params,
 		{
@@ -109,6 +116,7 @@ test("should set next options by default and `hasMore` = false", () => {
 				options: [4, 5, 6],
 				hasMore: false,
 			},
+			optionsDict: {},
 		},
 	);
 
@@ -125,6 +133,7 @@ test("should set next options by default and `hasMore` = false", () => {
 				lockedUntil: 0,
 			},
 		},
+		optionsDict: {},
 	});
 });
 
@@ -143,6 +152,7 @@ test("should set next additional", () => {
 					lockedUntil: 0,
 				},
 			},
+			optionsDict: {},
 		},
 		params,
 		{
@@ -152,6 +162,7 @@ test("should set next additional", () => {
 				hasMore: false,
 				additional: "nextValue",
 			},
+			optionsDict: {},
 		},
 	);
 
@@ -168,6 +179,7 @@ test("should set next additional", () => {
 				lockedUntil: 0,
 			},
 		},
+		optionsDict: {},
 	});
 });
 
@@ -188,6 +200,7 @@ test("should redefine `reduceOptions`", () => {
 					lockedUntil: 0,
 				},
 			},
+			optionsDict: {},
 		},
 		{
 			...params,
@@ -199,6 +212,7 @@ test("should redefine `reduceOptions`", () => {
 				options: [4, 5, 6],
 				hasMore: false,
 			},
+			optionsDict: {},
 		},
 	);
 
@@ -218,5 +232,6 @@ test("should redefine `reduceOptions`", () => {
 				lockedUntil: 0,
 			},
 		},
+		optionsDict: {},
 	});
 });

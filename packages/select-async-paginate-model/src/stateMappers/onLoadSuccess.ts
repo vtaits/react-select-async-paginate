@@ -9,9 +9,11 @@ export const onLoadSuccess = <OptionType, Additional>(
 	{
 		inputValue,
 		response,
+		optionsDict,
 	}: {
 		inputValue: string;
 		response: Response<OptionType, Additional>;
+		optionsDict: Record<string, OptionType>;
 	},
 ): State<OptionType, Additional> => {
 	const prevCache = prevState.cache[inputValue];
@@ -41,6 +43,10 @@ export const onLoadSuccess = <OptionType, Additional>(
 				isFirstLoad: false,
 				additional: nextAdditional,
 			},
+		},
+		optionsDict: {
+			...prevState.optionsDict,
+			...optionsDict,
 		},
 	};
 };

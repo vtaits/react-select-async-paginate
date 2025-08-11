@@ -30,4 +30,8 @@ export type State<OptionType, Additional> = {
 	 * Current state of the menu opening
 	 */
 	menuIsOpen: boolean;
+	/**
+	 * Map unique option value to option
+	 */
+	optionsDict: Record<string, OptionType>;
 };

@@ -25,11 +25,12 @@ test("onLoadSuccess", () => {
 		hasMore: true,
 	};
 
-	expect(onLoadSuccess("test", response)).toEqual({
+	expect(onLoadSuccess("test", response, {})).toEqual({
 		type: ON_LOAD_SUCCESS,
 		payload: {
 			inputValue: "test",
 			response,
+			optionsDict: {},
 		},
 	});
 });

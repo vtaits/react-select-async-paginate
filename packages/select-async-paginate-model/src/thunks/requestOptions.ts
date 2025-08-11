@@ -68,5 +68,13 @@ export const requestOptions =
 			return;
 		}
 
-		dispatch(onLoadSuccess(inputValue, response));
+		const optionsDict: Record<string, OptionType> = {};
+
+		if (params.getOptionValue) {
+			for (const option of response.options) {
+				optionsDict[params.getOptionValue(option)] = option;
+			}
+		}
+
+		dispatch(onLoadSuccess(inputValue, response, optionsDict));
 	};

@@ -25,6 +25,7 @@ const testParams: Params<unknown, unknown> = {
 
 const testModel: Model<unknown, unknown> = {
 	getCurrentCache: vi.fn(),
+	getOptionsDict: vi.fn().mockReturnValue({}),
 	handleLoadMore: vi.fn(),
 	handleReset: vi.fn(),
 	onChangeInputValue: vi.fn(),
@@ -51,7 +52,9 @@ beforeEach(() => {
 
 	mockedUseState.mockReturnValue([testModel, vi.fn()]);
 
-	mockedUseSyncExternalStore.mockReturnValue(testCacheItem);
+	mockedUseSyncExternalStore
+		.mockReturnValueOnce(testCacheItem)
+		.mockReturnValueOnce({});
 
 	mockedCreateAsyncPaginateModel.mockReturnValue(testModel);
 });
@@ -59,7 +62,11 @@ beforeEach(() => {
 test("should create model correctly", () => {
 	const result = useSelectAsyncPaginate(testParams);
 
-	expect(result).toEqual([testCacheItem, testModel]);
+	expect(result).toEqual({
+		currentCache: testCacheItem,
+		model: testModel,
+		optionsDict: {},
+	});
 
 	expect(mockedUseState).toHaveBeenCalledTimes(1);
 
@@ -68,10 +75,16 @@ test("should create model correctly", () => {
 	)[0];
 	expect(initState()).toBe(testModel);
 
-	expect(mockedUseSyncExternalStore).toHaveBeenCalledTimes(1);
-	expect(mockedUseSyncExternalStore).toHaveBeenCalledWith(
+	expect(mockedUseSyncExternalStore).toHaveBeenCalledTimes(2);
+	expect(mockedUseSyncExternalStore).toHaveBeenNthCalledWith(
+		1,
 		testModel.subscribe,
 		testModel.getCurrentCache,
+	);
+	expect(mockedUseSyncExternalStore).toHaveBeenNthCalledWith(
+		2,
+		testModel.subscribe,
+		testModel.getOptionsDict,
 	);
 });
 

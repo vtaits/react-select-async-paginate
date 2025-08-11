@@ -117,6 +117,10 @@ export type Params<OptionType, Additional> = {
 	 * Time in milliseconds to retry a request after an error
 	 */
 	reloadOnErrorTimeout?: number;
+	/**
+	 * Gets the unique value of the option for caching
+	 */
+	getOptionValue?: (option: OptionType) => string | number;
 };
 
 /**
@@ -157,6 +161,10 @@ export type Model<OptionType, Additional> = {
 	 * @returns Cached options and payload for current value of the search input
 	 */
 	getCurrentCache: () => OptionsCacheItem<OptionType, Additional>;
+	/**
+	 * @returns Map unique option value to option
+	 */
+	getOptionsDict: () => Record<string, OptionType>;
 	/**
 	 * Load the next page of options for current value of search input
 	 */

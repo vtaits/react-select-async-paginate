@@ -8,9 +8,12 @@ export const getInitialState = <OptionType, Additional>(
 ): State<OptionType, Additional> => {
 	const { initialInputValue = "", initialMenuIsOpen = false } = params;
 
+	const { cache, optionsDict } = getInitialOptionsCache(params);
+
 	return {
-		cache: getInitialOptionsCache(params),
+		cache,
 		inputValue: initialInputValue,
 		menuIsOpen: initialMenuIsOpen,
+		optionsDict,
 	};
 };

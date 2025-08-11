@@ -45,6 +45,7 @@ const initialState: State<unknown, unknown> = {
 	},
 	inputValue: "initial",
 	menuIsOpen: true,
+	optionsDict: {},
 };
 
 const currentState: State<unknown, unknown> = {
@@ -60,6 +61,7 @@ const currentState: State<unknown, unknown> = {
 	},
 	inputValue: "current",
 	menuIsOpen: true,
+	optionsDict: {},
 };
 
 const nextState: State<unknown, unknown> = {
@@ -75,6 +77,7 @@ const nextState: State<unknown, unknown> = {
 	},
 	inputValue: "next",
 	menuIsOpen: true,
+	optionsDict: {},
 };
 
 const params: Params<unknown, unknown> = {
@@ -110,6 +113,7 @@ describe.each([
 				response: {
 					options: [1, 2, 3],
 				},
+				optionsDict: {},
 			},
 		});
 
@@ -122,6 +126,7 @@ describe.each([
 				response: {
 					options: [1, 2, 3],
 				},
+				optionsDict: {},
 			},
 		);
 
