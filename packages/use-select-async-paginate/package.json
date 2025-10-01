@@ -1,6 +1,6 @@
 {
   "name": "use-select-async-paginate",
-  "version": "1.0.0-alpha.3",
+  "version": "1.0.0",
   "description": "React hook for integration with `select-async-paginate-model`",
   "files": [
     "dist"
@@ -39,14 +39,14 @@
   },
   "peerDependencies": {
     "react": "^18.0.0 || ^19.0.0",
-    "select-async-paginate-model": "^1.0.0-alpha.2"
+    "select-async-paginate-model": "^1.0.0"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.2.4",
     "@types/react": "^19.1.16",
     "@vitest/coverage-v8": "^3.2.4",
     "react": "^19.1.1",
-    "select-async-paginate-model": "^1.0.0-alpha.2",
+    "select-async-paginate-model": "^1.0.0",
     "tsup": "^8.5.0",
     "typescript": "^5.9.3",
     "vitest": "^3.2.4"
