@@ -175,4 +175,4 @@ dist
 .DS_Store
 
 # vitest reports
->>>>>>> master
+__screenshots__
