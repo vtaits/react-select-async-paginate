@@ -46,21 +46,21 @@
     "qs": "^6.14.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.0.0",
-    "@storybook/react-vite": "^9.0.0",
+    "@biomejs/biome": "^2.2.4",
+    "@storybook/react-vite": "^9.1.9",
     "@types/qs": "^6.14.0",
-    "@types/react": "^19.1.6",
-    "@vitejs/plugin-react": "^4.5.0",
-    "@vitest/browser": "^3.1.4",
-    "@vitest/coverage-v8": "^3.1.4",
-    "react": "^19.1.0",
-    "react-select": "^5.10.1",
+    "@types/react": "^19.1.16",
+    "@vitejs/plugin-react": "^5.0.4",
+    "@vitest/browser": "^3.2.4",
+    "@vitest/coverage-v8": "^3.2.4",
+    "react": "^19.1.1",
+    "react-select": "^5.10.2",
     "react-select-async-paginate": "^0.7.11",
     "sleep-promise": "^9.1.0",
     "tsup": "^8.5.0",
-    "typescript": "5.8.3",
-    "vitest": "^3.1.4",
-    "vitest-browser-react": "^0.1.1",
+    "typescript": "5.9.3",
+    "vitest": "^3.2.4",
+    "vitest-browser-react": "^1.0.1",
     "vitest-fetch-mock": "^0.4.5"
   }
 }
