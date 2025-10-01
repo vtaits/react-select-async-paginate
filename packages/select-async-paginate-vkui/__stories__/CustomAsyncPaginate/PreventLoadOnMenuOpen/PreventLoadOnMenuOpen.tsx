@@ -4,6 +4,7 @@ import { useState } from "react";
 import type { LoadOptions } from "select-async-paginate-model";
 import sleep from "sleep-promise";
 import { CustomAsyncPaginate } from "../../../src";
+import { sleepTimeout } from "../../common";
 import type { StoryProps } from "../types";
 
 type SimpleStoryProps = StoryProps & {
@@ -27,7 +28,7 @@ export const loadOptions: LoadOptions<OptionType, unknown> = async (
 	search,
 	prevOptions,
 ) => {
-	await sleep(500);
+	await sleep(sleepTimeout);
 
 	let filteredOptions: OptionType[];
 	if (!search) {

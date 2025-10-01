@@ -4,6 +4,7 @@ import { useState } from "react";
 import type { LoadOptions } from "select-async-paginate-model";
 import sleep from "sleep-promise";
 import { ChipsAsyncPaginate } from "../../../src";
+import { sleepTimeout } from "../../common";
 import type { StoryProps } from "../types";
 
 type ReloadOnErrorProps = StoryProps & {
@@ -25,7 +26,7 @@ export const loadOptions: LoadOptions<ChipOption, unknown> = async (
 	search,
 	prevOptions,
 ) => {
-	await sleep(100);
+	await sleep(sleepTimeout);
 
 	++requestNumber;
 	if (requestNumber % 2 === 0) {

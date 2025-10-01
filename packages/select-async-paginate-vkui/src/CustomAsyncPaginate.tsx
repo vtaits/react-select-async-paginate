@@ -71,13 +71,22 @@ export function CustomAsyncPaginate<
 		cacheUniqs,
 	);
 
+	const inputRef = useRef<HTMLInputElement>(null);
 	const menuRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
 		let timeout: number | null = null;
 
 		const handle = () => {
-			menuRef.current = document.querySelector(".vkuiCustomScrollView__host");
+			const inputEl = inputRef.current;
+
+			if (inputEl?.ariaControlsElements?.[0]) {
+				menuRef.current = inputEl.ariaControlsElements[0].querySelector(
+					".vkuiCustomScrollView__host",
+				) as HTMLDivElement | null;
+			} else {
+				menuRef.current = null;
+			}
 
 			timeout = setTimeout(handle, 100) as unknown as number;
 		};
@@ -150,6 +159,7 @@ export function CustomAsyncPaginate<
 		<CustomSelect
 			searchable
 			{...rest}
+			getSelectInputRef={inputRef}
 			value={value}
 			filterFn={rest.filterFn || false}
 			options={allOptions}

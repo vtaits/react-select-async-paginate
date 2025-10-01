@@ -32,8 +32,8 @@
     "format": "biome format src __stories__ --write",
     "prepare": "bun run build",
     "test:ts": "tsc --noEmit",
-    "test:unit": "vitest run --browser.headless --coverage.enabled --coverage.all --coverage.include=src",
-    "test:unit:watch": "vitest"
+    "test:unit": "TEST=1 vitest run --browser.headless --coverage.enabled --coverage.all --coverage.include=src",
+    "test:unit:watch": "TEST=1 vitest"
   },
   "peerDependencies": {
     "react": "^18.0.0 || ^19.0.0",

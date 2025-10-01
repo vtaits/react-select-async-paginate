@@ -58,13 +58,22 @@ export function ChipsAsyncPaginate<Option extends ChipOption, Additional>({
 		cacheUniqs,
 	);
 
+	const inputRef = useRef<HTMLInputElement>(null);
 	const menuRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
 		let timeout: number | null = null;
 
 		const handle = () => {
-			menuRef.current = document.querySelector(".vkuiCustomScrollView__host");
+			const inputEl = inputRef.current;
+
+			if (inputEl?.ariaExpanded) {
+				menuRef.current = document.querySelector(
+					".vkuiCustomScrollView__host",
+				) as HTMLDivElement | null;
+			} else {
+				menuRef.current = null;
+			}
 
 			timeout = setTimeout(handle, 100) as unknown as number;
 		};
@@ -93,6 +102,7 @@ export function ChipsAsyncPaginate<Option extends ChipOption, Additional>({
 	return (
 		<ChipsSelect
 			{...rest}
+			getRef={inputRef}
 			filterFn={rest.filterFn || false}
 			options={options as Option[]}
 			fetching={(isLoading && options.length === 0) || rest.fetching}
