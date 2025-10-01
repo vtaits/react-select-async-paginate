@@ -174,4 +174,5 @@ dist
 # Finder (MacOS) folder config
 .DS_Store
 
-__screenshots__
+# vitest reports
+>>>>>>> master
