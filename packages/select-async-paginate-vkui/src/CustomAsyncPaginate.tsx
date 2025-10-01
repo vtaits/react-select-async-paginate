@@ -3,20 +3,22 @@ import {
 	type CustomSelectOptionInterface,
 	type SelectProps,
 } from "@vkontakte/vkui";
-import { useCallback, useEffect, useMemo, useRef } from "react";
+import { type ReactNode, useCallback, useEffect, useMemo, useRef } from "react";
 import type { Params } from "select-async-paginate-model";
 import {
 	type ShouldLoadMore,
 	useSelectAsyncPaginate,
 	useWatchMenu,
 } from "use-select-async-paginate";
+import { defaultRenderDropdown } from "./defaultRenderDropdown";
+import type { RenderDropdownProps } from "./types";
 
 const defaultCacheUniqs: unknown[] = [];
 
 type CustomAsyncPaginateProps<
 	Option extends CustomSelectOptionInterface,
 	Additional,
-> = Omit<SelectProps<Option>, "options" | "onChange"> &
+> = Omit<SelectProps<Option>, "options" | "onChange" | "renderDropdown"> &
 	Params<Option, Additional> & {
 		valueWithLabel?: Option | null;
 		cacheUniqs?: readonly unknown[];
@@ -26,6 +28,7 @@ type CustomAsyncPaginateProps<
 			newValue: CustomSelectOptionInterface["value"] | null,
 			newOption: Option | null,
 		) => void;
+		renderDropdown?: (renderProps: RenderDropdownProps) => ReactNode;
 	};
 
 export function CustomAsyncPaginate<
@@ -50,26 +53,28 @@ export function CustomAsyncPaginate<
 	value: valueProp,
 	valueWithLabel: valueWithLabelProp,
 	onChange,
+	renderDropdown: renderDropdownProp = defaultRenderDropdown,
 	...rest
 }: CustomAsyncPaginateProps<Option, Additional>) {
-	const { currentCache, model, optionsDict } = useSelectAsyncPaginate(
-		{
-			additional,
-			autoload,
-			clearCacheOnMenuClose,
-			clearCacheOnSearchChange,
-			debounceTimeout,
-			initialAdditional,
-			initialInputValue,
-			initialMenuIsOpen,
-			initialOptions,
-			loadOptionsOnMenuOpen,
-			reduceOptions,
-			loadOptions,
-			getOptionValue: (option) => String(option.value),
-		},
-		cacheUniqs,
-	);
+	const { currentCache, inputValue, model, optionsDict } =
+		useSelectAsyncPaginate(
+			{
+				additional,
+				autoload,
+				clearCacheOnMenuClose,
+				clearCacheOnSearchChange,
+				debounceTimeout,
+				initialAdditional,
+				initialInputValue,
+				initialMenuIsOpen,
+				initialOptions,
+				loadOptionsOnMenuOpen,
+				reduceOptions,
+				loadOptions,
+				getOptionValue: (option) => String(option.value),
+			},
+			cacheUniqs,
+		);
 
 	const rootRef = useRef<HTMLDivElement>(null);
 	const menuRef = useRef<HTMLDivElement>(null);
@@ -138,7 +143,18 @@ export function CustomAsyncPaginate<
 		return valueWithLabel?.value;
 	}, [valueProp, valueWithLabel]);
 
-	const { isLoading, options } = currentCache;
+	const { isLoading, options, hasMore } = currentCache;
+
+	const renderDropdown = useCallback(
+		({ defaultDropdownContent }: { defaultDropdownContent: ReactNode }) =>
+			renderDropdownProp({
+				defaultDropdownContent,
+				hasMore,
+				inputValue,
+				isLoading,
+			}),
+		[hasMore, isLoading, inputValue, renderDropdownProp],
+	);
 
 	/**
 	 * Add selected option to option list to show label of selected value
@@ -179,6 +195,7 @@ export function CustomAsyncPaginate<
 			onInputChange={(e) => {
 				model.onChangeInputValue((e.target as HTMLInputElement).value);
 			}}
+			renderDropdown={renderDropdown}
 		/>
 	);
 }
