@@ -3,28 +3,32 @@ import {
 	ChipsSelect,
 	type ChipsSelectProps,
 } from "@vkontakte/vkui";
-import { useCallback, useEffect, useRef } from "react";
+import { type ReactNode, useCallback, useEffect, useRef } from "react";
 import type { Params } from "select-async-paginate-model";
 import {
 	type ShouldLoadMore,
 	useSelectAsyncPaginate,
 	useWatchMenu,
 } from "use-select-async-paginate";
+import { defaultRenderDropdown } from "./defaultRenderDropdown";
+import type { RenderDropdownProps } from "./types";
 
 const defaultCacheUniqs: unknown[] = [];
 
 type ChipsAsyncPaginateProps<Option extends ChipOption, Additional> = Omit<
 	ChipsSelectProps<Option>,
-	"options"
+	"options" | "renderDropdown"
 > &
 	Params<Option, Additional> & {
 		cacheUniqs?: readonly unknown[];
 		shouldLoadMore?: ShouldLoadMore;
+		renderDropdown?: (renderProps: RenderDropdownProps) => ReactNode;
 	};
 
 export function ChipsAsyncPaginate<Option extends ChipOption, Additional>({
 	additional,
 	autoload,
+	cacheUniqs = defaultCacheUniqs,
 	clearCacheOnMenuClose,
 	clearCacheOnSearchChange,
 	debounceTimeout,
@@ -36,11 +40,11 @@ export function ChipsAsyncPaginate<Option extends ChipOption, Additional>({
 	reduceOptions,
 	loadOptions,
 	reloadOnErrorTimeout,
-	cacheUniqs = defaultCacheUniqs,
+	renderDropdown: renderDropdownProp = defaultRenderDropdown,
 	shouldLoadMore,
 	...rest
 }: ChipsAsyncPaginateProps<Option, Additional>) {
-	const { currentCache, model } = useSelectAsyncPaginate(
+	const { currentCache, inputValue, model } = useSelectAsyncPaginate(
 		{
 			additional,
 			autoload,
@@ -97,7 +101,18 @@ export function ChipsAsyncPaginate<Option extends ChipOption, Additional>({
 		handleScrolledToBottom,
 	});
 
-	const { isLoading, options } = currentCache;
+	const { hasMore, isLoading, options } = currentCache;
+
+	const renderDropdown = useCallback(
+		({ defaultDropdownContent }: { defaultDropdownContent: ReactNode }) =>
+			renderDropdownProp({
+				defaultDropdownContent,
+				hasMore,
+				inputValue,
+				isLoading,
+			}),
+		[hasMore, isLoading, inputValue, renderDropdownProp],
+	);
 
 	return (
 		<ChipsSelect
@@ -115,6 +130,7 @@ export function ChipsAsyncPaginate<Option extends ChipOption, Additional>({
 			onOpen={() => {
 				model.onToggleMenu(true);
 			}}
+			renderDropdown={renderDropdown}
 		/>
 	);
 }

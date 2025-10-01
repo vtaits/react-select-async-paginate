@@ -66,6 +66,12 @@ export const createAsyncPaginateModel = <OptionType, Additional>(
 		return cache[inputValue] || initialCache;
 	};
 
+	const getInputValue = () => {
+		const { inputValue } = store.getState();
+
+		return inputValue;
+	};
+
 	const getOptionsDict = () => {
 		const { optionsDict } = store.getState();
 
@@ -78,6 +84,7 @@ export const createAsyncPaginateModel = <OptionType, Additional>(
 
 	return {
 		getCurrentCache,
+		getInputValue,
 		getOptionsDict,
 		handleLoadMore,
 		handleReset,

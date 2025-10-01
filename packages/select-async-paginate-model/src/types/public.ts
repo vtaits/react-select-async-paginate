@@ -162,6 +162,10 @@ export type Model<OptionType, Additional> = {
 	 */
 	getCurrentCache: () => OptionsCacheItem<OptionType, Additional>;
 	/**
+	 * @returns Current value of the search input
+	 */
+	getInputValue: () => string;
+	/**
 	 * @returns Map unique option value to option
 	 */
 	getOptionsDict: () => Record<string, OptionType>;

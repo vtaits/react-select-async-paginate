@@ -28,6 +28,8 @@ export function useSelectAsyncPaginate<OptionType, Additional>(
 		model.getOptionsDict,
 	);
 
+	const inputValue = useSyncExternalStore(model.subscribe, model.getInputValue);
+
 	const isInitRef = useRef(true);
 
 	useEffect(() => {
@@ -41,6 +43,7 @@ export function useSelectAsyncPaginate<OptionType, Additional>(
 
 	return {
 		currentCache,
+		inputValue,
 		optionsDict,
 		model,
 	};

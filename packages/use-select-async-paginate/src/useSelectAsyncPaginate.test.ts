@@ -26,6 +26,7 @@ const testParams: Params<unknown, unknown> = {
 const testModel: Model<unknown, unknown> = {
 	getCurrentCache: vi.fn(),
 	getOptionsDict: vi.fn().mockReturnValue({}),
+	getInputValue: vi.fn().mockReturnValue("test"),
 	handleLoadMore: vi.fn(),
 	handleReset: vi.fn(),
 	onChangeInputValue: vi.fn(),
@@ -75,7 +76,7 @@ test("should create model correctly", () => {
 	)[0];
 	expect(initState()).toBe(testModel);
 
-	expect(mockedUseSyncExternalStore).toHaveBeenCalledTimes(2);
+	expect(mockedUseSyncExternalStore).toHaveBeenCalledTimes(3);
 	expect(mockedUseSyncExternalStore).toHaveBeenNthCalledWith(
 		1,
 		testModel.subscribe,
@@ -85,6 +86,11 @@ test("should create model correctly", () => {
 		2,
 		testModel.subscribe,
 		testModel.getOptionsDict,
+	);
+	expect(mockedUseSyncExternalStore).toHaveBeenNthCalledWith(
+		3,
+		testModel.subscribe,
+		testModel.getInputValue,
 	);
 });
 
