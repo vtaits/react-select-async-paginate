@@ -5,6 +5,7 @@ import type { LoadOptions } from "select-async-paginate-model";
 import sleep from "sleep-promise";
 import type { ShouldLoadMore } from "use-select-async-paginate";
 import { ChipsAsyncPaginate } from "../../../src";
+import { sleepTimeout } from "../../common";
 import type { StoryProps } from "../types";
 
 type CustomScrollCheckProps = StoryProps & {
@@ -23,7 +24,7 @@ export const loadOptions: LoadOptions<ChipOption, null> = async (
 	search,
 	prevOptions,
 ) => {
-	await sleep(500);
+	await sleep(sleepTimeout);
 
 	let filteredOptions: ChipOption[];
 	if (!search) {

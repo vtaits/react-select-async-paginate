@@ -57,11 +57,11 @@ describe("Debounce", () => {
 		const listbox = getMenu(screen);
 
 		await type(screen, "Opt");
-		await sleep(30);
+		await sleep(10);
 		await type(screen, "abc");
-		await sleep(30);
+		await sleep(10);
 		await type(screen, "123");
-		await sleep(30);
+		await sleep(10);
 		await type(screen, label);
 
 		await expect.element(listbox).toBeInTheDocument();

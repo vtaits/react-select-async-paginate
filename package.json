@@ -21,21 +21,20 @@
     "codecov": "bun --filter='*' run codecov"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.1.4",
-    "@storybook/react-vite": "^9.1.1",
+    "@biomejs/biome": "^2.2.4",
+    "@storybook/react-vite": "^9.1.9",
     "@types/bun": "latest",
-    "@vitejs/plugin-react": "^5.0.0",
+    "@vitejs/plugin-react": "^5.0.4",
     "codecov": "^3.8.3",
-    "cross-env": "^10.0.0",
+    "cross-env": "^10.1.0",
     "path": "^0.12.7",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-refresh": "^0.17.0",
     "rimraf": "^6.0.1",
-    "storybook": "^9.1.1",
-    "typedoc": "^0.28.10",
-    "typescript": "^5.9.2",
-    "vite": "^7.1.1"
-  },
-  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
+    "storybook": "^9.1.9",
+    "typedoc": "^0.28.13",
+    "typescript": "5.9.3",
+    "vite": "^7.1.7"
+  }
 }

@@ -4,6 +4,7 @@ import { useState } from "react";
 import type { LoadOptions } from "select-async-paginate-model";
 import sleep from "sleep-promise";
 import { ChipsAsyncPaginate } from "../../../src";
+import { sleepTimeout } from "../../common";
 import type { StoryProps } from "../types";
 
 type RequestByPageNumberProps = StoryProps & {
@@ -31,7 +32,7 @@ export const loadOptions = async (
 	options: ChipOption[];
 	hasMore: boolean;
 }> => {
-	await sleep(500);
+	await sleep(sleepTimeout);
 
 	let filteredOptions: ChipOption[];
 	if (!search) {

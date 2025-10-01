@@ -58,13 +58,25 @@ export function ChipsAsyncPaginate<Option extends ChipOption, Additional>({
 		cacheUniqs,
 	);
 
+	const rootRef = useRef<HTMLDivElement>(null);
 	const menuRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
 		let timeout: number | null = null;
 
 		const handle = () => {
-			menuRef.current = document.querySelector(".vkuiCustomScrollView__box");
+			const rootClassList = rootRef.current?.classList;
+
+			if (
+				rootClassList?.contains("vkuiChipsSelect--pop-up") ||
+				rootClassList?.contains("vkuiChipsSelect--pop-down")
+			) {
+				menuRef.current = document.querySelector(
+					".vkuiCustomScrollView__box",
+				) as HTMLDivElement | null;
+			} else {
+				menuRef.current = null;
+			}
 
 			model.onToggleMenu(Boolean(menuRef.current));
 
@@ -95,6 +107,7 @@ export function ChipsAsyncPaginate<Option extends ChipOption, Additional>({
 	return (
 		<ChipsSelect
 			{...rest}
+			getRootRef={rootRef}
 			filterFn={rest.filterFn || false}
 			options={options as Option[]}
 			fetching={(isLoading && options.length === 0) || rest.fetching}
