@@ -306,7 +306,7 @@ const AsyncPaginateCreatable = withAsyncPaginate(Creatable) as AsyncPaginateCrea
 
 ## Replacing Components
 
-Usage of replacing components is similar with `react-select`, but there is one difference. If you redefine `MenuList` you should wrap it with `wrapMenuList` for workaround of some internal bugs of `react-select`.
+Component replacing is done similar to how its done with `react-select`, but with one difference: if you redefine `MenuList` you should wrap it with `wrapMenuList` to workaround some internal `react-select` bugs.
 
 ```javascript
 import { AsyncPaginate, wrapMenuList } from 'react-select-async-paginate';
