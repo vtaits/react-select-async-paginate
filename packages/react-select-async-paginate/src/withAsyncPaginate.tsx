@@ -63,10 +63,13 @@ export function withAsyncPaginate(
 				{...props}
 				{...asyncPaginateProps}
 				menuPlacement={menuPlacement}
-				// Recount menu position on load options
+				// Recount menu position on the first load of options, when the menu
+				// grows from the loading message to its full height. Subsequent loads
+				// (`load more`) keep the flag steady, otherwise the menu is replaced
+				// while it already has its final size and visibly jumps.
 				menuShouldScrollIntoView={
 					menuPlacement === "auto"
-						? isLoading
+						? isLoading && asyncPaginateProps.isFirstLoad
 							? false
 							: menuShouldScrollIntoView
 						: menuShouldScrollIntoView
