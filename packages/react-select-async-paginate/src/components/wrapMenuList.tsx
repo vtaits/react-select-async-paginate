@@ -32,12 +32,24 @@ export function wrapMenuList<
 
 		const checkTimeoutRef = useRef<number | null>(null);
 		const menuListRef = useRef<HTMLDivElement>(null);
+		const hasWarnedRef = useRef(false);
 
 		const shouldHandle = useCallback(() => {
 			const el = menuListRef.current;
 
 			// menu is not rendered
 			if (!el) {
+				// The check runs only while the wrapped `MenuList` is mounted, so a
+				// missing ref means it never forwarded `innerRef` to its scrollable
+				// element. Infinite scroll can't work without it.
+				if (!hasWarnedRef.current) {
+					hasWarnedRef.current = true;
+
+					console.error(
+						"[react-select-async-paginate] The custom `MenuList` component did not forward `innerRef` to its scrollable element, so loading more options on scroll is disabled. See https://github.com/vtaits/react-select-async-paginate#replacing-components",
+					);
+				}
+
 				return false;
 			}
 
