@@ -308,10 +308,29 @@ const AsyncPaginateCreatable = withAsyncPaginate(Creatable) as AsyncPaginateCrea
 
 Component replacing is done similar to how its done with `react-select`, but with one difference: if you redefine `MenuList` you should wrap it with `wrapMenuList` to workaround some internal `react-select` bugs.
 
+Your custom `MenuList` **must forward `innerRef` to the scrollable element**, otherwise there is nothing whose scroll position can be measured and options will never load on scroll. Forward `innerProps` too, and either keep the styles of `react-select` (via `getStyles`) or define `max-height` and `overflow-y` yourself, because an element that cannot scroll cannot trigger a load either.
+
 ```javascript
 import { AsyncPaginate, wrapMenuList } from 'react-select-async-paginate';
 
 ...
+
+const CustomMenuList = (props) => {
+  const { children, innerRef, innerProps, getStyles } = props;
+
+  return (
+    <div
+      className="my-menu-list"
+      // required, otherwise options are not loaded on scroll
+      ref={innerRef}
+      // keeps `max-height` and `overflow-y` of `react-select`
+      style={getStyles('menuList', props)}
+      {...innerProps}
+    >
+      {children}
+    </div>
+  );
+};
 
 const MenuList = wrapMenuList(CustomMenuList);
 
