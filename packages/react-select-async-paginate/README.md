@@ -140,6 +140,24 @@ Not required. Function. Post-mapping of loaded options to display them in the me
 
 Ref for take `react-select` instance.
 
+### inputValue / onInputChange
+
+Same as in `react-select`. Pass `inputValue` to control the search text yourself, e.g. to keep it when the input loses focus (by default `react-select` clears it on blur and on menu close):
+
+```javascript
+const [inputValue, setInputValue] = useState('');
+
+<AsyncPaginate
+  {...otherProps}
+  inputValue={inputValue}
+  onInputChange={(nextInputValue, { action }) => {
+    if (action === 'input-change') {
+      setInputValue(nextInputValue);
+    }
+  }}
+/>
+```
+
 ## Example
 
 ### offset way
