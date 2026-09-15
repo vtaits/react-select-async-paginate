@@ -127,8 +127,23 @@ export const useAsyncPaginateBase = <
 		clearCacheOnMenuClose,
 	]);
 
+	const cachedOptions = optionsCacheRef.current[inputValue];
+
+	/**
+	 * A request for a new `inputValue` is started by an effect, which runs after
+	 * the browser has painted the commit that introduced it. Without this the
+	 * menu would report "not loading" for that frame, restarting the loading
+	 * indicator's animation on every keystroke. Mirror the conditions of the
+	 * effects below, so `isLoading` is only anticipated when a request really
+	 * will be issued for this key.
+	 */
+	const isRequestPending =
+		!cachedOptions &&
+		menuIsOpen &&
+		(inputValue !== "" || loadOptionsOnMenuOpen);
+
 	const currentOptions: OptionsCacheItem<OptionType, Group, Additional> =
-		optionsCacheRef.current[inputValue] || getInitialCache(params);
+		cachedOptions || getInitialCache(params);
 
 	const options = useMemo(() => {
 		if (!mapOptionsForMenu) {
@@ -143,7 +158,9 @@ export const useAsyncPaginateBase = <
 		shouldLoadMore,
 		filterOption,
 		isLoading:
-			currentOptions.isLoading || currentOptions.lockedUntil > Date.now(),
+			isRequestPending ||
+			currentOptions.isLoading ||
+			currentOptions.lockedUntil > Date.now(),
 		isFirstLoad: currentOptions.isFirstLoad,
 		options,
 	};
